@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { IMaskInput } from 'react-imask'
-import { ArrowRightIcon, ChevronDownIcon, ChevronUpIcon, GiftIcon, CheckIcon } from '@heroicons/react/24/outline'
+import { ArrowRightIcon, ChevronDownIcon, ChevronUpIcon, GiftIcon, CheckIcon, StarIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import { useAuth } from '../../contexts/AuthContext'
 import { VideoModal } from './VideoModal'
 import { CustomerTypeSelector } from './CustomerTypeSelector'
@@ -21,17 +21,53 @@ export function Hero() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [isUpgradeFormSubmitted, setIsUpgradeFormSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [currentTestimonial, setCurrentTestimonial] = useState(0)
   
   // Check if user is a contractor
   const isContractor = isAuthenticated && user?.role === 'hvac_pro'
 
-  // Handler for Sensor CTA - checks authentication before navigating
-  const handleSensorCTA = () => {
-    if (!isAuthenticated) {
-      navigate('/auth/signin')
-    } else {
-      navigate('/products?product=sensor')
+  // Testimonials from Mini Product Page
+  const testimonials = [
+    {
+      name: 'Joey',
+      role: 'AC Technician',
+      text: 'I love the AC DRAIN WIZ! After installing it and using it in one of my customers homes and seeing how much sludge came out after I did my service the normal way I was shocked! I would recommend the AC DRAIN to every homeowner out there!',
+      rating: 5,
+      image: '/images/testimonials/joey-testimonial.jpg'
+    },
+    {
+      name: 'Charles C.',
+      role: 'Homeowner',
+      text: 'I highly recommend AC Drain Wiz. It is such an amazing product. I\'m surprised no one thought of it before. Thank you, AC Drain Wiz. It is comforting not to have sleepless, hot nights anymore.',
+      rating: 5,
+      image: '/images/testimonials/charles-testimonial.jpg'
+    },
+    {
+      name: 'Jaclyn S.',
+      role: 'Homeowner',
+      text: 'The AC DRAIN WIZ is an amazing addition to my AC unit and has completely changed the unit which was becoming backed up almost every 3 months! The AC DRAIN WIZ really transformed the unit and it\'s now functioning better than ever! I\'m no longer looking forward to the summer in stifling south Florida with dread knowing that this device will allow prompt and effective resolution to any issue! Great product!!!',
+      rating: 5,
+      image: '/images/testimonials/jaclyn-s-testimonial.jpg'
+    },
+    {
+      name: 'Jeff B.',
+      role: 'FL General Contractor & Homeowner',
+      text: 'I have a newer home that we have been living in for about 10 years. The only issue we have ever experienced has been a recurring problem with the condensate line backing up. I had no way of vacuuming it out without taking apart a big section of the pvc, and I never would dare to try to flush it out with a water hose. Now, with AC Drain Wiz, I can quickly and easily hook up a hose and flush out the whole line. It has been great to be able to do this as preventative maintenance, rather than waiting for the AC to stop running and having a big mess and headache. AC Drain Wiz is an easy, affordable necessity. As a contractor, I plan on using it on all my projects.',
+      rating: 5,
+      image: '/images/testimonials/jeff-b-testimonial.jpg'
     }
+  ]
+
+  const handleTestimonialPrev = () => {
+    setCurrentTestimonial((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))
+  }
+
+  const handleTestimonialNext = () => {
+    setCurrentTestimonial((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1))
+  }
+
+  const handleTestimonialSelect = (index: number) => {
+    setCurrentTestimonial(index)
   }
 
   // Toast notification function
@@ -278,13 +314,13 @@ export function Hero() {
               <>
                 {/* Signed-in contractors see contractor pricing and can buy */}
                 <button 
-                  onClick={() => navigate('/products?product=sensor&action=buy')}
+                  onClick={() => navigate('/products/sensor')}
                   className="product-showcase-card-cta-primary"
                 >
-                  Buy Now
+                  Learn More
                 </button>
                 <button 
-                  onClick={() => navigate('/products?product=sensor')}
+                  onClick={() => navigate('/products?product=sensor&action=buy')}
                   className="product-showcase-card-cta-secondary"
                 >
                   View Contractor Pricing
@@ -292,19 +328,12 @@ export function Hero() {
               </>
             ) : (
               <>
-                {/* Non-contractors (homeowners, unauthenticated contractors, etc.) */}
-                {/* Sensor is contractor-only, so direct to contractor finder */}
+                {/* Non-contractors: Information-first approach - learn about product first */}
                 <button 
-                  onClick={() => navigate('/find-contractor')}
+                  onClick={() => navigate('/products/sensor')}
                   className="product-showcase-card-cta-primary"
                 >
-                  Find a Contractor
-                </button>
-                <button 
-                  onClick={() => navigate('/auth/signin')}
-                  className="product-showcase-card-cta-secondary"
-                >
-                  Sign In for Contractor Pricing
+                  Learn More
                 </button>
               </>
             )}
@@ -343,15 +372,15 @@ export function Hero() {
           <div className="product-showcase-card-ctas">
             {isContractor ? (
               <>
-                {/* Signed-in contractors can buy bundle and see pricing */}
+                {/* Signed-in contractors can view complete system details */}
                 <button 
-                  onClick={() => navigate('/products?product=mini&product=sensor&action=buy')}
+                  onClick={() => navigate('/products/combo')}
                   className="product-showcase-card-cta-primary"
                 >
-                  Buy Bundle
+                  View Complete System
                 </button>
                 <button 
-                  onClick={() => navigate('/products?product=mini&product=sensor')}
+                  onClick={() => navigate('/products?product=mini&product=sensor&action=buy')}
                   className="product-showcase-card-cta-secondary"
                 >
                   View Contractor Pricing
@@ -359,18 +388,12 @@ export function Hero() {
               </>
             ) : (
               <>
-                {/* Non-contractors: bundle includes Sensor (contractor-only), so direct to contractor finder */}
+                {/* Non-contractors: Information-first approach - learn about complete system first */}
                 <button 
-                  onClick={() => navigate('/find-contractor')}
+                  onClick={() => navigate('/products/combo')}
                   className="product-showcase-card-cta-primary"
                 >
-                  Find a Contractor
-                </button>
-                <button 
-                  onClick={() => navigate('/auth/signin')}
-                  className="product-showcase-card-cta-secondary"
-                >
-                  Sign In for Contractor Pricing
+                  View Complete System
                 </button>
               </>
             )}
@@ -584,25 +607,19 @@ export function Hero() {
                 <tr className="product-comparison-action-row">
                   <td className="product-comparison-td sticky left-0 bg-white"></td>
                   <td className="product-comparison-td">
-                    <button onClick={() => navigate('/products?product=mini')} className="product-comparison-btn-primary">
-                      Buy Now
+                    <button onClick={() => navigate('/products/mini')} className="product-comparison-btn-primary">
+                      Learn More
                     </button>
                   </td>
                   <td className="product-comparison-td">
-                    <button onClick={handleSensorCTA} className="product-comparison-btn-primary">
-                      Sign in for Pricing
+                    <button onClick={() => navigate('/products/sensor')} className="product-comparison-btn-primary">
+                      Learn More
                     </button>
                   </td>
                   <td className="product-comparison-td">
-                    {isContractor ? (
-                      <button onClick={() => navigate('/products?product=mini&product=sensor')} className="product-comparison-btn-primary">
-                        View Pricing
-                      </button>
-                    ) : (
-                      <button onClick={() => navigate('/auth/signin')} className="product-comparison-btn-primary">
-                        Sign In for Pricing
-                      </button>
-                    )}
+                    <button onClick={() => navigate('/products/combo')} className="product-comparison-btn-primary">
+                      Learn More
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -618,8 +635,8 @@ export function Hero() {
                   <h3 className="text-2xl font-bold text-gray-900">Mini</h3>
                   <span className="text-sm text-blue-600">Most Popular</span>
                 </div>
-                <button onClick={() => navigate('/products?product=mini')} className="product-comparison-btn-primary">
-                  Buy Now
+                <button onClick={() => navigate('/products/mini')} className="product-comparison-btn-primary">
+                  Learn More
                 </button>
               </div>
               <div className="space-y-2 text-sm">
@@ -637,8 +654,8 @@ export function Hero() {
                   <h3 className="text-2xl font-bold text-gray-900">Sensor</h3>
                   <span className="text-sm text-orange-600 font-semibold">Contractor Only</span>
                 </div>
-                <button onClick={handleSensorCTA} className="product-comparison-btn-primary">
-                  Sign in for Pricing
+                <button onClick={() => navigate('/products/sensor')} className="product-comparison-btn-primary">
+                  Learn More
                 </button>
               </div>
               <div className="space-y-2 text-sm">
@@ -656,15 +673,9 @@ export function Hero() {
                   <h3 className="text-2xl font-bold text-gray-900">Mini + Sensor</h3>
                   <span className="text-sm text-purple-600 font-semibold">Complete System</span>
                 </div>
-                {isContractor ? (
-                  <button onClick={() => navigate('/products?product=mini&product=sensor')} className="product-comparison-btn-primary">
-                    View Pricing
-                  </button>
-                ) : (
-                  <button onClick={() => navigate('/auth/signin')} className="product-comparison-btn-primary">
-                    Sign In for Pricing
-                  </button>
-                )}
+                <button onClick={() => navigate('/products/combo')} className="product-comparison-btn-primary">
+                  Learn More
+                </button>
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between"><span className="font-medium">Status:</span> <span className="text-green-600">Available Now</span></div>
@@ -677,7 +688,7 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Proof Stack Section - Testimonials, Case Study */}
+      {/* Proof Stack Section - Testimonials */}
       <div ref={proofStackRef} className="proof-stack-container">
         <div className="proof-stack-content">
           <div className="proof-stack-header">
@@ -687,85 +698,77 @@ export function Hero() {
           {/* Testimonials Carousel */}
           <div className="proof-stack-testimonials">
             <h3 className="proof-stack-testimonials-title">What Our Customers Say</h3>
-            <div className="proof-stack-testimonials-grid">
-              {/* Testimonial 1 */}
-              <div className="proof-stack-testimonial-card">
-                <div className="proof-stack-testimonial-rating">★★★★★</div>
-                <p className="proof-stack-testimonial-text">
-                  "AC Drain Wiz prevented a major water leak in my attic. The sensor alerted me two days before I even noticed a problem. Worth every penny."
-                </p>
-                <div className="proof-stack-testimonial-author">
-                  <div className="proof-stack-testimonial-avatar">SJ</div>
-                  <div>
-                    <div className="proof-stack-testimonial-name">Sarah Johnson</div>
-                    <div className="proof-stack-testimonial-role">Homeowner</div>
-                  </div>
-                </div>
-              </div>
+            
+            {/* Testimonial Carousel */}
+            <div className="proof-stack-testimonials-carousel">
+              <div className="proof-stack-testimonials-carousel-container">
+                {/* Previous Button */}
+                <button
+                  onClick={handleTestimonialPrev}
+                  className="proof-stack-testimonials-nav-button proof-stack-testimonials-nav-button-prev"
+                  aria-label="Previous testimonial"
+                >
+                  <ChevronLeftIcon className="proof-stack-testimonials-nav-icon" />
+                </button>
 
-              {/* Testimonial 2 */}
-              <div className="proof-stack-testimonial-card">
-                <div className="proof-stack-testimonial-rating">★★★★★</div>
-                <p className="proof-stack-testimonial-text">
-                  "I've been using AC Drain Wiz in my HVAC business for a year now. My callbacks are down 80% and my customers love it. Best investment I've made."
-                </p>
-                <div className="proof-stack-testimonial-author">
-                  <div className="proof-stack-testimonial-avatar">MS</div>
-                  <div>
-                    <div className="proof-stack-testimonial-name">Mike Stevens</div>
-                    <div className="proof-stack-testimonial-role">HVAC Professional</div>
-                  </div>
+                {/* Testimonial Card */}
+                <div className="proof-stack-testimonials-carousel-card-wrapper">
+                  {testimonials.map((testimonial, index) => (
+                    <div
+                      key={index}
+                      className={`proof-stack-testimonial-card ${
+                        index === currentTestimonial ? 'proof-stack-testimonial-card-active' : 'proof-stack-testimonial-card-hidden'
+                      }`}
+                    >
+                      <div className="proof-stack-testimonial-image-wrapper">
+                        <img
+                          src={testimonial.image}
+                          alt={`${testimonial.name}, ${testimonial.role}`}
+                          className="proof-stack-testimonial-image"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement
+                            target.src = '/images/testimonials/placeholder.jpg'
+                          }}
+                        />
+                      </div>
+                      <div className="proof-stack-testimonial-content">
+                        <div className="proof-stack-testimonial-rating">
+                          {[...Array(testimonial.rating)].map((_, i) => (
+                            <StarIcon key={i} className="proof-stack-testimonial-star" />
+                          ))}
+                        </div>
+                        <p className="proof-stack-testimonial-text">"{testimonial.text}"</p>
+                        <div className="proof-stack-testimonial-author">
+                          <span className="proof-stack-testimonial-name">{testimonial.name}</span>
+                          <span className="proof-stack-testimonial-role">{testimonial.role}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </div>
 
-              {/* Testimonial 3 */}
-              <div className="proof-stack-testimonial-card">
-                <div className="proof-stack-testimonial-rating">★★★★★</div>
-                <p className="proof-stack-testimonial-text">
-                  "The clear PVC housing makes it so easy to see what's happening in the drain line. Installation was quick and the visual confirmation is priceless."
-                </p>
-                <div className="proof-stack-testimonial-author">
-                  <div className="proof-stack-testimonial-avatar">RP</div>
-                  <div>
-                    <div className="proof-stack-testimonial-name">Robert Phillips</div>
-                    <div className="proof-stack-testimonial-role">Property Manager</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Case Study Teaser */}
-          <div className="proof-stack-case-study">
-            <div className="proof-stack-case-study-content">
-              <div className="proof-stack-case-study-text">
-                <h3 className="proof-stack-case-study-title">Real Results from Real Pros</h3>
-                <p className="proof-stack-case-study-subtitle">See how one mid-size HVAC contractor transformed their business</p>
-                <div className="proof-stack-case-study-stats">
-                  <div className="proof-stack-stat">
-                    <div className="proof-stack-stat-number">85%</div>
-                    <div className="proof-stack-stat-label">Fewer Callbacks</div>
-                  </div>
-                  <div className="proof-stack-stat">
-                    <div className="proof-stack-stat-number">10X</div>
-                    <div className="proof-stack-stat-label">Faster Cleanouts</div>
-                  </div>
-                  <div className="proof-stack-stat">
-                    <div className="proof-stack-stat-number">$12K</div>
-                    <div className="proof-stack-stat-label">First Year Savings</div>
-                  </div>
-                </div>
-                <button onClick={() => navigate('/contact?type=case-study')} className="proof-stack-case-study-cta">
-                  Read Full Case Study →
+                {/* Next Button */}
+                <button
+                  onClick={handleTestimonialNext}
+                  className="proof-stack-testimonials-nav-button proof-stack-testimonials-nav-button-next"
+                  aria-label="Next testimonial"
+                >
+                  <ChevronRightIcon className="proof-stack-testimonials-nav-icon" />
                 </button>
               </div>
-              <div className="proof-stack-case-study-image">
-                <div className="proof-stack-placeholder-image">
-                  <svg className="proof-stack-placeholder-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <p className="proof-stack-placeholder-text">Case Study Image<br />Placeholder</p>
-                </div>
+
+              {/* Carousel Indicators */}
+              <div className="proof-stack-testimonials-indicators">
+                {testimonials.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleTestimonialSelect(index)}
+                    className={`proof-stack-testimonials-indicator ${
+                      index === currentTestimonial ? 'proof-stack-testimonials-indicator-active' : ''
+                    }`}
+                    aria-label={`Go to testimonial ${index + 1}`}
+                  />
+                ))}
               </div>
             </div>
           </div>

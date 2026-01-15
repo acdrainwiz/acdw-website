@@ -2384,21 +2384,8 @@
 
   /* Text colors need to change when background is black */
   .proof-stack-container.section-active .proof-stack-title,
-  .proof-stack-container.section-active .proof-stack-testimonials-title,
-  .proof-stack-container.section-active .proof-stack-testimonial-text,
-  .proof-stack-container.section-active .proof-stack-testimonial-name,
-  .proof-stack-container.section-active .proof-stack-testimonial-role,
-  .proof-stack-container.section-active .proof-stack-case-study-title,
-  .proof-stack-container.section-active .proof-stack-case-study-subtitle,
-  .proof-stack-container.section-active .proof-stack-stat-number,
-  .proof-stack-container.section-active .proof-stack-stat-label {
+  .proof-stack-container.section-active .proof-stack-testimonials-title {
     @apply text-white;
-  }
-
-  /* Cards inside black sections need different backgrounds */
-  .proof-stack-container.section-active .proof-stack-testimonial-card,
-  .proof-stack-container.section-active .proof-stack-case-study {
-    @apply bg-gray-900 border-gray-800;
   }
 
   .proof-stack-content {
@@ -2415,101 +2402,173 @@
 
   /* Testimonials */
   .proof-stack-testimonials {
-    @apply mb-16;
+    @apply mb-0;
   }
 
   .proof-stack-testimonials-title {
     @apply text-3xl font-bold text-gray-900 text-center mb-8;
   }
 
-  .proof-stack-testimonials-grid {
-    @apply grid grid-cols-1 md:grid-cols-3 gap-8;
+  /* Testimonials Carousel */
+  .proof-stack-testimonials-carousel {
+    @apply relative;
+  }
+
+  .proof-stack-testimonials-carousel-container {
+    @apply relative flex items-center justify-center;
+    @apply min-h-[400px] md:min-h-[450px];
+    @apply px-12 md:px-0;
+  }
+
+  .proof-stack-testimonials-nav-button {
+    @apply absolute z-10;
+    @apply w-10 h-10 md:w-14 md:h-14;
+    @apply rounded-full bg-white;
+    @apply shadow-lg border border-gray-200;
+    @apply flex items-center justify-center;
+    @apply text-gray-700 hover:text-primary-600;
+    @apply hover:bg-gray-50;
+    @apply transition-all;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+
+  .proof-stack-container.section-active .proof-stack-testimonials-nav-button {
+    @apply bg-gray-800 border-gray-700 text-gray-300 hover:text-white hover:bg-gray-700;
+  }
+
+  .proof-stack-testimonials-nav-button-prev {
+    @apply left-2 md:-left-6;
+  }
+
+  .proof-stack-testimonials-nav-button-next {
+    @apply right-2 md:-right-6;
+  }
+
+  .proof-stack-testimonials-nav-icon {
+    @apply h-5 w-5 md:h-7 md:w-7;
+  }
+
+  .proof-stack-testimonials-carousel-card-wrapper {
+    @apply relative w-full;
+    @apply flex items-center justify-center;
   }
 
   .proof-stack-testimonial-card {
-    @apply bg-white rounded-xl p-6 shadow-sm;
+    @apply bg-white rounded-2xl;
+    @apply shadow-lg border border-gray-200;
+    @apply overflow-hidden;
+    @apply w-full max-w-3xl;
+    @apply transition-all duration-500 ease-in-out;
+    @apply mx-2 md:mx-0;
+  }
+
+  .proof-stack-container.section-active .proof-stack-testimonial-card {
+    @apply bg-gray-900 border-gray-800;
+  }
+
+  .proof-stack-testimonial-card-active {
+    @apply opacity-100 translate-x-0;
+    @apply block;
+  }
+
+  .proof-stack-testimonial-card-hidden {
+    @apply opacity-0 absolute;
+    @apply pointer-events-none;
+    @apply transform translate-x-8;
+  }
+
+  .proof-stack-testimonial-image-wrapper {
+    @apply w-full;
+    @apply pt-8 pb-4;
+    @apply flex items-center justify-center;
+    @apply bg-transparent;
+  }
+
+  .proof-stack-testimonial-image {
+    @apply w-24 h-24 md:w-32 md:h-32;
+    @apply rounded-full;
+    @apply object-cover;
+    @apply border-4 border-gray-200;
+    @apply shadow-md;
+  }
+
+  .proof-stack-container.section-active .proof-stack-testimonial-image {
+    @apply border-gray-700;
+  }
+
+  .proof-stack-testimonial-content {
+    @apply p-6 md:p-8;
+    @apply px-8 md:px-8;
   }
 
   .proof-stack-testimonial-rating {
-    @apply text-yellow-400 text-xl mb-3;
+    @apply flex gap-1 mb-4;
+  }
+
+  .proof-stack-testimonial-star {
+    @apply h-5 w-5 text-yellow-400 fill-current;
   }
 
   .proof-stack-testimonial-text {
-    @apply text-gray-700 mb-4 leading-relaxed;
+    @apply text-gray-700 leading-relaxed mb-6;
+    @apply text-base md:text-lg;
+  }
+
+  .proof-stack-container.section-active .proof-stack-testimonial-text {
+    @apply text-gray-200;
   }
 
   .proof-stack-testimonial-author {
-    @apply flex items-center gap-3;
+    @apply flex flex-col;
+    @apply pt-4 border-t border-gray-200;
   }
 
-  .proof-stack-testimonial-avatar {
-    @apply w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-lg;
+  .proof-stack-container.section-active .proof-stack-testimonial-author {
+    @apply border-gray-700;
   }
 
   .proof-stack-testimonial-name {
-    @apply font-bold text-gray-900;
+    @apply font-semibold text-gray-900;
+    @apply text-base;
+  }
+
+  .proof-stack-container.section-active .proof-stack-testimonial-name {
+    @apply text-white;
   }
 
   .proof-stack-testimonial-role {
-    @apply text-sm text-gray-600;
+    @apply text-sm text-gray-600 mt-1;
   }
 
-  /* Case Study */
-  .proof-stack-case-study {
-    @apply bg-white rounded-2xl shadow-lg overflow-hidden;
+  .proof-stack-container.section-active .proof-stack-testimonial-role {
+    @apply text-gray-400;
   }
 
-  .proof-stack-case-study-content {
-    @apply grid grid-cols-1 lg:grid-cols-2 gap-8 p-8;
+  /* Carousel Indicators */
+  .proof-stack-testimonials-indicators {
+    @apply flex justify-center gap-2 mt-8;
   }
 
-  .proof-stack-case-study-text {
-    @apply flex flex-col justify-center;
+  .proof-stack-testimonials-indicator {
+    @apply w-2 h-2 rounded-full;
+    @apply bg-gray-300;
+    @apply transition-all;
+    @apply hover:bg-gray-400;
+    @apply cursor-pointer;
   }
 
-  .proof-stack-case-study-title {
-    @apply text-3xl font-bold text-gray-900 mb-2;
+  .proof-stack-container.section-active .proof-stack-testimonials-indicator {
+    @apply bg-gray-600 hover:bg-gray-500;
   }
 
-  .proof-stack-case-study-subtitle {
-    @apply text-lg text-gray-600 mb-8;
+  .proof-stack-testimonials-indicator-active {
+    @apply bg-primary-600 w-8;
   }
 
-  .proof-stack-case-study-stats {
-    @apply grid grid-cols-3 gap-4 mb-8;
+  .proof-stack-container.section-active .proof-stack-testimonials-indicator-active {
+    @apply bg-primary-500;
   }
 
-  .proof-stack-stat {
-    @apply text-center;
-  }
-
-  .proof-stack-stat-number {
-    @apply text-4xl font-bold text-blue-600 mb-1;
-  }
-
-  .proof-stack-stat-label {
-    @apply text-sm text-gray-600;
-  }
-
-  .proof-stack-case-study-cta {
-    @apply btn-outline inline-flex items-center self-start px-6;
-  }
-
-  .proof-stack-case-study-image {
-    @apply flex items-center justify-center bg-gray-100 rounded-lg;
-  }
-
-  .proof-stack-placeholder-image {
-    @apply text-center p-8;
-  }
-
-  .proof-stack-placeholder-icon {
-    @apply w-24 h-24 mx-auto mb-4 text-gray-400;
-  }
-
-  .proof-stack-placeholder-text {
-    @apply text-gray-500 text-sm;
-  }
 
   /* Tech Specs / Compatibility Strip Styles */
   .tech-specs-container {
