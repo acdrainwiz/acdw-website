@@ -27,7 +27,8 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
   WifiIcon,
-  CpuChipIcon
+  CpuChipIcon,
+  PhoneIcon
 } from '@heroicons/react/24/outline'
 
 export function ComboProductPage() {
@@ -334,12 +335,18 @@ export function ComboProductPage() {
               {/* CTAs */}
               <div className="combo-product-hero-ctas">
                 {/* Launch Button Redirect */}
+                {/* Mobile: Clickable phone button */}
                 <a
                   href={salesPhone}
-                  className="combo-product-cta-primary"
+                  className="combo-product-cta-primary md:hidden"
                 >
                   Call (561) 654-5237
                 </a>
+                {/* Desktop: Phone badge (non-clickable) */}
+                <div className="combo-product-phone-badge hidden md:flex">
+                  <PhoneIcon className="combo-product-phone-badge-icon" />
+                  (561) 654-5237
+                </div>
                 {/* Launch Button Redirect */}
                 <button
                   onClick={() => navigate('/contact?type=sales')}
@@ -503,12 +510,18 @@ export function ComboProductPage() {
           {/* CTA */}
           <div className="combo-product-section-cta">
             {/* Launch Button Redirect */}
+            {/* Mobile: Clickable phone button */}
             <a
               href={salesPhone}
-              className="combo-product-cta-primary"
+              className="combo-product-cta-primary md:hidden"
             >
               Call (561) 654-5237
             </a>
+            {/* Desktop: Phone badge (non-clickable) */}
+            <div className="combo-product-phone-badge hidden md:flex">
+              <PhoneIcon className="combo-product-phone-badge-icon" />
+              (561) 654-5237
+            </div>
             {/* Launch Button Redirect */}
             <button
               onClick={() => navigate('/contact?type=sales')}
@@ -549,12 +562,18 @@ export function ComboProductPage() {
           {/* CTA */}
           <div className="combo-product-section-cta">
             {/* Launch Button Redirect */}
+            {/* Mobile: Clickable phone button */}
             <a
               href={salesPhone}
-              className="combo-product-cta-primary"
+              className="combo-product-cta-primary md:hidden"
             >
               Call (561) 654-5237
             </a>
+            {/* Desktop: Phone badge (non-clickable) */}
+            <div className="combo-product-phone-badge hidden md:flex">
+              <PhoneIcon className="combo-product-phone-badge-icon" />
+              (561) 654-5237
+            </div>
             {/* Launch Button Redirect */}
             <button
               onClick={() => navigate('/contact?type=sales')}
@@ -750,12 +769,18 @@ export function ComboProductPage() {
           {/* CTAs */}
           <div className="combo-product-final-cta-buttons">
             {/* Launch Button Redirect */}
+            {/* Mobile: Clickable phone button */}
             <a
               href={salesPhone}
-              className="combo-product-cta-primary"
+              className="combo-product-cta-primary md:hidden"
             >
               Call (561) 654-5237
             </a>
+            {/* Desktop: Phone badge (non-clickable) */}
+            <div className="combo-product-phone-badge hidden md:flex">
+              <PhoneIcon className="combo-product-phone-badge-icon" />
+              (561) 654-5237
+            </div>
             {/* Launch Button Redirect */}
             <button
               onClick={() => navigate('/contact?type=sales')}

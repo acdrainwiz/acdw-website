@@ -12726,3 +12726,31 @@
 .mini-product-view-cart-primary .mini-product-view-cart-icon {
   @apply text-white;
 }
+
+/* ========================================
+   Phone Badge Styles (Desktop only)
+   ======================================== */
+
+/* Sensor Product Phone Badge */
+.sensor-product-phone-badge {
+  @apply inline-flex items-center gap-2;
+  @apply bg-gray-100 text-gray-700 font-semibold;
+  @apply rounded-lg px-6 py-3 border border-gray-300;
+  @apply cursor-default select-none;
+}
+
+.sensor-product-phone-badge-icon {
+  @apply w-5 h-5 text-gray-600;
+}
+
+/* Combo Product Phone Badge */
+.combo-product-phone-badge {
+  @apply inline-flex items-center gap-2;
+  @apply bg-white/10 text-white font-semibold;
+  @apply rounded-lg px-6 py-3 border border-white/30;
+  @apply cursor-default select-none backdrop-blur-sm;
+}
+
+.combo-product-phone-badge-icon {
+  @apply w-5 h-5 text-white/90;
+}
