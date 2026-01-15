@@ -15,12 +15,6 @@ import {
 export function PropertyManagerPage() {
   const navigate = useNavigate();
 
-  const handleRegisterAndDemo = () => {
-    // Navigate to signup with property manager role, then redirect to demo request
-    const redirectUrl = encodeURIComponent('/contact?type=demo-request');
-    navigate(`/auth/signup?role=PROPERTY_MANAGER&redirect=${redirectUrl}`);
-  };
-
   const handleContactSales = () => {
     navigate('/contact?type=sales');
   };
@@ -45,12 +39,13 @@ export function PropertyManagerPage() {
             </div>
 
             <div className="property-manager-hero-ctas">
-              <button 
-                onClick={handleRegisterAndDemo}
+              {/* Launch Button Redirect */}
+              <a 
+                href="tel:+15616545237"
                 className="property-manager-hero-cta-primary"
               >
-                Register & Request Demo
-              </button>
+                Call (561) 654-5237
+              </a>
               <button 
                 onClick={handleContactSales}
                 className="property-manager-hero-cta-secondary"
@@ -154,11 +149,12 @@ export function PropertyManagerPage() {
                   <span>Professional installation support</span>
                 </li>
               </ul>
+              {/* Launch Button Redirect */}
               <button 
-                onClick={handleRegisterAndDemo}
+                onClick={handleContactSales}
                 className="property-manager-solution-cta property-manager-solution-cta-secondary"
               >
-                Register & View Custom Pricing
+                Contact Sales
               </button>
             </div>
 
@@ -237,11 +233,12 @@ export function PropertyManagerPage() {
                   <span>No moving parts, reliable operation</span>
                 </li>
               </ul>
+              {/* Launch Button Redirect */}
               <button 
-                onClick={handleRegisterAndDemo}
+                onClick={handleContactSales}
                 className="property-manager-solution-cta property-manager-solution-cta-secondary"
               >
-                Register & View Custom Pricing
+                Contact Sales
               </button>
             </div>
 
@@ -351,11 +348,12 @@ export function PropertyManagerPage() {
                   <span>Priority installation and support</span>
                 </li>
               </ul>
+              {/* Launch Button Redirect */}
               <button 
-                onClick={handleRegisterAndDemo}
+                onClick={handleContactSales}
                 className="property-manager-solution-cta property-manager-solution-cta-primary"
               >
-                Register & Request Demo
+                Contact Sales
               </button>
             </div>
           </div>
@@ -458,7 +456,7 @@ export function PropertyManagerPage() {
               <div className="property-manager-step-number">1</div>
               <h3 className="property-manager-step-title">Contact Us</h3>
               <p className="property-manager-step-description">
-                Register and request a demo. Our team will assess your portfolio and provide a customized installation plan.
+                Contact us to assess your portfolio and provide a customized installation plan.
               </p>
             </div>
             <div className="property-manager-step">
@@ -487,12 +485,13 @@ export function PropertyManagerPage() {
             Join property managers nationwide who trust AC Drain Wiz to prevent costly water damage and reduce emergency maintenance calls.
           </p>
           <div className="property-manager-cta-buttons">
-            <button 
-              onClick={handleRegisterAndDemo}
+            {/* Launch Button Redirect */}
+            <a 
+              href="tel:+15616545237"
               className="property-manager-cta-button-primary"
             >
-              Register & Request Demo
-            </button>
+              Call (561) 654-5237
+            </a>
             <button 
               onClick={handleContactSales}
               className="property-manager-cta-button-secondary"

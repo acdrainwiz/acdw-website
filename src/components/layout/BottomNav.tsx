@@ -14,10 +14,13 @@ import {
   UserCircleIcon as UserCircleIconSolid
 } from '@heroicons/react/24/solid'
 import { useAuth } from '../../contexts/AuthContext'
+import { useCart } from '../../contexts/CartContext'
 
 export function BottomNav() {
   const location = useLocation()
   const { isAuthenticated } = useAuth()
+  const { getCartCount } = useCart()
+  const cartCount = getCartCount()
 
   // Check if a navigation item is active
   const isActive = (href: string) => {
@@ -58,7 +61,7 @@ export function BottomNav() {
     },
     {
       name: 'Cart',
-      href: '/checkout',
+      href: '/cart',
       icon: ShoppingCartIcon,
       iconSolid: ShoppingCartIconSolid,
     },
@@ -85,7 +88,12 @@ export function BottomNav() {
               aria-label={item.name}
               aria-current={active ? 'page' : undefined}
             >
-              <Icon className="bottom-nav-icon" aria-hidden="true" />
+              <div className="bottom-nav-icon-wrapper">
+                <Icon className="bottom-nav-icon" aria-hidden="true" />
+                {item.name === 'Cart' && cartCount > 0 && (
+                  <span className="bottom-nav-cart-badge">{cartCount}</span>
+                )}
+              </div>
               <span className="bottom-nav-label">{item.name}</span>
             </Link>
           )

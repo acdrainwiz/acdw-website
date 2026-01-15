@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
+import { CartProvider } from './contexts/CartContext'
 import { Header } from './components/layout/Header'
 import { Footer } from './components/layout/Footer'
 import { BottomNav } from './components/layout/BottomNav'
@@ -10,6 +11,7 @@ import { PropertyManagerPage } from './pages/PropertyManagerPage'
 import { PromoPage } from './pages/PromoPage'
 import { CustomerSelectionPage } from './pages/CustomerSelectionPage'
 import { ProductsPage } from './pages/ProductsPage'
+import { CartPage } from './pages/CartPage'
 import { ContactPage } from './pages/ContactPage'
 import { AboutPage } from './pages/AboutPage'
 import { SupportHubPage } from './pages/SupportHubPage'
@@ -58,6 +60,7 @@ function AppContent() {
               <Route path="/customer-selection" element={<CustomerSelectionPage />} />
                     <Route path="/products" element={<ProductsPage />} />
                     <Route path="/solutions" element={<ProductsPage />} />
+                    <Route path="/cart" element={<CartPage />} />
                     <Route path="/checkout" element={<CheckoutPage />} />
                     <Route path="/contact" element={<ContactPage />} />
                     <Route path="/about" element={<AboutPage />} />
@@ -100,10 +103,12 @@ function AppContent() {
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <ScrollToTop />
-        <AppContent />
-      </Router>
+      <CartProvider>
+        <Router>
+          <ScrollToTop />
+          <AppContent />
+        </Router>
+      </CartProvider>
     </AuthProvider>
   )
 }

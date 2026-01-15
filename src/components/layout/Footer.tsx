@@ -81,7 +81,8 @@ export function Footer() {
                 <li><Link to="/contact?type=sales" className="footer-link">Bulk Ordering</Link></li>
                 <li><Link to="/contact?type=sales" className="footer-link">Partner Program</Link></li>
                 <li><Link to="/contact?type=demo-request" className="footer-link">Request Demo</Link></li>
-                <li><Link to="/auth/signin" className="footer-link">Contractor Portal</Link></li>
+                {/* Launch Button Redirect */}
+                <li><Link to="/contact?type=sales" className="footer-link">Contractor Inquiries</Link></li>
                 <li><Link to="/compliance" className="footer-link">Compliance Resources</Link></li>
               </ul>
             </div>

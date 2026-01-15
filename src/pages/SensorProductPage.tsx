@@ -73,12 +73,13 @@ export function SensorProductPage() {
       benefits: [
         'Monitor all installations from one dashboard',
         '35% faster service calls with pre-visit diagnostics',
-        'Automated service scheduling triggers',
+        'Service scheduling prompts based on real-time alerts',
         'Customer and employee management tools',
         'Upsell opportunities identified automatically'
       ],
-      cta: 'Create Account for Pricing',
-      ctaLink: '/auth/signup?role=hvac_pro',
+      // Launch Button Redirect
+      cta: 'Contact Sales',
+      ctaLink: '/contact?type=sales',
       visual: 'contractor-dashboard'
     },
     {
@@ -157,7 +158,7 @@ export function SensorProductPage() {
     {
       icon: BellAlertIcon,
       title: 'Service Scheduling Triggers',
-      description: 'Automated notifications when maintenance is needed. Trending alerts for units approaching failure.'
+      description: 'Manual scheduling prompts when maintenance is needed. Trending alerts for units approaching failure.'
     },
     {
       icon: BoltIcon,
@@ -199,7 +200,7 @@ export function SensorProductPage() {
     {
       number: 4,
       title: 'Proactive Service',
-      description: 'Contractor receives maintenance alerts. Service calls created automatically. Faster, more efficient service delivery.',
+      description: 'Contractor receives maintenance alerts and creates service calls manually. Assign technicians to specific locations for faster, more controlled service delivery.',
       icon: ClockIcon
     }
   ]
@@ -232,7 +233,7 @@ export function SensorProductPage() {
     },
     {
       question: 'How do service calls work?',
-      answer: 'The system can automatically create service calls from alerts, or you can create them manually for scheduled maintenance. Assign calls to specific technicians and track progress through completion.'
+      answer: 'Service calls are not automated. Contractors create service calls manually in the dashboard and assign technicians to specific customer locations. This keeps you in full control of scheduling and ensures your team provides maintenance when and where it’s needed.'
     },
     {
       question: 'Do you offer bulk pricing?',
@@ -257,6 +258,9 @@ export function SensorProductPage() {
     { label: 'Installation Time', value: '15 minutes (with Mini)' },
     { label: 'Compliance', value: 'IMC 307.2.3' }
   ]
+
+  // Launch Button Redirect: pause pro/pm account creation during launch
+  const salesPhone = 'tel:+15616545237'
 
   return (
     <div className="sensor-product-page">
@@ -289,7 +293,7 @@ export function SensorProductPage() {
               </h1>
               <p className="sensor-product-hero-subtitle">
                 Real-time drain line monitoring with smart alerts, fleet management, and seamless integration. 
-                Professional installation required—connect with your local HVAC Pro or create an account for contractor pricing.
+                Professional installation required—contact us to connect with a local HVAC Pro or request contractor pricing.
               </p>
             </div>
 
@@ -301,19 +305,21 @@ export function SensorProductPage() {
                 {!isAuthenticated ? (
                   <div className="sensor-product-purchase-cta-section">
                     <p className="sensor-product-purchase-message">
-                      Contractor account required for pricing and purchase. Homeowners: Connect with a local HVAC professional for installation.
+                      Contractor pricing and purchase are available by request. Homeowners: Contact us and we'll connect you with a local HVAC professional for installation.
                     </p>
-                    <button
-                      onClick={() => navigate('/auth/signup?role=hvac_pro')}
+                    {/* Launch Button Redirect */}
+                    <a
+                      href={salesPhone}
                       className="sensor-product-purchase-button-primary"
                     >
-                      Create Account for Contractor Pricing
-                    </button>
+                      Call (561) 654-5237
+                    </a>
+                    {/* Launch Button Redirect */}
                     <button
-                      onClick={() => navigate('/contact?type=installer')}
+                      onClick={() => navigate('/contact?type=sales')}
                       className="sensor-product-purchase-button-secondary"
                     >
-                      Find a Local HVAC Pro
+                      Contact Sales
                     </button>
                   </div>
                 ) : isHomeowner ? (
@@ -321,12 +327,14 @@ export function SensorProductPage() {
                     <p className="sensor-product-purchase-message">
                       Sensor requires professional installation. Find a certified HVAC professional in your area.
                     </p>
-                    <button
-                      onClick={() => navigate('/contact?type=installer')}
+                    {/* Launch Button Redirect */}
+                    <a
+                      href={salesPhone}
                       className="sensor-product-purchase-button-primary"
                     >
-                      Find a Local HVAC Pro
-                    </button>
+                      Call (561) 654-5237
+                    </a>
+                    {/* Launch Button Redirect */}
                     <button
                       onClick={() => navigate('/contact?type=sales')}
                       className="sensor-product-purchase-button-secondary"
@@ -337,13 +345,21 @@ export function SensorProductPage() {
                 ) : isHVACPro ? (
                   <div className="sensor-product-purchase-cta-section">
                     <p className="sensor-product-purchase-message">
-                      Access bulk pricing, fleet management tools, and exclusive contractor features.
+                      Access bulk pricing, fleet management tools, and exclusive contractor features by request.
                     </p>
-                    <button
-                      onClick={() => navigate('/business/pro/catalog')}
+                    {/* Launch Button Redirect */}
+                    <a
+                      href={salesPhone}
                       className="sensor-product-purchase-button-primary"
                     >
-                      View Pro Catalog
+                      Call (561) 654-5237
+                    </a>
+                    {/* Launch Button Redirect */}
+                    <button
+                      onClick={() => navigate('/contact?type=sales')}
+                      className="sensor-product-purchase-button-secondary"
+                    >
+                      Contact Sales
                     </button>
                   </div>
                 ) : isPropertyManager ? (
@@ -351,11 +367,19 @@ export function SensorProductPage() {
                     <p className="sensor-product-purchase-message">
                       Bulk pricing available for multi-property deployments.
                     </p>
-                    <button
-                      onClick={() => navigate('/contact?type=sales')}
+                    {/* Launch Button Redirect */}
+                    <a
+                      href={salesPhone}
                       className="sensor-product-purchase-button-primary"
                     >
-                      Contact for Bulk Pricing
+                      Call (561) 654-5237
+                    </a>
+                    {/* Launch Button Redirect */}
+                    <button
+                      onClick={() => navigate('/contact?type=sales')}
+                      className="sensor-product-purchase-button-secondary"
+                    >
+                      Contact Sales
                     </button>
                   </div>
                 ) : null}
@@ -634,4 +658,5 @@ export function SensorProductPage() {
     </div>
   )
 }
+
 
