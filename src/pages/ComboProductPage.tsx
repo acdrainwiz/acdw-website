@@ -10,7 +10,8 @@
 
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
+// Launch Button Redirect: temporarily disabled during launch pause
+// import { useAuth } from '../contexts/AuthContext'
 import {
   ArrowLeftIcon,
   CheckIcon,
@@ -31,7 +32,8 @@ import {
 
 export function ComboProductPage() {
   const navigate = useNavigate()
-  const { user, isAuthenticated } = useAuth()
+  // Launch Button Redirect: temporarily removed useAuth during launch pause
+  // const { user, isAuthenticated } = useAuth()
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
   // Launch Button Redirect: pause pro/pm account creation during launch
