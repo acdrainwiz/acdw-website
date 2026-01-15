@@ -34,10 +34,9 @@ export function ComboProductPage() {
   const { user, isAuthenticated } = useAuth()
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
-  // Determine user type for CTAs
-  const isHVACPro = isAuthenticated && user?.role === 'hvac_pro'
-  const isPropertyManager = isAuthenticated && user?.role === 'property_manager'
   // Launch Button Redirect: pause pro/pm account creation during launch
+  // const isHVACPro = isAuthenticated && user?.role === 'hvac_pro'
+  // const isPropertyManager = isAuthenticated && user?.role === 'property_manager'
   const salesPhone = 'tel:+15616545237'
 
   // Comparison features

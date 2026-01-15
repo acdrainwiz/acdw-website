@@ -14,10 +14,7 @@ import {
   ShieldCheckIcon,
   IdentificationIcon,
   DocumentTextIcon,
-  HomeIcon,
-  WrenchScrewdriverIcon,
-  ChevronDownIcon,
-  ChevronRightIcon
+  HomeIcon
 } from '@heroicons/react/24/outline'
 import type { UserRole } from '../../types/auth'
 import { US_STATES } from '../../config/usStates'
