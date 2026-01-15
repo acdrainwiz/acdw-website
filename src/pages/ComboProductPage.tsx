@@ -37,6 +37,8 @@ export function ComboProductPage() {
   // Determine user type for CTAs
   const isHVACPro = isAuthenticated && user?.role === 'hvac_pro'
   const isPropertyManager = isAuthenticated && user?.role === 'property_manager'
+  // Launch Button Redirect: pause pro/pm account creation during launch
+  const salesPhone = 'tel:+15616545237'
 
   // Comparison features
   const comparisonFeatures = [
@@ -330,43 +332,20 @@ export function ComboProductPage() {
 
               {/* CTAs */}
               <div className="combo-product-hero-ctas">
-                {!isAuthenticated ? (
-                  <>
-                    <button
-                      onClick={() => navigate('/auth/signup?role=hvac_pro')}
-                      className="combo-product-cta-primary"
-                    >
-                      Create Account for Contractor Pricing
-                    </button>
-                    <button
-                      onClick={() => navigate('/auth/signin')}
-                      className="combo-product-cta-secondary"
-                    >
-                      Sign In to View Pricing
-                    </button>
-                  </>
-                ) : isHVACPro ? (
-                  <button
-                    onClick={() => navigate('/business/pro/catalog')}
-                    className="combo-product-cta-primary"
-                  >
-                    View Pro Catalog & Pricing
-                  </button>
-                ) : isPropertyManager ? (
-                  <button
-                    onClick={() => navigate('/contact?type=sales')}
-                    className="combo-product-cta-primary"
-                  >
-                    Contact for Property Manager Quote
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => navigate('/auth/signup?role=hvac_pro')}
-                    className="combo-product-cta-primary"
-                  >
-                    Create Contractor Account
-                  </button>
-                )}
+                {/* Launch Button Redirect */}
+                <a
+                  href={salesPhone}
+                  className="combo-product-cta-primary"
+                >
+                  Call (561) 654-5237
+                </a>
+                {/* Launch Button Redirect */}
+                <button
+                  onClick={() => navigate('/contact?type=sales')}
+                  className="combo-product-cta-secondary"
+                >
+                  Contact Sales
+                </button>
               </div>
             </div>
           </div>
@@ -522,11 +501,19 @@ export function ComboProductPage() {
 
           {/* CTA */}
           <div className="combo-product-section-cta">
-            <button
-              onClick={() => navigate(isHVACPro ? '/business/pro/catalog' : '/auth/signup?role=hvac_pro')}
+            {/* Launch Button Redirect */}
+            <a
+              href={salesPhone}
               className="combo-product-cta-primary"
             >
-              {isHVACPro ? 'View Pro Catalog & Pricing' : 'Create Account for Contractor Pricing'}
+              Call (561) 654-5237
+            </a>
+            {/* Launch Button Redirect */}
+            <button
+              onClick={() => navigate('/contact?type=sales')}
+              className="combo-product-cta-secondary"
+            >
+              Contact Sales
             </button>
           </div>
         </div>
@@ -560,11 +547,19 @@ export function ComboProductPage() {
 
           {/* CTA */}
           <div className="combo-product-section-cta">
-            <button
-              onClick={() => navigate('/contact?type=sales')}
+            {/* Launch Button Redirect */}
+            <a
+              href={salesPhone}
               className="combo-product-cta-primary"
             >
-              Contact for Property Manager Quote
+              Call (561) 654-5237
+            </a>
+            {/* Launch Button Redirect */}
+            <button
+              onClick={() => navigate('/contact?type=sales')}
+              className="combo-product-cta-secondary"
+            >
+              Contact Sales
             </button>
           </div>
         </div>
@@ -753,49 +748,20 @@ export function ComboProductPage() {
           
           {/* CTAs */}
           <div className="combo-product-final-cta-buttons">
-            {!isAuthenticated ? (
-              <>
-                <button
-                  onClick={() => navigate('/auth/signup?role=hvac_pro')}
-                  className="combo-product-cta-primary"
-                >
-                  Create Account for Contractor Pricing
-                </button>
-                <button
-                  onClick={() => navigate('/contact?type=sales')}
-                  className="combo-product-cta-secondary"
-                >
-                  Contact for Property Manager Quote
-                </button>
-                <button
-                  onClick={() => navigate('/auth/signin')}
-                  className="combo-product-cta-tertiary"
-                >
-                  Already have an account? Sign In
-                </button>
-              </>
-            ) : isHVACPro ? (
-              <button
-                onClick={() => navigate('/business/pro/catalog')}
-                className="combo-product-cta-primary"
-              >
-                View Pro Catalog & Pricing
-              </button>
-            ) : isPropertyManager ? (
-              <button
-                onClick={() => navigate('/contact?type=sales')}
-                className="combo-product-cta-primary"
-              >
-                Contact for Property Manager Quote
-              </button>
-            ) : (
-              <button
-                onClick={() => navigate('/auth/signup?role=hvac_pro')}
-                className="combo-product-cta-primary"
-              >
-                Create Contractor Account
-              </button>
-            )}
+            {/* Launch Button Redirect */}
+            <a
+              href={salesPhone}
+              className="combo-product-cta-primary"
+            >
+              Call (561) 654-5237
+            </a>
+            {/* Launch Button Redirect */}
+            <button
+              onClick={() => navigate('/contact?type=sales')}
+              className="combo-product-cta-secondary"
+            >
+              Contact Sales
+            </button>
           </div>
 
           {/* Trust Indicators */}
@@ -822,4 +788,5 @@ export function ComboProductPage() {
     </div>
   )
 }
+
 

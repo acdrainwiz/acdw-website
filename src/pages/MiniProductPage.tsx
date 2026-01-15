@@ -9,10 +9,10 @@
  * - Stripe checkout integration
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { StripeCheckout } from '../components/checkout/StripeCheckout'
+import { useCart } from '../contexts/CartContext'
 import {
   CheckIcon,
   ShieldCheckIcon,
@@ -25,14 +25,17 @@ import {
   PlayIcon,
   StarIcon,
   ChevronLeftIcon,
-  ChevronRightIcon
+  ChevronRightIcon,
+  ShoppingCartIcon
 } from '@heroicons/react/24/outline'
 
 export function MiniProductPage() {
   const navigate = useNavigate()
   const { user, isAuthenticated } = useAuth()
+  const { addItem, items, getCartCount } = useCart()
   const [quantity, setQuantity] = useState(1)
-  const [checkoutError, setCheckoutError] = useState<string | null>(null)
+  const [showAddedMessage, setShowAddedMessage] = useState(false)
+  const [cartError, setCartError] = useState<string | null>(null)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
 
@@ -205,22 +208,96 @@ export function MiniProductPage() {
     },
     {
       question: 'Do you offer bulk pricing?',
-      answer: 'Yes! We offer bulk pricing for contractors and property managers. If you\'re an HVAC professional, sign in to access contractor pricing. For property managers or large orders, please contact our sales team for custom pricing.'
+      // Launch Button Redirect
+      answer: 'Yes! We offer bulk pricing for contractors and property managers. Contact our sales team for contractor and property manager pricing.'
     },
     {
       question: 'How long does shipping take?',
-      answer: 'Shipping times vary by location, but most orders ship within 1-2 business days. We offer free shipping on orders over $50. You\'ll receive a tracking number once your order ships.'
+      answer: 'Most orders ship within 1–2 business days. Transit time varies by location and carrier. You\'ll receive a tracking number as soon as your order ships.'
     }
   ]
 
   const price = 99.99
   const totalPrice = price * quantity
 
-  const handleQuantityChange = (newQuantity: number) => {
-    if (newQuantity >= 1 && newQuantity <= 10) {
-      setQuantity(newQuantity)
-      setCheckoutError(null)
+  // Calculate how many Mini units are already in cart (memoized to prevent initialization errors)
+  const currentMiniInCart = useMemo(() => {
+    return items
+      .filter(item => item.productId === 'mini')
+      .reduce((total, item) => total + item.quantity, 0)
+  }, [items])
+
+  // Calculate max quantity user can add (10 total limit)
+  const maxAvailable = useMemo(() => {
+    return Math.max(0, 10 - currentMiniInCart)
+  }, [currentMiniInCart])
+  
+  // Is cart already at max?
+  const cartAtMax = useMemo(() => {
+    return currentMiniInCart >= 10
+  }, [currentMiniInCart])
+
+  // Adjust quantity when cart changes to respect max available
+  useEffect(() => {
+    if (maxAvailable > 0 && quantity > maxAvailable) {
+      setQuantity(Math.min(quantity, maxAvailable))
     }
+    if (cartAtMax && quantity > 0) {
+      setQuantity(0)
+    }
+  }, [maxAvailable, cartAtMax, quantity])
+
+  const handleQuantityChange = (newQuantity: number) => {
+    // Limit to available quantity
+    const limitedQuantity = Math.min(newQuantity, maxAvailable)
+    if (limitedQuantity >= 1 && limitedQuantity <= maxAvailable) {
+      setQuantity(limitedQuantity)
+    }
+  }
+
+  const handleAddToCart = () => {
+    // This should never happen due to button being disabled, but double-check
+    if (cartAtMax) {
+      setCartError('You already have the maximum (10) AC Drain Wiz Mini units in your cart.')
+      setTimeout(() => setCartError(null), 5000)
+      return
+    }
+
+    // Check if adding this quantity would exceed the max
+    const newTotal = currentMiniInCart + quantity
+    
+    if (newTotal > 10) {
+      setCartError(
+        `You can only add ${maxAvailable} more unit${maxAvailable === 1 ? '' : 's'}. Maximum 10 AC Drain Wiz Mini units per order.`
+      )
+      setTimeout(() => setCartError(null), 5000)
+      return
+    }
+
+    // Clear any previous errors
+    setCartError(null)
+
+    // Add to cart
+    addItem({
+      id: `mini-${Date.now()}`, // Unique ID for each cart item
+      productId: 'mini',
+      name: 'AC Drain Wiz Mini',
+      price: price,
+      quantity: quantity,
+      image: '/images/acdw-mini-hero1-background.png',
+      maxQuantity: 10
+    })
+
+    // Show success message
+    setShowAddedMessage(true)
+    
+    // Hide message after 3 seconds
+    setTimeout(() => {
+      setShowAddedMessage(false)
+    }, 3000)
+
+    // Reset quantity to 1
+    setQuantity(1)
   }
 
   return (
@@ -282,12 +359,17 @@ export function MiniProductPage() {
                   <div className="mini-product-quantity-section-inline">
                     <label className="mini-product-quantity-label">
                       Quantity
+                      {currentMiniInCart > 0 && (
+                        <span className="mini-product-quantity-hint">
+                          ({currentMiniInCart} in cart, {maxAvailable} available)
+                        </span>
+                      )}
                     </label>
                     <div className="mini-product-quantity-controls">
                       <button
                         type="button"
                         onClick={() => handleQuantityChange(quantity - 1)}
-                        disabled={quantity <= 1}
+                        disabled={quantity <= 1 || cartAtMax}
                         className="mini-product-quantity-button"
                         aria-label="Decrease quantity"
                       >
@@ -296,20 +378,22 @@ export function MiniProductPage() {
                       <input
                         type="number"
                         min="1"
-                        max="10"
-                        value={quantity}
+                        max={maxAvailable}
+                        value={cartAtMax ? 0 : quantity}
                         onChange={(e) => {
                           const val = parseInt(e.target.value) || 1
-                          handleQuantityChange(Math.max(1, Math.min(10, val)))
+                          handleQuantityChange(Math.max(1, Math.min(maxAvailable, val)))
                         }}
                         className="mini-product-quantity-input"
+                        disabled={cartAtMax}
                       />
                       <button
                         type="button"
                         onClick={() => handleQuantityChange(quantity + 1)}
-                        disabled={quantity >= 10}
+                        disabled={quantity >= maxAvailable || cartAtMax}
                         className="mini-product-quantity-button"
                         aria-label="Increase quantity"
+                        title={cartAtMax ? 'Cart limit reached (10 units max)' : quantity >= maxAvailable ? `Only ${maxAvailable} available` : ''}
                       >
                         +
                       </button>
@@ -321,80 +405,83 @@ export function MiniProductPage() {
                 <div className="mini-product-purchase-row-2">
                   {/* Checkout Button with Total */}
                   <div className="mini-product-checkout-section-inline">
-                  {!isAuthenticated ? (
-                    <div className="mini-product-checkout-guest-prompt">
-                      {checkoutError && (
-                        <div className="mini-product-checkout-error">
-                          <p>{checkoutError}</p>
+                  {!isAuthenticated || user?.role === 'homeowner' ? (
+                    <div className="mini-product-checkout-section">
+                      {/* Success Message */}
+                      {showAddedMessage && (
+                        <div className="mini-product-added-message">
+                          <CheckIcon className="mini-product-added-icon" />
+                          <span>Added to cart!</span>
                         </div>
                       )}
-                      <div className="mini-product-buy-button-wrapper">
-                        <StripeCheckout
-                          product="mini"
-                          quantity={quantity}
-                          onError={setCheckoutError}
-                          buttonText="Buy Now - Guest Checkout"
-                          className="mini-product-buy-button-with-total mini-product-buy-button-guest"
-                          allowGuestCheckout={true}
-                        />
-                        <div className="mini-product-buy-button-total-overlay">
-                          <span className="mini-product-buy-button-total-label">Total:</span>
-                          <span className="mini-product-buy-button-total-value">${totalPrice.toFixed(2)}</span>
+
+                      {/* Cart Limit Message */}
+                      {cartAtMax && (
+                        <div className="mini-product-cart-limit-message">
+                          <CheckIcon className="mini-product-cart-limit-icon" />
+                          <span>You have the maximum (10) AC Drain Wiz Mini units in your cart.</span>
                         </div>
-                      </div>
-                      <p className="mini-product-checkout-guest-help">
+                      )}
+
+                      {/* Error Message */}
+                      {cartError && !cartAtMax && (
+                        <div className="mini-product-cart-error">
+                          <span>{cartError}</span>
+                        </div>
+                      )}
+
+                      {/* Add to Cart Button */}
+                      <button
+                        onClick={handleAddToCart}
+                        disabled={cartAtMax}
+                        className="mini-product-add-to-cart-button"
+                        title={cartAtMax ? 'Cart limit reached - maximum 10 units' : ''}
+                      >
+                        <ShoppingCartIcon className="mini-product-cart-icon" />
+                        {cartAtMax ? 'Cart Limit Reached' : 'Add to Cart'}
+                        {!cartAtMax && (
+                          <span className="mini-product-add-to-cart-total">
+                            ${totalPrice.toFixed(2)}
+                          </span>
+                        )}
+                      </button>
+
+                      {/* View Cart Link */}
+                      {getCartCount() > 0 && (
                         <button
-                          onClick={() => {
-                            const redirectUrl = `/products/mini${quantity > 1 ? `?qty=${quantity}` : ''}`
-                            navigate(`/auth/signup?redirect=${encodeURIComponent(redirectUrl)}`)
-                          }}
-                          className="mini-product-checkout-guest-link"
+                          onClick={() => navigate('/cart')}
+                          className={cartAtMax ? 'mini-product-view-cart-primary' : 'mini-product-view-cart-link'}
                         >
-                          Create an account
+                          <ShoppingCartIcon className="mini-product-view-cart-icon" />
+                          View Cart ({getCartCount()} {getCartCount() === 1 ? 'item' : 'items'})
                         </button>
-                        {' '}for faster checkout and order tracking
-                      </p>
-                    </div>
-                  ) : user?.role === 'homeowner' ? (
-                    <>
-                      {checkoutError && (
-                        <div className="mini-product-checkout-error">
-                          <p>{checkoutError}</p>
-                        </div>
                       )}
-                      <div className="mini-product-buy-button-wrapper">
-                        <StripeCheckout
-                          product="mini"
-                          quantity={quantity}
-                          onError={setCheckoutError}
-                          buttonText="Buy Now"
-                          className="mini-product-buy-button-with-total"
-                          allowGuestCheckout={true}
-                        />
-                        <div className="mini-product-buy-button-total-overlay">
-                          <span className="mini-product-buy-button-total-label">Total:</span>
-                          <span className="mini-product-buy-button-total-value">${totalPrice.toFixed(2)}</span>
-                        </div>
-                      </div>
-                    </>
+
+                      {!isAuthenticated && (
+                        <p className="mini-product-checkout-guest-help">
+                          <button
+                            onClick={() => navigate('/auth/signin')}
+                            className="mini-product-checkout-guest-link"
+                          >
+                            Sign in
+                          </button>
+                          {' '}for faster checkout and order tracking
+                        </p>
+                      )}
+                    </div>
                   ) : (
                     <div className="mini-product-checkout-role-message">
                       <p>
                         {user?.role === 'hvac_pro' 
-                          ? 'Visit your catalog for bulk pricing'
+                          ? 'Contact us for contractor pricing'
                           : 'Contact us for pricing options'}
                       </p>
+                      {/* Launch Button Redirect */}
                       <button
-                        onClick={() => {
-                          if (user?.role === 'hvac_pro') {
-                            navigate('/business/pro/catalog')
-                          } else {
-                            navigate('/contact?type=sales')
-                          }
-                        }}
+                        onClick={() => navigate('/contact?type=sales')}
                         className="mini-product-checkout-role-button"
                       >
-                        {user?.role === 'hvac_pro' ? 'View Pro Catalog' : 'Contact Sales'}
+                        Contact Sales
                       </button>
                     </div>
                   )}
@@ -409,7 +496,7 @@ export function MiniProductPage() {
                   </div>
                   <div className="mini-product-trust-badge">
                     <CheckIcon className="mini-product-trust-icon" />
-                    <span>Free Shipping $50+</span>
+                    <span>Fast Shipping</span>
                   </div>
                   <div className="mini-product-trust-badge">
                     <SparklesIcon className="mini-product-trust-icon" />

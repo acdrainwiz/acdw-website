@@ -19,9 +19,12 @@ import {
   UserGroupIcon,
   RocketLaunchIcon,
   DocumentTextIcon,
-  CreditCardIcon
+  CreditCardIcon,
+  BellIcon,
+  ShieldCheckIcon
 } from '@heroicons/react/24/outline'
 import { useAuth } from '../../contexts/AuthContext'
+import { useCart } from '../../contexts/CartContext'
 
 const baseNavigation = [
   { name: 'Products', href: '/products' },
@@ -65,6 +68,8 @@ export function Header() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchFocused, setSearchFocused] = useState(false)
   const { user, logout, isAuthenticated } = useAuth()
+  const { getCartCount } = useCart()
+  const cartCount = getCartCount()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -151,22 +156,29 @@ export function Header() {
           {/* Right side actions */}
           <div className="header-actions-section">
             {/* Cart - visible on all screen sizes */}
-            <button className="header-cart-button">
+            <button 
+              className="header-cart-button"
+              onClick={() => navigate('/cart')}
+              aria-label={`Shopping cart with ${cartCount} items`}
+            >
               <ShoppingCartIcon className="header-cart-icon" />
+              {cartCount > 0 && (
+                <span className="header-cart-badge">{cartCount}</span>
+              )}
             </button>
             
-            {/* User menu - Desktop only */}
-            {isAuthenticated ? (
-              <div className="header-user-menu-container">
-                <button
-                  onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="header-user-menu-button"
-                >
-                  <UserCircleIcon className="header-user-icon" />
-                  <span className="header-user-name">{user?.name}</span>
-                </button>
-                
-                {userMenuOpen && (
+            {/* User menu / auth icon */}
+            <div className="header-user-menu-container">
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="header-user-menu-button header-user-icon-button"
+              >
+                <UserCircleIcon className="header-user-icon" />
+                {isAuthenticated && <span className="header-user-name">{user?.name}</span>}
+              </button>
+
+              {userMenuOpen && (
+                isAuthenticated ? (
                   <div className="header-user-dropdown">
                     <Link
                       to="/dashboard"
@@ -192,24 +204,83 @@ export function Header() {
                       Sign Out
                     </button>
                   </div>
-                )}
-              </div>
-            ) : (
-              <div className="header-auth-buttons">
-                <Link
-                  to="/auth/signin"
-                  className="header-signin-link"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/auth/signup"
-                  className="header-signup-button"
-                >
-                  Sign Up
-                </Link>
-              </div>
-            )}
+                ) : (
+                  <>
+                    {/* Backdrop */}
+                    <div 
+                      className="header-guest-menu-backdrop"
+                      onClick={() => setUserMenuOpen(false)}
+                    />
+                    
+                    <div className="header-guest-menu" role="menu">
+                      {/* Header with close button */}
+                      <div className="header-guest-menu-header">
+                        <h3 className="header-guest-menu-title">AC Drain Wiz Account</h3>
+                        <button
+                          onClick={() => setUserMenuOpen(false)}
+                          className="header-guest-menu-close"
+                          aria-label="Close menu"
+                        >
+                          <XMarkIcon className="h-6 w-6" />
+                        </button>
+                      </div>
+
+                      {/* Centered content wrapper */}
+                      <div className="header-guest-menu-content">
+                        {/* Logo */}
+                        <div className="header-guest-menu-logo">
+                          <img src="/images/ac-drain-wiz-logo.png" alt="AC Drain Wiz" className="header-guest-menu-logo-img" />
+                        </div>
+
+                        {/* Main heading */}
+                        <h2 className="header-guest-menu-heading">
+                          Access Your Account
+                        </h2>
+
+                        {/* Subheading */}
+                        <p className="header-guest-menu-subheading">
+                          With an AC Drain Wiz account, you can
+                        </p>
+
+                        {/* Benefits list */}
+                        <div className="header-guest-menu-benefits">
+                          <div className="header-guest-menu-benefit-item">
+                            <ShoppingBagIcon className="header-guest-menu-benefit-icon" />
+                            <span>Order AC Drain Wiz Mini online</span>
+                          </div>
+                          <div className="header-guest-menu-benefit-item">
+                            <BellIcon className="header-guest-menu-benefit-icon" />
+                            <span>Track your orders and shipments</span>
+                          </div>
+                          <div className="header-guest-menu-benefit-item">
+                            <ShieldCheckIcon className="header-guest-menu-benefit-icon" />
+                            <span>Access support and warranty information</span>
+                          </div>
+                        </div>
+
+                        {/* Primary CTA */}
+                        <Link
+                          to="/auth/signin"
+                          className="header-guest-menu-cta-primary"
+                          onClick={() => setUserMenuOpen(false)}
+                        >
+                          Sign in or create account
+                        </Link>
+
+                        {/* Secondary link */}
+                        <Link
+                          to="/contact?type=sales"
+                          className="header-guest-menu-cta-secondary"
+                          onClick={() => setUserMenuOpen(false)}
+                        >
+                          Contact sales for contractor pricing
+                        </Link>
+                      </div>
+                    </div>
+                  </>
+                )
+              )}
+            </div>
 
             {/* Mobile menu button */}
             <button

@@ -61,8 +61,9 @@ export function ProductsPage() {
       installationTime: '15 minutes',
       size: '2" × 3" × 1.5"',
       pricing: {
-        msrp: 'Pricing available on sign in',
-        contractor: 'Sign in for pricing',
+        // Launch Button Redirect
+        msrp: 'Contact us for pricing',
+        contractor: 'Contact us for pricing',
         'property-manager': 'Contact for pricing'
       },
       compliance: ['IMC 307.2.3']
@@ -86,8 +87,9 @@ export function ProductsPage() {
       installationTime: '45 minutes total',
       size: '5" × 3" × 2" (Mini) + Sensor',
       pricing: {
-        msrp: 'Pricing available on sign in',
-        contractor: 'Sign in for pricing',
+        // Launch Button Redirect
+        msrp: 'Contact us for pricing',
+        contractor: 'Contact us for pricing',
         'property-manager': 'Contact for pricing'
       },
       compliance: ['IMC 307.2.5', 'IMC 307.2.2', 'IMC 307.2.1.1', 'IMC 307.2.3']
@@ -167,7 +169,8 @@ export function ProductsPage() {
     },
     {
       question: "Can homeowners purchase the Sensor?",
-      answer: "The Sensor is available through authorized HVAC contractors only. If you're interested in Sensor installation, use our contractor finder to locate a certified installer in your area. Contractors can purchase Sensor directly or sign in for contractor pricing."
+      // Launch Button Redirect
+      answer: "The Sensor is available through authorized HVAC contractors only. If you're interested in Sensor installation, contact us and we'll connect you with a local HVAC professional. Contractors can contact us for pricing and purchasing details."
     },
     {
       question: "What's the difference between Mini and Sensor?",
@@ -187,7 +190,8 @@ export function ProductsPage() {
     },
     {
       question: "Do you offer professional contractor pricing?",
-      answer: "Yes! HVAC professionals and contractors qualify for special bulk pricing and support. Contractors can view retail pricing or sign in for contractor pricing. Sign in to view contractor pricing or contact us at (561) 654-5237."
+      // Launch Button Redirect
+      answer: "Yes! HVAC professionals and contractors qualify for special bulk pricing and support. Contact us at (561) 654-5237 or use our contact form to request contractor pricing."
     },
     {
       question: "Is AC Drain Wiz approved by building inspectors and code officials?",

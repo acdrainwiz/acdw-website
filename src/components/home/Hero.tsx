@@ -160,7 +160,8 @@ export function Hero() {
     },
     {
       question: "Can homeowners purchase the Sensor?",
-      answer: "The Sensor is available through authorized HVAC contractors only. If you're interested in Sensor installation, use our contractor finder to locate a certified installer in your area. Contractors can purchase Sensor directly or sign in for contractor pricing."
+      // Launch Button Redirect
+      answer: "The Sensor is available through authorized HVAC contractors only. If you're interested in Sensor installation, contact us and we'll connect you with a local HVAC professional. Contractors can contact us for pricing and purchasing details."
     },
     {
       question: "Do I need both Mini and Sensor, or can I use them separately?",
@@ -176,7 +177,8 @@ export function Hero() {
     },
     {
       question: "Do you offer professional contractor pricing?",
-      answer: "Yes! HVAC professionals and contractors qualify for special bulk pricing and support. Contractors can view retail pricing or sign in for contractor pricing. Sign in to view contractor pricing or contact us at (561) 654-5237."
+      // Launch Button Redirect
+      answer: "Yes! HVAC professionals and contractors qualify for special bulk pricing and support. Contact us at (561) 654-5237 or use our contact form to request contractor pricing."
     },
     {
       question: "Is AC Drain Wiz approved by building inspectors and code officials?",
@@ -312,19 +314,20 @@ export function Hero() {
           <div className="product-showcase-card-ctas">
             {isContractor ? (
               <>
-                {/* Signed-in contractors see contractor pricing and can buy */}
+                {/* Launch Button Redirect */}
                 <button 
                   onClick={() => navigate('/products/sensor')}
                   className="product-showcase-card-cta-primary"
                 >
                   Learn More
                 </button>
-                <button 
-                  onClick={() => navigate('/products?product=sensor&action=buy')}
+                {/* Launch Button Redirect */}
+                <a 
+                  href="tel:+15616545237"
                   className="product-showcase-card-cta-secondary"
                 >
-                  View Contractor Pricing
-                </button>
+                  Call (561) 654-5237
+                </a>
               </>
             ) : (
               <>
@@ -372,19 +375,20 @@ export function Hero() {
           <div className="product-showcase-card-ctas">
             {isContractor ? (
               <>
-                {/* Signed-in contractors can view complete system details */}
+                {/* Launch Button Redirect */}
                 <button 
                   onClick={() => navigate('/products/combo')}
                   className="product-showcase-card-cta-primary"
                 >
                   View Complete System
                 </button>
-                <button 
-                  onClick={() => navigate('/products?product=mini&product=sensor&action=buy')}
+                {/* Launch Button Redirect */}
+                <a 
+                  href="tel:+15616545237"
                   className="product-showcase-card-cta-secondary"
                 >
-                  View Contractor Pricing
-                </button>
+                  Call (561) 654-5237
+                </a>
               </>
             ) : (
               <>
@@ -589,8 +593,10 @@ export function Hero() {
                 <tr>
                   <td className="product-comparison-td sticky left-0 bg-white">Price (MSRP)</td>
                   <td className="product-comparison-td font-bold text-lg">$99.99</td>
-                  <td className="product-comparison-td text-sm text-gray-600 italic">Pricing available on sign in</td>
-                  <td className="product-comparison-td text-sm text-gray-600 italic">Pricing available on sign in</td>
+                  {/* Launch Button Redirect */}
+                  <td className="product-comparison-td text-sm text-gray-600 italic">Contact us for pricing</td>
+                  {/* Launch Button Redirect */}
+                  <td className="product-comparison-td text-sm text-gray-600 italic">Contact us for pricing</td>
                 </tr>
                 <tr>
                   <td className="product-comparison-td sticky left-0 bg-white">Monitoring</td>
@@ -660,7 +666,8 @@ export function Hero() {
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between"><span className="font-medium">Status:</span> <span className="text-green-600">Available Now</span></div>
-                <div className="flex justify-between"><span className="font-medium">Price:</span> <span className="text-gray-600 italic">Pricing available on sign in</span></div>
+                {/* Launch Button Redirect */}
+                <div className="flex justify-between"><span className="font-medium">Price:</span> <span className="text-gray-600 italic">Contact us for pricing</span></div>
                 <div className="flex justify-between"><span className="font-medium">Size:</span> <span>2" × 3" × 1.5"</span></div>
                 <div className="flex justify-between"><span className="font-medium">Best For:</span> <span className="text-right">Early warning</span></div>
               </div>
@@ -679,7 +686,8 @@ export function Hero() {
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between"><span className="font-medium">Status:</span> <span className="text-green-600">Available Now</span></div>
-                <div className="flex justify-between"><span className="font-medium">Price:</span> <span className="text-gray-600 italic text-xs">Pricing available on sign in</span></div>
+                {/* Launch Button Redirect */}
+                <div className="flex justify-between"><span className="font-medium">Price:</span> <span className="text-gray-600 italic text-xs">Contact us for pricing</span></div>
                 <div className="flex justify-between"><span className="font-medium">Size:</span> <span>5" × 3" × 2" + Sensor</span></div>
                 <div className="flex justify-between"><span className="font-medium">Best For:</span> <span className="text-right">Maximum protection</span></div>
               </div>
@@ -1003,21 +1011,14 @@ export function Hero() {
               </p>
             </div>
             <div className="cta-band-buttons">
+              {/* Launch Button Redirect */}
               <button onClick={() => navigate('/contact?type=sales')} className="cta-band-btn-primary">
                 Schedule Sales Call
               </button>
-              <button 
-                onClick={() => {
-                  if (isContractor) {
-                    navigate('/business/pro/catalog')
-                  } else {
-                    navigate('/auth/signin', { state: { from: { pathname: '/business/pro/catalog' } } })
-                  }
-                }} 
-                className="cta-band-btn-secondary"
-              >
-                View Contractor Portal
-              </button>
+              {/* Launch Button Redirect */}
+              <a href="tel:+15616545237" className="cta-band-btn-secondary">
+                Call (561) 654-5237
+              </a>
             </div>
           </div>
         </div>

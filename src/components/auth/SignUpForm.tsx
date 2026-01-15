@@ -42,11 +42,11 @@ export function SignUpForm() {
   
   // Get role and redirect from URL parameters
   const searchParams = new URLSearchParams(location.search)
-  const roleParam = searchParams.get('role') as UserRole | null
   const emailParam = searchParams.get('email')
   const redirectParam = searchParams.get('redirect') || '/dashboard'
   
-  const initialRole = (roleParam || 'homeowner') as UserRole
+  // Launch Button Redirect: lock account type to homeowner during launch pause
+  const initialRole = 'homeowner' as UserRole
   
   const [formData, setFormData] = useState({
     name: '',
@@ -70,8 +70,6 @@ export function SignUpForm() {
   const [pendingVerification, setPendingVerification] = useState(false)
   const [verificationCode, setVerificationCode] = useState('')
   const [passwordStrength, setPasswordStrength] = useState<PasswordStrength>({ score: 0, feedback: '', color: '' })
-  // Track which account type card is expanded (accordion state) - default to initial role
-  const [expandedCard, setExpandedCard] = useState<UserRole>(initialRole)
 
   // Role descriptions and benefits
   const roleInfo: Record<UserRole, { title: string; description: string; benefits: string[] }> = {
@@ -485,18 +483,11 @@ export function SignUpForm() {
                 <label className="signup-account-type-label">
                   Account Type <span className="text-red-500">*</span>
                 </label>
+                {/* Launch Button Redirect: homeowner-only account type during launch pause */}
                 <div className="signup-account-type-accordion">
-                  {/* Homeowner Card */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setExpandedCard('homeowner')
-                      setFormData({ ...formData, role: 'homeowner' })
-                      setFieldErrors({ ...fieldErrors, role: '' })
-                    }}
-                    className={`signup-account-type-accordion-item ${
-                      expandedCard === 'homeowner' ? 'signup-account-type-accordion-expanded' : ''
-                    } ${formData.role === 'homeowner' ? 'signup-account-type-accordion-selected' : ''}`}
+                  <div
+                    className={`signup-account-type-accordion-item signup-account-type-accordion-expanded signup-account-type-accordion-selected`}
+                    aria-disabled="true"
                   >
                     <div className="signup-account-type-accordion-header">
                       <div className="signup-account-type-accordion-left">
@@ -506,102 +497,15 @@ export function SignUpForm() {
                         <h3 className="signup-account-type-accordion-title">Homeowner</h3>
                       </div>
                       <div className="signup-account-type-accordion-right">
-                        {formData.role === 'homeowner' && (
-                          <CheckCircleIcon className="signup-account-type-accordion-checkmark" />
-                        )}
-                        {expandedCard === 'homeowner' ? (
-                          <ChevronDownIcon className="signup-account-type-accordion-chevron" />
-                        ) : (
-                          <ChevronRightIcon className="signup-account-type-accordion-chevron" />
-                        )}
+                        <CheckCircleIcon className="signup-account-type-accordion-checkmark" />
                       </div>
                     </div>
-                    {expandedCard === 'homeowner' && (
-                      <div className="signup-account-type-accordion-content">
-                        <p className="signup-account-type-accordion-description">
-                          Perfect for protecting your home
-                        </p>
-                      </div>
-                    )}
-                  </button>
-
-                  {/* HVAC Pro Card */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setExpandedCard('hvac_pro')
-                      setFormData({ ...formData, role: 'hvac_pro' })
-                      setFieldErrors({ ...fieldErrors, role: '' })
-                    }}
-                    className={`signup-account-type-accordion-item ${
-                      expandedCard === 'hvac_pro' ? 'signup-account-type-accordion-expanded' : ''
-                    } ${formData.role === 'hvac_pro' ? 'signup-account-type-accordion-selected' : ''}`}
-                  >
-                    <div className="signup-account-type-accordion-header">
-                      <div className="signup-account-type-accordion-left">
-                        <div className="signup-account-type-icon-wrapper signup-account-type-icon-hvac">
-                          <WrenchScrewdriverIcon className="signup-account-type-icon" />
-                        </div>
-                        <h3 className="signup-account-type-accordion-title">HVAC Professional</h3>
-                      </div>
-                      <div className="signup-account-type-accordion-right">
-                        {formData.role === 'hvac_pro' && (
-                          <CheckCircleIcon className="signup-account-type-accordion-checkmark" />
-                        )}
-                        {expandedCard === 'hvac_pro' ? (
-                          <ChevronDownIcon className="signup-account-type-accordion-chevron" />
-                        ) : (
-                          <ChevronRightIcon className="signup-account-type-accordion-chevron" />
-                        )}
-                      </div>
+                    <div className="signup-account-type-accordion-content">
+                      <p className="signup-account-type-accordion-description">
+                        Perfect for protecting your home
+                      </p>
                     </div>
-                    {expandedCard === 'hvac_pro' && (
-                      <div className="signup-account-type-accordion-content">
-                        <p className="signup-account-type-accordion-description">
-                          Contractor pricing and bulk ordering
-                        </p>
-                      </div>
-                    )}
-                  </button>
-
-                  {/* Property Manager Card */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setExpandedCard('property_manager')
-                      setFormData({ ...formData, role: 'property_manager' })
-                      setFieldErrors({ ...fieldErrors, role: '' })
-                    }}
-                    className={`signup-account-type-accordion-item ${
-                      expandedCard === 'property_manager' ? 'signup-account-type-accordion-expanded' : ''
-                    } ${formData.role === 'property_manager' ? 'signup-account-type-accordion-selected' : ''}`}
-                  >
-                    <div className="signup-account-type-accordion-header">
-                      <div className="signup-account-type-accordion-left">
-                        <div className="signup-account-type-icon-wrapper signup-account-type-icon-property-manager">
-                          <BuildingOfficeIcon className="signup-account-type-icon" />
-                        </div>
-                        <h3 className="signup-account-type-accordion-title">Property Manager</h3>
-                      </div>
-                      <div className="signup-account-type-accordion-right">
-                        {formData.role === 'property_manager' && (
-                          <CheckCircleIcon className="signup-account-type-accordion-checkmark" />
-                        )}
-                        {expandedCard === 'property_manager' ? (
-                          <ChevronDownIcon className="signup-account-type-accordion-chevron" />
-                        ) : (
-                          <ChevronRightIcon className="signup-account-type-accordion-chevron" />
-                        )}
-                      </div>
-                    </div>
-                    {expandedCard === 'property_manager' && (
-                      <div className="signup-account-type-accordion-content">
-                        <p className="signup-account-type-accordion-description">
-                          Special pricing for property management
-                        </p>
-                      </div>
-                    )}
-                  </button>
+                  </div>
                 </div>
                 {fieldErrors.role && (
                   <p className="field-error-message">{fieldErrors.role}</p>
