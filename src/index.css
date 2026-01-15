@@ -12734,46 +12734,49 @@
 
 /* Sensor Product Phone Badge */
 .sensor-product-phone-badge {
-  @apply inline-flex items-center justify-center gap-2;
-  @apply bg-gray-50 text-gray-600 font-medium;
-  @apply rounded-md px-4 py-2 border border-gray-200;
+  @apply flex items-center justify-center gap-2;
+  @apply w-full py-3 px-6; /* Match Contact Sales button sizing */
+  @apply bg-gradient-to-r from-blue-50 to-indigo-50;
+  @apply text-gray-800 font-semibold;
+  @apply rounded-lg border-2 border-blue-200;
   @apply cursor-default select-none;
-  @apply mx-auto; /* Center horizontally */
-  @apply text-sm;
+  @apply text-base; /* Match button text size */
+  @apply shadow-sm;
   /* Force hide on mobile */
   display: none !important;
 }
 
 @media (min-width: 768px) {
   .sensor-product-phone-badge {
-    display: inline-flex !important;
+    display: flex !important;
   }
 }
 
 .sensor-product-phone-badge-icon {
-  @apply w-4 h-4 text-gray-500;
+  @apply w-5 h-5 text-blue-600;
 }
 
 /* Combo Product Phone Badge */
 .combo-product-phone-badge {
-  @apply inline-flex items-center justify-center gap-2;
-  @apply bg-white/5 text-white/80 font-medium;
-  @apply rounded-md px-4 py-2 border border-white/20;
+  @apply flex items-center justify-center gap-2;
+  @apply px-8 py-4; /* Match combo CTA button sizing */
+  @apply bg-white/10 text-white font-semibold;
+  @apply rounded-lg border-2 border-white/30;
   @apply cursor-default select-none backdrop-blur-sm;
-  @apply mx-auto; /* Center horizontally */
-  @apply text-sm;
+  @apply text-base;
+  @apply shadow-lg;
   /* Force hide on mobile */
   display: none !important;
 }
 
 @media (min-width: 768px) {
   .combo-product-phone-badge {
-    display: inline-flex !important;
+    display: flex !important;
   }
 }
 
 .combo-product-phone-badge-icon {
-  @apply w-4 h-4 text-white/70;
+  @apply w-5 h-5 text-white;
 }
 
 /* Responsive Phone CTA Display Rules */
