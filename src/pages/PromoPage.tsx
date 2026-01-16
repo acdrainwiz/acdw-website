@@ -347,7 +347,7 @@ export function PromoPage() {
                 <li>✓ Made in USA</li>
               </ul>
               <button 
-                onClick={() => navigate('/products?product=mini')}
+                onClick={() => navigate('/products/mini')}
                 className="promo-product-cta"
               >
                 Learn More

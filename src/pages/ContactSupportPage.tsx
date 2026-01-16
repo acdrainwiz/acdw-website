@@ -48,8 +48,8 @@ export function ContactSupportPage() {
                 <PhoneIcon className="support-contact-icon" />
                 <h3 className="support-contact-title">Phone Support</h3>
                 <p className="support-contact-details">Monday - Friday, 8 AM - 5 PM EST</p>
-                <a href="tel:+15616545237" className="support-contact-link">
-                  (561) 654-5237
+                <a href="tel:+12342237246" className="support-contact-link">
+                  (234) AC DRAIN
                 </a>
               </div>
 

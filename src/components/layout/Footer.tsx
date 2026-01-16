@@ -40,10 +40,9 @@ export function Footer() {
               </h3>
               <ul className="footer-link-list">
                 <li><Link to="/products" className="footer-link">All Products</Link></li>
-                <li><Link to="/products?product=mini" className="footer-link">AC Drain Wiz Mini</Link></li>
-                <li><Link to="/products?product=sensor" className="footer-link">AC Drain Wiz Sensor</Link></li>
-                <li><Link to="/products?product=mini&product=sensor" className="footer-link">Mini + Sensor</Link></li>
-                <li><Link to="/homeowner" className="footer-link">For Homeowners</Link></li>
+                <li><Link to="/products/mini" className="footer-link">AC Drain Wiz Mini</Link></li>
+                <li><Link to="/products/sensor" className="footer-link">AC Drain Wiz Sensor</Link></li>
+                <li><Link to="/products/combo" className="footer-link">Mini + Sensor Combo</Link></li>
               </ul>
             </div>
 
@@ -69,6 +68,19 @@ export function Footer() {
                 <li><Link to="/support/installation-scenarios" className="footer-link">Recommended Installation Scenarios</Link></li>
                 <li><Link to="/sensor-setup" className="footer-link">Sensor Setup Guide</Link></li>
                 <li><a href="https://monitor.acdrainwiz.com/login" className="footer-link" target="_blank" rel="noopener noreferrer">Sensor Monitoring</a></li>
+              </ul>
+            </div>
+
+            {/* Customer Experiences */}
+            <div className="footer-section">
+              <h3 className="footer-section-title">
+                Customer Experiences
+              </h3>
+              <ul className="footer-link-list">
+                <li><Link to="/homeowner" className="footer-link">For Homeowners</Link></li>
+                <li><Link to="/hvac-pros" className="footer-link">For HVAC Pros</Link></li>
+                <li><Link to="/property-managers" className="footer-link">For Property Managers</Link></li>
+                <li><Link to="/code-officials" className="footer-link">For Code Officials</Link></li>
               </ul>
             </div>
 
@@ -111,7 +123,7 @@ export function Footer() {
             </div>
             <div className="footer-contact-item">
               <PhoneIcon className="footer-contact-icon" />
-              <span>1-800-AC-DRAIN</span>
+              <span>(234) AC DRAIN</span>
             </div>
             <div className="footer-contact-item">
               <MapPinIcon className="footer-contact-icon" />

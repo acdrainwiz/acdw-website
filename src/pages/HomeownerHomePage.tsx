@@ -10,12 +10,60 @@ import {
   BuildingOfficeIcon,
   CurrencyDollarIcon,
   WrenchIcon,
-  LockClosedIcon
+  LockClosedIcon,
+  StarIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon
 } from '@heroicons/react/24/outline';
 
 export function HomeownerHomePage() {
   const navigate = useNavigate();
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+
+  // Testimonials from acdrainwiz.bwpsites.com
+  const testimonials = [
+    {
+      name: 'Joey',
+      role: 'AC Technician',
+      text: 'I love the AC DRAIN WIZ! After installing it and using it in one of my customers homes and seeing how much sludge came out after I did my service the normal way I was shocked! I would recommend the AC DRAIN to every homeowner out there!',
+      rating: 5,
+      image: '/images/testimonials/joey-testimonial.jpg'
+    },
+    {
+      name: 'Charles C.',
+      role: 'Homeowner',
+      text: 'I highly recommend AC Drain Wiz. It is such an amazing product. I\'m surprised no one thought of it before. Thank you, AC Drain Wiz. It is comforting not to have sleepless, hot nights anymore.',
+      rating: 5,
+      image: '/images/testimonials/charles-testimonial.jpg'
+    },
+    {
+      name: 'Jaclyn S.',
+      role: 'Homeowner',
+      text: 'The AC DRAIN WIZ is an amazing addition to my AC unit and has completely changed the unit which was becoming backed up almost every 3 months! The AC DRAIN WIZ really transformed the unit and it\'s now functioning better than ever! I\'m no longer looking forward to the summer in stifling south Florida with dread knowing that this device will allow prompt and effective resolution to any issue! Great product!!!',
+      rating: 5,
+      image: '/images/testimonials/jaclyn-s-testimonial.jpg'
+    },
+    {
+      name: 'Jeff B.',
+      role: 'FL General Contractor & Homeowner',
+      text: 'I have a newer home that we have been living in for about 10 years. The only issue we have ever experienced has been a recurring problem with the condensate line backing up. I had no way of vacuuming it out without taking apart a big section of the pvc, and I never would dare to try to flush it out with a water hose. Now, with AC Drain Wiz, I can quickly and easily hook up a hose and flush out the whole line. It has been great to be able to do this as preventative maintenance, rather than waiting for the AC to stop running and having a big mess and headache. AC Drain Wiz is an easy, affordable necessity. As a contractor, I plan on using it on all my projects.',
+      rating: 5,
+      image: '/images/testimonials/jeff-b-testimonial.jpg'
+    }
+  ];
+
+  const handleTestimonialNext = () => {
+    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const handleTestimonialPrev = () => {
+    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
+  const handleTestimonialSelect = (index: number) => {
+    setCurrentTestimonial(index);
+  };
 
   return (
     <div className="homeowner-page">
@@ -317,46 +365,87 @@ export function HomeownerHomePage() {
         </div>
       </div>
 
-      {/* Social Proof */}
-      <div className="homeowner-testimonials-container">
-        <h2 className="homeowner-testimonials-title">What Homeowners Say</h2>
-        <p className="homeowner-testimonials-subtitle">Join 10,000+ protected homes across America</p>
-        
-        <div className="homeowner-testimonials-grid">
-          <div className="homeowner-testimonial-card">
-            <div className="homeowner-testimonial-stars">★★★★★</div>
-            <p className="homeowner-testimonial-text">
-              "After $8,000 in water damage from a clogged AC drain, I installed the AC Drain Wiz. Installation took me 45 minutes and I've had zero issues in 2 years. Best $50 I ever spent!"
-            </p>
-            <div className="homeowner-testimonial-author">
-              <strong>Michael Rodriguez</strong>
-              <span>Homeowner in Florida</span>
-            </div>
-          </div>
+      {/* Social Proof - Testimonials Carousel */}
+      <section className="mini-product-testimonials">
+        <div className="mini-product-testimonials-content">
+          <h2 className="mini-product-section-title">What Homeowners Say</h2>
+          <p className="homeowner-testimonials-subtitle">Join 10,000+ protected homes across America</p>
           
-          <div className="homeowner-testimonial-card">
-            <div className="homeowner-testimonial-stars">★★★★★</div>
-            <p className="homeowner-testimonial-text">
-              "Installation was incredibly easy. I'm not handy at all, but the instructions were clear and the video helped. My husband was impressed! No more algae buildup in our drain line."
-            </p>
-            <div className="homeowner-testimonial-author">
-              <strong>Sarah Thompson</strong>
-              <span>Homeowner in Texas</span>
+          {/* Testimonial Carousel */}
+          <div className="mini-product-testimonials-carousel">
+            <div className="mini-product-testimonials-carousel-container">
+              {/* Previous Button */}
+              <button
+                onClick={handleTestimonialPrev}
+                className="mini-product-testimonials-nav-button mini-product-testimonials-nav-button-prev"
+                aria-label="Previous testimonial"
+              >
+                <ChevronLeftIcon className="mini-product-testimonials-nav-icon" />
+              </button>
+
+              {/* Testimonial Card */}
+              <div className="mini-product-testimonials-carousel-card-wrapper">
+                {testimonials.map((testimonial, index) => (
+                  <div
+                    key={index}
+                    className={`mini-product-testimonial-card ${
+                      index === currentTestimonial ? 'mini-product-testimonial-card-active' : 'mini-product-testimonial-card-hidden'
+                    }`}
+                  >
+                    <div className="mini-product-testimonial-image-wrapper">
+                      <img
+                        src={testimonial.image}
+                        alt={`${testimonial.name}, ${testimonial.role}`}
+                        className="mini-product-testimonial-image"
+                        onError={(e) => {
+                          // Fallback to placeholder if image doesn't exist
+                          const target = e.target as HTMLImageElement;
+                          target.src = '/images/testimonials/placeholder.jpg';
+                        }}
+                      />
+                    </div>
+                    <div className="mini-product-testimonial-content">
+                      <div className="mini-product-testimonial-rating">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <StarIcon key={i} className="mini-product-testimonial-star" />
+                        ))}
+                      </div>
+                      <p className="mini-product-testimonial-text">"{testimonial.text}"</p>
+                      <div className="mini-product-testimonial-author">
+                        <span className="mini-product-testimonial-name">{testimonial.name}</span>
+                        <span className="mini-product-testimonial-role">{testimonial.role}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Next Button */}
+              <button
+                onClick={handleTestimonialNext}
+                className="mini-product-testimonials-nav-button mini-product-testimonials-nav-button-next"
+                aria-label="Next testimonial"
+              >
+                <ChevronRightIcon className="mini-product-testimonials-nav-icon" />
+              </button>
             </div>
-          </div>
-          
-          <div className="homeowner-testimonial-card">
-            <div className="homeowner-testimonial-stars">★★★★★</div>
-            <p className="homeowner-testimonial-text">
-              "My HVAC tech recommended this after I had a callback. Said it would save me from expensive drain cleaning calls. He was right - 3 years and counting with no issues. Wish I'd known about this sooner!"
-            </p>
-            <div className="homeowner-testimonial-author">
-              <strong>David Wilson</strong>
-              <span>Homeowner in Arizona</span>
+
+            {/* Carousel Indicators */}
+            <div className="mini-product-testimonials-indicators">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleTestimonialSelect(index)}
+                  className={`mini-product-testimonials-indicator ${
+                    index === currentTestimonial ? 'mini-product-testimonials-indicator-active' : ''
+                  }`}
+                  aria-label={`Go to testimonial ${index + 1}`}
+                />
+              ))}
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* FAQ Section */}
       <div className="homeowner-faq-container">

@@ -113,11 +113,11 @@ export function ProductSupportPage() {
             </p>
             <div className="support-action-buttons">
               <a 
-                href="tel:+15616545237" 
+                href="tel:+12342237246" 
                 className="support-action-button-primary"
               >
                 <PhoneIcon className="support-action-icon" />
-                Call (561) 654-5237
+                Call (234) AC DRAIN
               </a>
               <Link
                 to="/support/contact"

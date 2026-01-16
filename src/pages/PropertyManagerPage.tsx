@@ -41,10 +41,10 @@ export function PropertyManagerPage() {
             <div className="property-manager-hero-ctas">
               {/* Launch Button Redirect */}
               <a 
-                href="tel:+15616545237"
+                href="tel:+12342237246"
                 className="property-manager-hero-cta-primary"
               >
-                Call (561) 654-5237
+                Call (234) AC DRAIN
               </a>
               <button 
                 onClick={handleContactSales}
@@ -487,10 +487,10 @@ export function PropertyManagerPage() {
           <div className="property-manager-cta-buttons">
             {/* Launch Button Redirect */}
             <a 
-              href="tel:+15616545237"
+              href="tel:+12342237246"
               className="property-manager-cta-button-primary"
             >
-              Call (561) 654-5237
+              Call (234) AC DRAIN
             </a>
             <button 
               onClick={handleContactSales}

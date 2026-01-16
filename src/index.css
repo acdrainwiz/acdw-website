@@ -948,7 +948,7 @@
   }
 
   .customer-type-card {
-    @apply card cursor-pointer transition-all duration-200 hover:shadow-lg hover:border-primary-300;
+    @apply card cursor-pointer transition-all duration-200 hover:shadow-lg hover:border-primary-300 flex flex-col;
   }
 
   .customer-type-card-header {
@@ -1000,7 +1000,7 @@
   }
 
   .customer-type-cta-button {
-    @apply w-full;
+    @apply w-full mt-auto;
   }
 
   .customer-type-cta-primary {
@@ -4635,6 +4635,104 @@
 
 .homeowner-benefit-description {
   @apply text-gray-600 leading-relaxed;
+}
+
+/* Products Section */
+.homeowner-products-container {
+  @apply py-20;
+}
+
+.homeowner-products-content {
+  @apply container mx-auto px-6;
+}
+
+.homeowner-products-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto;
+}
+
+.homeowner-products-title {
+  @apply text-4xl font-bold text-gray-900 text-center mb-4;
+}
+
+.homeowner-products-subtitle {
+  @apply text-xl text-gray-600 text-center mb-12 max-w-2xl mx-auto;
+}
+
+.homeowner-products-grid .homeowner-product-card {
+  @apply bg-white rounded-xl shadow-lg overflow-hidden;
+  display: flex !important;
+  flex-direction: column !important;
+  /* Override: In products grid context, cards are flex columns, not grid containers */
+  max-width: 100% !important;
+  padding: 0 !important;
+  gap: 0 !important;
+}
+
+.homeowner-product-card-featured {
+  @apply border-2 border-primary-500 relative;
+}
+
+.homeowner-product-badge {
+  @apply absolute top-4 right-4 bg-primary-600 text-white px-3 py-1 rounded-full text-sm font-semibold z-10;
+}
+
+.homeowner-product-image-wrapper {
+  @apply bg-gray-50 p-8 flex items-center justify-center;
+  min-height: 250px;
+}
+
+.homeowner-product-image-wrapper .homeowner-product-image,
+.homeowner-products-grid .homeowner-product-image {
+  @apply max-w-full h-auto;
+  max-height: 300px;
+}
+
+.homeowner-product-name {
+  @apply text-2xl font-bold text-gray-900 mb-2 px-6 pt-6;
+}
+
+.homeowner-product-price {
+  @apply text-lg text-gray-600 mb-4 px-6;
+}
+
+.homeowner-product-features {
+  @apply space-y-3 mb-6 px-6 flex-grow;
+}
+
+.homeowner-product-feature-icon {
+  @apply h-5 w-5 text-green-500 mr-2 flex-shrink-0 inline-block;
+}
+
+.homeowner-product-cta {
+  @apply w-full py-3 bg-primary-600 text-white font-semibold text-lg rounded-lg hover:bg-primary-700 transition-colors mb-6;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Customer-Specific Product Cards */
+.hvac-products-grid .hvac-product-card,
+.property-manager-products-grid .property-manager-product-card,
+.code-official-products-grid .code-official-product-card {
+  @apply bg-white rounded-xl shadow-lg overflow-hidden flex flex-col;
+  max-width: 100% !important;
+  padding: 0 !important;
+  gap: 0 !important;
+}
+
+.hvac-product-card-featured,
+.property-manager-product-card-featured,
+.code-official-product-card-featured {
+  @apply border-2 border-primary-500 relative;
+}
+
+.hvac-product-cta,
+.property-manager-product-cta,
+.code-official-product-cta {
+  @apply py-3 bg-primary-600 text-white font-semibold text-lg rounded-lg hover:bg-primary-700 transition-colors;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: calc(100% - 3rem);
 }
 
 /* Testimonials Section */
@@ -11775,7 +11873,8 @@
 }
 
 .combo-product-section-cta {
-  @apply mt-12 text-center;
+  @apply mt-12 flex flex-col items-center gap-4;
+  @apply max-w-md mx-auto; /* Constrain width for better centering */
 }
 
 /* Why Combo Section */
@@ -12284,11 +12383,11 @@
 
 /* CTA Buttons */
 .combo-product-cta-primary {
-  @apply px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
+  @apply w-full sm:w-auto px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
 }
 
 .combo-product-cta-secondary {
-  @apply px-8 py-4 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-all border-2 border-white/20;
+  @apply w-full sm:w-auto px-8 py-4 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-all border-2 border-white/20;
 }
 
 .combo-product-cta-tertiary {
@@ -12725,4 +12824,108 @@
 /* Primary View Cart Button (when cart is full) */
 .mini-product-view-cart-primary .mini-product-view-cart-icon {
   @apply text-white;
+}
+
+/* ========================================
+   Phone Badge Styles (Desktop only)
+   Non-interactive, informational display
+   ======================================== */
+
+/* Sensor Product Phone Badge */
+.sensor-product-phone-badge {
+  @apply flex items-center justify-center gap-2;
+  @apply w-full py-3 px-6; /* Match Contact Sales button sizing */
+  @apply bg-gradient-to-r from-blue-50 to-indigo-50;
+  @apply text-gray-800 font-semibold;
+  @apply rounded-lg border-2 border-blue-200;
+  @apply cursor-default select-none;
+  @apply text-base; /* Match button text size */
+  @apply shadow-sm;
+  /* Force hide on mobile */
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  .sensor-product-phone-badge {
+    display: flex !important;
+  }
+}
+
+.sensor-product-phone-badge-icon {
+  @apply w-5 h-5 text-blue-600;
+}
+
+/* Combo Product Phone Badge */
+.combo-product-phone-badge {
+  @apply flex items-center justify-center gap-2;
+  @apply w-full px-8 py-4; /* Full width to match buttons */
+  @apply bg-white/10 text-white font-semibold;
+  @apply rounded-lg border-2 border-white/30;
+  @apply cursor-default select-none backdrop-blur-sm;
+  @apply text-base;
+  @apply shadow-lg;
+  /* Force hide on mobile */
+  display: none !important;
+}
+
+/* Light background variant for combo phone badge */
+.combo-product-contractors .combo-product-phone-badge,
+.combo-product-property-managers .combo-product-phone-badge {
+  @apply bg-gradient-to-r from-blue-50 to-indigo-50;
+  @apply text-gray-800 border-blue-200;
+  backdrop-filter: none;
+}
+
+.combo-product-contractors .combo-product-phone-badge-icon,
+.combo-product-property-managers .combo-product-phone-badge-icon {
+  @apply text-blue-600;
+}
+
+@media (min-width: 768px) {
+  .combo-product-phone-badge {
+    display: flex !important;
+  }
+}
+
+@media (min-width: 640px) {
+  .combo-product-phone-badge {
+    width: auto; /* Auto width on larger screens */
+  }
+}
+
+.combo-product-phone-badge-icon {
+  @apply w-5 h-5 text-white;
+}
+
+/* Responsive Phone CTA Display Rules */
+/* Hide clickable phone buttons on desktop (md and up) */
+@media (min-width: 768px) {
+  .sensor-product-purchase-button-primary.md\:hidden,
+  .combo-product-cta-primary.md\:hidden {
+    display: none !important;
+  }
+}
+
+/* Hide phone badges on mobile (below md) */
+@media (max-width: 767px) {
+  .sensor-product-phone-badge,
+  .combo-product-phone-badge {
+    display: none !important;
+  }
+}
+
+/* Phone Badge Text Layout (Vanity + Numeric Display) */
+.sensor-product-phone-badge-text,
+.combo-product-phone-badge-text {
+  @apply flex flex-col items-center;
+}
+
+.sensor-product-phone-vanity,
+.combo-product-phone-vanity {
+  @apply font-semibold text-base leading-tight;
+}
+
+.sensor-product-phone-numeric,
+.combo-product-phone-numeric {
+  @apply text-sm opacity-75 mt-0.5;
 }

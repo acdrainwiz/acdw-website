@@ -3,8 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { IMaskInput } from 'react-imask'
 import { DayPicker } from 'react-day-picker'
 import { 
-  EnvelopeIcon, 
-  PhoneIcon, 
   BuildingOfficeIcon,
   QuestionMarkCircleIcon,
   ShoppingCartIcon,
@@ -12,6 +10,10 @@ import {
   PresentationChartLineIcon,
   XMarkIcon
 } from '@heroicons/react/24/outline'
+import {
+  EnvelopeIcon,
+  PhoneIcon
+} from '@heroicons/react/24/solid'
 import { validateEmail } from '../utils/emailValidation'
 import { useRecaptcha } from '../hooks/useRecaptcha'
 
@@ -1652,11 +1654,11 @@ export function ContactPage() {
                           <span>ariddle@acdrainwiz.com</span>
                         </a>
                         <a 
-                          href="tel:+15616545237" 
+                          href="tel:+12342237246" 
                           className="contact-leadership-link"
                         >
                           <PhoneIcon className="contact-leadership-link-icon" />
-                          <span>(561) 654-5237</span>
+                          <span>(234) AC DRAIN</span>
                         </a>
                       </div>
                     </div>
@@ -1668,8 +1670,8 @@ export function ContactPage() {
                   <h3 className="contact-quick-info-title">Quick Contact</h3>
                   <div className="contact-quick-info-list">
                     <p><strong>Email:</strong> info@acdrainwiz.com</p>
-                    <p><strong>Phone:</strong> 1-800-AC-DRAIN</p>
-                    <p><strong>Hours:</strong> Mon-Fri, 8 AM - 5 PM EST</p>
+                    <p><strong>Phone:</strong> (234) AC DRAIN</p>
+                    <p><strong>Hours:</strong> Mon-Fri, 9:00 AM - 5:00 PM EST</p>
                   </div>
                 </div>
               </div>

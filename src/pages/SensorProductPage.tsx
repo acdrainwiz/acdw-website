@@ -35,7 +35,8 @@ import {
   EyeIcon,
   ClipboardDocumentListIcon,
   Cog6ToothIcon,
-  PlayIcon
+  PlayIcon,
+  PhoneIcon
 } from '@heroicons/react/24/outline'
 
 export function SensorProductPage() {
@@ -260,7 +261,7 @@ export function SensorProductPage() {
   ]
 
   // Launch Button Redirect: pause pro/pm account creation during launch
-  const salesPhone = 'tel:+15616545237'
+  const salesPhone = 'tel:+12342237246'
 
   return (
     <div className="sensor-product-page">
@@ -308,12 +309,21 @@ export function SensorProductPage() {
                       Contractor pricing and purchase are available by request. Homeowners: Contact us and we'll connect you with a local HVAC professional for installation.
                     </p>
                     {/* Launch Button Redirect */}
+                    {/* Mobile: Clickable phone button */}
                     <a
                       href={salesPhone}
-                      className="sensor-product-purchase-button-primary"
+                      className="sensor-product-purchase-button-primary md:hidden"
                     >
-                      Call (561) 654-5237
+                      Call (234) AC DRAIN
                     </a>
+                    {/* Desktop: Phone badge (non-clickable) */}
+                    <div className="sensor-product-phone-badge hidden md:flex">
+                      <PhoneIcon className="sensor-product-phone-badge-icon" />
+                      <div className="sensor-product-phone-badge-text">
+                        <div className="sensor-product-phone-vanity">(234) AC DRAIN</div>
+                        <div className="sensor-product-phone-numeric">(234) 223-7246</div>
+                      </div>
+                    </div>
                     {/* Launch Button Redirect */}
                     <button
                       onClick={() => navigate('/contact?type=sales')}
@@ -328,12 +338,21 @@ export function SensorProductPage() {
                       Sensor requires professional installation. Find a certified HVAC professional in your area.
                     </p>
                     {/* Launch Button Redirect */}
+                    {/* Mobile: Clickable phone button */}
                     <a
                       href={salesPhone}
-                      className="sensor-product-purchase-button-primary"
+                      className="sensor-product-purchase-button-primary md:hidden"
                     >
-                      Call (561) 654-5237
+                      Call (234) AC DRAIN
                     </a>
+                    {/* Desktop: Phone badge (non-clickable) */}
+                    <div className="sensor-product-phone-badge hidden md:flex">
+                      <PhoneIcon className="sensor-product-phone-badge-icon" />
+                      <div className="sensor-product-phone-badge-text">
+                        <div className="sensor-product-phone-vanity">(234) AC DRAIN</div>
+                        <div className="sensor-product-phone-numeric">(234) 223-7246</div>
+                      </div>
+                    </div>
                     {/* Launch Button Redirect */}
                     <button
                       onClick={() => navigate('/contact?type=sales')}
@@ -348,12 +367,21 @@ export function SensorProductPage() {
                       Access bulk pricing, fleet management tools, and exclusive contractor features by request.
                     </p>
                     {/* Launch Button Redirect */}
+                    {/* Mobile: Clickable phone button */}
                     <a
                       href={salesPhone}
-                      className="sensor-product-purchase-button-primary"
+                      className="sensor-product-purchase-button-primary md:hidden"
                     >
-                      Call (561) 654-5237
+                      Call (234) AC DRAIN
                     </a>
+                    {/* Desktop: Phone badge (non-clickable) */}
+                    <div className="sensor-product-phone-badge hidden md:flex">
+                      <PhoneIcon className="sensor-product-phone-badge-icon" />
+                      <div className="sensor-product-phone-badge-text">
+                        <div className="sensor-product-phone-vanity">(234) AC DRAIN</div>
+                        <div className="sensor-product-phone-numeric">(234) 223-7246</div>
+                      </div>
+                    </div>
                     {/* Launch Button Redirect */}
                     <button
                       onClick={() => navigate('/contact?type=sales')}
@@ -368,12 +396,21 @@ export function SensorProductPage() {
                       Bulk pricing available for multi-property deployments.
                     </p>
                     {/* Launch Button Redirect */}
+                    {/* Mobile: Clickable phone button */}
                     <a
                       href={salesPhone}
-                      className="sensor-product-purchase-button-primary"
+                      className="sensor-product-purchase-button-primary md:hidden"
                     >
-                      Call (561) 654-5237
+                      Call (234) AC DRAIN
                     </a>
+                    {/* Desktop: Phone badge (non-clickable) */}
+                    <div className="sensor-product-phone-badge hidden md:flex">
+                      <PhoneIcon className="sensor-product-phone-badge-icon" />
+                      <div className="sensor-product-phone-badge-text">
+                        <div className="sensor-product-phone-vanity">(234) AC DRAIN</div>
+                        <div className="sensor-product-phone-numeric">(234) 223-7246</div>
+                      </div>
+                    </div>
                     {/* Launch Button Redirect */}
                     <button
                       onClick={() => navigate('/contact?type=sales')}

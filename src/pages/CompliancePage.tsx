@@ -196,10 +196,13 @@ export function CompliancePage() {
                 <ArrowRightIcon className="compliance-contact-icon" />
               </Link>
               <a
-                href="tel:+15616545237"
+                href="tel:+12342237246"
                 className="compliance-contact-button-secondary"
               >
-                Call (561) 654-5237
+                <div>
+                  <div>Call (234) AC DRAIN</div>
+                  <div style={{ fontSize: '0.875rem', opacity: 0.75, marginTop: '0.25rem' }}>(234) 223-7246</div>
+                </div>
               </a>
             </div>
           </div>

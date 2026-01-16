@@ -336,7 +336,7 @@ export function PrivacyPolicyPage() {
               </p>
               <div className="space-y-2 text-gray-700">
                 <p><strong>Email:</strong> <a href="mailto:privacy@acdrainwiz.com" className="text-primary-600 hover:text-primary-700 underline">privacy@acdrainwiz.com</a></p>
-                <p><strong>Phone:</strong> <a href="tel:+15616545237" className="text-primary-600 hover:text-primary-700 underline">(561) 654-5237</a></p>
+                <p><strong>Phone:</strong> <a href="tel:+12342237246" className="text-primary-600 hover:text-primary-700 underline">(234) AC DRAIN</a></p>
                 <p><strong>Mail:</strong> AC Drain Wiz Privacy Team<br />
                 [Address to be provided]</p>
               </div>
