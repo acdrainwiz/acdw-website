@@ -7,6 +7,9 @@ import { BottomNav } from './components/layout/BottomNav'
 import { ScrollToTop } from './components/layout/ScrollToTop'
 import { HomePage } from './pages/HomePage'
 import { HomeownerHomePage } from './pages/HomeownerHomePage'
+import { HVACProsPage } from './pages/HVACProsPage'
+import { PropertyManagersPage } from './pages/PropertyManagersPage'
+import { CodeOfficialsPage } from './pages/CodeOfficialsPage'
 import { PropertyManagerPage } from './pages/PropertyManagerPage'
 import { PromoPage } from './pages/PromoPage'
 import { CustomerSelectionPage } from './pages/CustomerSelectionPage'
@@ -55,6 +58,9 @@ function AppContent() {
         <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/homeowner" element={<HomeownerHomePage />} />
+              <Route path="/hvac-pros" element={<HVACProsPage />} />
+              <Route path="/property-managers" element={<PropertyManagersPage />} />
+              <Route path="/code-officials" element={<CodeOfficialsPage />} />
               <Route path="/property-manager" element={<PropertyManagerPage />} />
               <Route path="/promo" element={<PromoPage />} />
               <Route path="/customer-selection" element={<CustomerSelectionPage />} />

@@ -96,14 +96,13 @@ export function CustomerTypeSelector() {
         navigate('/homeowner')
         break
       case 'hvac-professional':
-        // Launch Button Redirect: pause pro account flow during launch
-        navigate('/contact?type=sales')
+        navigate('/hvac-pros')
         break
       case 'property-manager':
-        navigate('/property-manager')
+        navigate('/property-managers')
         break
       case 'city-official':
-        navigate('/contact?type=demo-request')
+        navigate('/code-officials')
         break
     }
   }

@@ -72,6 +72,19 @@ export function Footer() {
               </ul>
             </div>
 
+            {/* Customer Experiences */}
+            <div className="footer-section">
+              <h3 className="footer-section-title">
+                Customer Experiences
+              </h3>
+              <ul className="footer-link-list">
+                <li><Link to="/homeowner" className="footer-link">For Homeowners</Link></li>
+                <li><Link to="/hvac-pros" className="footer-link">For HVAC Pros</Link></li>
+                <li><Link to="/property-managers" className="footer-link">For Property Managers</Link></li>
+                <li><Link to="/code-officials" className="footer-link">For Code Officials</Link></li>
+              </ul>
+            </div>
+
             {/* Business */}
             <div className="footer-section">
               <h3 className="footer-section-title">
