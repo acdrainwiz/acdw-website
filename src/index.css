@@ -11775,7 +11775,8 @@
 }
 
 .combo-product-section-cta {
-  @apply mt-12 text-center;
+  @apply mt-12 flex flex-col items-center gap-4;
+  @apply max-w-md mx-auto; /* Constrain width for better centering */
 }
 
 /* Why Combo Section */
@@ -12284,11 +12285,11 @@
 
 /* CTA Buttons */
 .combo-product-cta-primary {
-  @apply px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
+  @apply w-full sm:w-auto px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
 }
 
 .combo-product-cta-secondary {
-  @apply px-8 py-4 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-all border-2 border-white/20;
+  @apply w-full sm:w-auto px-8 py-4 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-all border-2 border-white/20;
 }
 
 .combo-product-cta-tertiary {
@@ -12759,7 +12760,7 @@
 /* Combo Product Phone Badge */
 .combo-product-phone-badge {
   @apply flex items-center justify-center gap-2;
-  @apply px-8 py-4; /* Match combo CTA button sizing */
+  @apply w-full px-8 py-4; /* Full width to match buttons */
   @apply bg-white/10 text-white font-semibold;
   @apply rounded-lg border-2 border-white/30;
   @apply cursor-default select-none backdrop-blur-sm;
@@ -12772,6 +12773,12 @@
 @media (min-width: 768px) {
   .combo-product-phone-badge {
     display: flex !important;
+  }
+}
+
+@media (min-width: 640px) {
+  .combo-product-phone-badge {
+    width: auto; /* Auto width on larger screens */
   }
 }
 
