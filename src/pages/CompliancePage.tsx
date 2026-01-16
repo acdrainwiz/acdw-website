@@ -199,7 +199,10 @@ export function CompliancePage() {
                 href="tel:+12342237246"
                 className="compliance-contact-button-secondary"
               >
-                Call (234) AC DRAIN
+                <div>
+                  <div>Call (234) AC DRAIN</div>
+                  <div style={{ fontSize: '0.875rem', opacity: 0.75, marginTop: '0.25rem' }}>(234) 223-7246</div>
+                </div>
               </a>
             </div>
           </div>
