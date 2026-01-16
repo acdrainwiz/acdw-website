@@ -12770,6 +12770,19 @@
   display: none !important;
 }
 
+/* Light background variant for combo phone badge */
+.combo-product-contractors .combo-product-phone-badge,
+.combo-product-property-managers .combo-product-phone-badge {
+  @apply bg-gradient-to-r from-blue-50 to-indigo-50;
+  @apply text-gray-800 border-blue-200;
+  backdrop-filter: none;
+}
+
+.combo-product-contractors .combo-product-phone-badge-icon,
+.combo-product-property-managers .combo-product-phone-badge-icon {
+  @apply text-blue-600;
+}
+
 @media (min-width: 768px) {
   .combo-product-phone-badge {
     display: flex !important;
