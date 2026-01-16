@@ -1,10 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { 
-  WrenchScrewdriverIcon,
   CurrencyDollarIcon,
   ClockIcon,
   UserGroupIcon,
-  ChartBarIcon,
   ShieldCheckIcon,
   CheckCircleIcon,
   PhoneIcon,
