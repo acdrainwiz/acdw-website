@@ -43,8 +43,8 @@ const customerTypes: CustomerTypeConfig[] = [
       'Upsell opportunities',
       'IMC code compliance'
     ],
-    cta: 'Access Pro Portal',
-    pricing: 'pro'
+    cta: 'Explore HVAC Pro Solutions',
+    pricing: 'contact'
   },
   {
     type: 'property-manager',
@@ -57,7 +57,7 @@ const customerTypes: CustomerTypeConfig[] = [
       'Reduce emergency maintenance calls',
       'Professional installation support'
     ],
-    cta: 'Register & Request Demo',
+    cta: 'Explore Property Manager Solutions',
     pricing: 'contact'
   },
   {
@@ -71,7 +71,7 @@ const customerTypes: CustomerTypeConfig[] = [
       'Non-contact water-level detection',
       'Demo scheduling available'
     ],
-    cta: 'Register & Request Demo',
+    cta: 'View Compliance Solutions',
     pricing: 'contact'
   }
 ]
