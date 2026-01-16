@@ -261,7 +261,7 @@ export function SensorProductPage() {
   ]
 
   // Launch Button Redirect: pause pro/pm account creation during launch
-  const salesPhone = 'tel:+15616545237'
+  const salesPhone = 'tel:+12342237246'
 
   return (
     <div className="sensor-product-page">
@@ -314,12 +314,15 @@ export function SensorProductPage() {
                       href={salesPhone}
                       className="sensor-product-purchase-button-primary md:hidden"
                     >
-                      Call (561) 654-5237
+                      Call (234) AC DRAIN
                     </a>
                     {/* Desktop: Phone badge (non-clickable) */}
                     <div className="sensor-product-phone-badge hidden md:flex">
                       <PhoneIcon className="sensor-product-phone-badge-icon" />
-                      (561) 654-5237
+                      <div className="sensor-product-phone-badge-text">
+                        <div className="sensor-product-phone-vanity">(234) AC DRAIN</div>
+                        <div className="sensor-product-phone-numeric">(234) 223-7246</div>
+                      </div>
                     </div>
                     {/* Launch Button Redirect */}
                     <button
@@ -340,12 +343,15 @@ export function SensorProductPage() {
                       href={salesPhone}
                       className="sensor-product-purchase-button-primary md:hidden"
                     >
-                      Call (561) 654-5237
+                      Call (234) AC DRAIN
                     </a>
                     {/* Desktop: Phone badge (non-clickable) */}
                     <div className="sensor-product-phone-badge hidden md:flex">
                       <PhoneIcon className="sensor-product-phone-badge-icon" />
-                      (561) 654-5237
+                      <div className="sensor-product-phone-badge-text">
+                        <div className="sensor-product-phone-vanity">(234) AC DRAIN</div>
+                        <div className="sensor-product-phone-numeric">(234) 223-7246</div>
+                      </div>
                     </div>
                     {/* Launch Button Redirect */}
                     <button
@@ -366,12 +372,15 @@ export function SensorProductPage() {
                       href={salesPhone}
                       className="sensor-product-purchase-button-primary md:hidden"
                     >
-                      Call (561) 654-5237
+                      Call (234) AC DRAIN
                     </a>
                     {/* Desktop: Phone badge (non-clickable) */}
                     <div className="sensor-product-phone-badge hidden md:flex">
                       <PhoneIcon className="sensor-product-phone-badge-icon" />
-                      (561) 654-5237
+                      <div className="sensor-product-phone-badge-text">
+                        <div className="sensor-product-phone-vanity">(234) AC DRAIN</div>
+                        <div className="sensor-product-phone-numeric">(234) 223-7246</div>
+                      </div>
                     </div>
                     {/* Launch Button Redirect */}
                     <button
@@ -392,12 +401,15 @@ export function SensorProductPage() {
                       href={salesPhone}
                       className="sensor-product-purchase-button-primary md:hidden"
                     >
-                      Call (561) 654-5237
+                      Call (234) AC DRAIN
                     </a>
                     {/* Desktop: Phone badge (non-clickable) */}
                     <div className="sensor-product-phone-badge hidden md:flex">
                       <PhoneIcon className="sensor-product-phone-badge-icon" />
-                      (561) 654-5237
+                      <div className="sensor-product-phone-badge-text">
+                        <div className="sensor-product-phone-vanity">(234) AC DRAIN</div>
+                        <div className="sensor-product-phone-numeric">(234) 223-7246</div>
+                      </div>
                     </div>
                     {/* Launch Button Redirect */}
                     <button

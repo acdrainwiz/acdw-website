@@ -107,7 +107,7 @@ export function ReturnRefundPolicyPage() {
                   <a href="mailto:support@acdrainwiz.com" className="text-orange-600 hover:text-orange-700">
                     support@acdrainwiz.com
                   </a>{' '}
-                  or call us at <strong>(561) 654-5237</strong> within the return window.
+                  or call us at <strong>(234) AC DRAIN</strong> within the return window.
                 </li>
                 <li>
                   <strong>Provide Information:</strong> Include your order number, reason for return, and photos if the item is damaged.
@@ -206,7 +206,7 @@ export function ReturnRefundPolicyPage() {
               </p>
               <ul className="list-disc pl-6 space-y-2 text-gray-700">
                 <li>Email: <a href="mailto:support@acdrainwiz.com" className="text-orange-600 hover:text-orange-700">support@acdrainwiz.com</a></li>
-                <li>Phone: <strong>(561) 654-5237</strong></li>
+                <li>Phone: <strong>(234) AC DRAIN</strong></li>
                 <li>Include photos of the damage or defect</li>
                 <li>Provide your order number</li>
               </ul>
@@ -232,7 +232,7 @@ export function ReturnRefundPolicyPage() {
                     </a>
                   </li>
                   <li>
-                    <strong>Phone:</strong> (561) 654-5237
+                    <strong>Phone:</strong> (234) AC DRAIN
                   </li>
                   <li>
                     <strong>Business Hours:</strong> [TO BE DETERMINED - Add your business hours]

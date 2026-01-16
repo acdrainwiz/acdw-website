@@ -12815,3 +12815,19 @@
     display: none !important;
   }
 }
+
+/* Phone Badge Text Layout (Vanity + Numeric Display) */
+.sensor-product-phone-badge-text,
+.combo-product-phone-badge-text {
+  @apply flex flex-col items-center;
+}
+
+.sensor-product-phone-vanity,
+.combo-product-phone-vanity {
+  @apply font-semibold text-base leading-tight;
+}
+
+.sensor-product-phone-numeric,
+.combo-product-phone-numeric {
+  @apply text-sm opacity-75 mt-0.5;
+}
