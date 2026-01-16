@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   ShieldCheckIcon,
@@ -8,52 +7,13 @@ import {
   ClipboardDocumentCheckIcon,
   HomeModernIcon,
   CheckCircleIcon,
-  StarIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  PhoneIcon
+  PhoneIcon,
+  ExclamationTriangleIcon,
+  CurrencyDollarIcon
 } from '@heroicons/react/24/outline';
 
 export function CodeOfficialsPage() {
   const navigate = useNavigate();
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
-
-  // Code Official testimonials
-  const testimonials = [
-    {
-      name: 'Robert Williams',
-      role: 'Chief Building Inspector',
-      text: 'AC Drain Wiz provides exactly what IMC 307.2.3 requires—ready access for maintenance. Clear to inspect, easy to verify, and contractors actually want to install it. Makes our job easier.',
-      rating: 5,
-      image: '/images/testimonials/placeholder.jpg'
-    },
-    {
-      name: 'Linda Martinez',
-      role: 'Mechanical Code Specialist',
-      text: 'Finally, a drain line solution that meets code and makes sense. The documentation is thorough and the product is straightforward to verify during inspections.',
-      rating: 5,
-      image: '/images/testimonials/placeholder.jpg'
-    },
-    {
-      name: 'James Patterson',
-      role: 'Municipal Inspector',
-      text: 'We\'ve approved AC Drain Wiz for three years now. It consistently meets requirements and contractors appreciate having a code-compliant option that homeowners can actually maintain.',
-      rating: 5,
-      image: '/images/testimonials/placeholder.jpg'
-    }
-  ];
-
-  const handleTestimonialNext = () => {
-    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const handleTestimonialPrev = () => {
-    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
-
-  const handleTestimonialSelect = (index: number) => {
-    setCurrentTestimonial(index);
-  };
 
   return (
     <div className="homeowner-page">
@@ -93,26 +53,41 @@ export function CodeOfficialsPage() {
       </div>
 
       {/* Problem Section */}
-      <div className="homeowner-problem-container">
+      <div className="homeowner-problem-section">
+        <div className="homeowner-problem-background">
+          {/* Background intentionally removed */}
+        </div>
+        
+        <div className="homeowner-problem-overlay"></div>
+        
         <div className="homeowner-problem-content">
-          <h2 className="homeowner-problem-title">The Drain Line Compliance Challenge</h2>
-          <p className="homeowner-problem-description">
+          <h2 className="homeowner-problem-headline">The Drain Line Compliance Challenge</h2>
+          <p className="homeowner-problem-subheadline">
             IMC 307.2.3 requires ready access to condensate drain systems for maintenance and cleaning. 
             Many installations fail to meet this standard, creating inspection issues and public health concerns.
           </p>
           
           <div className="homeowner-problem-stats">
-            <div className="homeowner-problem-stat">
-              <div className="homeowner-problem-stat-number">IMC 307.2.3</div>
-              <div className="homeowner-problem-stat-label">Code requirement</div>
+            <div className="homeowner-stat">
+              <div className="homeowner-stat-icon-wrapper">
+                <DocumentCheckIcon className="homeowner-stat-icon" />
+              </div>
+              <div className="homeowner-stat-number">IMC 307.2.3</div>
+              <div className="homeowner-stat-label">Code requirement</div>
             </div>
-            <div className="homeowner-problem-stat">
-              <div className="homeowner-problem-stat-number">40%</div>
-              <div className="homeowner-problem-stat-label">Non-compliant installs</div>
+            <div className="homeowner-stat">
+              <div className="homeowner-stat-icon-wrapper">
+                <ExclamationTriangleIcon className="homeowner-stat-icon" />
+              </div>
+              <div className="homeowner-stat-number">40%</div>
+              <div className="homeowner-stat-label">Non-compliant installs</div>
             </div>
-            <div className="homeowner-problem-stat">
-              <div className="homeowner-problem-stat-number">$8K+</div>
-              <div className="homeowner-problem-stat-label">Avg water damage</div>
+            <div className="homeowner-stat">
+              <div className="homeowner-stat-icon-wrapper">
+                <CurrencyDollarIcon className="homeowner-stat-icon" />
+              </div>
+              <div className="homeowner-stat-number">$8K+</div>
+              <div className="homeowner-stat-label">Avg water damage</div>
             </div>
           </div>
         </div>
@@ -244,82 +219,6 @@ export function CodeOfficialsPage() {
           </div>
         </div>
       </div>
-
-      {/* Testimonials Carousel */}
-      <section className="mini-product-testimonials">
-        <div className="mini-product-testimonials-content">
-          <h2 className="mini-product-section-title">What Code Officials Say</h2>
-          <p className="homeowner-testimonials-subtitle">Trusted by jurisdictions nationwide</p>
-          
-          <div className="mini-product-testimonials-carousel">
-            <div className="mini-product-testimonials-carousel-container">
-              <button
-                onClick={handleTestimonialPrev}
-                className="mini-product-testimonials-nav-button mini-product-testimonials-nav-button-prev"
-                aria-label="Previous testimonial"
-              >
-                <ChevronLeftIcon className="mini-product-testimonials-nav-icon" />
-              </button>
-
-              <div className="mini-product-testimonials-carousel-card-wrapper">
-                {testimonials.map((testimonial, index) => (
-                  <div
-                    key={index}
-                    className={`mini-product-testimonial-card ${
-                      index === currentTestimonial ? 'mini-product-testimonial-card-active' : 'mini-product-testimonial-card-hidden'
-                    }`}
-                  >
-                    <div className="mini-product-testimonial-image-wrapper">
-                      <img
-                        src={testimonial.image}
-                        alt={`${testimonial.name}, ${testimonial.role}`}
-                        className="mini-product-testimonial-image"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = '/images/testimonials/placeholder.jpg';
-                        }}
-                      />
-                    </div>
-                    <div className="mini-product-testimonial-content">
-                      <div className="mini-product-testimonial-rating">
-                        {[...Array(testimonial.rating)].map((_, i) => (
-                          <StarIcon key={i} className="mini-product-testimonial-star" />
-                        ))}
-                      </div>
-                      <p className="mini-product-testimonial-text">"{testimonial.text}"</p>
-                      <div className="mini-product-testimonial-author">
-                        <span className="mini-product-testimonial-name">{testimonial.name}</span>
-                        <span className="mini-product-testimonial-role">{testimonial.role}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                onClick={handleTestimonialNext}
-                className="mini-product-testimonials-nav-button mini-product-testimonials-nav-button-next"
-                aria-label="Next testimonial"
-              >
-                <ChevronRightIcon className="mini-product-testimonials-nav-icon" />
-              </button>
-            </div>
-
-            <div className="mini-product-testimonials-indicators">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleTestimonialSelect(index)}
-                  className={`mini-product-testimonials-indicator ${
-                    index === currentTestimonial ? 'mini-product-testimonials-indicator-active' : ''
-                  }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* FAQ Section */}
       <div className="homeowner-faq-container">

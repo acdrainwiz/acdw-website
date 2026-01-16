@@ -4637,6 +4637,104 @@
   @apply text-gray-600 leading-relaxed;
 }
 
+/* Products Section */
+.homeowner-products-container {
+  @apply py-20;
+}
+
+.homeowner-products-content {
+  @apply container mx-auto px-6;
+}
+
+.homeowner-products-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto;
+}
+
+.homeowner-products-title {
+  @apply text-4xl font-bold text-gray-900 text-center mb-4;
+}
+
+.homeowner-products-subtitle {
+  @apply text-xl text-gray-600 text-center mb-12 max-w-2xl mx-auto;
+}
+
+.homeowner-products-grid .homeowner-product-card {
+  @apply bg-white rounded-xl shadow-lg overflow-hidden;
+  display: flex !important;
+  flex-direction: column !important;
+  /* Override: In products grid context, cards are flex columns, not grid containers */
+  max-width: 100% !important;
+  padding: 0 !important;
+  gap: 0 !important;
+}
+
+.homeowner-product-card-featured {
+  @apply border-2 border-primary-500 relative;
+}
+
+.homeowner-product-badge {
+  @apply absolute top-4 right-4 bg-primary-600 text-white px-3 py-1 rounded-full text-sm font-semibold z-10;
+}
+
+.homeowner-product-image-wrapper {
+  @apply bg-gray-50 p-8 flex items-center justify-center;
+  min-height: 250px;
+}
+
+.homeowner-product-image-wrapper .homeowner-product-image,
+.homeowner-products-grid .homeowner-product-image {
+  @apply max-w-full h-auto;
+  max-height: 300px;
+}
+
+.homeowner-product-name {
+  @apply text-2xl font-bold text-gray-900 mb-2 px-6 pt-6;
+}
+
+.homeowner-product-price {
+  @apply text-lg text-gray-600 mb-4 px-6;
+}
+
+.homeowner-product-features {
+  @apply space-y-3 mb-6 px-6 flex-grow;
+}
+
+.homeowner-product-feature-icon {
+  @apply h-5 w-5 text-green-500 mr-2 flex-shrink-0 inline-block;
+}
+
+.homeowner-product-cta {
+  @apply w-full py-3 bg-primary-600 text-white font-semibold text-lg rounded-lg hover:bg-primary-700 transition-colors mb-6;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Customer-Specific Product Cards */
+.hvac-products-grid .hvac-product-card,
+.property-manager-products-grid .property-manager-product-card,
+.code-official-products-grid .code-official-product-card {
+  @apply bg-white rounded-xl shadow-lg overflow-hidden flex flex-col;
+  max-width: 100% !important;
+  padding: 0 !important;
+  gap: 0 !important;
+}
+
+.hvac-product-card-featured,
+.property-manager-product-card-featured,
+.code-official-product-card-featured {
+  @apply border-2 border-primary-500 relative;
+}
+
+.hvac-product-cta,
+.property-manager-product-cta,
+.code-official-product-cta {
+  @apply py-3 bg-primary-600 text-white font-semibold text-lg rounded-lg hover:bg-primary-700 transition-colors;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: calc(100% - 3rem);
+}
+
 /* Testimonials Section */
 .homeowner-testimonials-container {
   @apply bg-gray-50 py-20;

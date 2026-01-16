@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   BuildingOfficeIcon,
@@ -8,52 +7,12 @@ import {
   BellAlertIcon,
   ShieldCheckIcon,
   CheckCircleIcon,
-  StarIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  PhoneIcon
+  PhoneIcon,
+  ClockIcon
 } from '@heroicons/react/24/outline';
 
 export function PropertyManagersPage() {
   const navigate = useNavigate();
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
-
-  // Property Manager testimonials
-  const testimonials = [
-    {
-      name: 'Maria Gonzalez',
-      role: 'Portfolio Manager, 45 Properties',
-      text: 'Since installing sensors across our portfolio, water damage claims dropped 92%. The dashboard lets me see every property at a glance. Best ROI of any preventive maintenance investment we\'ve made.',
-      rating: 5,
-      image: '/images/testimonials/placeholder.jpg'
-    },
-    {
-      name: 'David Chen',
-      role: 'Senior Property Manager',
-      text: 'Tenant complaints about AC issues dropped significantly. The automated alerts mean we catch problems before they become emergencies. Our maintenance costs are down 40%.',
-      rating: 5,
-      image: '/images/testimonials/placeholder.jpg'
-    },
-    {
-      name: 'Sarah Mitchell',
-      role: 'Regional Property Director',
-      text: 'Managing 80+ units across three states, the centralized monitoring is invaluable. We identify trends, schedule preventive maintenance, and keep all properties running smoothly.',
-      rating: 5,
-      image: '/images/testimonials/placeholder.jpg'
-    }
-  ];
-
-  const handleTestimonialNext = () => {
-    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const handleTestimonialPrev = () => {
-    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
-
-  const handleTestimonialSelect = (index: number) => {
-    setCurrentTestimonial(index);
-  };
 
   return (
     <div className="homeowner-page">
@@ -93,26 +52,41 @@ export function PropertyManagersPage() {
       </div>
 
       {/* Problem Section */}
-      <div className="homeowner-problem-container">
+      <div className="homeowner-problem-section">
+        <div className="homeowner-problem-background">
+          {/* Background intentionally removed */}
+        </div>
+        
+        <div className="homeowner-problem-overlay"></div>
+        
         <div className="homeowner-problem-content">
-          <h2 className="homeowner-problem-title">The Hidden Cost of AC Drain Issues</h2>
-          <p className="homeowner-problem-description">
+          <h2 className="homeowner-problem-headline">The Hidden Cost of AC Drain Issues</h2>
+          <p className="homeowner-problem-subheadline">
             A single water damage incident from a clogged AC drain can cost thousands in repairs, lost rent, 
             and tenant dissatisfaction. Multiply that across your portfolio and it's a significant financial risk.
           </p>
           
           <div className="homeowner-problem-stats">
-            <div className="homeowner-problem-stat">
-              <div className="homeowner-problem-stat-number">$8,000+</div>
-              <div className="homeowner-problem-stat-label">Avg water damage cost</div>
+            <div className="homeowner-stat">
+              <div className="homeowner-stat-icon-wrapper">
+                <CurrencyDollarIcon className="homeowner-stat-icon" />
+              </div>
+              <div className="homeowner-stat-number">$8,000+</div>
+              <div className="homeowner-stat-label">Avg water damage cost</div>
             </div>
-            <div className="homeowner-problem-stat">
-              <div className="homeowner-problem-stat-number">30-60</div>
-              <div className="homeowner-problem-stat-label">Days lost rent</div>
+            <div className="homeowner-stat">
+              <div className="homeowner-stat-icon-wrapper">
+                <ClockIcon className="homeowner-stat-icon" />
+              </div>
+              <div className="homeowner-stat-number">30-60</div>
+              <div className="homeowner-stat-label">Days lost rent</div>
             </div>
-            <div className="homeowner-problem-stat">
-              <div className="homeowner-problem-stat-number">45%</div>
-              <div className="homeowner-problem-stat-label">Tenant turnover increase</div>
+            <div className="homeowner-stat">
+              <div className="homeowner-stat-icon-wrapper">
+                <UserGroupIcon className="homeowner-stat-icon" />
+              </div>
+              <div className="homeowner-stat-number">45%</div>
+              <div className="homeowner-stat-label">Tenant turnover increase</div>
             </div>
           </div>
         </div>
@@ -172,9 +146,9 @@ export function PropertyManagersPage() {
             Scalable protection for portfolios of any size
           </p>
 
-          <div className="homeowner-products-grid">
+          <div className="homeowner-products-grid property-manager-products-grid">
             {/* Sensor System */}
-            <div className="homeowner-product-card homeowner-product-card-featured">
+            <div className="property-manager-product-card property-manager-product-card-featured">
               <div className="homeowner-product-badge">Recommended</div>
               <div className="homeowner-product-image-wrapper">
                 <img 
@@ -193,14 +167,14 @@ export function PropertyManagersPage() {
               </ul>
               <button 
                 onClick={() => navigate('/products/sensor')}
-                className="homeowner-product-cta"
+                className="property-manager-product-cta"
               >
                 Learn More
               </button>
             </div>
 
             {/* Complete Protection */}
-            <div className="homeowner-product-card">
+            <div className="property-manager-product-card">
               <div className="homeowner-product-image-wrapper">
                 <img 
                   src="/images/hvac-tech-mini-sensor-product-hero.png" 
@@ -218,7 +192,7 @@ export function PropertyManagersPage() {
               </ul>
               <button 
                 onClick={() => navigate('/products/combo')}
-                className="homeowner-product-cta"
+                className="property-manager-product-cta"
               >
                 View Complete System
               </button>
@@ -226,82 +200,6 @@ export function PropertyManagersPage() {
           </div>
         </div>
       </div>
-
-      {/* Testimonials Carousel */}
-      <section className="mini-product-testimonials">
-        <div className="mini-product-testimonials-content">
-          <h2 className="mini-product-section-title">What Property Managers Say</h2>
-          <p className="homeowner-testimonials-subtitle">Trusted by property managers nationwide</p>
-          
-          <div className="mini-product-testimonials-carousel">
-            <div className="mini-product-testimonials-carousel-container">
-              <button
-                onClick={handleTestimonialPrev}
-                className="mini-product-testimonials-nav-button mini-product-testimonials-nav-button-prev"
-                aria-label="Previous testimonial"
-              >
-                <ChevronLeftIcon className="mini-product-testimonials-nav-icon" />
-              </button>
-
-              <div className="mini-product-testimonials-carousel-card-wrapper">
-                {testimonials.map((testimonial, index) => (
-                  <div
-                    key={index}
-                    className={`mini-product-testimonial-card ${
-                      index === currentTestimonial ? 'mini-product-testimonial-card-active' : 'mini-product-testimonial-card-hidden'
-                    }`}
-                  >
-                    <div className="mini-product-testimonial-image-wrapper">
-                      <img
-                        src={testimonial.image}
-                        alt={`${testimonial.name}, ${testimonial.role}`}
-                        className="mini-product-testimonial-image"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = '/images/testimonials/placeholder.jpg';
-                        }}
-                      />
-                    </div>
-                    <div className="mini-product-testimonial-content">
-                      <div className="mini-product-testimonial-rating">
-                        {[...Array(testimonial.rating)].map((_, i) => (
-                          <StarIcon key={i} className="mini-product-testimonial-star" />
-                        ))}
-                      </div>
-                      <p className="mini-product-testimonial-text">"{testimonial.text}"</p>
-                      <div className="mini-product-testimonial-author">
-                        <span className="mini-product-testimonial-name">{testimonial.name}</span>
-                        <span className="mini-product-testimonial-role">{testimonial.role}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                onClick={handleTestimonialNext}
-                className="mini-product-testimonials-nav-button mini-product-testimonials-nav-button-next"
-                aria-label="Next testimonial"
-              >
-                <ChevronRightIcon className="mini-product-testimonials-nav-icon" />
-              </button>
-            </div>
-
-            <div className="mini-product-testimonials-indicators">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleTestimonialSelect(index)}
-                  className={`mini-product-testimonials-indicator ${
-                    index === currentTestimonial ? 'mini-product-testimonials-indicator-active' : ''
-                  }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* FAQ Section */}
       <div className="homeowner-faq-container">

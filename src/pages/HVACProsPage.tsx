@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   WrenchScrewdriverIcon,
@@ -8,52 +7,12 @@ import {
   ChartBarIcon,
   ShieldCheckIcon,
   CheckCircleIcon,
-  StarIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  PhoneIcon
+  PhoneIcon,
+  ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
 
 export function HVACProsPage() {
   const navigate = useNavigate();
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
-
-  // HVAC Pro testimonials
-  const testimonials = [
-    {
-      name: 'Joey',
-      role: 'AC Technician',
-      text: 'I love the AC DRAIN WIZ! After installing it and using it in one of my customers homes and seeing how much sludge came out after I did my service the normal way I was shocked! I would recommend the AC DRAIN to every homeowner out there!',
-      rating: 5,
-      image: '/images/testimonials/joey-testimonial.jpg'
-    },
-    {
-      name: 'Mike Torres',
-      role: 'HVAC Service Manager',
-      text: 'We\'ve installed the Mini on over 200 service calls this year. Callbacks are down 85% and our techs love how fast it installs. It\'s become our standard recommendation.',
-      rating: 5,
-      image: '/images/testimonials/placeholder.jpg'
-    },
-    {
-      name: 'Jeff B.',
-      role: 'FL General Contractor & Homeowner',
-      text: 'AC Drain Wiz is an easy, affordable necessity. As a contractor, I plan on using it on all my projects.',
-      rating: 5,
-      image: '/images/testimonials/jeff-b-testimonial.jpg'
-    }
-  ];
-
-  const handleTestimonialNext = () => {
-    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const handleTestimonialPrev = () => {
-    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
-
-  const handleTestimonialSelect = (index: number) => {
-    setCurrentTestimonial(index);
-  };
 
   return (
     <div className="homeowner-page">
@@ -93,26 +52,41 @@ export function HVACProsPage() {
       </div>
 
       {/* Problem Section */}
-      <div className="homeowner-problem-container">
+      <div className="homeowner-problem-section">
+        <div className="homeowner-problem-background">
+          {/* Background intentionally removed */}
+        </div>
+        
+        <div className="homeowner-problem-overlay"></div>
+        
         <div className="homeowner-problem-content">
-          <h2 className="homeowner-problem-title">The Drain Line Callback Problem</h2>
-          <p className="homeowner-problem-description">
+          <h2 className="homeowner-problem-headline">The Drain Line Callback Problem</h2>
+          <p className="homeowner-problem-subheadline">
             Every HVAC pro knows the frustration: you clear a clogged drain line, complete the service call, 
             and within weeks the customer calls back with the same issue. Lost time, unhappy customers, and revenue drain.
           </p>
           
           <div className="homeowner-problem-stats">
-            <div className="homeowner-problem-stat">
-              <div className="homeowner-problem-stat-number">$150-300</div>
-              <div className="homeowner-problem-stat-label">Lost per callback</div>
+            <div className="homeowner-stat">
+              <div className="homeowner-stat-icon-wrapper">
+                <ExclamationTriangleIcon className="homeowner-stat-icon" />
+              </div>
+              <div className="homeowner-stat-number">$150-300</div>
+              <div className="homeowner-stat-label">Lost per callback</div>
             </div>
-            <div className="homeowner-problem-stat">
-              <div className="homeowner-problem-stat-number">2-4 hrs</div>
-              <div className="homeowner-problem-stat-label">Wasted time</div>
+            <div className="homeowner-stat">
+              <div className="homeowner-stat-icon-wrapper">
+                <ClockIcon className="homeowner-stat-icon" />
+              </div>
+              <div className="homeowner-stat-number">2-4 hrs</div>
+              <div className="homeowner-stat-label">Wasted time</div>
             </div>
-            <div className="homeowner-problem-stat">
-              <div className="homeowner-problem-stat-number">60%</div>
-              <div className="homeowner-problem-stat-label">Customer churn rate</div>
+            <div className="homeowner-stat">
+              <div className="homeowner-stat-icon-wrapper">
+                <UserGroupIcon className="homeowner-stat-icon" />
+              </div>
+              <div className="homeowner-stat-number">60%</div>
+              <div className="homeowner-stat-label">Customer churn rate</div>
             </div>
           </div>
         </div>
@@ -172,9 +146,9 @@ export function HVACProsPage() {
             Choose the right solution for your customers
           </p>
 
-          <div className="homeowner-products-grid">
+          <div className="homeowner-products-grid hvac-products-grid">
             {/* AC Drain Wiz Mini */}
-            <div className="homeowner-product-card">
+            <div className="hvac-product-card">
               <div className="homeowner-product-image-wrapper">
                 <img 
                   src="/images/ACDW-Mini-Cap-blk.png" 
@@ -192,14 +166,14 @@ export function HVACProsPage() {
               </ul>
               <button 
                 onClick={() => navigate('/products/mini')}
-                className="homeowner-product-cta"
+                className="hvac-product-cta"
               >
                 Learn More
               </button>
             </div>
 
             {/* Mini + Sensor Combo */}
-            <div className="homeowner-product-card homeowner-product-card-featured">
+            <div className="hvac-product-card hvac-product-card-featured">
               <div className="homeowner-product-badge">Most Popular</div>
               <div className="homeowner-product-image-wrapper">
                 <img 
@@ -218,7 +192,7 @@ export function HVACProsPage() {
               </ul>
               <button 
                 onClick={() => navigate('/products/combo')}
-                className="homeowner-product-cta"
+                className="hvac-product-cta"
               >
                 View Complete System
               </button>
@@ -226,82 +200,6 @@ export function HVACProsPage() {
           </div>
         </div>
       </div>
-
-      {/* Testimonials Carousel */}
-      <section className="mini-product-testimonials">
-        <div className="mini-product-testimonials-content">
-          <h2 className="mini-product-section-title">What HVAC Pros Say</h2>
-          <p className="homeowner-testimonials-subtitle">Trusted by contractors nationwide</p>
-          
-          <div className="mini-product-testimonials-carousel">
-            <div className="mini-product-testimonials-carousel-container">
-              <button
-                onClick={handleTestimonialPrev}
-                className="mini-product-testimonials-nav-button mini-product-testimonials-nav-button-prev"
-                aria-label="Previous testimonial"
-              >
-                <ChevronLeftIcon className="mini-product-testimonials-nav-icon" />
-              </button>
-
-              <div className="mini-product-testimonials-carousel-card-wrapper">
-                {testimonials.map((testimonial, index) => (
-                  <div
-                    key={index}
-                    className={`mini-product-testimonial-card ${
-                      index === currentTestimonial ? 'mini-product-testimonial-card-active' : 'mini-product-testimonial-card-hidden'
-                    }`}
-                  >
-                    <div className="mini-product-testimonial-image-wrapper">
-                      <img
-                        src={testimonial.image}
-                        alt={`${testimonial.name}, ${testimonial.role}`}
-                        className="mini-product-testimonial-image"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = '/images/testimonials/placeholder.jpg';
-                        }}
-                      />
-                    </div>
-                    <div className="mini-product-testimonial-content">
-                      <div className="mini-product-testimonial-rating">
-                        {[...Array(testimonial.rating)].map((_, i) => (
-                          <StarIcon key={i} className="mini-product-testimonial-star" />
-                        ))}
-                      </div>
-                      <p className="mini-product-testimonial-text">"{testimonial.text}"</p>
-                      <div className="mini-product-testimonial-author">
-                        <span className="mini-product-testimonial-name">{testimonial.name}</span>
-                        <span className="mini-product-testimonial-role">{testimonial.role}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                onClick={handleTestimonialNext}
-                className="mini-product-testimonials-nav-button mini-product-testimonials-nav-button-next"
-                aria-label="Next testimonial"
-              >
-                <ChevronRightIcon className="mini-product-testimonials-nav-icon" />
-              </button>
-            </div>
-
-            <div className="mini-product-testimonials-indicators">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleTestimonialSelect(index)}
-                  className={`mini-product-testimonials-indicator ${
-                    index === currentTestimonial ? 'mini-product-testimonials-indicator-active' : ''
-                  }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* FAQ Section */}
       <div className="homeowner-faq-container">
