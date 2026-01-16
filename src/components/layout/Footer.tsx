@@ -40,9 +40,9 @@ export function Footer() {
               </h3>
               <ul className="footer-link-list">
                 <li><Link to="/products" className="footer-link">All Products</Link></li>
-                <li><Link to="/products?product=mini" className="footer-link">AC Drain Wiz Mini</Link></li>
-                <li><Link to="/products?product=sensor" className="footer-link">AC Drain Wiz Sensor</Link></li>
-                <li><Link to="/products?product=mini&product=sensor" className="footer-link">Mini + Sensor</Link></li>
+                <li><Link to="/products/mini" className="footer-link">AC Drain Wiz Mini</Link></li>
+                <li><Link to="/products/sensor" className="footer-link">AC Drain Wiz Sensor</Link></li>
+                <li><Link to="/products/combo" className="footer-link">Mini + Sensor Combo</Link></li>
                 <li><Link to="/homeowner" className="footer-link">For Homeowners</Link></li>
               </ul>
             </div>
@@ -111,7 +111,7 @@ export function Footer() {
             </div>
             <div className="footer-contact-item">
               <PhoneIcon className="footer-contact-icon" />
-              <span>1-800-AC-DRAIN</span>
+              <span>(234) AC DRAIN</span>
             </div>
             <div className="footer-contact-item">
               <MapPinIcon className="footer-contact-icon" />
