@@ -43,7 +43,6 @@ export function Footer() {
                 <li><Link to="/products/mini" className="footer-link">AC Drain Wiz Mini</Link></li>
                 <li><Link to="/products/sensor" className="footer-link">AC Drain Wiz Sensor</Link></li>
                 <li><Link to="/products/combo" className="footer-link">Mini + Sensor Combo</Link></li>
-                <li><Link to="/homeowner" className="footer-link">For Homeowners</Link></li>
               </ul>
             </div>
 
