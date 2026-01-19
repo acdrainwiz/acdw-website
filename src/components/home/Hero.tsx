@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { IMaskInput } from 'react-imask'
-import { ArrowRightIcon, ChevronDownIcon, ChevronUpIcon, GiftIcon, CheckIcon, StarIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
+import { ArrowRightIcon, ChevronDownIcon, ChevronUpIcon, GiftIcon, CheckIcon, StarIcon, ChevronLeftIcon, ChevronRightIcon, ClockIcon } from '@heroicons/react/24/outline'
 import { useAuth } from '../../contexts/AuthContext'
 import { VideoModal } from './VideoModal'
 import { CustomerTypeSelector } from './CustomerTypeSelector'
@@ -203,11 +203,12 @@ export function Hero() {
             <strong>Limited Time:</strong> Join Our Email List and Get <strong>Up To 50% Off</strong> Your First AC Drain Wiz Mini Purchase
           </span>
           <button 
-            onClick={() => navigate('/promo')}
+            onClick={() => {/* Disabled until functionality is ready */}}
             className="homeowner-banner-cta"
+            disabled
           >
-            Get Discount Code
-            <ArrowRightIcon className="homeowner-banner-icon" />
+            Coming Soon
+            <ClockIcon className="homeowner-banner-icon" />
           </button>
         </div>
       </div>
