@@ -1,11 +1,11 @@
 import { useState } from 'react'
 
 export function EmailSignaturePage() {
-  const [name, setName] = useState('Luis Lopez')
-  const [title, setTitle] = useState('VP of Product & Sales')
-  const [role, setRole] = useState('Digital Product Experience')
-  const [mobile, setMobile] = useState('305-318-5611')
-  const [email, setEmail] = useState('llopez@acdrainwiz.com')
+  const [name, setName] = useState('')
+  const [title, setTitle] = useState('')
+  const [role, setRole] = useState('')
+  const [mobile, setMobile] = useState('')
+  const [email, setEmail] = useState('')
 
   const signatureHTML = `
 <table border="0" cellpadding="0" cellspacing="0" class="sig-main-table" style="font-family: 'Poppins', Arial, Helvetica, sans-serif; font-size: 12px; color: #1e3a8a; line-height: 1.5; max-width: 600px;">
@@ -164,6 +164,7 @@ export function EmailSignaturePage() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                placeholder="e.g., John Smith"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -175,6 +176,7 @@ export function EmailSignaturePage() {
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                placeholder="e.g., VP of Sales"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -186,6 +188,7 @@ export function EmailSignaturePage() {
                 type="text"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
+                placeholder="e.g., Sales & Marketing"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -197,6 +200,7 @@ export function EmailSignaturePage() {
                 type="text"
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
+                placeholder="e.g., 305-318-5611"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -208,6 +212,7 @@ export function EmailSignaturePage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                placeholder="e.g., yourname@acdrainwiz.com"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
