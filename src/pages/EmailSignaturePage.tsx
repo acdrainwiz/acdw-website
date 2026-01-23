@@ -28,12 +28,12 @@ export function EmailSignaturePage() {
               </tr>
               <tr>
                 <td style="padding-bottom: 4px; text-align: left;">
-                  <span style="color: #1e3a8a; font-size: 10px;">${title}</span>
+                  <span style="color: #1e3a8a; font-size: 12px;">${title}</span>
                 </td>
               </tr>
               <tr>
                 <td style="padding-bottom: 0; text-align: left;">
-                  <span style="color: #1e3a8a; font-size: 10px;">${role} | AC Drain Wiz</span>
+                  <span style="color: #1e3a8a; font-size: 12px;">${role} | AC Drain Wiz</span>
                 </td>
               </tr>
             </table>
