@@ -12,14 +12,14 @@ export function EmailSignaturePage() {
   <tr>
     <td style="padding: 0;">
       <!-- Top Section: Logo and Personal Info -->
-      <table border="0" cellpadding="0" cellspacing="0" class="sig-top-section" width="100%" style="border: 1px solid red;">
+      <table border="0" cellpadding="0" cellspacing="0" class="sig-top-section" width="100%">
         <tr>
           <!-- Logo Column -->
-          <td class="sig-logo-column" style="padding-right: 20px; vertical-align: top; width: 200px; background-color: rgba(255,0,0,0.1);">
+          <td class="sig-logo-column" style="padding-right: 20px; vertical-align: top; width: 200px;">
             <img src="https://acdrainwiz.com/images/ac-drain-wiz-logo-signature.png" alt="AC Drain Wiz Logo" width="180" height="auto" style="display: block; max-width: 180px; height: auto;" />
           </td>
           <!-- Personal Info Column -->
-          <td class="sig-info-column" style="vertical-align: top; padding-left: 0; text-align: left; background-color: rgba(0,255,0,0.1);">
+          <td class="sig-info-column" style="vertical-align: top; padding-left: 0; text-align: left;">
             <table border="0" cellpadding="0" cellspacing="0" class="sig-info-inner-table" style="font-family: 'Poppins', Arial, Helvetica, sans-serif;">
               <tr>
                 <td style="padding-bottom: 4px; text-align: left;">
@@ -49,14 +49,14 @@ export function EmailSignaturePage() {
       </table>
       
       <!-- Bottom Section: Logo Column (empty) and Contact Info Column -->
-      <table border="0" cellpadding="0" cellspacing="0" class="sig-bottom-section" width="100%" style="border: 1px solid blue;">
+      <table border="0" cellpadding="0" cellspacing="0" class="sig-bottom-section" width="100%">
         <tr>
           <!-- Empty Logo Column (to maintain alignment) -->
-          <td class="sig-bottom-logo-column" style="padding-right: 20px; vertical-align: top; width: 200px; background-color: rgba(255,0,0,0.1);">
+          <td class="sig-bottom-logo-column" style="padding-right: 20px; vertical-align: top; width: 200px;">
             &nbsp;
           </td>
           <!-- Contact Information Column (aligned with name/title) -->
-          <td class="sig-contact-column" style="vertical-align: top; padding-left: 0; text-align: left; background-color: rgba(0,255,0,0.1);">
+          <td class="sig-contact-column" style="vertical-align: top; padding-left: 0; text-align: left;">
             <table border="0" cellpadding="0" cellspacing="0" class="sig-contact-inner-table" style="font-family: 'Poppins', Arial, Helvetica, sans-serif;">
               <tr>
                 <td style="padding-bottom: 4px; text-align: left;">
