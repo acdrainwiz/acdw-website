@@ -4,8 +4,40 @@ export function EmailSignaturePage() {
   const [name, setName] = useState('')
   const [title, setTitle] = useState('')
   const [role, setRole] = useState('')
+  const [customRole, setCustomRole] = useState('')
+  const [isCustomRole, setIsCustomRole] = useState(false)
   const [mobile, setMobile] = useState('')
   const [email, setEmail] = useState('')
+
+  const departments = [
+    'Sales & Marketing',
+    'Product & Engineering',
+    'Operations',
+    'Customer Success / Support',
+    'Finance & Accounting',
+    'Human Resources',
+    'Business Development',
+    'Executive / Leadership',
+    'Custom'
+  ]
+
+  const handleRoleChange = (value: string) => {
+    if (value === 'Custom') {
+      setIsCustomRole(true)
+      setRole('')
+    } else {
+      setIsCustomRole(false)
+      setRole(value)
+      setCustomRole('')
+    }
+  }
+
+  const handleCustomRoleChange = (value: string) => {
+    setCustomRole(value)
+    setRole(value)
+  }
+
+  const displayRole = isCustomRole ? customRole : role
 
   const signatureHTML = `
 <table border="0" cellpadding="0" cellspacing="0" class="sig-main-table" style="font-family: 'Poppins', Arial, Helvetica, sans-serif; font-size: 12px; color: #1e3a8a; line-height: 1.5; max-width: 600px;">
@@ -33,7 +65,7 @@ export function EmailSignaturePage() {
               </tr>
               <tr>
                 <td style="padding-bottom: 0; text-align: left;">
-                  <span style="color: #1e3a8a; font-size: 14px;">${role} | AC Drain Wiz</span>
+                  <span style="color: #1e3a8a; font-size: 14px;">${displayRole} | AC Drain Wiz</span>
                 </td>
               </tr>
             </table>
@@ -184,13 +216,27 @@ export function EmailSignaturePage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Role/Department
               </label>
-              <input
-                type="text"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                placeholder="e.g., Sales & Marketing"
+              <select
+                value={isCustomRole ? 'Custom' : role}
+                onChange={(e) => handleRoleChange(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              >
+                <option value="">Select a department...</option>
+                {departments.map((dept) => (
+                  <option key={dept} value={dept}>
+                    {dept}
+                  </option>
+                ))}
+              </select>
+              {isCustomRole && (
+                <input
+                  type="text"
+                  value={customRole}
+                  onChange={(e) => handleCustomRoleChange(e.target.value)}
+                  placeholder="Enter custom department/role"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2"
+                />
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
