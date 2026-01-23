@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { IMaskInput } from 'react-imask'
 
 export function EmailSignaturePage() {
   const [name, setName] = useState('')
@@ -244,11 +245,12 @@ export function EmailSignaturePage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Mobile Phone
               </label>
-              <input
-                type="text"
+              <IMaskInput
+                mask="(000) 000-0000"
+                type="tel"
                 value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
-                placeholder="e.g., 305-318-5611"
+                onAccept={(value) => setMobile(value)}
+                placeholder="e.g., (305) 318-5611"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
