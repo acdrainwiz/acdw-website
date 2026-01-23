@@ -11,7 +11,9 @@ export function EmailSignaturePage() {
 
   const departments = [
     'Sales & Marketing',
-    'Product & Engineering',
+    'Product Management',
+    'Product Design',
+    'Engineering',
     'Operations',
     'Customer Success / Support',
     'Finance & Accounting',
