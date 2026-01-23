@@ -60,19 +60,19 @@ export function EmailSignaturePage() {
             <table border="0" cellpadding="0" cellspacing="0" class="sig-contact-inner-table" style="font-family: 'Poppins', Arial, Helvetica, sans-serif;">
               <tr>
                 <td style="padding-bottom: 4px; text-align: left;">
-                  <span style="color: #1e3a8a; font-size: 12px;">Mobile: </span>
+                  <span style="color: #1e3a8a; font-size: 12px; font-weight: bold;">Mobile: </span>
                   <span style="color: #1e3a8a; font-size: 12px;">${mobile}</span>
                 </td>
               </tr>
               <tr>
                 <td style="padding-bottom: 4px; text-align: left;">
-                  <span style="color: #1e3a8a; font-size: 12px;">Email: </span>
+                  <span style="color: #1e3a8a; font-size: 12px; font-weight: bold;">Email: </span>
                   <a href="mailto:${email}" style="color: #2563eb; text-decoration: underline; font-size: 12px;">${email}</a>
                 </td>
               </tr>
               <tr>
                 <td style="padding-bottom: 0; text-align: left;">
-                  <span style="color: #1e3a8a; font-size: 12px;">Web: </span>
+                  <span style="color: #1e3a8a; font-size: 12px; font-weight: bold;">Web: </span>
                   <a href="https://www.acdrainwiz.com" style="color: #2563eb; text-decoration: underline; font-size: 12px;">www.acdrainwiz.com</a>
                 </td>
               </tr>
