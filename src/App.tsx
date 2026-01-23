@@ -44,6 +44,7 @@ import { ComboProductPage } from './pages/ComboProductPage'
 import { CheckoutPage } from './pages/CheckoutPage'
 import { SensorSetupPage } from './pages/SensorSetupPage'
 import { RecommendedInstallationScenariosPage } from './pages/RecommendedInstallationScenariosPage'
+import { EmailSignaturePage } from './pages/EmailSignaturePage'
 
 function AppContent() {
   const location = useLocation()
@@ -98,6 +99,7 @@ function AppContent() {
                     <Route path="/products/combo" element={<ComboProductPage />} />
                     <Route path="/sensor-setup" element={<SensorSetupPage />} />
                     <Route path="/support/installation-scenarios" element={<RecommendedInstallationScenariosPage />} />
+                    <Route path="/email-signature" element={<EmailSignaturePage />} />
             </Routes>
           </main>
           {!hideHeaderFooter && <Footer />}

@@ -12929,3 +12929,17 @@
 .combo-product-phone-numeric {
   @apply text-sm opacity-75 mt-0.5;
 }
+
+/* Email Signature Page Styles */
+.email-signature-preview {
+  @apply inline-block;
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+}
+
+.email-signature-preview table {
+  @apply border-collapse;
+}
+
+.email-signature-preview img {
+  @apply max-w-[180px] h-auto;
+}
