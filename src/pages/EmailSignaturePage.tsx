@@ -28,12 +28,12 @@ export function EmailSignaturePage() {
               </tr>
               <tr>
                 <td style="padding-bottom: 4px; text-align: left;">
-                  <span style="color: #1e3a8a; font-size: 12px;">${title}</span>
+                  <span style="color: #1e3a8a; font-size: 14px;">${title}</span>
                 </td>
               </tr>
               <tr>
                 <td style="padding-bottom: 0; text-align: left;">
-                  <span style="color: #1e3a8a; font-size: 12px;">${role} | AC Drain Wiz</span>
+                  <span style="color: #1e3a8a; font-size: 14px;">${role} | AC Drain Wiz</span>
                 </td>
               </tr>
             </table>
@@ -41,10 +41,21 @@ export function EmailSignaturePage() {
         </tr>
       </table>
       
-      <!-- Orange Separator Line -->
+      <!-- Orange Separator Line (only in right column) -->
       <table border="0" cellpadding="0" cellspacing="0" class="sig-separator" width="100%" style="margin-top: 12px; margin-bottom: 12px;">
         <tr>
-          <td style="border-top: 2px solid #f97316; padding: 0;"></td>
+          <!-- Empty Logo Column (to maintain alignment) -->
+          <td style="padding-right: 20px; vertical-align: top; width: 200px;">
+            &nbsp;
+          </td>
+          <!-- Separator Line Column (aligned with name/title) -->
+          <td style="vertical-align: top; padding-left: 0;">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tr>
+                <td style="border-top: 2px solid #ef5123; padding: 0;"></td>
+              </tr>
+            </table>
+          </td>
         </tr>
       </table>
       
@@ -60,20 +71,20 @@ export function EmailSignaturePage() {
             <table border="0" cellpadding="0" cellspacing="0" class="sig-contact-inner-table" style="font-family: 'Poppins', Arial, Helvetica, sans-serif;">
               <tr>
                 <td style="padding-bottom: 4px; text-align: left;">
-                  <span style="color: #1e3a8a; font-size: 12px; font-weight: bold;">Mobile: </span>
-                  <span style="color: #1e3a8a; font-size: 12px;">${mobile}</span>
+                  <span style="color: #1e3a8a; font-size: 14px; font-weight: bold;">Mobile: </span>
+                  <span style="color: #1e3a8a; font-size: 14px;">${mobile}</span>
                 </td>
               </tr>
               <tr>
                 <td style="padding-bottom: 4px; text-align: left;">
-                  <span style="color: #1e3a8a; font-size: 12px; font-weight: bold;">Email: </span>
-                  <a href="mailto:${email}" style="color: #2563eb; text-decoration: underline; font-size: 12px;">${email}</a>
+                  <span style="color: #1e3a8a; font-size: 14px; font-weight: bold;">Email: </span>
+                  <a href="mailto:${email}" style="color: #2563eb; text-decoration: underline; font-size: 14px;">${email}</a>
                 </td>
               </tr>
               <tr>
                 <td style="padding-bottom: 0; text-align: left;">
-                  <span style="color: #1e3a8a; font-size: 12px; font-weight: bold;">Web: </span>
-                  <a href="https://www.acdrainwiz.com" style="color: #2563eb; text-decoration: underline; font-size: 12px;">www.acdrainwiz.com</a>
+                  <span style="color: #1e3a8a; font-size: 14px; font-weight: bold;">Web: </span>
+                  <a href="https://www.acdrainwiz.com" style="color: #2563eb; text-decoration: underline; font-size: 14px;">www.acdrainwiz.com</a>
                 </td>
               </tr>
             </table>
