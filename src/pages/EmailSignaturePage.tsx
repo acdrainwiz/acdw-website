@@ -23,7 +23,7 @@ export function EmailSignaturePage() {
             <table border="0" cellpadding="0" cellspacing="0" class="sig-info-inner-table" style="font-family: 'Poppins', Arial, Helvetica, sans-serif;">
               <tr>
                 <td style="padding-bottom: 4px; text-align: left;">
-                  <span style="font-weight: bold; font-size: 16px; color: #1e3a8a;">${name}</span>
+                  <span style="font-weight: bold; font-size: 18px; color: #1e3a8a;">${name}</span>
                 </td>
               </tr>
               <tr>
