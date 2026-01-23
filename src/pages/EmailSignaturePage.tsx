@@ -41,10 +41,21 @@ export function EmailSignaturePage() {
         </tr>
       </table>
       
-      <!-- Orange Separator Line -->
+      <!-- Orange Separator Line (only in right column) -->
       <table border="0" cellpadding="0" cellspacing="0" class="sig-separator" width="100%" style="margin-top: 12px; margin-bottom: 12px;">
         <tr>
-          <td style="border-top: 2px solid #f97316; padding: 0;"></td>
+          <!-- Empty Logo Column (to maintain alignment) -->
+          <td style="padding-right: 20px; vertical-align: top; width: 200px;">
+            &nbsp;
+          </td>
+          <!-- Separator Line Column (aligned with name/title) -->
+          <td style="vertical-align: top; padding-left: 0;">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tr>
+                <td style="border-top: 2px solid #ef5123; padding: 0;"></td>
+              </tr>
+            </table>
+          </td>
         </tr>
       </table>
       
