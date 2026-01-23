@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { IMaskInput } from 'react-imask'
+import { isValidEmail } from '../utils/emailValidation'
 
 export function EmailSignaturePage() {
   const [name, setName] = useState('')
@@ -9,6 +10,10 @@ export function EmailSignaturePage() {
   const [isCustomRole, setIsCustomRole] = useState(false)
   const [mobile, setMobile] = useState('')
   const [email, setEmail] = useState('')
+  
+  // Validation state
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [touched, setTouched] = useState<Record<string, boolean>>({})
 
   const departments = [
     'Sales & Marketing',
@@ -41,6 +46,108 @@ export function EmailSignaturePage() {
   }
 
   const displayRole = isCustomRole ? customRole : role
+
+  // Validation functions
+  const validateName = (value: string): string | null => {
+    if (!value || value.trim().length === 0) {
+      return 'Name is required'
+    }
+    if (value.trim().length < 2) {
+      return 'Name must be at least 2 characters'
+    }
+    return null
+  }
+
+  const validateTitle = (value: string): string | null => {
+    if (!value || value.trim().length === 0) {
+      return 'Job title is required'
+    }
+    return null
+  }
+
+  const validateRole = (): string | null => {
+    if (!displayRole || displayRole.trim().length === 0) {
+      return 'Department/Role is required'
+    }
+    if (isCustomRole && (!customRole || customRole.trim().length === 0)) {
+      return 'Please enter a custom department/role'
+    }
+    return null
+  }
+
+  const validatePhone = (value: string): string | null => {
+    // Remove formatting characters to check digit count
+    const digitsOnly = value.replace(/\D/g, '')
+    if (digitsOnly.length > 0 && digitsOnly.length < 10) {
+      return 'Please enter a complete phone number'
+    }
+    return null
+  }
+
+  const validateEmailField = (value: string): string | null => {
+    if (!value || value.trim().length === 0) {
+      return 'Email is required'
+    }
+    if (!isValidEmail(value)) {
+      return 'Please enter a valid email address'
+    }
+    return null
+  }
+
+  // Validate all fields
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {}
+    
+    const nameError = validateName(name)
+    if (nameError) newErrors.name = nameError
+    
+    const titleError = validateTitle(title)
+    if (titleError) newErrors.title = titleError
+    
+    const roleError = validateRole()
+    if (roleError) newErrors.role = roleError
+    
+    const phoneError = validatePhone(mobile)
+    if (phoneError) newErrors.mobile = phoneError
+    
+    const emailError = validateEmailField(email)
+    if (emailError) newErrors.email = emailError
+    
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  // Handle field blur for validation
+  const handleBlur = (field: string) => {
+    setTouched({ ...touched, [field]: true })
+    
+    let error: string | null = null
+    switch (field) {
+      case 'name':
+        error = validateName(name)
+        break
+      case 'title':
+        error = validateTitle(title)
+        break
+      case 'role':
+        error = validateRole()
+        break
+      case 'mobile':
+        error = validatePhone(mobile)
+        break
+      case 'email':
+        error = validateEmailField(email)
+        break
+    }
+    
+    if (error) {
+      setErrors({ ...errors, [field]: error })
+    } else {
+      const newErrors = { ...errors }
+      delete newErrors[field]
+      setErrors(newErrors)
+    }
+  }
 
   const signatureHTML = `
 <table border="0" cellpadding="0" cellspacing="0" class="sig-main-table" style="font-family: 'Poppins', Arial, Helvetica, sans-serif; font-size: 12px; color: #1e3a8a; line-height: 1.5; max-width: 600px;">
@@ -132,6 +239,20 @@ export function EmailSignaturePage() {
   `.trim()
 
   const handleCopy = async () => {
+    // Validate form before copying
+    if (!validateForm()) {
+      // Mark all fields as touched to show errors
+      setTouched({
+        name: true,
+        title: true,
+        role: true,
+        mobile: true,
+        email: true
+      })
+      alert('Please fix the errors in the form before copying your signature.')
+      return
+    }
+
     try {
       // Use the modern Clipboard API if available
       if (navigator.clipboard && navigator.clipboard.write) {
@@ -193,36 +314,95 @@ export function EmailSignaturePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Full Name
+                Full Name <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value)
+                  if (touched.name) {
+                    const error = validateName(e.target.value)
+                    if (error) {
+                      setErrors({ ...errors, name: error })
+                    } else {
+                      const newErrors = { ...errors }
+                      delete newErrors.name
+                      setErrors(newErrors)
+                    }
+                  }
+                }}
+                onBlur={() => handleBlur('name')}
                 placeholder="e.g., John Smith"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                  touched.name && errors.name
+                    ? 'border-red-500 focus:ring-red-500'
+                    : 'border-gray-300 focus:ring-blue-500'
+                }`}
               />
+              {touched.name && errors.name && (
+                <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Job Title
+                Job Title <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => {
+                  setTitle(e.target.value)
+                  if (touched.title) {
+                    const error = validateTitle(e.target.value)
+                    if (error) {
+                      setErrors({ ...errors, title: error })
+                    } else {
+                      const newErrors = { ...errors }
+                      delete newErrors.title
+                      setErrors(newErrors)
+                    }
+                  }
+                }}
+                onBlur={() => handleBlur('title')}
                 placeholder="e.g., VP of Sales"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                  touched.title && errors.title
+                    ? 'border-red-500 focus:ring-red-500'
+                    : 'border-gray-300 focus:ring-blue-500'
+                }`}
               />
+              {touched.title && errors.title && (
+                <p className="mt-1 text-sm text-red-600">{errors.title}</p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Role/Department
+                Role/Department <span className="text-red-500">*</span>
               </label>
               <select
                 value={isCustomRole ? 'Custom' : role}
-                onChange={(e) => handleRoleChange(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onChange={(e) => {
+                  handleRoleChange(e.target.value)
+                  if (touched.role) {
+                    setTimeout(() => {
+                      const error = validateRole()
+                      if (error) {
+                        setErrors({ ...errors, role: error })
+                      } else {
+                        const newErrors = { ...errors }
+                        delete newErrors.role
+                        setErrors(newErrors)
+                      }
+                    }, 0)
+                  }
+                }}
+                onBlur={() => handleBlur('role')}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                  touched.role && errors.role
+                    ? 'border-red-500 focus:ring-red-500'
+                    : 'border-gray-300 focus:ring-blue-500'
+                }`}
               >
                 <option value="">Select a department...</option>
                 {departments.map((dept) => (
@@ -235,10 +415,32 @@ export function EmailSignaturePage() {
                 <input
                   type="text"
                   value={customRole}
-                  onChange={(e) => handleCustomRoleChange(e.target.value)}
+                  onChange={(e) => {
+                    handleCustomRoleChange(e.target.value)
+                    if (touched.role) {
+                      setTimeout(() => {
+                        const error = validateRole()
+                        if (error) {
+                          setErrors({ ...errors, role: error })
+                        } else {
+                          const newErrors = { ...errors }
+                          delete newErrors.role
+                          setErrors(newErrors)
+                        }
+                      }, 0)
+                    }
+                  }}
+                  onBlur={() => handleBlur('role')}
                   placeholder="Enter custom department/role"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2"
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2 ${
+                    touched.role && errors.role
+                      ? 'border-red-500 focus:ring-red-500'
+                      : 'border-gray-300 focus:ring-blue-500'
+                  }`}
                 />
+              )}
+              {touched.role && errors.role && (
+                <p className="mt-1 text-sm text-red-600">{errors.role}</p>
               )}
             </div>
             <div>
@@ -249,22 +451,62 @@ export function EmailSignaturePage() {
                 mask="(000) 000-0000"
                 type="tel"
                 value={mobile}
-                onAccept={(value) => setMobile(value)}
+                onAccept={(value) => {
+                  setMobile(value)
+                  if (touched.mobile) {
+                    const error = validatePhone(value)
+                    if (error) {
+                      setErrors({ ...errors, mobile: error })
+                    } else {
+                      const newErrors = { ...errors }
+                      delete newErrors.mobile
+                      setErrors(newErrors)
+                    }
+                  }
+                }}
+                onBlur={() => handleBlur('mobile')}
                 placeholder="e.g., (305) 318-5611"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                  touched.mobile && errors.mobile
+                    ? 'border-red-500 focus:ring-red-500'
+                    : 'border-gray-300 focus:ring-blue-500'
+                }`}
               />
+              {touched.mobile && errors.mobile && (
+                <p className="mt-1 text-sm text-red-600">{errors.mobile}</p>
+              )}
             </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
+                Email Address <span className="text-red-500">*</span>
               </label>
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value)
+                  if (touched.email) {
+                    const error = validateEmailField(e.target.value)
+                    if (error) {
+                      setErrors({ ...errors, email: error })
+                    } else {
+                      const newErrors = { ...errors }
+                      delete newErrors.email
+                      setErrors(newErrors)
+                    }
+                  }
+                }}
+                onBlur={() => handleBlur('email')}
                 placeholder="e.g., yourname@acdrainwiz.com"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                  touched.email && errors.email
+                    ? 'border-red-500 focus:ring-red-500'
+                    : 'border-gray-300 focus:ring-blue-500'
+                }`}
               />
+              {touched.email && errors.email && (
+                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+              )}
             </div>
           </div>
 
