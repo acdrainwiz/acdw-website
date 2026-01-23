@@ -175,7 +175,7 @@ export function EmailSignaturePage() {
               </tr>
               <tr>
                 <td style="padding-bottom: 0; text-align: left;">
-                  <span style="color: #1e3a8a; font-size: 14px;">${displayRole} | AC Drain Wiz</span>
+                  <span style="color: #1e3a8a; font-size: 14px;">${displayRole}</span>
                 </td>
               </tr>
             </table>
