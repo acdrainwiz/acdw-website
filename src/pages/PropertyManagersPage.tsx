@@ -42,7 +42,7 @@ export function PropertyManagersPage() {
                 href="tel:+12342237246"
                 className="homeowner-hero-cta-secondary"
               >
-                Call (234) AC DRAIN
+                Call (234) 23 DRAIN
               </a>
             </div>
           </div>
@@ -206,7 +206,7 @@ export function PropertyManagersPage() {
           <div className="homeowner-faq-item">
             <h3 className="homeowner-faq-question">What's the cost for multiple properties?</h3>
             <p className="homeowner-faq-answer">
-              We offer volume pricing for property portfolios. Contact us at (234) AC DRAIN to discuss your specific needs and get a custom quote.
+              We offer volume pricing for property portfolios. Contact us at (234) 23 DRAIN to discuss your specific needs and get a custom quote.
             </p>
           </div>
 
@@ -252,7 +252,7 @@ export function PropertyManagersPage() {
               className="homeowner-hero-cta-secondary"
             >
               <PhoneIcon style={{ width: '20px', height: '20px', marginRight: '8px' }} />
-              (234) AC DRAIN
+              (234) 23 DRAIN
             </a>
           </div>
         </div>

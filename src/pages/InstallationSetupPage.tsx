@@ -143,7 +143,7 @@ export function InstallationSetupPage() {
                 <h3 className="support-section-info-box-title">Need professional installation?</h3>
                 <p className="support-section-info-box-text">
                   Contact us at{' '}
-                  <a href="tel:+12342237246" className="support-section-info-box-link">(234) AC DRAIN</a>{' '}
+                  <a href="tel:+12342237246" className="support-section-info-box-link">(234) 23 DRAIN</a>{' '}
                   or{' '}
                   <Link to="/contact?type=installer" className="support-section-info-box-link">
                     find a certified installer

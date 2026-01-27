@@ -166,7 +166,7 @@ export function SupportPage() {
                   <div className="support-info-box">
                     <p className="support-info-text">
                       <strong>Need professional installation?</strong> Contact us at{' '}
-                      <a href="tel:+12342237246" className="text-blue-600 hover:text-blue-700">(234) AC DRAIN</a>{' '}
+                      <a href="tel:+12342237246" className="text-blue-600 hover:text-blue-700">(234) 23 DRAIN</a>{' '}
                       or{' '}
                       <Link to="/contact?type=installer" className="text-blue-600 hover:text-blue-700">
                         find a certified installer
@@ -267,7 +267,7 @@ export function SupportPage() {
                         className="support-action-button-primary"
                       >
                         <PhoneIcon className="support-action-icon" />
-                        Call (234) AC DRAIN
+                        Call (234) 23 DRAIN
                       </a>
                       <Link
                         to="/contact?type=support"
@@ -349,7 +349,7 @@ export function SupportPage() {
                       <div className="bg-gray-50 rounded-lg p-4">
                         <h4 className="font-semibold text-gray-900 mb-2">Return Process</h4>
                         <ol className="text-sm text-gray-700 space-y-2 list-decimal list-inside">
-                          <li>Contact us at <a href="mailto:info@acdrainwiz.com" className="text-blue-600">info@acdrainwiz.com</a> or call (234) AC DRAIN</li>
+                          <li>Contact us at <a href="mailto:info@acdrainwiz.com" className="text-blue-600">info@acdrainwiz.com</a> or call (234) 23 DRAIN</li>
                           <li>Provide your order number and reason for return</li>
                           <li>We'll send you a return authorization and shipping label</li>
                           <li>Package the item securely and ship it back</li>
@@ -362,7 +362,7 @@ export function SupportPage() {
                   <div className="bg-blue-50 rounded-lg p-4">
                     <p className="text-sm text-gray-700">
                       <strong>Questions about warranty or returns?</strong> Contact us at{' '}
-                      <a href="tel:+12342237246" className="text-blue-600 hover:text-blue-700">(234) AC DRAIN</a>{' '}
+                      <a href="tel:+12342237246" className="text-blue-600 hover:text-blue-700">(234) 23 DRAIN</a>{' '}
                       or{' '}
                       <Link to="/contact?type=support" className="text-blue-600 hover:text-blue-700">
                         submit a support request
@@ -474,7 +474,7 @@ export function SupportPage() {
                         <h4 className="support-contact-title">Phone Support</h4>
                         <p className="support-contact-details">Monday - Friday, 8 AM - 5 PM EST</p>
                         <a href="tel:+12342237246" className="support-contact-link">
-                          (234) AC DRAIN
+                          (234) 23 DRAIN
                         </a>
                       </div>
                       <div className="support-contact-card">

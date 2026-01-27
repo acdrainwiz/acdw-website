@@ -115,7 +115,7 @@ export function AboutPage() {
                     className="about-page-leadership-contact-link"
                   >
                     <PhoneIcon className="about-page-leadership-contact-icon" />
-                    <span className="about-page-leadership-contact-text">(234) AC DRAIN</span>
+                    <span className="about-page-leadership-contact-text">(234) 23 DRAIN</span>
                   </a>
                 </div>
               </div>

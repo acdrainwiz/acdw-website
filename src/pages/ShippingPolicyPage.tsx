@@ -288,7 +288,7 @@ export function ShippingPolicyPage() {
               </p>
               <ul className="list-none space-y-2 text-gray-700">
                 <li>Email: <a href="mailto:support@acdrainwiz.com" className="text-orange-600 hover:text-orange-700">support@acdrainwiz.com</a></li>
-                <li>Phone: <strong>(234) AC DRAIN</strong></li>
+                <li>Phone: <strong>(234) 23 DRAIN</strong></li>
                 <li>Please include your order number and tracking information</li>
               </ul>
             </div>
@@ -346,7 +346,7 @@ export function ShippingPolicyPage() {
                     </a>
                   </li>
                   <li>
-                    <strong>Phone:</strong> (234) AC DRAIN
+                    <strong>Phone:</strong> (234) 23 DRAIN
                   </li>
                   <li>
                     <strong>Business Hours:</strong> [TO BE DETERMINED - Add your business hours]
