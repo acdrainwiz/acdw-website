@@ -95,7 +95,7 @@ export function WarrantyReturnsPage() {
             <div className="support-section-returns-process">
               <h3 className="support-section-returns-process-title">Return Process</h3>
               <ol className="support-section-returns-process-list">
-                <li>Contact us at <a href="mailto:info@acdrainwiz.com" className="support-section-link">info@acdrainwiz.com</a> or call (234) AC DRAIN</li>
+                <li>Contact us at <a href="mailto:info@acdrainwiz.com" className="support-section-link">info@acdrainwiz.com</a> or call (234) 23 DRAIN</li>
                 <li>Provide your order number and reason for return</li>
                 <li>We'll send you a return authorization and shipping label</li>
                 <li>Package the item securely and ship it back</li>
@@ -112,7 +112,7 @@ export function WarrantyReturnsPage() {
                 <h3 className="support-section-info-box-title">Questions about warranty or returns?</h3>
                 <p className="support-section-info-box-text">
                   Contact us at{' '}
-                  <a href="tel:+12342237246" className="support-section-info-box-link">(234) AC DRAIN</a>{' '}
+                  <a href="tel:+12342237246" className="support-section-info-box-link">(234) 23 DRAIN</a>{' '}
                   or{' '}
                   <Link to="/support/contact" className="support-section-info-box-link">
                     submit a support request

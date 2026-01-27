@@ -117,7 +117,7 @@ export function ProductSupportPage() {
                 className="support-action-button-primary"
               >
                 <PhoneIcon className="support-action-icon" />
-                Call (234) AC DRAIN
+                Call (234) 23 DRAIN
               </a>
               <Link
                 to="/support/contact"

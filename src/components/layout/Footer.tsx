@@ -123,7 +123,7 @@ export function Footer() {
             </div>
             <div className="footer-contact-item">
               <PhoneIcon className="footer-contact-icon" />
-              <span>(234) AC DRAIN</span>
+              <span>(234) 23 DRAIN</span>
             </div>
             <div className="footer-contact-item">
               <MapPinIcon className="footer-contact-icon" />

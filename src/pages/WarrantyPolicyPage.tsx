@@ -153,7 +153,7 @@ export function WarrantyPolicyPage() {
                   <a href="mailto:support@acdrainwiz.com" className="text-orange-600 hover:text-orange-700">
                     support@acdrainwiz.com
                   </a>{' '}
-                  or call us at <strong>(234) AC DRAIN</strong> to initiate a warranty claim.
+                  or call us at <strong>(234) 23 DRAIN</strong> to initiate a warranty claim.
                 </li>
                 <li>
                   <strong>Provide Information:</strong> Include the following information:
@@ -233,7 +233,7 @@ export function WarrantyPolicyPage() {
                   the warranty claim internally with the distributor.
                 </p>
                 <p className="text-gray-700 mt-2 text-sm">
-                  <strong>Note:</strong> Contact us at <a href="mailto:support@acdrainwiz.com" className="text-orange-600 hover:text-orange-700">support@acdrainwiz.com</a> or <strong>(234) AC DRAIN</strong> 
+                  <strong>Note:</strong> Contact us at <a href="mailto:support@acdrainwiz.com" className="text-orange-600 hover:text-orange-700">support@acdrainwiz.com</a> or <strong>(234) 23 DRAIN</strong> 
                   to find a distributor near you.
                 </p>
               </div>
@@ -302,7 +302,7 @@ export function WarrantyPolicyPage() {
                     </a>
                   </li>
                   <li>
-                    <strong>Phone:</strong> (234) AC DRAIN
+                    <strong>Phone:</strong> (234) 23 DRAIN
                   </li>
                   <li>
                     <strong>Business Hours:</strong> [TO BE DETERMINED - Add your business hours]

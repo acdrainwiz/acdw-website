@@ -44,7 +44,7 @@ export function PropertyManagerPage() {
                 href="tel:+12342237246"
                 className="property-manager-hero-cta-primary"
               >
-                Call (234) AC DRAIN
+                Call (234) 23 DRAIN
               </a>
               <button 
                 onClick={handleContactSales}
@@ -490,7 +490,7 @@ export function PropertyManagerPage() {
               href="tel:+12342237246"
               className="property-manager-cta-button-primary"
             >
-              Call (234) AC DRAIN
+              Call (234) 23 DRAIN
             </a>
             <button 
               onClick={handleContactSales}

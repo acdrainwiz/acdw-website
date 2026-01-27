@@ -1658,7 +1658,7 @@ export function ContactPage() {
                           className="contact-leadership-link"
                         >
                           <PhoneIcon className="contact-leadership-link-icon" />
-                          <span>(234) AC DRAIN</span>
+                          <span>(234) 23 DRAIN</span>
                         </a>
                       </div>
                     </div>
@@ -1670,7 +1670,7 @@ export function ContactPage() {
                   <h3 className="contact-quick-info-title">Quick Contact</h3>
                   <div className="contact-quick-info-list">
                     <p><strong>Email:</strong> info@acdrainwiz.com</p>
-                    <p><strong>Phone:</strong> (234) AC DRAIN</p>
+                    <p><strong>Phone:</strong> (234) 23 DRAIN</p>
                     <p><strong>Hours:</strong> Mon-Fri, 9:00 AM - 5:00 PM EST</p>
                   </div>
                 </div>

@@ -42,7 +42,7 @@ export function HVACProsPage() {
                 href="tel:+12342237246"
                 className="homeowner-hero-cta-secondary"
               >
-                Call (234) AC DRAIN
+                Call (234) 23 DRAIN
               </a>
             </div>
           </div>
@@ -206,7 +206,7 @@ export function HVACProsPage() {
           <div className="homeowner-faq-item">
             <h3 className="homeowner-faq-question">What's the bulk pricing for contractors?</h3>
             <p className="homeowner-faq-answer">
-              We offer tiered pricing based on volume. Contact our sales team at (234) AC DRAIN for custom quotes and contractor program details.
+              We offer tiered pricing based on volume. Contact our sales team at (234) 23 DRAIN for custom quotes and contractor program details.
             </p>
           </div>
 
@@ -252,7 +252,7 @@ export function HVACProsPage() {
               className="homeowner-hero-cta-secondary"
             >
               <PhoneIcon style={{ width: '20px', height: '20px', marginRight: '8px' }} />
-              (234) AC DRAIN
+              (234) 23 DRAIN
             </a>
           </div>
         </div>

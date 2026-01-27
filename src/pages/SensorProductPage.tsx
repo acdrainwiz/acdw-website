@@ -314,13 +314,13 @@ export function SensorProductPage() {
                       href={salesPhone}
                       className="sensor-product-purchase-button-primary md:hidden"
                     >
-                      Call (234) AC DRAIN
+                      Call (234) 23 DRAIN
                     </a>
                     {/* Desktop: Phone badge (non-clickable) */}
                     <div className="sensor-product-phone-badge hidden md:flex">
                       <PhoneIcon className="sensor-product-phone-badge-icon" />
                       <div className="sensor-product-phone-badge-text">
-                        <div className="sensor-product-phone-vanity">(234) AC DRAIN</div>
+                        <div className="sensor-product-phone-vanity">(234) 23 DRAIN</div>
                         <div className="sensor-product-phone-numeric">(234) 223-7246</div>
                       </div>
                     </div>
@@ -343,13 +343,13 @@ export function SensorProductPage() {
                       href={salesPhone}
                       className="sensor-product-purchase-button-primary md:hidden"
                     >
-                      Call (234) AC DRAIN
+                      Call (234) 23 DRAIN
                     </a>
                     {/* Desktop: Phone badge (non-clickable) */}
                     <div className="sensor-product-phone-badge hidden md:flex">
                       <PhoneIcon className="sensor-product-phone-badge-icon" />
                       <div className="sensor-product-phone-badge-text">
-                        <div className="sensor-product-phone-vanity">(234) AC DRAIN</div>
+                        <div className="sensor-product-phone-vanity">(234) 23 DRAIN</div>
                         <div className="sensor-product-phone-numeric">(234) 223-7246</div>
                       </div>
                     </div>
@@ -372,13 +372,13 @@ export function SensorProductPage() {
                       href={salesPhone}
                       className="sensor-product-purchase-button-primary md:hidden"
                     >
-                      Call (234) AC DRAIN
+                      Call (234) 23 DRAIN
                     </a>
                     {/* Desktop: Phone badge (non-clickable) */}
                     <div className="sensor-product-phone-badge hidden md:flex">
                       <PhoneIcon className="sensor-product-phone-badge-icon" />
                       <div className="sensor-product-phone-badge-text">
-                        <div className="sensor-product-phone-vanity">(234) AC DRAIN</div>
+                        <div className="sensor-product-phone-vanity">(234) 23 DRAIN</div>
                         <div className="sensor-product-phone-numeric">(234) 223-7246</div>
                       </div>
                     </div>
@@ -401,13 +401,13 @@ export function SensorProductPage() {
                       href={salesPhone}
                       className="sensor-product-purchase-button-primary md:hidden"
                     >
-                      Call (234) AC DRAIN
+                      Call (234) 23 DRAIN
                     </a>
                     {/* Desktop: Phone badge (non-clickable) */}
                     <div className="sensor-product-phone-badge hidden md:flex">
                       <PhoneIcon className="sensor-product-phone-badge-icon" />
                       <div className="sensor-product-phone-badge-text">
-                        <div className="sensor-product-phone-vanity">(234) AC DRAIN</div>
+                        <div className="sensor-product-phone-vanity">(234) 23 DRAIN</div>
                         <div className="sensor-product-phone-numeric">(234) 223-7246</div>
                       </div>
                     </div>

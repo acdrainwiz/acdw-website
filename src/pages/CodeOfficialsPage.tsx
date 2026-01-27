@@ -44,7 +44,7 @@ export function CodeOfficialsPage() {
                 href="tel:+12342237246"
                 className="homeowner-hero-cta-secondary"
               >
-                Call (234) AC DRAIN
+                Call (234) 23 DRAIN
               </a>
             </div>
           </div>
@@ -226,7 +226,7 @@ export function CodeOfficialsPage() {
           <div className="homeowner-faq-item">
             <h3 className="homeowner-faq-question">What documentation is available for approval?</h3>
             <p className="homeowner-faq-answer">
-              We provide complete technical specifications, installation instructions, and IMC compliance documentation. Contact us at (234) AC DRAIN for approval packets.
+              We provide complete technical specifications, installation instructions, and IMC compliance documentation. Contact us at (234) 23 DRAIN for approval packets.
             </p>
           </div>
 
@@ -272,7 +272,7 @@ export function CodeOfficialsPage() {
               className="homeowner-hero-cta-secondary"
             >
               <PhoneIcon style={{ width: '20px', height: '20px', marginRight: '8px' }} />
-              (234) AC DRAIN
+              (234) 23 DRAIN
             </a>
           </div>
         </div>

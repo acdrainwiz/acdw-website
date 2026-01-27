@@ -191,7 +191,7 @@ export function ProductsPage() {
     {
       question: "Do you offer professional contractor pricing?",
       // Launch Button Redirect
-      answer: "Yes! HVAC professionals and contractors qualify for special bulk pricing and support. Contact us at (234) AC DRAIN [(234) 223-7246] or use our contact form to request contractor pricing."
+      answer: "Yes! HVAC professionals and contractors qualify for special bulk pricing and support. Contact us at (234) 23 DRAIN [(234) 223-7246] or use our contact form to request contractor pricing."
     },
     {
       question: "Is AC Drain Wiz approved by building inspectors and code officials?",
