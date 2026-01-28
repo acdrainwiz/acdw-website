@@ -352,7 +352,7 @@
   /* Hero Section Classes */
   .hero-main-container {
     @apply relative overflow-hidden;
-    background: linear-gradient(135deg, #0077C5 0%, #00B8F5 100%);
+    background: black;
     min-height: 115vh;
   }
 
@@ -388,25 +388,57 @@
     background-image: url('/images/acdw-mini-hero-background.png');
   }
 
-  /* Mobile - adjust hero background position and size */
-  @media (max-width: 767px) {
+  /* Small mobile devices - adjust hero background position and size */
+  @media (max-width: 390px) {
     .hero-background-image {
-      background-position-x: -150px;
+      background-position-x: -130px;
       background-size: 160% auto !important;
       background-color: black;
       background-position-y: 0px !important;
     }
   }
 
+  /* Mobile - adjust hero background position and size */
+  @media (min-width: 391px) and (max-width: 767px) {
+    .hero-background-image {
+      background-position-x: -140px;
+      background-size: 160% auto !important;
+      background-color: black;
+      background-position-y: 0px !important;
+    }
+  }
+
+  /* Tablet and smaller desktop - adjust hero background position */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .hero-background-image {
+      background-position-x: -340px;
+    }
+  }
+
+  /* iPad Mini horizontal (1024x768) - specific adjustment */
+  @media screen and (width: 1024px) and (height: 768px) {
+    .hero-background-image {
+      background-position-x: -170px;
+    }
+  }
+
+  /* iPad Pro portrait (1024x1366) - specific adjustment */
+  @media screen and (width: 1024px) and (height: 1366px) {
+    .hero-background-image {
+      background-position-x: -340px !important;
+    }
+  }
+
   /* Tablet portrait mode - adjust hero background position and size */
   @media screen and (min-width: 768px) and (max-width: 1366px) and (orientation: portrait) {
     .hero-background-image {
-      background-position-x: -300px;
+      background-position-x: -250px;
       background-size: 160% auto !important;
       background-color: black;
     }
   }
 
+  /* Temporarily disabled to compare brightness */
   .hero-background-image::before {
     content: '';
     position: absolute;
@@ -421,6 +453,7 @@
       rgba(0, 0, 0, 0.6) 100%
     );
     z-index: 1;
+    display: none; /* Temporarily disabled */
   }
 
   .hero-text-content {
@@ -836,6 +869,13 @@
     margin-top: 950px !important;
   }
 
+  /* Larger screens - sensor card content spacing */
+  @media (min-width: 1024px) {
+    .product-showcase-card-sensor.product-showcase-card-full-width .product-showcase-card-content {
+      margin-top: 1100px !important;
+    }
+  }
+
   /* Mobile - sensor card content - flexible height */
   @media (max-width: 767px) {
     .product-showcase-card-sensor.product-showcase-card-full-width .product-showcase-card-content {
@@ -847,7 +887,7 @@
       box-sizing: border-box;
       min-height: auto;
       height: auto;
-      margin-top: 600px !important;
+      margin-top: 700px !important;
     }
   }
 
