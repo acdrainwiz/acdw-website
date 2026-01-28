@@ -438,7 +438,6 @@
     }
   }
 
-  /* Temporarily disabled to compare brightness */
   .hero-background-image::before {
     content: '';
     position: absolute;
@@ -453,7 +452,6 @@
       rgba(0, 0, 0, 0.6) 100%
     );
     z-index: 1;
-    display: none; /* Temporarily disabled */
   }
 
   .hero-text-content {
