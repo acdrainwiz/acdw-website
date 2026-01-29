@@ -303,7 +303,7 @@ export function Hero() {
         <div className="product-showcase-card-content">
           <div className="product-showcase-card-header">
             <h3 className="product-showcase-card-title">ACDW Sensor</h3>
-            <span className="product-showcase-card-status available">Professional Monitoring</span>
+            <span className="product-showcase-card-status available">Contractor Only</span>
           </div>
           
           <h4 className="product-showcase-card-headline">Smart. Monitoring.</h4>
@@ -543,7 +543,7 @@ export function Hero() {
                   <th className="product-comparison-th">
                     <div className="product-comparison-product-header">
                       <div className="font-bold text-lg">Sensor</div>
-                      <div className="text-sm text-orange-600 font-semibold">Contractor Only</div>
+                      <div className="text-sm text-orange-600 font-semibold">Professional Monitoring</div>
                     </div>
                   </th>
                   <th className="product-comparison-th">
