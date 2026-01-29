@@ -41,7 +41,37 @@ export function InstallationSetupPage() {
         </div>
 
         {/* Main Guides Section */}
-        <div className="support-section-content">
+              <div className="support-section-content">
+
+                  {/* Installation Steps */}
+          <div className="support-section-installation-steps">
+            <h2 className="support-section-section-title">Quick Installation Steps</h2>
+            <ol className="support-section-step-list">
+              <li className="support-section-step-item">
+                <span className="support-section-step-number">1</span>
+                <div>
+                  <strong className="support-section-step-title">Cut your existing drain line</strong>
+                  <p className="support-section-step-description">Measure and cut a section of your 3/4" PVC drain line to accommodate the AC Drain Wiz unit. Use a PVC pipe cutter or hacksaw for a clean cut.</p>
+                </div>
+              </li>
+              <li className="support-section-step-item">
+                <span className="support-section-step-number">2</span>
+                <div>
+                  <strong className="support-section-step-title">Solvent-weld in place with Oatey PVC cement</strong>
+                  <p className="support-section-step-description">Use PVC primer and cement to securely attach AC Drain Wiz to your drain line.</p>
+                </div>
+              </li>
+              <li className="support-section-step-item">
+                <span className="support-section-step-number">3</span>
+                <div>
+                  <strong className="support-section-step-title">Verify operation</strong>
+                  <p className="support-section-step-description">Turn on your AC unit and check for proper drainage. Monitor for 24 hours to ensure no leaks.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+
           <div className="support-section-main-guides">
             <h2 className="support-section-section-title">Installation Guides</h2>
             <p className="support-section-section-description">
@@ -58,7 +88,7 @@ export function InstallationSetupPage() {
                   <DocumentTextIcon className="support-section-resource-icon" />
                   <span className="support-section-resource-badge">Featured</span>
                 </div>
-                <h3 className="support-section-resource-title">ACDW Sensor Setup Guide</h3>
+                <h3 className="support-section-resource-title">ACDW Professional Installer Sensor Setup Guide</h3>
                 <p className="support-section-resource-description">
                   Complete step-by-step guide for setting up your AC Drain Wiz Sensor, including account creation, WiFi setup, and customer assignment.
                 </p>
@@ -107,33 +137,6 @@ export function InstallationSetupPage() {
             </div>
           </div>
 
-          {/* Installation Steps */}
-          <div className="support-section-installation-steps">
-            <h2 className="support-section-section-title">Quick Installation Steps</h2>
-            <ol className="support-section-step-list">
-              <li className="support-section-step-item">
-                <span className="support-section-step-number">1</span>
-                <div>
-                  <strong className="support-section-step-title">Cut your existing drain line</strong>
-                  <p className="support-section-step-description">Measure and cut a section of your 3/4" PVC drain line to accommodate the AC Drain Wiz unit. Use a PVC pipe cutter or hacksaw for a clean cut.</p>
-                </div>
-              </li>
-              <li className="support-section-step-item">
-                <span className="support-section-step-number">2</span>
-                <div>
-                  <strong className="support-section-step-title">Solvent-weld in place with Oatey PVC cement</strong>
-                  <p className="support-section-step-description">Use PVC primer and cement to securely attach AC Drain Wiz to your drain line.</p>
-                </div>
-              </li>
-              <li className="support-section-step-item">
-                <span className="support-section-step-number">3</span>
-                <div>
-                  <strong className="support-section-step-title">Verify operation</strong>
-                  <p className="support-section-step-description">Turn on your AC unit and check for proper drainage. Monitor for 24 hours to ensure no leaks.</p>
-                </div>
-              </li>
-            </ol>
-          </div>
 
           {/* Professional Installation */}
           <div className="support-section-info-box">

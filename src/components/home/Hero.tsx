@@ -303,7 +303,7 @@ export function Hero() {
         <div className="product-showcase-card-content">
           <div className="product-showcase-card-header">
             <h3 className="product-showcase-card-title">ACDW Sensor</h3>
-            <span className="product-showcase-card-status available">Contractor Only</span>
+            <span className="product-showcase-card-status available">Professional Monitoring</span>
           </div>
           
           <h4 className="product-showcase-card-headline">Smart. Monitoring.</h4>
