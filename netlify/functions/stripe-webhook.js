@@ -10,7 +10,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 // SKU Mapping for ShipStation (matches create-shipstation-order.js)
 const SKU_MAPPING = {
-  'price_1SZe5X60dq6nGBAfwo2hsNxK': { sku: 'ACDW-MINI-HOMEOWNER', name: 'AC Drain Wiz Mini' },
+  'price_1SZe5X60dq6nGBAfwo2hsNxK': { sku: 'ACDW-MINI', name: 'AC Drain Wiz Mini' },
   'price_1SZebe60dq6nGBAfutAtD9re': { sku: 'ACDW-MINI-PRO-T1', name: 'AC Drain Wiz Mini' },
   'price_1SZeiH60dq6nGBAf2o2ypICU': { sku: 'ACDW-MINI-PRO-T2', name: 'AC Drain Wiz Mini' },
   'price_1SZekg60dq6nGBAfTQ8c630l': { sku: 'ACDW-MINI-PRO-T3', name: 'AC Drain Wiz Mini' },

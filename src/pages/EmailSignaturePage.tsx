@@ -2,8 +2,14 @@ import { useState } from 'react'
 import { IMaskInput } from 'react-imask'
 import { isValidEmail } from '../utils/emailValidation'
 import { InstructionModal } from '../components/email-signature/InstructionModal'
+import { PasswordProtection } from '../components/email-signature/PasswordProtection'
 
-export function EmailSignaturePage() {
+// Password for email signature generator access
+// TODO: Move this to an environment variable for better security
+// Set VITE_EMAIL_SIGNATURE_PASSWORD in your .env file
+const EMAIL_SIGNATURE_PASSWORD = import.meta.env.VITE_EMAIL_SIGNATURE_PASSWORD || 'acdw2024'
+
+function EmailSignatureContent() {
   const [name, setName] = useState('')
   const [title, setTitle] = useState('')
   const [role, setRole] = useState('')
@@ -836,5 +842,13 @@ If you encounter any issues:
         content={office365GuideContent}
       />
     </div>
+  )
+}
+
+export function EmailSignaturePage() {
+  return (
+    <PasswordProtection correctPassword={EMAIL_SIGNATURE_PASSWORD}>
+      <EmailSignatureContent />
+    </PasswordProtection>
   )
 }

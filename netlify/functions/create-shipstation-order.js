@@ -13,7 +13,7 @@ const { logAPIAccess, logRateLimit, EVENT_TYPES } = require('./utils/security-lo
 // TODO: This should ideally be shared, but for Netlify Functions we'll duplicate it
 const SKU_MAPPING = {
   // Homeowner
-  'price_1SZe5X60dq6nGBAfwo2hsNxK': { sku: 'ACDW-MINI-HOMEOWNER', name: 'AC Drain Wiz Mini' },
+  'price_1SZe5X60dq6nGBAfwo2hsNxK': { sku: 'ACDW-MINI', name: 'AC Drain Wiz Mini' },
   
   // HVAC Pro - Mini
   'price_1SZebe60dq6nGBAfutAtD9re': { sku: 'ACDW-MINI-PRO-T1', name: 'AC Drain Wiz Mini' },

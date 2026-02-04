@@ -543,7 +543,7 @@ export function Hero() {
                   <th className="product-comparison-th">
                     <div className="product-comparison-product-header">
                       <div className="font-bold text-lg">Sensor</div>
-                      <div className="text-sm text-orange-600 font-semibold">Contractor Only</div>
+                      <div className="text-sm text-orange-600 font-semibold">Professional Monitoring</div>
                     </div>
                   </th>
                   <th className="product-comparison-th">

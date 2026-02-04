@@ -116,8 +116,8 @@ export function CustomerTypeSelector() {
           </h2>
           <p className="customer-selector-description">
             Get a personalized experience tailored to your specific needs. 
-            Whether you're a homeowner, HVAC professional, property manager, or city official, 
-            we have solutions designed for you.
+            Whether you're a homeowner, HVAC professional, property manager, or city official. 
+            We have solutions designed for you.
           </p>
         </div>
         

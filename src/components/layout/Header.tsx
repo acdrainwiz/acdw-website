@@ -178,8 +178,9 @@ export function Header() {
               )}
             </button>
             
-            {/* User menu / auth icon */}
-            <div className="header-user-menu-container">
+                      {/* User menu / auth icon. taken out for now.*/}
+                      
+                      <div className="header-user-menu-container" style={{display: 'none'} }>
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
                 className="header-user-menu-button header-user-icon-button"
@@ -214,7 +215,7 @@ export function Header() {
                     >
                       Sign Out
                     </button>
-                  </div>
+                  </div> 
                 ) : (
                   <>
                     {/* Backdrop */}
@@ -291,7 +292,7 @@ export function Header() {
                   </>
                 )
               )}
-            </div>
+            </div> 
 
             {/* Mobile menu button */}
             <button
