@@ -6,7 +6,7 @@
  * SKU Format: ACDW-[PRODUCT]-[TIER]-[ROLE]
  * 
  * Examples:
- * - ACDW-MINI-HOMEOWNER (Homeowner Mini)
+ * - ACDW-MINI (Homeowner Mini)
  * - ACDW-MINI-PRO-T1 (HVAC Pro Mini Tier 1)
  * - ACDW-SENSOR-PRO-T2 (HVAC Pro Sensor Tier 2)
  * - ACDW-BUNDLE-PM-T3 (Property Manager Bundle Tier 3)
@@ -31,7 +31,7 @@ export const SHIPSTATION_SKU_MAPPING: SKUMapping[] = [
   // Homeowner - Mini only
   {
     priceId: 'price_1SZe5X60dq6nGBAfwo2hsNxK',
-    sku: 'ACDW-MINI-HOMEOWNER',
+    sku: 'ACDW-MINI',
     productName: 'AC Drain Wiz Mini',
     productType: 'mini',
     role: 'homeowner',

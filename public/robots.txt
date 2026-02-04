@@ -1,0 +1,14 @@
+# robots.txt for AC Drain Wiz Website
+
+User-agent: *
+Allow: /
+
+# Block email signature generator from search engines
+Disallow: /email-signature
+
+# Block admin/internal pages
+Disallow: /dashboard
+Disallow: /sensor-setup
+
+# Sitemap
+Sitemap: https://acdrainwiz.com/sitemap.xml
