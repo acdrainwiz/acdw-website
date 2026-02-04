@@ -782,10 +782,52 @@
     border-radius: 0;
   }
 
+  /* Large desktop (1920px and above) - mini card height */
+  @media (min-width: 1920px) {
+    .product-showcase-card-mini.product-showcase-card-full-width {
+      height: 100vh;
+    }
+  }
+
+  /* Desktop (1440px and above) - mini card height */
+  @media (min-width: 1440px) {
+    .product-showcase-card-mini.product-showcase-card-full-width {
+      height: 100vh;
+    }
+  }
+
+  /* Laptop (1280px and above) - mini card height */
+  @media (min-width: 1280px) {
+    .product-showcase-card-mini.product-showcase-card-full-width {
+      height: 100vh;
+    }
+  }
+
+  /* Tablet landscape / Small laptop (1024px and above) - mini card height */
+  @media (min-width: 1024px) {
+    .product-showcase-card-mini.product-showcase-card-full-width {
+      height: 100vh;
+    }
+  }
+
   /* Mobile - mini card height */
   @media (max-width: 767px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
       height: 120vh;
+    }
+  }
+
+  /* Small mobile devices (430px and below) - mini card height */
+  @media (max-width: 430px) {
+    .product-showcase-card-mini.product-showcase-card-full-width {
+      height: 105vh;
+    }
+  }
+
+  /* Very small mobile devices (375px and below) - mini card height */
+  @media (max-width: 375px) {
+    .product-showcase-card-mini.product-showcase-card-full-width {
+      height: 160vh;
     }
   }
 
