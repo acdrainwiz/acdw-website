@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
@@ -18,7 +18,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Google reCAPTCHA v3 -->
     <!-- Script will be loaded dynamically in UnsubscribePage component if VITE_RECAPTCHA_SITE_KEY is configured -->
-    
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.acdrainwiz.com/">
@@ -30,21 +29,31 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="en_US">
-    
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="AC Drain Wiz™ – Prevent AC Drain Line Clogs & Expensive Water Damage">
     <meta name="twitter:description" content="One-time installed solution that proactively keeps condensate drain lines clear. 10X faster cleanouts. DIY-friendly for homeowners. Bulk pricing for HVAC pros.">
     <meta name="twitter:image" content="https://www.acdrainwiz.com/images/hvac-tech-mini-sensor-combined.png">
     <meta name="twitter:image:alt" content="AC Drain Wiz Mini and Sensor products for HVAC professionals">
-    
+
     <title>AC Drain Wiz - Professional AC Drain Line Solutions</title>
-  </head>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-Y751JKKRNG', {
+            'send_page_view': false  
+        });
+    </script>
+</head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     
-    <!-- Hidden forms for Netlify Forms detection (required for Contact, Promo, Email Preferences, and Core Upgrade pages - DO NOT REMOVE) -->
     <form name="contact-general" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
       <input type="text" name="firstName" />
       <input type="text" name="lastName" />
