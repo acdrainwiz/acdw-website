@@ -45,9 +45,12 @@ import { CheckoutPage } from './pages/CheckoutPage'
 import { SensorSetupPage } from './pages/SensorSetupPage'
 import { RecommendedInstallationScenariosPage } from './pages/RecommendedInstallationScenariosPage'
 import { EmailSignaturePage } from './pages/EmailSignaturePage'
+import { usePageTracking } from './hooks/useAnalytics'
 
 function AppContent() {
-  const location = useLocation()
+    const location = useLocation()
+
+    usePageTracking()
   
   // Hide header/footer on checkout and sensor setup pages for cleaner experience
   const hideHeaderFooter = location.pathname === '/checkout' || location.pathname === '/sensor-setup'
