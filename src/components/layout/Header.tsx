@@ -100,7 +100,6 @@ export function Header() {
   const handleMobileNavClick = () => {
     setMobileMenuOpen(false)
     setShopExpanded(false)
-    setCustomerExperiencesExpanded(false)
     setSupportExpanded(false)
   }
 

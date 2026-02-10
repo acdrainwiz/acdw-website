@@ -2933,22 +2933,22 @@
   .social-proof-grid {
     @apply grid grid-cols-1 md:grid-cols-3 gap-12 mb-8;
   }
+    .social-proof-logo {
+        @apply flex items-center justify-center;
+    }
 
-  .social-proof-logo {
-    @apply flex items-center justify-center;
-  }
+    .social-proof-placeholder-logo {
+        @apply flex flex-col items-center justify-center text-center p-8 bg-gray-50 rounded-lg border-2 border-gray-200 hover:border-blue-300 transition-colors duration-300 w-full h-full;
+    }
 
-  .social-proof-placeholder-logo {
-    @apply text-center p-8 bg-gray-50 rounded-lg border-2 border-gray-200 hover:border-blue-300 transition-colors duration-300 w-full;
-  }
+    .social-proof-placeholder-icon {
+        display: none;
+        @apply w-16 h-16 mx-auto mb-3 text-gray-400;
+    }
 
-  .social-proof-placeholder-icon {
-    @apply w-16 h-16 mx-auto mb-3 text-gray-400;
-  }
-
-  .social-proof-placeholder-text {
-    @apply text-gray-600 font-semibold text-lg;
-  }
+    .social-proof-placeholder-text {
+        @apply text-gray-600 font-semibold text-lg;
+    }
 
   .social-proof-footer {
     @apply text-center;
