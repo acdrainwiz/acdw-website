@@ -1758,6 +1758,7 @@
     border-top: 1px solid #e5e7eb;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
     padding-bottom: env(safe-area-inset-bottom);
+    display: none;
   }
 
   .bottom-nav-content {
@@ -3854,11 +3855,11 @@
     @apply sr-only;
   }
 
-  .footer-content {
-    @apply container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16;
-  }
-
-  /* Top Section: Brand + Links Grid */
+    .footer-content {
+        @apply container mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8 lg:pt-16 lg:pb-4;
+    }
+    
+    /* Top Section: Brand + Links Grid */
   .footer-top {
     @apply grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-12;
   }
@@ -3886,7 +3887,7 @@
 
   /* Links Grid - Right Columns */
   .footer-links-grid {
-    @apply grid grid-cols-2 md:grid-cols-4 lg:col-span-8 gap-8 lg:gap-12;
+    @apply grid grid-cols-2 md:grid-cols-4 lg:col-span-8 gap-8 lg:gap-12 mx-auto;
   }
 
   .footer-section {
@@ -3915,7 +3916,7 @@
 
   /* Contact Info Section - Below main content */
   .footer-contact-section {
-    @apply pt-8 border-t border-gray-800;
+    @apply pt-4 border-t border-gray-800;
   }
 
   .footer-contact-info {
@@ -3932,7 +3933,7 @@
 
   /* Bottom Section */
   .footer-bottom {
-    @apply mt-8 pt-8 border-t border-gray-800;
+    @apply mt-4 pt-6 border-t border-gray-800;
   }
 
   .footer-bottom-content {
@@ -12079,7 +12080,7 @@
 
 /* Final CTA Section */
 .combo-product-final-cta {
-  @apply py-16 md:py-24 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 text-white;
+  @apply py-16 md:py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 text-white;
 }
 
 .combo-product-final-cta-content {
@@ -12793,19 +12794,31 @@
 }
 
 .product-how-it-works-steps {
-    @apply grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16;
+    @apply grid gap-8 mb-16 items-stretch;
+    grid-template-columns: 1fr 1fr;
+}
+
+@media (min-width: 1024px) {
+    .product-how-it-works-steps {
+        grid-template-columns: 1.2fr 1.2fr ;
+    }
+}
+
+@media (min-width: 1225px) {
+    .product-how-it-works-steps {
+        grid-template-columns: 1.2fr 1.2fr 1.2fr 1.2fr ;
+    }
 }
 
 .product-how-it-works-step {
-    @apply relative flex flex-col items-center text-center;
+    @apply relative flex flex-col items-center text-center h-full;
 }
-
 .product-how-it-works-step-number {
     @apply w-16 h-16 rounded-full bg-primary-600 text-white flex items-center justify-center text-2xl font-bold mb-4;
 }
 
 .product-how-it-works-step-content {
-    @apply flex flex-col items-center;
+    @apply flex flex-col items-center bg-gray-50 rounded-2xl p-6 pt-8 flex-1;
 }
 
 .product-how-it-works-step-icon {
@@ -12822,7 +12835,7 @@
 
 /* Installation Video - Shared */
 .product-installation-video {
-    @apply mt-12;
+    @apply mt-36;
 }
 
 .product-installation-video-placeholder {

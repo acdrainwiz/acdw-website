@@ -43,6 +43,8 @@ export function Footer() {
                 <li><Link to="/products/mini" className="footer-link">AC Drain Wiz Mini</Link></li>
                 <li><Link to="/products/sensor" className="footer-link">AC Drain Wiz Sensor</Link></li>
                 <li><Link to="/products/combo" className="footer-link">Mini + Sensor Combo</Link></li>
+                <li><Link to="/contact?type=demo-request" className="footer-link">Request Demo</Link></li>
+
               </ul>
             </div>
 
@@ -55,6 +57,9 @@ export function Footer() {
                 <li><Link to="/about" className="footer-link">About Us</Link></li>
                 <li><Link to="/contact" className="footer-link">Contact</Link></li>
                 <li><Link to="/promo" className="footer-link">Special Offers</Link></li>
+                <li><Link to="/contact?type=sales" className="footer-link">Contractor Inquiries</Link></li>
+                <li><Link to="/compliance" className="footer-link">Compliance Resources</Link></li>
+
               </ul>
             </div>
 
@@ -72,32 +77,29 @@ export function Footer() {
             </div>
 
             {/* Customer Experiences */}
-            <div className="footer-section">
-              <h3 className="footer-section-title">
-                Customer Experiences
-              </h3>
-              <ul className="footer-link-list">
-                <li><Link to="/homeowner" className="footer-link">For Homeowners</Link></li>
-                <li><Link to="/hvac-pros" className="footer-link">For HVAC Pros</Link></li>
-                <li><Link to="/property-managers" className="footer-link">For Property Managers</Link></li>
-                <li><Link to="/code-officials" className="footer-link">For Code Officials</Link></li>
-              </ul>
-            </div>
+            {/*<div className="footer-section">*/}
+            {/*  <h3 className="footer-section-title">*/}
+            {/*    Customer Experiences*/}
+            {/*  </h3>*/}
+            {/*  <ul className="footer-link-list">*/}
+            {/*    <li><Link to="/homeowner" className="footer-link">For Homeowners</Link></li>*/}
+            {/*    <li><Link to="/hvac-pros" className="footer-link">For HVAC Pros</Link></li>*/}
+            {/*    <li><Link to="/property-managers" className="footer-link">For Property Managers</Link></li>*/}
+            {/*    <li><Link to="/code-officials" className="footer-link">For Code Officials</Link></li>*/}
+            {/*  </ul>*/}
+            {/*</div>*/}
 
             {/* Business */}
-            <div className="footer-section">
-              <h3 className="footer-section-title">
-                Business
-              </h3>
-              <ul className="footer-link-list">
-                <li><Link to="/contact?type=sales" className="footer-link">Bulk Ordering</Link></li>
-                <li><Link to="/contact?type=sales" className="footer-link">Partner Program</Link></li>
-                <li><Link to="/contact?type=demo-request" className="footer-link">Request Demo</Link></li>
+            {/*<div className="footer-section">*/}
+            {/*  <h3 className="footer-section-title">*/}
+            {/*    Business*/}
+            {/*  </h3>*/}
+            {/*  <ul className="footer-link-list">*/}
+                {/*<li><Link to="/contact?type=sales" className="footer-link">Bulk Ordering</Link></li>*/}
+                {/*<li><Link to="/contact?type=sales" className="footer-link">Partner Program</Link></li>*/}
                 {/* Launch Button Redirect */}
-                <li><Link to="/contact?type=sales" className="footer-link">Contractor Inquiries</Link></li>
-                <li><Link to="/compliance" className="footer-link">Compliance Resources</Link></li>
-              </ul>
-            </div>
+            {/*  </ul>*/}
+            {/*</div>*/}
 
             {/* Legal */}
             <div className="footer-section">
