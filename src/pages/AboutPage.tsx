@@ -1,18 +1,6 @@
 import { EnvelopeIcon, PhoneIcon, BuildingOfficeIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
 
 export function AboutPage() {
-  const markets = [
-    'Residential HVAC',
-    'Condominiums/Apartments', 
-    'Light Commercial (select installs)'
-  ]
-
-  const audiences = [
-    'Homeowners',
-    'HVAC Contractors',
-    'Property Managers',
-    'City/Code Officials (AHJs)'
-  ]
 
   return (
     <div className="about-page-container">
