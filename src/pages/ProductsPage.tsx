@@ -40,7 +40,7 @@ export function ProductsPage() {
         'property-manager': 'Contact for pricing'
       },
       compliance: ['IMC 307.2.5', 'IMC 307.2.2', 'IMC 307.2.1.1'],
-      contractorOnly: false
+      contractorOnly: true
     },
     {
       id: 'sensor',
@@ -115,7 +115,7 @@ export function ProductsPage() {
         'Professional installation support',
         'IMC code compliance'
       ],
-      pricing: 'Starting at $99.99 MSRP',
+      pricing: 'Volume Pricing Available',
       status: 'Available Now'
     },
     {

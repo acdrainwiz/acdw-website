@@ -5179,7 +5179,7 @@
 
 /* Hero Section */
 .unified-products-hero {
-  @apply bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white py-16 md:py-26;
+  @apply bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white py-16 md:py-20;
 }
 
 .unified-products-hero-content {
@@ -9307,9 +9307,7 @@
   @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
 }
 
-.mini-product-section-title {
-  @apply text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12;
-}
+
 
 .mini-product-features-grid {
   @apply grid md:grid-cols-2 lg:grid-cols-4 gap-8;
@@ -9612,52 +9610,6 @@
   @apply h-4 w-4 text-primary-600;
 }
 
-/* Specifications Section */
-.mini-product-specs {
-  @apply py-16 md:py-24 bg-gray-50;
-}
-
-.mini-product-specs-content {
-  @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
-}
-
-.mini-product-specs-grid {
-  @apply grid md:grid-cols-2 gap-6;
-}
-
-.mini-product-spec-item {
-  @apply flex justify-between items-center py-4 border-b border-gray-200;
-}
-
-.mini-product-spec-label {
-  @apply text-sm font-medium text-gray-600;
-}
-
-.mini-product-spec-value {
-  @apply text-sm font-semibold text-gray-900;
-}
-
-/* Compliance Section */
-.mini-product-compliance {
-  @apply py-16 md:py-24 bg-white;
-}
-
-.mini-product-compliance-content {
-  @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center;
-}
-
-.mini-product-compliance-description {
-  @apply text-lg text-gray-600 mb-8 max-w-2xl mx-auto;
-}
-
-.mini-product-compliance-badges {
-  @apply flex flex-wrap justify-center gap-4;
-}
-
-.mini-product-compliance-badge {
-  @apply px-4 py-2 bg-primary-50 border border-primary-200 rounded-lg;
-  @apply text-sm font-semibold text-primary-700;
-}
 
 /* Image Gallery */
 .mini-product-gallery {
@@ -9692,80 +9644,6 @@
   @apply font-medium;
 }
 
-/* How It Works Section */
-.mini-product-how-it-works {
-  @apply py-16 md:py-24 bg-white;
-}
-
-.mini-product-how-it-works-content {
-  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
-}
-
-.mini-product-how-it-works-subtitle {
-  @apply text-lg md:text-xl text-gray-600 text-center mb-12 max-w-3xl mx-auto;
-}
-
-.mini-product-how-it-works-steps {
-  @apply grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16;
-}
-
-.mini-product-how-it-works-step {
-  @apply relative flex flex-col items-center text-center;
-}
-
-.mini-product-how-it-works-step-number {
-  @apply absolute -top-4 left-1/2 transform -translate-x-1/2;
-  @apply w-8 h-8 rounded-full bg-primary-600 text-white;
-  @apply flex items-center justify-center font-bold text-sm;
-  @apply z-10;
-}
-
-.mini-product-how-it-works-step-content {
-  @apply bg-gray-50 rounded-2xl p-6 pt-10 w-full;
-  @apply hover:bg-gray-100 transition-colors;
-  @apply border-2 border-transparent hover:border-primary-200;
-}
-
-.mini-product-how-it-works-step-icon {
-  @apply h-12 w-12 mx-auto mb-4 text-primary-600;
-}
-
-.mini-product-how-it-works-step-title {
-  @apply text-xl font-semibold text-gray-900 mb-3;
-}
-
-.mini-product-how-it-works-step-description {
-  @apply text-gray-600 leading-relaxed;
-}
-
-/* Installation Video Placeholder */
-.mini-product-installation-video {
-  @apply mt-12;
-}
-
-.mini-product-installation-video-placeholder {
-  @apply relative w-full max-w-4xl mx-auto;
-  @apply aspect-video bg-gray-900 rounded-2xl overflow-hidden;
-  @apply flex items-center justify-center;
-  @apply cursor-pointer hover:bg-gray-800 transition-colors;
-}
-
-.mini-product-installation-video-placeholder-content {
-  @apply text-center text-white z-10;
-}
-
-.mini-product-installation-video-play-icon {
-  @apply h-16 w-16 mx-auto mb-4;
-  @apply text-white opacity-90;
-}
-
-.mini-product-installation-video-title {
-  @apply text-2xl font-bold mb-2;
-}
-
-.mini-product-installation-video-description {
-  @apply text-white/80 text-lg;
-}
 
 /* Testimonials Section */
 .mini-product-testimonials {
@@ -9904,61 +9782,6 @@
   @apply rounded-full;
 }
 
-/* FAQ Section */
-.mini-product-faq {
-  @apply py-16 md:py-24 bg-white;
-}
-
-.mini-product-faq-content {
-  @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
-}
-
-.mini-product-faq-subtitle {
-  @apply text-center text-gray-600 mb-12;
-  @apply text-base md:text-lg;
-}
-
-.mini-product-faq-contact-link {
-  @apply text-primary-600 font-semibold;
-  @apply hover:text-primary-700 underline;
-  @apply transition-colors;
-}
-
-.mini-product-faq-list {
-  @apply space-y-4;
-}
-
-.mini-product-faq-item {
-  @apply border border-gray-200 rounded-lg;
-  @apply overflow-hidden;
-  @apply bg-white;
-}
-
-.mini-product-faq-question {
-  @apply w-full text-left;
-  @apply px-6 py-4 md:px-8 md:py-5;
-  @apply flex items-center justify-between;
-  @apply text-base md:text-lg font-semibold text-gray-900;
-  @apply hover:bg-gray-50 transition-colors;
-  @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-inset;
-}
-
-.mini-product-faq-icon {
-  @apply h-5 w-5 text-gray-500 flex-shrink-0 ml-4;
-  @apply transition-transform;
-}
-
-.mini-product-faq-answer {
-  @apply px-6 py-4 md:px-8 md:py-5;
-  @apply bg-gray-50;
-  @apply border-t border-gray-200;
-  @apply text-gray-700 leading-relaxed;
-  @apply animate-fade-in;
-}
-
-.mini-product-faq-answer p {
-  @apply mb-0;
-}
 
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
@@ -10100,9 +9923,6 @@
   @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
 }
 
-.sensor-product-section-title {
-  @apply text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4;
-}
 
 .sensor-product-section-subtitle {
   @apply text-center text-gray-600 mb-12 text-lg max-w-3xl mx-auto;
@@ -10297,137 +10117,7 @@
   @apply h-6 w-6 text-green-600 flex-shrink-0 mt-0.5;
 }
 
-/* How It Works */
-.sensor-product-how-it-works {
-  @apply py-16 md:py-24 bg-gray-50;
-}
 
-.sensor-product-how-it-works-content {
-  @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
-}
-
-.sensor-product-how-it-works-steps {
-  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12;
-}
-
-.sensor-product-how-it-works-step {
-  @apply flex flex-col items-center text-center;
-}
-
-.sensor-product-how-it-works-step-number {
-  @apply w-16 h-16 rounded-full bg-primary-600 text-white flex items-center justify-center text-2xl font-bold mb-4;
-}
-
-.sensor-product-how-it-works-step-content {
-  @apply flex flex-col items-center;
-}
-
-.sensor-product-how-it-works-step-icon {
-  @apply h-10 w-10 text-primary-600 mb-4;
-}
-
-.sensor-product-how-it-works-step-title {
-  @apply text-xl font-bold text-gray-900 mb-3;
-}
-
-.sensor-product-how-it-works-step-description {
-  @apply text-gray-600;
-}
-
-.sensor-product-installation-video {
-  @apply mt-12;
-}
-
-.sensor-product-installation-video-placeholder {
-  @apply bg-gray-800 rounded-lg p-16 text-center;
-}
-
-.sensor-product-installation-video-placeholder-content {
-  @apply flex flex-col items-center;
-}
-
-.sensor-product-installation-video-play-icon {
-  @apply h-16 w-16 text-white mb-4;
-}
-
-.sensor-product-installation-video-title {
-  @apply text-2xl font-bold text-white mb-2;
-}
-
-.sensor-product-installation-video-description {
-  @apply text-gray-300;
-}
-
-/* Specifications */
-.sensor-product-specs {
-  @apply py-16 md:py-24 bg-white;
-}
-
-.sensor-product-specs-content {
-  @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
-}
-
-.sensor-product-specs-grid {
-  @apply grid grid-cols-1 md:grid-cols-2 gap-6;
-}
-
-.sensor-product-spec-item {
-  @apply flex justify-between items-center py-4 border-b border-gray-200;
-}
-
-.sensor-product-spec-label {
-  @apply text-gray-600 font-medium;
-}
-
-.sensor-product-spec-value {
-  @apply text-gray-900 font-semibold;
-}
-
-/* FAQ */
-.sensor-product-faq {
-  @apply py-16 md:py-24 bg-gray-50;
-}
-
-.sensor-product-faq-content {
-  @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
-}
-
-.sensor-product-faq-subtitle {
-  @apply text-center text-gray-600 mb-12 text-base md:text-lg;
-}
-
-.sensor-product-faq-contact-link {
-  @apply text-primary-600 font-semibold hover:text-primary-700 underline transition-colors;
-}
-
-.sensor-product-faq-list {
-  @apply space-y-4;
-}
-
-.sensor-product-faq-item {
-  @apply border border-gray-200 rounded-lg overflow-hidden bg-white;
-}
-
-.sensor-product-faq-question {
-  @apply w-full text-left px-6 py-4 md:px-8 md:py-5;
-  @apply flex items-center justify-between;
-  @apply text-base md:text-lg font-semibold text-gray-900;
-  @apply hover:bg-gray-50 transition-colors;
-  @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-inset;
-}
-
-.sensor-product-faq-icon {
-  @apply h-5 w-5 text-gray-500 flex-shrink-0 ml-4 transition-transform;
-}
-
-.sensor-product-faq-answer {
-  @apply px-6 py-4 md:px-8 md:py-5 bg-gray-50 border-t border-gray-200;
-  @apply text-gray-700 leading-relaxed animate-fade-in;
-}
-
-.sensor-product-faq-answer p {
-  @apply mb-0;
-}
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
@@ -12386,43 +12076,6 @@
   @apply text-2xl font-bold;
 }
 
-/* FAQ Section */
-.combo-product-faq {
-  @apply py-16 md:py-24 bg-white;
-}
-
-.combo-product-faq-content {
-  @apply container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl;
-}
-
-.combo-product-faq-subtitle {
-  @apply text-center text-gray-600 mb-10;
-}
-
-.combo-product-faq-contact-link {
-  @apply text-blue-600 hover:text-blue-700 font-medium underline;
-}
-
-.combo-product-faq-list {
-  @apply space-y-4;
-}
-
-.combo-product-faq-item {
-  @apply bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow;
-}
-
-.combo-product-faq-question {
-  @apply w-full text-left px-6 py-5 flex items-center justify-between gap-4 font-semibold text-gray-900 hover:bg-gray-50 transition-colors;
-}
-
-.combo-product-faq-icon {
-  @apply h-5 w-5 text-gray-400 flex-shrink-0;
-}
-
-.combo-product-faq-answer {
-  @apply px-6 pb-5 text-gray-700 leading-relaxed border-t border-gray-100;
-  padding-top: 1rem;
-}
 
 /* Final CTA Section */
 .combo-product-final-cta {
@@ -13022,4 +12675,175 @@
 
 .email-signature-preview img {
   @apply max-w-[180px] h-auto;
+}
+
+/* ========================================
+   SHARED PRODUCT PAGE CLASSES (Mini + Sensor)
+   ======================================== */
+
+/* Section Title - Used by both products */
+.product-section-title {
+    @apply text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12;
+}
+
+/* FAQ Section - Shared */
+.product-faq {
+    @apply pt-16 pb-8 md:pt-24 md:pb-12 bg-white;
+}
+
+.product-faq-content {
+    @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.product-faq-subtitle {
+    @apply text-center text-gray-600 mb-12 mt-14 text-base md:text-lg;
+}
+
+.product-faq-contact-link {
+    @apply text-primary-600 font-semibold hover:text-primary-700 underline transition-colors;
+}
+
+.product-faq-list {
+    @apply space-y-4;
+}
+
+.product-faq-item {
+    @apply border border-gray-200 rounded-lg overflow-hidden bg-white;
+}
+
+.product-faq-question {
+    @apply w-full text-left px-6 py-4 md:px-8 md:py-5;
+    @apply flex items-center justify-between;
+    @apply text-base md:text-lg font-semibold text-gray-900;
+    @apply hover:bg-gray-50 transition-colors;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-inset;
+}
+
+.product-faq-icon {
+    @apply h-5 w-5 text-gray-500 flex-shrink-0 ml-4 transition-transform;
+}
+
+.product-faq-answer {
+    @apply px-6 py-4 md:px-8 md:py-5 bg-gray-50 border-t border-gray-200;
+    @apply text-gray-700 leading-relaxed animate-fade-in;
+}
+
+    .product-faq-answer p {
+        @apply mb-0;
+    }
+
+/* Specifications Section - Shared */
+.product-specs {
+    @apply py-16 md:py-24 bg-gray-50;
+}
+
+.product-specs-content {
+    @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.product-specs-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+}
+
+.product-spec-item {
+    @apply flex justify-between items-center py-4 border-b border-gray-200;
+}
+
+.product-spec-label {
+    @apply text-gray-600 font-medium;
+}
+
+.product-spec-value {
+    @apply text-gray-900 font-semibold;
+}
+
+/* Compliance Section - Shared */
+.product-compliance {
+    @apply py-16 md:py-24 bg-white;
+}
+
+.product-compliance-content {
+    @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center;
+}
+
+.product-compliance-description {
+    @apply text-lg text-gray-600 mb-8 max-w-2xl mx-auto;
+}
+
+.product-compliance-badges {
+    @apply flex flex-wrap justify-center gap-4;
+}
+
+.product-compliance-badge {
+    @apply px-4 py-2 bg-primary-50 border border-primary-200 rounded-lg;
+    @apply text-sm font-semibold text-primary-700;
+}
+
+/* How It Works Section - Shared */
+.product-how-it-works {
+    @apply py-16 md:py-24 bg-white;
+}
+
+.product-how-it-works-content {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.product-how-it-works-subtitle {
+    @apply text-lg md:text-xl text-gray-600 text-center mb-12 max-w-3xl mx-auto;
+}
+
+.product-how-it-works-steps {
+    @apply grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16;
+}
+
+.product-how-it-works-step {
+    @apply relative flex flex-col items-center text-center;
+}
+
+.product-how-it-works-step-number {
+    @apply w-16 h-16 rounded-full bg-primary-600 text-white flex items-center justify-center text-2xl font-bold mb-4;
+}
+
+.product-how-it-works-step-content {
+    @apply flex flex-col items-center;
+}
+
+.product-how-it-works-step-icon {
+    @apply h-10 w-10 text-primary-600 mb-4;
+}
+
+.product-how-it-works-step-title {
+    @apply text-xl font-bold text-gray-900 mb-3;
+}
+
+.product-how-it-works-step-description {
+    @apply text-gray-600;
+}
+
+/* Installation Video - Shared */
+.product-installation-video {
+    @apply mt-12;
+}
+
+.product-installation-video-placeholder {
+    @apply relative w-full max-w-4xl mx-auto;
+    @apply aspect-video bg-gray-900 rounded-2xl overflow-hidden;
+    @apply flex items-center justify-center;
+    @apply cursor-pointer hover:bg-gray-800 transition-colors;
+}
+
+.product-installation-video-placeholder-content {
+    @apply text-center text-white z-10;
+}
+
+.product-installation-video-play-icon {
+    @apply h-16 w-16 mx-auto mb-4 text-white;
+}
+
+.product-installation-video-title {
+    @apply text-2xl font-bold mb-2;
+}
+
+.product-installation-video-description {
+    @apply text-white/80 text-lg;
 }

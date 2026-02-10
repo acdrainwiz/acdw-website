@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { 
   Bars3Icon, 
   XMarkIcon, 
-  ShoppingCartIcon,
   UserCircleIcon,
   MagnifyingGlassIcon,
   HomeIcon,
@@ -24,7 +23,6 @@ import {
   ShieldCheckIcon
 } from '@heroicons/react/24/outline'
 import { useAuth } from '../../contexts/AuthContext'
-import { useCart } from '../../contexts/CartContext'
 
 const baseNavigation = [
   { name: 'Products', href: '/products' },
@@ -78,8 +76,6 @@ export function Header() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchFocused, setSearchFocused] = useState(false)
   const { user, logout, isAuthenticated } = useAuth()
-  const { getCartCount } = useCart()
-  const cartCount = getCartCount()
   const location = useLocation()
   const navigate = useNavigate()
 
