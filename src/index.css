@@ -5179,7 +5179,7 @@
 
 /* Hero Section */
 .unified-products-hero {
-  @apply bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white py-20 md:py-32;
+  @apply bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white py-16 md:py-26;
 }
 
 .unified-products-hero-content {

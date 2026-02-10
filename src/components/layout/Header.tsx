@@ -166,17 +166,6 @@ export function Header() {
 
           {/* Right side actions */}
           <div className="header-actions-section">
-            {/* Cart - visible on all screen sizes */}
-            <button 
-              className="header-cart-button"
-              onClick={() => navigate('/cart')}
-              aria-label={`Shopping cart with ${cartCount} items`}
-            >
-              <ShoppingCartIcon className="header-cart-icon" />
-              {cartCount > 0 && (
-                <span className="header-cart-badge">{cartCount}</span>
-              )}
-            </button>
             
                       {/* User menu / auth icon. taken out for now.*/}
                       
