@@ -16,7 +16,6 @@ import {
   CpuChipIcon,
   SparklesIcon,
   UserGroupIcon,
-  RocketLaunchIcon,
   DocumentTextIcon,
   CreditCardIcon,
   BellIcon,
@@ -41,17 +40,6 @@ const mobileNavigationSections = {
       { name: 'AC Drain Wiz Mini', href: '/products/mini', icon: WrenchScrewdriverIcon },
       { name: 'AC Drain Wiz Sensor', href: '/products/sensor', icon: CpuChipIcon },
       { name: 'Mini + Sensor Combo', href: '/products/combo', icon: SparklesIcon },
-      { name: 'Special Offers', href: '/promo', icon: RocketLaunchIcon },
-    ]
-  },
-  customerExperiences: {
-    title: 'Customer Experiences',
-    icon: UserGroupIcon,
-    items: [
-      { name: 'For Homeowners', href: '/homeowner', icon: HomeIcon },
-      { name: 'For HVAC Pros', href: '/hvac-pros', icon: WrenchScrewdriverIcon },
-      { name: 'For Property Managers', href: '/property-managers', icon: UserGroupIcon },
-      { name: 'For Code Officials', href: '/code-officials', icon: ShieldCheckIcon },
     ]
   },
   support: {
@@ -71,7 +59,6 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const [shopExpanded, setShopExpanded] = useState(false)
-  const [customerExperiencesExpanded, setCustomerExperiencesExpanded] = useState(false)
   const [supportExpanded, setSupportExpanded] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchFocused, setSearchFocused] = useState(false)
@@ -403,45 +390,6 @@ export function Header() {
                     {shopExpanded && (
                       <div className="header-mobile-nav-submenu" id="shop-menu">
                         {mobileNavigationSections.shop.items.map((item) => {
-                          const Icon = item.icon
-                          return (
-                            <Link
-                              key={item.name}
-                              to={item.href}
-                              className={`header-mobile-nav-subitem ${isActive(item.href) ? 'active' : ''}`}
-                              onClick={handleMobileNavClick}
-                            >
-                              <Icon className="header-mobile-nav-subicon" aria-hidden="true" />
-                              <span>{item.name}</span>
-                            </Link>
-                          )
-                        })}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Expandable Customer Experiences Section */}
-                  <div className="header-mobile-nav-section">
-                    <button
-                      onClick={() => setCustomerExperiencesExpanded(!customerExperiencesExpanded)}
-                      className="header-mobile-nav-section-button"
-                      aria-expanded={customerExperiencesExpanded}
-                      aria-controls="customer-experiences-menu"
-                    >
-                      <div className="header-mobile-nav-section-title">
-                        <UserGroupIcon className="header-mobile-nav-icon" aria-hidden="true" />
-                        <span>Customer Experiences</span>
-                      </div>
-                      {customerExperiencesExpanded ? (
-                        <ChevronUpIcon className="header-mobile-nav-chevron" aria-hidden="true" />
-                      ) : (
-                        <ChevronDownIcon className="header-mobile-nav-chevron" aria-hidden="true" />
-                      )}
-                    </button>
-                    
-                    {customerExperiencesExpanded && (
-                      <div className="header-mobile-nav-submenu" id="customer-experiences-menu">
-                        {mobileNavigationSections.customerExperiences.items.map((item) => {
                           const Icon = item.icon
                           return (
                             <Link

@@ -196,22 +196,6 @@ export function Hero() {
 
   return (
     <>
-      {/* Promo Banner - Special offer for homeowners */}
-      <div className="homeowner-banner">
-        <div className="homeowner-banner-content">
-          <span className="homeowner-banner-text">
-            <strong>Limited Time:</strong> Join Our Email List and Get <strong>Up To 50% Off</strong> Your First AC Drain Wiz Mini Purchase
-          </span>
-          <button 
-            onClick={() => {/* Disabled until functionality is ready */}}
-            className="homeowner-banner-cta"
-            disabled
-          >
-            Coming Soon
-            <ClockIcon className="homeowner-banner-icon" />
-          </button>
-        </div>
-      </div>
 
       {/* Hero Section - Mini Focus */}
       <div className="hero-main-container">
