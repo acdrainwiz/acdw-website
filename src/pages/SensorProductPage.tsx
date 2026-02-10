@@ -35,7 +35,7 @@ import {
   EyeIcon,
   ClipboardDocumentListIcon,
   Cog6ToothIcon,
-  PlayIcon,
+  //PlayIcon,
   PhoneIcon
 } from '@heroicons/react/24/outline'
 
@@ -625,17 +625,17 @@ export function SensorProductPage() {
           </div>
 
           {/* Installation Video Placeholder */}
-          <div className="product-installation-video">
-            <div className="product-installation-video-placeholder">
-              <div className="product-installation-video-placeholder-content">
-                <PlayIcon className="product-installation-video-play-icon" />
-                <h3 className="product-installation-video-title">Watch Installation Video</h3>
-                <p className="product-installation-video-description">
-                  See how easy it is to install and set up the AC Drain Wiz Sensor
-                </p>
-              </div>
-            </div>
-          </div>
+        {/*  <div className="product-installation-video">*/}
+        {/*    <div className="product-installation-video-placeholder">*/}
+        {/*      <div className="product-installation-video-placeholder-content">*/}
+        {/*        <PlayIcon className="product-installation-video-play-icon" />*/}
+        {/*        <h3 className="product-installation-video-title">Watch Installation Video</h3>*/}
+        {/*        <p className="product-installation-video-description">*/}
+        {/*          See how easy it is to install and set up the AC Drain Wiz Sensor*/}
+        {/*        </p>*/}
+        {/*      </div>*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
         </div>
       </section>
 

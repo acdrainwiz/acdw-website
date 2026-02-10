@@ -25,11 +25,13 @@ import {
     ChevronRightIcon,
     PhoneIcon
 } from '@heroicons/react/24/outline'
+import { VideoModal } from '../components/home/VideoModal'
 
 export function MiniProductPage() {
   const navigate = useNavigate()
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
 
   // Product images for gallery (placeholder paths - update with actual images)
   //const productImages = [
@@ -311,18 +313,20 @@ export function MiniProductPage() {
           </div>
 
           {/* Installation Video Placeholder */}
-          <div className="product-installation-video">
-            <div className="product-installation-video-placeholder">
-              <div className="product-installation-video-placeholder-content">
-                <PlayIcon className="product-installation-video-play-icon" />
-                <h3 className="product-installation-video-title">Watch Installation Video</h3>
-                <p className="product-installation-video-description">
-                  See how easy it is to install the AC Drain Wiz Mini in just 5 minutes
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+                  <div className="product-installation-video">
+                      <div
+                          className="product-installation-video-placeholder"
+                          onClick={() => setIsVideoModalOpen(true)}
+                      >
+                          <div className="product-installation-video-placeholder-content">
+                              <PlayIcon className="product-installation-video-play-icon" />
+                              <h3 className="product-installation-video-title">Watch Installation Video</h3>
+                              <p className="product-installation-video-description">
+                                  See how easy it is to install the AC Drain Wiz Mini in just 5 minutes
+                              </p>
+                          </div>
+                      </div>
+                  </div>        </div>
       </section>
 
       {/* Testimonials Section */}
@@ -493,7 +497,9 @@ export function MiniProductPage() {
             </button>
           </p>
         </div>
-      </section>
+          </section>
+
+
 
       {/* Image Gallery Section */}
           {/* <section className="mini-product-gallery">
@@ -515,6 +521,12 @@ export function MiniProductPage() {
           </div>
         </div>
       </section> */}
+
+          {/* Video Modal */}
+          <VideoModal
+              isOpen={isVideoModalOpen}
+              onClose={() => setIsVideoModalOpen(false)}
+          />
     </div>
   )
 }
