@@ -32,11 +32,11 @@ export function MiniProductPage() {
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
 
   // Product images for gallery (placeholder paths - update with actual images)
-  const productImages = [
-    '/images/ACDW-Mini-Cap-blk.png', // Main product image
-    '/images/acdw-mini-hero-background.png', // Alternative angle
-    '/images/ACDW-Mini-Cap-blk.png', // Detail shot (placeholder)
-  ]
+  //const productImages = [
+  //  '/images/ACDW-Mini-Cap-blk.png', // Main product image
+  //  '/images/acdw-mini-hero-background.png', // Alternative angle
+  //  '/images/ACDW-Mini-Cap-blk.png', // Detail shot (placeholder)
+  //]
 
   // Product features
   const features = [
