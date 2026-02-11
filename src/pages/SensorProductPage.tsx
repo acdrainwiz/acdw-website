@@ -35,7 +35,7 @@ import {
   EyeIcon,
   ClipboardDocumentListIcon,
   Cog6ToothIcon,
-  PlayIcon,
+  //PlayIcon,
   PhoneIcon
 } from '@heroicons/react/24/outline'
 
@@ -444,7 +444,7 @@ export function SensorProductPage() {
       {/* Value Proposition by Customer Type */}
       <section className="sensor-product-value-props">
         <div className="sensor-product-value-props-content">
-          <h2 className="sensor-product-section-title">Built for Everyone</h2>
+          <h2 className="product-section-title">Built for Everyone</h2>
           <p className="sensor-product-section-subtitle">
             Whether you're a homeowner, HVAC professional, or property manager, the Sensor delivers value tailored to your needs.
           </p>
@@ -480,7 +480,7 @@ export function SensorProductPage() {
       {/* Real-Time System Visibility */}
       <section className="sensor-product-visibility">
         <div className="sensor-product-visibility-content">
-          <h2 className="sensor-product-section-title">See What's Happening, When It's Happening</h2>
+          <h2 className="product-section-title">See What's Happening, When It's Happening</h2>
           <p className="sensor-product-section-subtitle">
             Real-time monitoring gives you instant visibility into your drain line status without opening the unit or cutting pipes.
           </p>
@@ -500,7 +500,7 @@ export function SensorProductPage() {
       {/* Smart Alerts & Notifications */}
       <section className="sensor-product-alerts">
         <div className="sensor-product-alerts-content">
-          <h2 className="sensor-product-section-title">Stop Problems Before They Start</h2>
+          <h2 className="product-section-title">Stop Problems Before They Start</h2>
           <p className="sensor-product-section-subtitle">
             Proactive cleaning eliminates blockages before they cause overflows—saving time, money, and preventing emergency service calls.
           </p>
@@ -520,7 +520,7 @@ export function SensorProductPage() {
       {/* Fleet Monitoring for Contractors */}
       <section className="sensor-product-fleet">
         <div className="sensor-product-fleet-content">
-          <h2 className="sensor-product-section-title">Manage Every Installation From One Dashboard</h2>
+          <h2 className="product-section-title">Manage Every Installation From One Dashboard</h2>
           <p className="sensor-product-section-subtitle">
             Turn every sensor into a recurring touchpoint. Monitor all installations, schedule service, and identify upsell opportunities.
           </p>
@@ -540,7 +540,7 @@ export function SensorProductPage() {
       {/* Service Call Creation & Alerts Management */}
       <section className="sensor-product-service">
         <div className="sensor-product-service-content">
-          <h2 className="sensor-product-section-title">Streamline Your Service Operations</h2>
+          <h2 className="product-section-title">Streamline Your Service Operations</h2>
           <div className="sensor-product-service-grid">
             <div className="sensor-product-service-card">
               <ClipboardDocumentListIcon className="sensor-product-service-icon" />
@@ -571,7 +571,7 @@ export function SensorProductPage() {
       {/* Maintenance Optimization */}
       <section className="sensor-product-maintenance">
         <div className="sensor-product-maintenance-content">
-          <h2 className="sensor-product-section-title">35% Faster Service Calls</h2>
+          <h2 className="product-section-title">35% Faster Service Calls</h2>
           <p className="sensor-product-section-subtitle">
             Pre-visit diagnostics and visual confirmation tools reduce service time and improve efficiency.
           </p>
@@ -602,48 +602,48 @@ export function SensorProductPage() {
       </section>
 
       {/* How It Works */}
-      <section className="sensor-product-how-it-works">
-        <div className="sensor-product-how-it-works-content">
-          <h2 className="sensor-product-section-title">How It Works</h2>
+      <section className="product-how-it-works">
+        <div className="product-how-it-works-content">
+          <h2 className="product-section-title">How It Works</h2>
           <p className="sensor-product-section-subtitle">
             From installation to proactive service, the Sensor integrates seamlessly into your workflow.
           </p>
           
-          <div className="sensor-product-how-it-works-steps">
+          <div className="product-how-it-works-steps">
             {howItWorksSteps.map((step, index) => (
               <div key={index} className="sensor-product-how-it-works-step">
                 <div className="sensor-product-how-it-works-step-number">
                   {step.number}
                 </div>
                 <div className="sensor-product-how-it-works-step-content">
-                  <step.icon className="sensor-product-how-it-works-step-icon" />
-                  <h3 className="sensor-product-how-it-works-step-title">{step.title}</h3>
-                  <p className="sensor-product-how-it-works-step-description">{step.description}</p>
+                  <step.icon className="product-how-it-works-step-icon" />
+                  <h3 className="product-how-it-works-step-title">{step.title}</h3>
+                  <p className="product-how-it-works-step-description">{step.description}</p>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Installation Video Placeholder */}
-          <div className="sensor-product-installation-video">
-            <div className="sensor-product-installation-video-placeholder">
-              <div className="sensor-product-installation-video-placeholder-content">
-                <PlayIcon className="sensor-product-installation-video-play-icon" />
-                <h3 className="sensor-product-installation-video-title">Watch Installation Video</h3>
-                <p className="sensor-product-installation-video-description">
-                  See how easy it is to install and set up the AC Drain Wiz Sensor
-                </p>
-              </div>
-            </div>
-          </div>
+        {/*  <div className="product-installation-video">*/}
+        {/*    <div className="product-installation-video-placeholder">*/}
+        {/*      <div className="product-installation-video-placeholder-content">*/}
+        {/*        <PlayIcon className="product-installation-video-play-icon" />*/}
+        {/*        <h3 className="product-installation-video-title">Watch Installation Video</h3>*/}
+        {/*        <p className="product-installation-video-description">*/}
+        {/*          See how easy it is to install and set up the AC Drain Wiz Sensor*/}
+        {/*        </p>*/}
+        {/*      </div>*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
         </div>
       </section>
 
       {/* Specifications */}
-      <section className="sensor-product-specs">
-        <div className="sensor-product-specs-content">
-          <h2 className="sensor-product-section-title">Specifications</h2>
-          <div className="sensor-product-specs-grid">
+      <section className="product-specs">
+        <div className="product-specs-content">
+          <h2 className="product-section-title">Specifications</h2>
+          <div className="product-specs-grid">
             {specifications.map((spec, index) => (
               <div key={index} className="sensor-product-spec-item">
                 <span className="sensor-product-spec-label">{spec.label}</span>
@@ -655,41 +655,41 @@ export function SensorProductPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="sensor-product-faq">
-        <div className="sensor-product-faq-content">
-          <h2 className="sensor-product-section-title">Frequently Asked Questions</h2>
-          <p className="sensor-product-faq-subtitle">
-            Have questions? We've got answers. Can't find what you're looking for?{' '}
-            <button
-              onClick={() => navigate('/contact?type=support')}
-              className="sensor-product-faq-contact-link"
-            >
-              Contact our support team
-            </button>
-          </p>
-          <div className="sensor-product-faq-list">
+      <section className="product-faq">
+        <div className="product-faq-content">
+          <h2 className="product-section-title">Frequently Asked Questions</h2>
+          <div className="product-faq-list">
             {faqs.map((faq, index) => (
-              <div key={index} className="sensor-product-faq-item">
+              <div key={index} className="product-faq-item">
                 <button
                   onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                  className="sensor-product-faq-question"
+                  className="product-faq-question"
                   aria-expanded={openFaq === index}
                 >
                   <span>{faq.question}</span>
                   {openFaq === index ? (
-                    <ChevronUpIcon className="sensor-product-faq-icon" />
+                    <ChevronUpIcon className="product-faq-icon" />
                   ) : (
-                    <ChevronDownIcon className="sensor-product-faq-icon" />
+                    <ChevronDownIcon className="product-faq-icon" />
                   )}
                 </button>
                 {openFaq === index && (
-                  <div className="sensor-product-faq-answer">
+                  <div className="product-faq-answer">
                     <p>{faq.answer}</p>
                   </div>
                 )}
               </div>
             ))}
           </div>
+          <p className="product-faq-subtitle">
+            Have questions? We've got answers. Can't find what you're looking for?{' '}
+            <button
+              onClick={() => navigate('/contact?type=support')}
+              className="product-faq-contact-link"
+            >
+              Contact our support team
+            </button>
+          </p>
         </div>
       </section>
     </div>

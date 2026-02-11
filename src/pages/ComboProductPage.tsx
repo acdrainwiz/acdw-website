@@ -366,7 +366,7 @@ export function ComboProductPage() {
       {/* Why Combo Section */}
       <section className="combo-product-why-combo">
         <div className="combo-product-why-combo-content">
-          <h2 className="combo-product-section-title">Why Choose the Complete System?</h2>
+          <h2 className="product-section-title">Why Choose the Complete System?</h2>
           <p className="combo-product-section-subtitle">
             The Mini gives your customers instant access. The Sensor gives you visibility into their system health. 
             Together, they position you as their trusted HVAC technology partner.
@@ -487,7 +487,7 @@ export function ComboProductPage() {
       {/* For HVAC Contractors */}
       <section className="combo-product-contractors">
         <div className="combo-product-contractors-content">
-          <h2 className="combo-product-section-title">For HVAC Contractors - Your Service Differentiation Tool</h2>
+          <h2 className="product-section-title">For HVAC Contractors - Your Service Differentiation Tool</h2>
           <p className="combo-product-section-subtitle">
             Position yourself as a technology leader and build lasting customer relationships
           </p>
@@ -542,7 +542,7 @@ export function ComboProductPage() {
       {/* For Property Managers */}
       <section className="combo-product-property-managers">
         <div className="combo-product-property-managers-content">
-          <h2 className="combo-product-section-title">For Property Managers - Professional Contractor Partnership</h2>
+          <h2 className="product-section-title">For Property Managers - Professional Contractor Partnership</h2>
           <p className="combo-product-section-subtitle">
             Work with your trusted HVAC contractor to protect all your properties
           </p>
@@ -597,7 +597,7 @@ export function ComboProductPage() {
       {/* Installation Process */}
       <section className="combo-product-installation">
         <div className="combo-product-installation-content">
-          <h2 className="combo-product-section-title">Professional Installation Process</h2>
+          <h2 className="product-section-title">Professional Installation Process</h2>
           <p className="combo-product-section-subtitle">
             Complete installation in 25-45 minutes with our step-by-step process
           </p>
@@ -665,7 +665,7 @@ export function ComboProductPage() {
       {/* Dashboard Features */}
       <section className="combo-product-dashboard">
         <div className="combo-product-dashboard-content">
-          <h2 className="combo-product-section-title">Dashboard & Service Call Management</h2>
+          <h2 className="product-section-title">Dashboard & Service Call Management</h2>
           <p className="combo-product-section-subtitle">
             Powerful tools to manage your entire customer base from one centralized dashboard
           </p>
@@ -727,41 +727,41 @@ export function ComboProductPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="combo-product-faq">
-        <div className="combo-product-faq-content">
-          <h2 className="combo-product-section-title">Frequently Asked Questions</h2>
-          <p className="combo-product-faq-subtitle">
-            Have questions? We've got answers. Can't find what you're looking for?{' '}
-            <button
-              onClick={() => navigate('/contact?type=support')}
-              className="combo-product-faq-contact-link"
-            >
-              Contact our support team
-            </button>
-          </p>
-          <div className="combo-product-faq-list">
+      <section className="product-faq">
+        <div className="product-faq-content">
+          <h2 className="product-section-title">Frequently Asked Questions</h2>
+          <div className="product-faq-list">
             {faqs.map((faq, index) => (
-              <div key={index} className="combo-product-faq-item">
+              <div key={index} className="product-faq-item">
                 <button
                   onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                  className="combo-product-faq-question"
+                  className="product-faq-question"
                   aria-expanded={openFaq === index}
                 >
                   <span>{faq.question}</span>
                   {openFaq === index ? (
-                    <ChevronUpIcon className="combo-product-faq-icon" />
+                    <ChevronUpIcon className="product-faq-icon" />
                   ) : (
-                    <ChevronDownIcon className="combo-product-faq-icon" />
+                    <ChevronDownIcon className="product-faq-icon" />
                   )}
                 </button>
                 {openFaq === index && (
-                  <div className="combo-product-faq-answer">
+                  <div className="product-faq-answer">
                     <p>{faq.answer}</p>
                   </div>
                 )}
               </div>
             ))}
           </div>
+          <p className="product-faq-subtitle">
+            Have questions? We've got answers. Can't find what you're looking for?{' '}
+            <button
+              onClick={() => navigate('/contact?type=support')}
+              className="product-faq-contact-link"
+            >
+              Contact our support team
+            </button>
+          </p>
         </div>
       </section>
 

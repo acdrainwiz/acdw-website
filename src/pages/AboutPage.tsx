@@ -1,18 +1,6 @@
 import { EnvelopeIcon, PhoneIcon, BuildingOfficeIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
 
 export function AboutPage() {
-  const markets = [
-    'Residential HVAC',
-    'Condominiums/Apartments', 
-    'Light Commercial (select installs)'
-  ]
-
-  const audiences = [
-    'Homeowners',
-    'HVAC Contractors',
-    'Property Managers',
-    'City/Code Officials (AHJs)'
-  ]
 
   return (
     <div className="about-page-container">
@@ -60,32 +48,6 @@ export function AboutPage() {
           </div>
         </div>
 
-        {/* Markets & Audiences */}
-        <div className="about-page-info-grid">
-          <div className="about-page-info-card">
-            <h2 className="about-page-info-card-title">Primary Markets</h2>
-            <ul className="about-page-info-list">
-              {markets.map((market, index) => (
-                <li key={index} className="about-page-info-item">
-                  <CheckCircleIcon className="about-page-info-icon about-page-info-icon-green" />
-                  <span className="about-page-info-text">{market}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          
-          <div className="about-page-info-card">
-            <h2 className="about-page-info-card-title">Target Audiences</h2>
-            <ul className="about-page-info-list">
-              {audiences.map((audience, index) => (
-                <li key={index} className="about-page-info-item">
-                  <CheckCircleIcon className="about-page-info-icon about-page-info-icon-blue" />
-                  <span className="about-page-info-text">{audience}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
 
         {/* Leadership */}
         <div className="about-page-section about-page-leadership">
@@ -123,39 +85,7 @@ export function AboutPage() {
           </div>
         </div>
 
-        {/* Company Info */}
-        <div className="about-page-section">
-          <h2 className="about-page-section-title">Company Information</h2>
-          <div className="about-page-company-content">
-            <div className="about-page-company-grid">
-              <div className="about-page-company-item">
-                <h3 className="about-page-company-item-title">Brand</h3>
-                <p className="about-page-company-item-text">AC Drain Wiz</p>
-              </div>
-              <div className="about-page-company-item">
-                <h3 className="about-page-company-item-title">Catalog Version</h3>
-                <p className="about-page-company-item-text">2025-10-22</p>
-              </div>
-              <div className="about-page-company-item">
-                <h3 className="about-page-company-item-title">Product Status</h3>
-                <div className="about-page-company-item-list">
-                  <p className="about-page-company-item-text">• Mini: Available Now</p>
-                  <p className="about-page-company-item-text">• Sensor: Available Now</p>
-                  <p className="about-page-company-item-text">• Mini + Sensor: Available Now</p>
-                  <p className="about-page-company-item-text about-page-company-item-text-deprecated">• Core 1.0: Deprecated (legacy product - full support for existing customers)</p>
-                </div>
-              </div>
-              <div className="about-page-company-item">
-                <h3 className="about-page-company-item-title">Compliance</h3>
-                <div className="about-page-company-item-list">
-                  <p className="about-page-company-item-text">• IMC 307.2.5</p>
-                  <p className="about-page-company-item-text">• IMC 307.2.2</p>
-                  <p className="about-page-company-item-text">• IMC 307.2.1.1</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+
       </div>
     </div>
   )

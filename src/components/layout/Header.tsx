@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { 
   Bars3Icon, 
   XMarkIcon, 
-  ShoppingCartIcon,
   UserCircleIcon,
   MagnifyingGlassIcon,
   HomeIcon,
@@ -17,14 +16,12 @@ import {
   CpuChipIcon,
   SparklesIcon,
   UserGroupIcon,
-  RocketLaunchIcon,
   DocumentTextIcon,
   CreditCardIcon,
   BellIcon,
   ShieldCheckIcon
 } from '@heroicons/react/24/outline'
 import { useAuth } from '../../contexts/AuthContext'
-import { useCart } from '../../contexts/CartContext'
 
 const baseNavigation = [
   { name: 'Products', href: '/products' },
@@ -43,17 +40,6 @@ const mobileNavigationSections = {
       { name: 'AC Drain Wiz Mini', href: '/products/mini', icon: WrenchScrewdriverIcon },
       { name: 'AC Drain Wiz Sensor', href: '/products/sensor', icon: CpuChipIcon },
       { name: 'Mini + Sensor Combo', href: '/products/combo', icon: SparklesIcon },
-      { name: 'Special Offers', href: '/promo', icon: RocketLaunchIcon },
-    ]
-  },
-  customerExperiences: {
-    title: 'Customer Experiences',
-    icon: UserGroupIcon,
-    items: [
-      { name: 'For Homeowners', href: '/homeowner', icon: HomeIcon },
-      { name: 'For HVAC Pros', href: '/hvac-pros', icon: WrenchScrewdriverIcon },
-      { name: 'For Property Managers', href: '/property-managers', icon: UserGroupIcon },
-      { name: 'For Code Officials', href: '/code-officials', icon: ShieldCheckIcon },
     ]
   },
   support: {
@@ -73,13 +59,10 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const [shopExpanded, setShopExpanded] = useState(false)
-  const [customerExperiencesExpanded, setCustomerExperiencesExpanded] = useState(false)
   const [supportExpanded, setSupportExpanded] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchFocused, setSearchFocused] = useState(false)
   const { user, logout, isAuthenticated } = useAuth()
-  const { getCartCount } = useCart()
-  const cartCount = getCartCount()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -117,7 +100,6 @@ export function Header() {
   const handleMobileNavClick = () => {
     setMobileMenuOpen(false)
     setShopExpanded(false)
-    setCustomerExperiencesExpanded(false)
     setSupportExpanded(false)
   }
 
@@ -166,17 +148,6 @@ export function Header() {
 
           {/* Right side actions */}
           <div className="header-actions-section">
-            {/* Cart - visible on all screen sizes */}
-            <button 
-              className="header-cart-button"
-              onClick={() => navigate('/cart')}
-              aria-label={`Shopping cart with ${cartCount} items`}
-            >
-              <ShoppingCartIcon className="header-cart-icon" />
-              {cartCount > 0 && (
-                <span className="header-cart-badge">{cartCount}</span>
-              )}
-            </button>
             
                       {/* User menu / auth icon. taken out for now.*/}
                       
@@ -418,45 +389,6 @@ export function Header() {
                     {shopExpanded && (
                       <div className="header-mobile-nav-submenu" id="shop-menu">
                         {mobileNavigationSections.shop.items.map((item) => {
-                          const Icon = item.icon
-                          return (
-                            <Link
-                              key={item.name}
-                              to={item.href}
-                              className={`header-mobile-nav-subitem ${isActive(item.href) ? 'active' : ''}`}
-                              onClick={handleMobileNavClick}
-                            >
-                              <Icon className="header-mobile-nav-subicon" aria-hidden="true" />
-                              <span>{item.name}</span>
-                            </Link>
-                          )
-                        })}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Expandable Customer Experiences Section */}
-                  <div className="header-mobile-nav-section">
-                    <button
-                      onClick={() => setCustomerExperiencesExpanded(!customerExperiencesExpanded)}
-                      className="header-mobile-nav-section-button"
-                      aria-expanded={customerExperiencesExpanded}
-                      aria-controls="customer-experiences-menu"
-                    >
-                      <div className="header-mobile-nav-section-title">
-                        <UserGroupIcon className="header-mobile-nav-icon" aria-hidden="true" />
-                        <span>Customer Experiences</span>
-                      </div>
-                      {customerExperiencesExpanded ? (
-                        <ChevronUpIcon className="header-mobile-nav-chevron" aria-hidden="true" />
-                      ) : (
-                        <ChevronDownIcon className="header-mobile-nav-chevron" aria-hidden="true" />
-                      )}
-                    </button>
-                    
-                    {customerExperiencesExpanded && (
-                      <div className="header-mobile-nav-submenu" id="customer-experiences-menu">
-                        {mobileNavigationSections.customerExperiences.items.map((item) => {
                           const Icon = item.icon
                           return (
                             <Link

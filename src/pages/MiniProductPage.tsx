@@ -9,56 +9,36 @@
  * - Stripe checkout integration
  */
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
-import { useCart } from '../contexts/CartContext'
 import {
-  CheckIcon,
-  ShieldCheckIcon,
-  WrenchScrewdriverIcon,
-  ClockIcon,
-  ArrowLeftIcon,
-  SparklesIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  PlayIcon,
-  StarIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ShoppingCartIcon
+    CheckIcon,
+    ShieldCheckIcon,
+    WrenchScrewdriverIcon,
+    ClockIcon,
+    ArrowLeftIcon,
+    ChevronDownIcon,
+    ChevronUpIcon,
+    PlayIcon,
+    StarIcon,
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    PhoneIcon
 } from '@heroicons/react/24/outline'
+import { VideoModal } from '../components/home/VideoModal'
 
 export function MiniProductPage() {
   const navigate = useNavigate()
-  const { user, isAuthenticated } = useAuth()
-  const { addItem, items, getCartCount } = useCart()
-  const [quantity, setQuantity] = useState(1)
-  const [showAddedMessage, setShowAddedMessage] = useState(false)
-  const [cartError, setCartError] = useState<string | null>(null)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
-
-  // Check for quantity in URL params (from redirect after login)
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const qtyParam = params.get('qty')
-    if (qtyParam) {
-      const qty = parseInt(qtyParam, 10)
-      if (qty >= 1 && qty <= 10) {
-        setQuantity(qty)
-        // Clean up URL
-        window.history.replaceState({}, '', '/products/mini')
-      }
-    }
-  }, [])
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
 
   // Product images for gallery (placeholder paths - update with actual images)
-  const productImages = [
-    '/images/ACDW-Mini-Cap-blk.png', // Main product image
-    '/images/acdw-mini-hero-background.png', // Alternative angle
-    '/images/ACDW-Mini-Cap-blk.png', // Detail shot (placeholder)
-  ]
+  //const productImages = [
+  //  '/images/ACDW-Mini-Cap-blk.png', // Main product image
+  //  '/images/acdw-mini-hero-background.png', // Alternative angle
+  //  '/images/ACDW-Mini-Cap-blk.png', // Detail shot (placeholder)
+  //]
 
   // Product features
   const features = [
@@ -217,88 +197,6 @@ export function MiniProductPage() {
     }
   ]
 
-  const price = 99.99
-  const totalPrice = price * quantity
-
-  // Calculate how many Mini units are already in cart (memoized to prevent initialization errors)
-  const currentMiniInCart = useMemo(() => {
-    return items
-      .filter(item => item.productId === 'mini')
-      .reduce((total, item) => total + item.quantity, 0)
-  }, [items])
-
-  // Calculate max quantity user can add (10 total limit)
-  const maxAvailable = useMemo(() => {
-    return Math.max(0, 10 - currentMiniInCart)
-  }, [currentMiniInCart])
-  
-  // Is cart already at max?
-  const cartAtMax = useMemo(() => {
-    return currentMiniInCart >= 10
-  }, [currentMiniInCart])
-
-  // Adjust quantity when cart changes to respect max available
-  useEffect(() => {
-    if (maxAvailable > 0 && quantity > maxAvailable) {
-      setQuantity(Math.min(quantity, maxAvailable))
-    }
-    if (cartAtMax && quantity > 0) {
-      setQuantity(0)
-    }
-  }, [maxAvailable, cartAtMax, quantity])
-
-  const handleQuantityChange = (newQuantity: number) => {
-    // Limit to available quantity
-    const limitedQuantity = Math.min(newQuantity, maxAvailable)
-    if (limitedQuantity >= 1 && limitedQuantity <= maxAvailable) {
-      setQuantity(limitedQuantity)
-    }
-  }
-
-  const handleAddToCart = () => {
-    // This should never happen due to button being disabled, but double-check
-    if (cartAtMax) {
-      setCartError('You already have the maximum (10) AC Drain Wiz Mini units in your cart.')
-      setTimeout(() => setCartError(null), 5000)
-      return
-    }
-
-    // Check if adding this quantity would exceed the max
-    const newTotal = currentMiniInCart + quantity
-    
-    if (newTotal > 10) {
-      setCartError(
-        `You can only add ${maxAvailable} more unit${maxAvailable === 1 ? '' : 's'}. Maximum 10 AC Drain Wiz Mini units per order.`
-      )
-      setTimeout(() => setCartError(null), 5000)
-      return
-    }
-
-    // Clear any previous errors
-    setCartError(null)
-
-    // Add to cart
-    addItem({
-      id: `mini-${Date.now()}`, // Unique ID for each cart item
-      productId: 'mini',
-      name: 'AC Drain Wiz Mini',
-      price: price,
-      quantity: quantity,
-      image: '/images/acdw-mini-hero1-background.png',
-      maxQuantity: 10
-    })
-
-    // Show success message
-    setShowAddedMessage(true)
-    
-    // Hide message after 3 seconds
-    setTimeout(() => {
-      setShowAddedMessage(false)
-    }, 3000)
-
-    // Reset quantity to 1
-    setQuantity(1)
-  }
 
   return (
     <div className="mini-product-page">
@@ -340,180 +238,62 @@ export function MiniProductPage() {
               </div>
             </div>
 
-            {/* Right Side - Purchase Card */}
-            <div className="mini-product-purchase-card-hero">
-              <div className="mini-product-purchase-card-content">
-                {/* Option A: Horizontal Flow Layout */}
-                {/* Row 1: Price (left) + Quantity (right) */}
-                <div className="mini-product-purchase-row-1">
-                  {/* Price Section */}
-                  <div className="mini-product-purchase-price-section">
-                    <h2 className="mini-product-purchase-title">Order Now</h2>
-                    <div className="mini-product-purchase-price">
-                      <span className="mini-product-purchase-price-amount">${price.toFixed(2)}</span>
-                      <span className="mini-product-purchase-price-label">per unit</span>
-                    </div>
+                      {/* Right Side - Purchase Card */}
+                      <div className="mini-product-purchase-card-hero">
+                          <div className="mini-product-purchase-card-content">
+                              <h2 className="sensor-product-purchase-title">Get Started</h2>
+
+                              <div className="sensor-product-purchase-cta-section">
+                                  <p className="sensor-product-purchase-message">
+                                      Contact us for pricing and availability. Professional contractors receive special bulk pricing.
+                                  </p>
+
+                                  {/* Mobile: Clickable phone button */}
+                                  <a href="tel:+12342337246" className="sensor-product-purchase-button-primary md:hidden">
+
+                                  Call (234) 23 DRAIN
+                              </a>
+
+                              {/* Desktop: Phone badge (non-clickable) */}
+                              <div className="sensor-product-phone-badge hidden md:flex">
+                                  <PhoneIcon className="sensor-product-phone-badge-icon" />
+                                  <div className="sensor-product-phone-badge-text">
+                                      <div className="sensor-product-phone-vanity">(234) 23 DRAIN</div>
+                                      <div className="sensor-product-phone-numeric">(234) 223-7246</div>
+                                  </div>
+                              </div>
+
+                              {/* Contact Sales Button */}
+                              <button
+                                  onClick={() => navigate('/contact?type=sales')}
+                                  className="sensor-product-purchase-button-secondary"
+                              >
+                                  Contact Sales
+                              </button>
+                          </div>
+
+                          {/* Trust Badges */}
+                          <div className="sensor-product-trust-section-inline">
+                              <div className="sensor-product-trust-badge">
+                                  <ShieldCheckIcon className="sensor-product-trust-icon" />
+                                  <span>2-year warranty</span>
+                              </div>
+                              <div className="sensor-product-trust-badge">
+                                  <CheckIcon className="sensor-product-trust-icon" />
+                                  <span>Fast shipping</span>
+                              </div>
+                          </div>
+                      </div>
                   </div>
-
-                  {/* Quantity Selector */}
-                  <div className="mini-product-quantity-section-inline">
-                    <label className="mini-product-quantity-label">
-                      Quantity
-                      {currentMiniInCart > 0 && (
-                        <span className="mini-product-quantity-hint">
-                          ({currentMiniInCart} in cart, {maxAvailable} available)
-                        </span>
-                      )}
-                    </label>
-                    <div className="mini-product-quantity-controls">
-                      <button
-                        type="button"
-                        onClick={() => handleQuantityChange(quantity - 1)}
-                        disabled={quantity <= 1 || cartAtMax}
-                        className="mini-product-quantity-button"
-                        aria-label="Decrease quantity"
-                      >
-                        −
-                      </button>
-                      <input
-                        type="number"
-                        min="1"
-                        max={maxAvailable}
-                        value={cartAtMax ? 0 : quantity}
-                        onChange={(e) => {
-                          const val = parseInt(e.target.value) || 1
-                          handleQuantityChange(Math.max(1, Math.min(maxAvailable, val)))
-                        }}
-                        className="mini-product-quantity-input"
-                        disabled={cartAtMax}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => handleQuantityChange(quantity + 1)}
-                        disabled={quantity >= maxAvailable || cartAtMax}
-                        className="mini-product-quantity-button"
-                        aria-label="Increase quantity"
-                        title={cartAtMax ? 'Cart limit reached (10 units max)' : quantity >= maxAvailable ? `Only ${maxAvailable} available` : ''}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Row 2: Checkout Button with Total */}
-                <div className="mini-product-purchase-row-2">
-                  {/* Checkout Button with Total */}
-                  <div className="mini-product-checkout-section-inline">
-                  {!isAuthenticated || user?.role === 'homeowner' ? (
-                    <div className="mini-product-checkout-section">
-                      {/* Success Message */}
-                      {showAddedMessage && (
-                        <div className="mini-product-added-message">
-                          <CheckIcon className="mini-product-added-icon" />
-                          <span>Added to cart!</span>
-                        </div>
-                      )}
-
-                      {/* Cart Limit Message */}
-                      {cartAtMax && (
-                        <div className="mini-product-cart-limit-message">
-                          <CheckIcon className="mini-product-cart-limit-icon" />
-                          <span>You have the maximum (10) AC Drain Wiz Mini units in your cart.</span>
-                        </div>
-                      )}
-
-                      {/* Error Message */}
-                      {cartError && !cartAtMax && (
-                        <div className="mini-product-cart-error">
-                          <span>{cartError}</span>
-                        </div>
-                      )}
-
-                      {/* Add to Cart Button */}
-                      <button
-                        onClick={handleAddToCart}
-                        disabled={cartAtMax}
-                        className="mini-product-add-to-cart-button"
-                        title={cartAtMax ? 'Cart limit reached - maximum 10 units' : ''}
-                      >
-                        <ShoppingCartIcon className="mini-product-cart-icon" />
-                        {cartAtMax ? 'Cart Limit Reached' : 'Add to Cart'}
-                        {!cartAtMax && (
-                          <span className="mini-product-add-to-cart-total">
-                            ${totalPrice.toFixed(2)}
-                          </span>
-                        )}
-                      </button>
-
-                      {/* View Cart Link */}
-                      {getCartCount() > 0 && (
-                        <button
-                          onClick={() => navigate('/cart')}
-                          className={cartAtMax ? 'mini-product-view-cart-primary' : 'mini-product-view-cart-link'}
-                        >
-                          <ShoppingCartIcon className="mini-product-view-cart-icon" />
-                          View Cart ({getCartCount()} {getCartCount() === 1 ? 'item' : 'items'})
-                        </button>
-                      )}
-
-                      {!isAuthenticated && (
-                        <p className="mini-product-checkout-guest-help">
-                          <button
-                            onClick={() => navigate('/auth/signin')}
-                            className="mini-product-checkout-guest-link"
-                          >
-                            Sign in
-                          </button>
-                          {' '}for faster checkout and order tracking
-                        </p>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="mini-product-checkout-role-message">
-                      <p>
-                        {user?.role === 'hvac_pro' 
-                          ? 'Contact us for contractor pricing'
-                          : 'Contact us for pricing options'}
-                      </p>
-                      {/* Launch Button Redirect */}
-                      <button
-                        onClick={() => navigate('/contact?type=sales')}
-                        className="mini-product-checkout-role-button"
-                      >
-                        Contact Sales
-                      </button>
-                    </div>
-                  )}
-                  </div>
-                </div>
-
-                {/* Trust Indicators - Integrated as badges */}
-                <div className="mini-product-trust-section-inline">
-                  <div className="mini-product-trust-badge">
-                    <ShieldCheckIcon className="mini-product-trust-icon" />
-                    <span>100% Satisfaction</span>
-                  </div>
-                  <div className="mini-product-trust-badge">
-                    <CheckIcon className="mini-product-trust-icon" />
-                    <span>Fast Shipping</span>
-                  </div>
-                  <div className="mini-product-trust-badge">
-                    <SparklesIcon className="mini-product-trust-icon" />
-                    <span>Made in USA</span>
-                  </div>
-                </div>
               </div>
-            </div>
-          </div>
         </div>
       </section>
 
       {/* How It Works Section */}
-      <section className="mini-product-how-it-works">
-        <div className="mini-product-how-it-works-content">
-          <h2 className="mini-product-section-title">How It Works</h2>
-          <p className="mini-product-how-it-works-subtitle">
+      <section className="product-how-it-works">
+        <div className="product-how-it-works-content">
+          <h2 className="product-section-title">How It Works</h2>
+          <p className="product-how-it-works-subtitle">
             Get instant access to your AC drain line in four simple steps
           </p>
           
@@ -524,33 +304,35 @@ export function MiniProductPage() {
                   {step.number}
                 </div>
                 <div className="mini-product-how-it-works-step-content">
-                  <step.icon className="mini-product-how-it-works-step-icon" />
-                  <h3 className="mini-product-how-it-works-step-title">{step.title}</h3>
-                  <p className="mini-product-how-it-works-step-description">{step.description}</p>
+                  <step.icon className="product-how-it-works-step-icon" />
+                  <h3 className="product-how-it-works-step-title">{step.title}</h3>
+                  <p className="product-how-it-works-step-description">{step.description}</p>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Installation Video Placeholder */}
-          <div className="mini-product-installation-video">
-            <div className="mini-product-installation-video-placeholder">
-              <div className="mini-product-installation-video-placeholder-content">
-                <PlayIcon className="mini-product-installation-video-play-icon" />
-                <h3 className="mini-product-installation-video-title">Watch Installation Video</h3>
-                <p className="mini-product-installation-video-description">
-                  See how easy it is to install the AC Drain Wiz Mini in just 5 minutes
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+                  <div className="product-installation-video">
+                      <div
+                          className="product-installation-video-placeholder"
+                          onClick={() => setIsVideoModalOpen(true)}
+                      >
+                          <div className="product-installation-video-placeholder-content">
+                              <PlayIcon className="product-installation-video-play-icon" />
+                              <h3 className="product-installation-video-title">Watch Installation Video</h3>
+                              <p className="product-installation-video-description">
+                                  See how easy it is to install the AC Drain Wiz Mini in just 5 minutes
+                              </p>
+                          </div>
+                      </div>
+                  </div>        </div>
       </section>
 
       {/* Testimonials Section */}
       <section className="mini-product-testimonials">
         <div className="mini-product-testimonials-content">
-          <h2 className="mini-product-section-title">Customers Love the AC Drain Wiz Mini</h2>
+          <h2 className="product-section-title">Customers Love the AC Drain Wiz Mini</h2>
           
           {/* Testimonial Carousel */}
           <div className="mini-product-testimonials-carousel">
@@ -631,7 +413,7 @@ export function MiniProductPage() {
       {/* Quick Features Section */}
       <section className="mini-product-features">
         <div className="mini-product-features-content">
-          <h2 className="mini-product-section-title">Why Choose AC Drain Wiz Mini</h2>
+          <h2 className="product-section-title">Why Choose AC Drain Wiz Mini</h2>
           <div className="mini-product-features-grid">
             {features.map((feature, index) => (
               <div key={index} className="mini-product-feature-card">
@@ -646,14 +428,14 @@ export function MiniProductPage() {
 
 
       {/* Specifications Section */}
-      <section className="mini-product-specs">
-        <div className="mini-product-specs-content">
-          <h2 className="mini-product-section-title">Specifications</h2>
-          <div className="mini-product-specs-grid">
+      <section className="product-specs">
+        <div className="product-specs-content">
+          <h2 className="product-section-title">Specifications</h2>
+          <div className="product-specs-grid">
             {specifications.map((spec, index) => (
-              <div key={index} className="mini-product-spec-item">
-                <span className="mini-product-spec-label">{spec.label}</span>
-                <span className="mini-product-spec-value">{spec.value}</span>
+              <div key={index} className="product-spec-item">
+                <span className="product-spec-label">{spec.label}</span>
+                <span className="product-spec-value">{spec.value}</span>
               </div>
             ))}
           </div>
@@ -661,16 +443,16 @@ export function MiniProductPage() {
       </section>
 
       {/* Compliance Section */}
-      <section className="mini-product-compliance">
-        <div className="mini-product-compliance-content">
-          <h2 className="mini-product-section-title">Code Compliant</h2>
-          <p className="mini-product-compliance-description">
+      <section className="product-compliance">
+        <div className="product-compliance-content">
+          <h2 className="product-section-title">Code Compliant</h2>
+          <p className="product-compliance-description">
             AC Drain Wiz Mini meets International Mechanical Code (IMC) standards and is approved 
             for use in municipalities nationwide.
           </p>
-          <div className="mini-product-compliance-badges">
+          <div className="product-compliance-badges">
             {complianceCodes.map((code, index) => (
-              <div key={index} className="mini-product-compliance-badge">
+              <div key={index} className="product-compliance-badge">
                 {code}
               </div>
             ))}
@@ -679,48 +461,50 @@ export function MiniProductPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="mini-product-faq">
-        <div className="mini-product-faq-content">
-          <h2 className="mini-product-section-title">Frequently Asked Questions</h2>
-          <p className="mini-product-faq-subtitle">
-            Have questions? We've got answers. Can't find what you're looking for?{' '}
-            <button
-              onClick={() => navigate('/contact?type=support')}
-              className="mini-product-faq-contact-link"
-            >
-              Contact our support team
-            </button>
-          </p>
-          <div className="mini-product-faq-list">
+      <section className="product-faq">
+        <div className="product-faq-content">
+          <h2 className="product-section-title">Frequently Asked Questions</h2>
+          <div className="product-faq-list">
             {faqs.map((faq, index) => (
-              <div key={index} className="mini-product-faq-item">
+              <div key={index} className="product-faq-item">
                 <button
                   onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                  className="mini-product-faq-question"
+                  className="product-faq-question"
                   aria-expanded={openFaq === index}
                 >
                   <span>{faq.question}</span>
                   {openFaq === index ? (
-                    <ChevronUpIcon className="mini-product-faq-icon" />
+                    <ChevronUpIcon className="product-faq-icon" />
                   ) : (
-                    <ChevronDownIcon className="mini-product-faq-icon" />
+                    <ChevronDownIcon className="product-faq-icon" />
                   )}
                 </button>
                 {openFaq === index && (
-                  <div className="mini-product-faq-answer">
+                  <div className="product-faq-answer">
                     <p>{faq.answer}</p>
                   </div>
                 )}
               </div>
             ))}
           </div>
+          <p className="product-faq-subtitle">
+            Have questions? We've got answers. Can't find what you're looking for?{' '}
+            <button
+              onClick={() => navigate('/contact?type=support')}
+              className="product-faq-contact-link"
+            >
+              Contact our support team
+            </button>
+          </p>
         </div>
-      </section>
+          </section>
+
+
 
       {/* Image Gallery Section */}
-      <section className="mini-product-gallery">
+          {/* <section className="mini-product-gallery">
         <div className="mini-product-gallery-content">
-          <h2 className="mini-product-section-title">See It In Action</h2>
+          <h2 className="product-section-title">See It In Action</h2>
           <div className="mini-product-gallery-grid">
             {productImages.map((image, index) => (
               <div
@@ -736,7 +520,13 @@ export function MiniProductPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
+
+          {/* Video Modal */}
+          <VideoModal
+              isOpen={isVideoModalOpen}
+              onClose={() => setIsVideoModalOpen(false)}
+          />
     </div>
   )
 }

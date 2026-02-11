@@ -62,7 +62,7 @@ export function ReturnRefundPolicyPage() {
             <h2 className="legal-section-title">1. Return Window</h2>
             <div className="prose max-w-none">
               <p className="text-gray-700">
-                You have <strong>30 days</strong> from the date of delivery to initiate a return. 
+                You have <strong>60 days</strong> from the date of delivery to initiate a return. 
                 Returns must be initiated within this timeframe to be eligible for a refund.
               </p>
               <p className="text-gray-700">
@@ -144,14 +144,13 @@ export function ReturnRefundPolicyPage() {
                   unless the return is due to our error (wrong item shipped, defective product, etc.).
                 </li>
                 <li>
-                  <strong>Free Return Shipping:</strong> [TO BE DETERMINED - Consider offering free returns for customer satisfaction]
+                    <strong>Free Return Shipping:</strong> AC Drain Wiz covers return shipping costs for all eligible returns within the 60-day return window.
                 </li>
               </ul>
-              <p className="text-gray-700 mt-4">
-                We recommend using a trackable shipping method and purchasing shipping insurance for returns, 
-                as we are not responsible for items lost or damaged in return transit.
-              </p>
-            </div>
+                    <p className="text-gray-700 mt-4">
+                      Contact our support team for a prepaid return shipping label. We recommend using the provided trackable shipping method to ensure your return is received safely.
+                     </p>
+             </div>
           </div>
 
           {/* Section 5: Refund Process */}

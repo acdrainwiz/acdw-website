@@ -88,7 +88,7 @@ export function WarrantyReturnsPage() {
               <h3 className="support-section-returns-card-title">30-Day Money-Back Guarantee</h3>
               <p className="support-section-returns-card-text">
                 If you're not completely satisfied with your purchase, you can return it within 30 days of delivery 
-                for a full refund (minus shipping costs).
+                for a full refund. We cover return shipping.
               </p>
             </div>
 

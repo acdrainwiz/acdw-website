@@ -343,7 +343,7 @@ export function SupportPage() {
                         <h4 className="font-semibold text-gray-900 mb-2">30-Day Money-Back Guarantee</h4>
                         <p className="text-sm text-gray-600">
                           If you're not completely satisfied with your purchase, you can return it within 30 days of delivery 
-                          for a full refund (minus shipping costs).
+                          for a full refund. We cover return shipping.
                         </p>
                       </div>
                       <div className="bg-gray-50 rounded-lg p-4">
