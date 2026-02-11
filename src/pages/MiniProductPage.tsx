@@ -297,13 +297,13 @@ export function MiniProductPage() {
             Get instant access to your AC drain line in four simple steps
           </p>
           
-          <div className="product-how-it-works-steps">
+          <div className="mini-product-how-it-works-steps">
             {howItWorksSteps.map((step, index) => (
-              <div key={index} className="product-how-it-works-step">
-                <div className="product-how-it-works-step-number">
+              <div key={index} className="mini-product-how-it-works-step">
+                <div className="mini-product-how-it-works-step-number">
                   {step.number}
                 </div>
-                <div className="product-how-it-works-step-content">
+                <div className="mini-product-how-it-works-step-content">
                   <step.icon className="product-how-it-works-step-icon" />
                   <h3 className="product-how-it-works-step-title">{step.title}</h3>
                   <p className="product-how-it-works-step-description">{step.description}</p>

@@ -1104,7 +1104,7 @@
   }
 
   .header-navigation-wrapper {
-    @apply container;
+    @apply container mx-auto;
   }
 
   .header-content-layout {
@@ -1128,7 +1128,7 @@
   }
 
   .header-desktop-navigation {
-    @apply hidden lg:flex lg:items-center lg:space-x-8;
+    @apply hidden lg:flex lg:items-center lg:space-x-8 mx-auto;
   }
 
   .header-nav-link {
@@ -12810,15 +12810,47 @@
     }
 }
 
-.product-how-it-works-step {
-    @apply relative flex flex-col items-center text-center h-full;
-}
-.product-how-it-works-step-number {
-    @apply w-16 h-16 rounded-full bg-primary-600 text-white flex items-center justify-center text-2xl font-bold mb-4;
+/* Mini Product - Small overlapping bubble */
+.mini-product-how-it-works-step-number {
+    @apply absolute -top-4 left-1/2 transform -translate-x-1/2;
+    @apply w-8 h-8 rounded-full bg-primary-600 text-white;
+    @apply flex items-center justify-center font-bold text-sm;
+    @apply z-10;
 }
 
-.product-how-it-works-step-content {
-    @apply flex flex-col items-center bg-gray-50 rounded-2xl p-6 pt-8 flex-1;
+/* Sensor Product - Large standalone bubble */
+.sensor-product-how-it-works-step-number {
+    @apply mb-4;
+    @apply w-16 h-16 rounded-full bg-primary-600 text-white;
+    @apply flex items-center justify-center font-bold text-2xl;
+}
+
+/* Sensor Product */
+.sensor-product-how-it-works-step-content {
+    @apply flex flex-col items-center;
+}
+
+/* Mini Product */
+.mini-product-how-it-works-step {
+    @apply relative flex flex-col items-center text-center;
+}
+.mini-product-how-it-works-steps {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-16 items-stretch max-w-5xl mx-auto;
+}
+
+.mini-product-how-it-works-step {
+    @apply relative flex flex-col items-center text-center h-full;
+}
+
+.mini-product-how-it-works-step-content {
+    @apply flex flex-col items-center bg-gray-50 rounded-2xl p-8 pt-10 w-full flex-1;
+    @apply hover:bg-gray-100 transition-colors;
+    @apply border-2 border-transparent hover:border-primary-200;
+}
+
+/* Sensor Product */
+.sensor-product-how-it-works-step {
+    @apply flex flex-col items-center text-center;
 }
 
 .product-how-it-works-step-icon {
