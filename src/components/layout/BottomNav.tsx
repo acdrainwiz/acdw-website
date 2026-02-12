@@ -54,12 +54,14 @@ export function BottomNav() {
       icon: QuestionMarkCircleIcon,
       iconSolid: QuestionMarkCircleIconSolid,
     },
-    {
-      name: isAuthenticated ? 'Account' : 'Sign In',
-      href: isAuthenticated ? '/dashboard/profile' : '/auth/signin',
-      icon: UserCircleIcon,
-      iconSolid: UserCircleIconSolid,
-    },
+    ...(isAuthenticated
+      ? [{
+          name: 'Account',
+          href: '/dashboard/profile',
+          icon: UserCircleIcon,
+          iconSolid: UserCircleIconSolid,
+        }]
+      : []),
   ]
 
   return (
