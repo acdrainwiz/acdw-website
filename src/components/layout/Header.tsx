@@ -229,11 +229,11 @@ export function Header() {
                         <div className="header-guest-menu-benefits">
                           <div className="header-guest-menu-benefit-item">
                             <ShoppingBagIcon className="header-guest-menu-benefit-icon" />
-                            <span>Order AC Drain Wiz Mini online</span>
+                            <span>Learn about AC Drain Wiz products</span>
                           </div>
                           <div className="header-guest-menu-benefit-item">
                             <BellIcon className="header-guest-menu-benefit-icon" />
-                            <span>Track your orders and shipments</span>
+                            <span>Get product guides and installation resources</span>
                           </div>
                           <div className="header-guest-menu-benefit-item">
                             <ShieldCheckIcon className="header-guest-menu-benefit-icon" />
@@ -491,47 +491,28 @@ export function Header() {
                   </a>
                 </nav>
                 
-                {/* Auth section at bottom */}
-                <div className="header-mobile-auth-section">
-                  {isAuthenticated ? (
-                    <>
-                      <Link
-                        to="/dashboard/profile"
-                        className="header-mobile-auth-button-secondary"
-                        onClick={handleMobileNavClick}
-                      >
-                        <UserCircleIcon className="header-mobile-auth-icon" aria-hidden="true" />
-                        Edit Profile
-                      </Link>
-                      <button
-                        onClick={() => {
-                          logout()
-                          setMobileMenuOpen(false)
-                        }}
-                        className="header-mobile-signout-button"
-                      >
-                        Sign Out
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <Link
-                        to="/auth/signin"
-                        className="header-mobile-auth-button-secondary"
-                        onClick={handleMobileNavClick}
-                      >
-                        Sign In
-                      </Link>
-                      <Link
-                        to="/auth/signup"
-                        className="header-mobile-auth-button-primary"
-                        onClick={handleMobileNavClick}
-                      >
-                        Sign Up
-                      </Link>
-                    </>
-                  )}
-                </div>
+                {/* Auth section at bottom - hidden when sign-in/sign-up disabled */}
+                {isAuthenticated && (
+                  <div className="header-mobile-auth-section">
+                    <Link
+                      to="/dashboard/profile"
+                      className="header-mobile-auth-button-secondary"
+                      onClick={handleMobileNavClick}
+                    >
+                      <UserCircleIcon className="header-mobile-auth-icon" aria-hidden="true" />
+                      Edit Profile
+                    </Link>
+                    <button
+                      onClick={() => {
+                        logout()
+                        setMobileMenuOpen(false)
+                      }}
+                      className="header-mobile-signout-button"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </>

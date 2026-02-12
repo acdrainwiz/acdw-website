@@ -3,24 +3,19 @@ import {
   HomeIcon, 
   ShoppingBagIcon,
   QuestionMarkCircleIcon,
-  ShoppingCartIcon,
   UserCircleIcon
 } from '@heroicons/react/24/outline'
 import { 
   HomeIcon as HomeIconSolid, 
   ShoppingBagIcon as ShoppingBagIconSolid,
   QuestionMarkCircleIcon as QuestionMarkCircleIconSolid,
-  ShoppingCartIcon as ShoppingCartIconSolid,
   UserCircleIcon as UserCircleIconSolid
 } from '@heroicons/react/24/solid'
 import { useAuth } from '../../contexts/AuthContext'
-import { useCart } from '../../contexts/CartContext'
 
 export function BottomNav() {
   const location = useLocation()
   const { isAuthenticated } = useAuth()
-  const { getCartCount } = useCart()
-  const cartCount = getCartCount()
 
   // Check if a navigation item is active
   const isActive = (href: string) => {
@@ -34,7 +29,7 @@ export function BottomNav() {
   }
 
   // Don't show bottom nav on certain pages
-  const hideBottomNav = location.pathname === '/checkout' || location.pathname === '/sensor-setup'
+  const hideBottomNav = location.pathname === '/sensor-setup'
 
   if (hideBottomNav) {
     return null
@@ -59,18 +54,14 @@ export function BottomNav() {
       icon: QuestionMarkCircleIcon,
       iconSolid: QuestionMarkCircleIconSolid,
     },
-    {
-      name: 'Cart',
-      href: '/cart',
-      icon: ShoppingCartIcon,
-      iconSolid: ShoppingCartIconSolid,
-    },
-    {
-      name: isAuthenticated ? 'Account' : 'Sign In',
-      href: isAuthenticated ? '/dashboard/profile' : '/auth/signin',
-      icon: UserCircleIcon,
-      iconSolid: UserCircleIconSolid,
-    },
+    ...(isAuthenticated
+      ? [{
+          name: 'Account',
+          href: '/dashboard/profile',
+          icon: UserCircleIcon,
+          iconSolid: UserCircleIconSolid,
+        }]
+      : []),
   ]
 
   return (
@@ -90,9 +81,6 @@ export function BottomNav() {
             >
               <div className="bottom-nav-icon-wrapper">
                 <Icon className="bottom-nav-icon" aria-hidden="true" />
-                {item.name === 'Cart' && cartCount > 0 && (
-                  <span className="bottom-nav-cart-badge">{cartCount}</span>
-                )}
               </div>
               <span className="bottom-nav-label">{item.name}</span>
             </Link>

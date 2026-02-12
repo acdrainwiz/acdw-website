@@ -13,7 +13,8 @@ import {
   LockClosedIcon,
   StarIcon,
   ChevronLeftIcon,
-  ChevronRightIcon
+  ChevronRightIcon,
+  ArrowRightIcon
 } from '@heroicons/react/24/outline';
 
 export function HomeownerHomePage() {
@@ -81,15 +82,16 @@ export function HomeownerHomePage() {
 
             <div className="homeowner-hero-badge-row">
               <span className="homeowner-hero-badge">Professional-Grade Quality</span>
-              <span className="homeowner-hero-badge">30-Day Money-Back Guarantee</span>
+              <span className="homeowner-hero-badge">Made in USA</span>
             </div>
 
             <div className="homeowner-hero-ctas">
               <button 
-                onClick={() => navigate('/products?product=mini')}
+                onClick={() => navigate('/products/mini')}
                 className="homeowner-hero-cta-primary"
               >
-                Shop ACDW Mini
+                Product Details
+                <ArrowRightIcon className="hero-button-icon" />
               </button>
               <button 
                 onClick={() => setIsVideoModalOpen(true)}
@@ -148,10 +150,10 @@ export function HomeownerHomePage() {
                   Protect your home from $2,000-10,000+ in water damage costs.
                 </p>
                 <button 
-                  onClick={() => navigate('/products?product=mini')}
+                  onClick={() => navigate('/contact?type=installer')}
                   className="homeowner-feature-card-cta homeowner-feature-card-cta-primary"
                 >
-                  Buy Now - $99.99
+                  Find an Installer Near Me
                 </button>
               </div>
             </div>
@@ -161,11 +163,7 @@ export function HomeownerHomePage() {
           <div className="homeowner-features-trust-badges">
             <div className="homeowner-trust-badge-item">
               <CheckCircleIcon className="homeowner-trust-icon" />
-              <span className="homeowner-trust-text">30-Day Money Back</span>
-            </div>
-            <div className="homeowner-trust-badge-item">
-              <CheckCircleIcon className="homeowner-trust-icon" />
-              <span className="homeowner-trust-text">Free Shipping</span>
+              <span className="homeowner-trust-text">Professional-Grade Quality</span>
             </div>
             <div className="homeowner-trust-badge-item">
               <CheckCircleIcon className="homeowner-trust-icon" />
@@ -339,7 +337,7 @@ export function HomeownerHomePage() {
             </div>
             <h3 className="homeowner-benefit-title">Save Thousands</h3>
             <p className="homeowner-benefit-description">
-              One $99.99 installation can prevent $2,000-10,000+ in water damage repairs, mold remediation, and ceiling/wall replacement.
+              One simple installation can prevent $2,000-10,000+ in water damage repairs, mold remediation, and ceiling/wall replacement.
             </p>
           </div>
           
@@ -491,7 +489,7 @@ export function HomeownerHomePage() {
             </summary>
             <div className="homeowner-faq-answer">
               <p>
-                We offer a 30-day money-back guarantee. If you're not completely satisfied with the AC Drain Wiz Mini for any reason, simply contact our customer support team and we'll provide a full refund. We stand behind our product because we know it works, but we want you to feel confident in your purchase.
+                AC Drain Wiz products are sold through authorized distributors and resellers. Returns and refunds are handled by the distributor or retailer where you purchased the product. Contact your point of purchase for their return policy. If you have questions about product compatibility, our support team can help—reach out through our contact form.
               </p>
             </div>
           </details>
@@ -530,22 +528,15 @@ export function HomeownerHomePage() {
           
           <div className="homeowner-final-cta-buttons">
             <button 
-              onClick={() => navigate('/products?product=mini')}
+              onClick={() => navigate('/contact?type=installer')}
               className="homeowner-final-cta-primary"
             >
-              Shop Now - $99.99
-            </button>
-            <button 
-              onClick={() => navigate('/contact')}
-              className="homeowner-final-cta-secondary"
-            >
-              Contact Support
+              Find an Installer Near Me
             </button>
           </div>
           
           <div className="homeowner-final-trust-badges">
-            <span className="homeowner-final-badge">✓ 30-Day Money Back Guarantee</span>
-            <span className="homeowner-final-badge">✓ Free Shipping</span>
+            <span className="homeowner-final-badge">✓ Professional-Grade Quality</span>
             <span className="homeowner-final-badge">✓ Made in USA</span>
           </div>
         </div>

@@ -156,7 +156,7 @@ export function Hero() {
     },
     {
       question: "What's the difference between Mini and Sensor?",
-      answer: "Mini is our flagship compact solution for proactive drain line cleaning—available for direct purchase by homeowners. Sensor adds smart monitoring and 24/7 alerts, but is available through authorized HVAC contractors only. See our product comparison table above for details."
+      answer: "Mini is our flagship compact solution for proactive drain line cleaning—available through authorized distributors and HVAC contractors. Sensor adds smart monitoring and 24/7 alerts, and is also available through authorized HVAC contractors. See our product comparison table above for details."
     },
     {
       question: "Can homeowners purchase the Sensor?",
@@ -173,7 +173,7 @@ export function Hero() {
     },
     {
       question: "What kind of warranty do you offer?",
-      answer: "All AC Drain Wiz products come with our satisfaction guarantee and industry-leading warranty. See our warranty section above for full details."
+      answer: "All AC Drain Wiz products come with our industry-leading manufacturer warranty. See our warranty section above for full details."
     },
     {
       question: "Do you offer professional contractor pricing?",
@@ -190,7 +190,7 @@ export function Hero() {
     },
     {
       question: "What if I'm not satisfied with my purchase?",
-      answer: "We offer a 60-day satisfaction guarantee with full refund, no questions asked. See our return policy section above for details."
+      answer: "AC Drain Wiz products are sold through authorized distributors and resellers. Returns and refunds are handled by the distributor or retailer where you purchased the product. Contact your point of purchase for their return policy."
     }
   ]
 
@@ -577,7 +577,7 @@ export function Hero() {
                 </tr>
                 <tr>
                   <td className="product-comparison-td sticky left-0 bg-white">Price (MSRP)</td>
-                  <td className="product-comparison-td font-bold text-lg">$99.99</td>
+                  <td className="product-comparison-td text-sm text-gray-600 italic">Contact us for pricing</td>
                   {/* Launch Button Redirect */}
                   <td className="product-comparison-td text-sm text-gray-600 italic">Contact us for pricing</td>
                   {/* Launch Button Redirect */}
@@ -632,7 +632,7 @@ export function Hero() {
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between"><span className="font-medium">Status:</span> <span className="text-green-600">Available Now</span></div>
-                <div className="flex justify-between"><span className="font-medium">Price:</span> <span className="font-bold">$99.99</span></div>
+                <div className="flex justify-between"><span className="font-medium">Price:</span> <span className="text-gray-600 italic">Contact us for pricing</span></div>
                 <div className="flex justify-between"><span className="font-medium">Size:</span> <span>5" × 3" × 2"</span></div>
                 <div className="flex justify-between"><span className="font-medium">Best For:</span> <span className="text-right">Space-constrained</span></div>
               </div>
@@ -845,9 +845,9 @@ export function Hero() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
-              <h3 className="risk-reversal-card-title">100% Satisfaction Guaranteed</h3>
+              <h3 className="risk-reversal-card-title">Industry-Leading Warranty</h3>
               <p className="risk-reversal-card-description">
-                If you're not satisfied with your AC Drain Wiz within 60 days, we'll refund your full purchase price—no questions asked. Plus, all products come with our industry-leading warranty.
+                All AC Drain Wiz products come with our industry-leading warranty against defects in materials and workmanship. Returns and refunds are handled by your authorized distributor or retailer.
               </p>
               <button onClick={() => navigate('/support#warranty-returns')} className="risk-reversal-card-link">
                 See full warranty terms →
@@ -877,12 +877,12 @@ export function Hero() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
               </div>
-              <h3 className="risk-reversal-card-title">Hassle-Free Returns</h3>
+              <h3 className="risk-reversal-card-title">Returns & Refunds</h3>
               <p className="risk-reversal-card-description">
-                Changed your mind? Return any unused product within 60 days for a full refund. We'll even cover return shipping within the continental US.
+                AC Drain Wiz products are sold through authorized distributors and resellers. Returns and refunds are handled by the distributor or retailer where you purchased. Contact your point of purchase for their return policy.
               </p>
               <button onClick={() => navigate('/support#warranty-returns')} className="risk-reversal-card-link">
-                View return policy →
+                View warranty & returns info →
               </button>
             </div>
           </div>

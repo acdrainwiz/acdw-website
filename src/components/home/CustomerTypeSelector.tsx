@@ -29,7 +29,7 @@ const customerTypes: CustomerTypeConfig[] = [
       'Protects against costly water damage',
       'Maintenance reminders and tips'
     ],
-    cta: 'Shop ACDW Mini',
+    cta: 'Explore Homeowner Friendly Solutions',
     pricing: 'retail'
   },
   {
@@ -99,7 +99,7 @@ export function CustomerTypeSelector() {
         navigate('/hvac-pros')
         break
       case 'property-manager':
-        navigate('/property-managers')
+        navigate('/property-manager')
         break
       case 'city-official':
         navigate('/code-officials')
