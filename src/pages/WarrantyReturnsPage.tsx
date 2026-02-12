@@ -44,7 +44,7 @@ export function WarrantyReturnsPage() {
           <div className="support-section-warranty">
             <h2 className="support-section-section-title">Warranty Coverage</h2>
             <p className="support-section-section-description">
-              All AC Drain Wiz products come with our satisfaction guarantee and industry-leading warranty.
+              All AC Drain Wiz products come with our industry-leading manufacturer warranty.
             </p>
 
             <div className="support-section-warranty-highlight">
@@ -85,22 +85,10 @@ export function WarrantyReturnsPage() {
             <h2 className="support-section-section-title">Return Policy</h2>
 
             <div className="support-section-returns-card">
-              <h3 className="support-section-returns-card-title">30-Day Money-Back Guarantee</h3>
+              <h3 className="support-section-returns-card-title">Returns & Refunds</h3>
               <p className="support-section-returns-card-text">
-                If you're not completely satisfied with your purchase, you can return it within 30 days of delivery 
-                for a full refund. We cover return shipping.
+                AC Drain Wiz products are sold through authorized distributors and resellers. Returns and refunds are handled by the distributor or retailer where you purchased the product. Please contact your point of purchase directly for their return policy and process.
               </p>
-            </div>
-
-            <div className="support-section-returns-process">
-              <h3 className="support-section-returns-process-title">Return Process</h3>
-              <ol className="support-section-returns-process-list">
-                <li>Contact us at <a href="mailto:info@acdrainwiz.com" className="support-section-link">info@acdrainwiz.com</a> or call (234) 23 DRAIN</li>
-                <li>Provide your order number and reason for return</li>
-                <li>We'll send you a return authorization and shipping label</li>
-                <li>Package the item securely and ship it back</li>
-                <li>Once received, we'll process your refund within 5-7 business days</li>
-              </ol>
             </div>
           </div>
 

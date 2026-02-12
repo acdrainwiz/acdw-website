@@ -229,11 +229,11 @@ export function Header() {
                         <div className="header-guest-menu-benefits">
                           <div className="header-guest-menu-benefit-item">
                             <ShoppingBagIcon className="header-guest-menu-benefit-icon" />
-                            <span>Order AC Drain Wiz Mini online</span>
+                            <span>Learn about AC Drain Wiz products</span>
                           </div>
                           <div className="header-guest-menu-benefit-item">
                             <BellIcon className="header-guest-menu-benefit-icon" />
-                            <span>Track your orders and shipments</span>
+                            <span>Get product guides and installation resources</span>
                           </div>
                           <div className="header-guest-menu-benefit-item">
                             <ShieldCheckIcon className="header-guest-menu-benefit-icon" />

@@ -149,7 +149,7 @@ export function HVACProsPage() {
             <div className="hvac-product-card">
               <div className="homeowner-product-image-wrapper">
                 <img 
-                  src="/images/ACDW-Mini-Cap-blk.png" 
+                  src="/images/acdw-mini-hero1-background.png" 
                   alt="AC Drain Wiz Mini"
                   className="homeowner-product-image"
                 />

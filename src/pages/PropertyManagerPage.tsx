@@ -9,7 +9,8 @@ import {
   CurrencyDollarIcon,
   ClockIcon,
   UserGroupIcon,
-  SparklesIcon
+  SparklesIcon,
+  CheckCircleIcon
 } from '@heroicons/react/24/outline';
 
 export function PropertyManagerPage() {
@@ -112,9 +113,7 @@ export function PropertyManagerPage() {
                   Proactive maintenance access for all units. Installs in 5 minutes or less per unit with professional support available.
                 </p>
                 <div className="property-manager-solution-pricing">
-                  <span className="property-manager-solution-price">Starting at</span>
-                  <span className="property-manager-solution-price-amount">$99.99</span>
-                  <span className="property-manager-solution-price-unit">per unit</span>
+                  <span className="property-manager-solution-price-amount">Contact us for pricing</span>
                 </div>
               </div>
               <ul className="property-manager-solution-features">
@@ -360,6 +359,69 @@ export function PropertyManagerPage() {
         </div>
       </div>
 
+      {/* Products Section */}
+      <div className="homeowner-products-container" style={{ background: '#f8fafc' }}>
+        <div className="homeowner-products-content">
+          <h2 className="homeowner-products-title">Property Management Solutions</h2>
+          <p className="homeowner-products-subtitle">
+            Scalable protection for portfolios of any size
+          </p>
+
+          <div className="homeowner-products-grid property-manager-products-grid">
+            {/* Sensor System */}
+            <div className="property-manager-product-card property-manager-product-card-featured">
+              <div className="homeowner-product-badge">Recommended</div>
+              <div className="homeowner-product-image-wrapper">
+                <img 
+                  src="/images/acdw-sensor-hero1-background.png" 
+                  alt="AC Drain Wiz Sensor"
+                  className="homeowner-product-image"
+                />
+              </div>
+              <h3 className="homeowner-product-name">Sensor Monitoring System</h3>
+              <p className="homeowner-product-price">Fleet pricing available</p>
+              <ul className="homeowner-product-features">
+                <li><CheckCircleIcon className="homeowner-product-feature-icon" /> 24/7 remote monitoring</li>
+                <li><CheckCircleIcon className="homeowner-product-feature-icon" /> Automated alerts</li>
+                <li><CheckCircleIcon className="homeowner-product-feature-icon" /> Multi-property dashboard</li>
+                <li><CheckCircleIcon className="homeowner-product-feature-icon" /> Maintenance tracking</li>
+              </ul>
+              <button 
+                onClick={() => navigate('/products/sensor')}
+                className="property-manager-product-cta"
+              >
+                Learn More
+              </button>
+            </div>
+
+            {/* Complete Protection */}
+            <div className="property-manager-product-card">
+              <div className="homeowner-product-image-wrapper">
+                <img 
+                  src="/images/hvac-tech-mini-sensor-product-hero.png" 
+                  alt="Complete Protection System"
+                  className="homeowner-product-image"
+                />
+              </div>
+              <h3 className="homeowner-product-name">Complete Protection System</h3>
+              <p className="homeowner-product-price">Contact for portfolio pricing</p>
+              <ul className="homeowner-product-features">
+                <li><CheckCircleIcon className="homeowner-product-feature-icon" /> Mini + Sensor combo</li>
+                <li><CheckCircleIcon className="homeowner-product-feature-icon" /> Maximum protection</li>
+                <li><CheckCircleIcon className="homeowner-product-feature-icon" /> Professional installation</li>
+                <li><CheckCircleIcon className="homeowner-product-feature-icon" /> Volume discounts</li>
+              </ul>
+              <button 
+                onClick={() => navigate('/products/combo')}
+                className="property-manager-product-cta"
+              >
+                View Complete System
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Benefits Section */}
       <div className="property-manager-benefits-section">
         <div className="property-manager-benefits-content">
@@ -424,7 +486,7 @@ export function PropertyManagerPage() {
           <div className="property-manager-roi-grid">
             <div className="property-manager-roi-card">
               <h3 className="property-manager-roi-card-title">Cost Per Unit</h3>
-              <div className="property-manager-roi-card-value">$99.99+</div>
+              <div className="property-manager-roi-card-value">Contact for pricing</div>
               <p className="property-manager-roi-card-description">
                 One-time installation cost per unit (Mini). Sensor available for enhanced monitoring.
               </p>

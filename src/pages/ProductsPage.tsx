@@ -35,8 +35,8 @@ export function ProductsPage() {
       installationTime: '5 minutes or less',
       size: '5" × 3" × 2"',
       pricing: {
-        msrp: '$99.99',
-        contractor: 'Sign in for pricing',
+        msrp: 'Contact us for pricing',
+        contractor: 'Contact us for pricing',
         'property-manager': 'Contact for pricing'
       },
       compliance: ['IMC 307.2.5', 'IMC 307.2.2', 'IMC 307.2.1.1'],
@@ -165,7 +165,7 @@ export function ProductsPage() {
   const faqs = [
     {
       question: "What products does AC Drain Wiz offer?",
-      answer: "We offer three main products: ACDW Mini (available to everyone), ACDW Sensor (contractor-only), and the Mini + Sensor complete protection system (contractor-only). Each product is designed for different needs and use cases."
+      answer: "We offer three main products: ACDW Mini, ACDW Sensor, and the Mini + Sensor complete protection system. All products are sold through authorized distributors and HVAC contractors. Each product is designed for different needs and use cases."
     },
     {
       question: "Can homeowners purchase the Sensor?",
@@ -174,7 +174,7 @@ export function ProductsPage() {
     },
     {
       question: "What's the difference between Mini and Sensor?",
-      answer: "Mini is our flagship compact solution for proactive drain line cleaning—available for direct purchase by homeowners. Sensor adds smart monitoring and 24/7 alerts, but is available through authorized HVAC contractors only. See our product comparison above for details."
+      answer: "Mini is our flagship compact solution for proactive drain line cleaning—available through authorized distributors and HVAC contractors. Sensor adds smart monitoring and 24/7 alerts, and is also available through authorized HVAC contractors. See our product comparison above for details."
     },
     {
       question: "Do I need both Mini and Sensor, or can I use them separately?",
@@ -186,7 +186,7 @@ export function ProductsPage() {
     },
     {
       question: "What kind of warranty do you offer?",
-      answer: "All AC Drain Wiz products come with our satisfaction guarantee and industry-leading warranty. See our warranty section for full details."
+      answer: "All AC Drain Wiz products come with our industry-leading manufacturer warranty. See our warranty section for full details."
     },
     {
       question: "Do you offer professional contractor pricing?",

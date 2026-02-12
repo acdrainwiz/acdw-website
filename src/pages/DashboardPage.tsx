@@ -16,7 +16,6 @@ import {
 } from '@heroicons/react/24/outline'
 import { useAuth } from '../contexts/AuthContext'
 import { ProtectedRoute } from '../components/auth/ProtectedRoute'
-import { getCatalogRoute } from '../utils/auth'
 import { maskLicenseNumber, maskEIN } from '../utils/verification'
 import { US_STATES } from '../config/usStates'
 
@@ -62,7 +61,7 @@ function DashboardContent() {
               <h2 className="dashboard-card-title">Quick Actions</h2>
               <div className="dashboard-quick-actions">
                 <button 
-                  onClick={() => navigate(getCatalogRoute(user?.role))}
+                  onClick={() => navigate('/contact?type=sales')}
                   className="dashboard-action-button-primary"
                 >
                   <ShoppingCartIcon className="dashboard-action-button-icon" />
@@ -412,7 +411,7 @@ function DashboardContent() {
                       </div>
                       <div className="dashboard-pro-product-actions">
                         <button
-                          onClick={() => navigate('/business/property-manager/catalog')}
+                          onClick={() => navigate('/contact?type=sales')}
                           className="dashboard-pro-product-button-primary"
                         >
                           Reorder
@@ -453,7 +452,7 @@ function DashboardContent() {
                       </div>
                       <div className="dashboard-pro-product-actions">
                         <button
-                          onClick={() => navigate('/business/property-manager/catalog')}
+                          onClick={() => navigate('/contact?type=sales')}
                           className="dashboard-pro-product-button-primary"
                         >
                           Reorder
@@ -489,7 +488,7 @@ function DashboardContent() {
                     volume discounts, and bulk ordering options.
                   </p>
                   <button
-                    onClick={() => navigate('/business/property-manager/catalog')}
+                    onClick={() => navigate('/contact?type=sales')}
                     className="dashboard-pro-products-empty-cta"
                   >
                     <ShoppingCartIcon className="dashboard-pro-products-empty-cta-icon" />
@@ -524,7 +523,7 @@ function DashboardContent() {
                       </div>
                       <div className="dashboard-pro-product-actions">
                         <button
-                          onClick={() => navigate('/business/pro/catalog')}
+                          onClick={() => navigate('/contact?type=sales')}
                           className="dashboard-pro-product-button-primary"
                         >
                           Reorder
@@ -565,7 +564,7 @@ function DashboardContent() {
                       </div>
                       <div className="dashboard-pro-product-actions">
                         <button
-                          onClick={() => navigate('/business/pro/catalog')}
+                          onClick={() => navigate('/contact?type=sales')}
                           className="dashboard-pro-product-button-primary"
                         >
                           Reorder
@@ -602,7 +601,7 @@ function DashboardContent() {
                     reordering and support access.
                   </p>
                   <button
-                    onClick={() => navigate('/business/pro/catalog')}
+                    onClick={() => navigate('/contact?type=sales')}
                     className="dashboard-pro-products-empty-cta"
                   >
                     <ShoppingCartIcon className="dashboard-pro-products-empty-cta-icon" />
@@ -639,7 +638,7 @@ function DashboardContent() {
                   <h3 className="dashboard-professional-feature-title">Bulk Pricing</h3>
                   <p className="dashboard-professional-feature-description">Access professional pricing for large orders</p>
                   <button 
-                    onClick={() => navigate('/business/pro/catalog')}
+                    onClick={() => navigate('/contact?type=sales')}
                     className="dashboard-professional-feature-link"
                   >
                     View Pricing

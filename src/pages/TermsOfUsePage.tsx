@@ -1,0 +1,404 @@
+import { useNavigate } from 'react-router-dom'
+import { DocumentTextIcon, EnvelopeIcon, PhoneIcon } from '@heroicons/react/24/outline'
+
+export function TermsOfUsePage() {
+  const navigate = useNavigate()
+
+  return (
+    <div className="terms-of-use-page">
+      <div className="container py-16">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <div className="flex justify-center mb-6">
+              <DocumentTextIcon className="h-16 w-16 text-primary-600" />
+            </div>
+            <h1 className="heading-1 mb-4">ACDrainWiz.com Site Terms of Use</h1>
+            <p className="text-sm text-gray-500">
+              Effective Date: January 1, 2026
+            </p>
+          </div>
+
+          {/* Introduction */}
+          <div className="prose prose-lg max-w-none mb-12">
+            <p className="text-gray-700 leading-relaxed mb-4">
+              Welcome to ACDrainWiz.com. These terms and conditions (&quot;Terms&quot;) apply to the ACDrainWiz.com website and all other sites, services, and items where these Terms appear or are linked (the &quot;Site&quot;).
+            </p>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              By visiting or using the Site, you agree to accept and be bound by these Terms and our Privacy Policy. Please read them carefully.
+            </p>
+            <p className="text-gray-700 leading-relaxed">
+              These Terms constitute a legally enforceable contract between you (&quot;you&quot;) and 50 50 Holdings, Inc., including its subsidiaries and affiliates (collectively, &quot;AC DRAIN WIZ&quot; or the &quot;Company&quot;).
+            </p>
+          </div>
+
+          {/* Quick Navigation */}
+          <div className="bg-gray-50 rounded-lg p-6 mb-12">
+            <h2 className="font-semibold text-gray-900 mb-4">Quick Navigation</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+              <a href="#website-purpose" className="text-primary-600 hover:text-primary-700">→ 1. Website Purpose</a>
+              <a href="#intended-audience" className="text-primary-600 hover:text-primary-700">→ 2. Intended Audience</a>
+              <a href="#installation" className="text-primary-600 hover:text-primary-700">→ 3. Installation and Maintenance</a>
+              <a href="#product-disclaimer" className="text-primary-600 hover:text-primary-700">→ 4. Product Use Disclaimer</a>
+              <a href="#reviews" className="text-primary-600 hover:text-primary-700">→ 5. Reviews and Legacy Products</a>
+              <a href="#user-conduct" className="text-primary-600 hover:text-primary-700">→ 6. User Conduct</a>
+              <a href="#ip" className="text-primary-600 hover:text-primary-700">→ 7. Intellectual Property</a>
+              <a href="#contact" className="text-primary-600 hover:text-primary-700">→ 20. Contact Information</a>
+            </div>
+          </div>
+
+          {/* Section 1 */}
+          <div id="website-purpose" className="mb-12">
+            <h2 className="heading-2 mb-4">1. Website Purpose and Distribution Model</h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                The Site provides information about AC Drain Wiz products and related services.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                AC Drain Wiz products are sold exclusively through authorized independent distributors.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                The Company does not sell products directly through this Site, does not process payments, and is not the seller of record for transactions between distributors and contractors or other purchasers.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                Any disputes regarding pricing, payment terms, delivery, or installation services must be directed to the applicable distributor or contractor.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 2 */}
+          <div id="intended-audience" className="mb-12">
+            <h2 className="heading-2 mb-4">2. Intended Audience</h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                The Site is intended primarily for:
+              </p>
+              <ul className="list-disc pl-6 space-y-1 text-gray-700">
+                <li>HVAC distributors</li>
+                <li>HVAC contractors and professional installers</li>
+                <li>Other commercial partners</li>
+              </ul>
+              <p className="text-gray-700 leading-relaxed">
+                Homeowners or end users may view the Site for informational purposes only.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 3 */}
+          <div id="installation" className="mb-12">
+            <h2 className="heading-2 mb-4">3. Installation and Maintenance Guidance</h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                You agree to review and follow all installation and maintenance guidance provided by the Company for the proper use of AC Drain Wiz products.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                Improper installation or misuse may result in system malfunction, water damage, or loss of manufacturer warranty coverage previously provided by HVAC vendors or installers.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                If you have questions regarding installation or maintenance, contact:
+              </p>
+              <div className="bg-primary-50 border border-primary-200 rounded-lg p-6">
+                <p className="text-gray-700">
+                  <PhoneIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />
+                  Phone: <a href="tel:+12342237246" className="text-primary-600 hover:text-primary-700 underline">(234) 23 DRAIN</a>
+                </p>
+                <p className="text-gray-700 mt-2">
+                  <EnvelopeIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />
+                  Email: <a href="mailto:info@acdrainwiz.com" className="text-primary-600 hover:text-primary-700 underline">info@acdrainwiz.com</a>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 4 */}
+          <div id="product-disclaimer" className="mb-12">
+            <h2 className="heading-2 mb-4">4. Product Use Disclaimer</h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                AC Drain Wiz products are intended for HVAC condensate drain maintenance.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                The Company does not guarantee compatibility with every HVAC system or installation environment. Users are responsible for ensuring compliance with:
+              </p>
+              <ul className="list-disc pl-6 space-y-1 text-gray-700">
+                <li>Manufacturer instructions</li>
+                <li>Applicable HVAC standards</li>
+                <li>Local, state, and federal regulations</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Section 5 */}
+          <div id="reviews" className="mb-12">
+            <h2 className="heading-2 mb-4">5. Reviews and Legacy Product References</h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                The Site may display customer ratings, testimonials, or reviews.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                Some reviews may refer to discontinued or legacy products (such as AC Drain Wiz 1.0) and may not reflect the features or performance of current models, including the ACDW Mini.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                Reviews represent the opinions of individual users and do not constitute guarantees of performance.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                The Company reserves the right to remove or refuse to publish reviews that violate these Terms or applicable law.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 6 */}
+          <div id="user-conduct" className="mb-12">
+            <h2 className="heading-2 mb-4">6. User Conduct</h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                In using the Site, you agree not to transmit, upload, distribute, or otherwise make available any content that:
+              </p>
+              <ul className="list-disc pl-6 space-y-1 text-gray-700">
+                <li>Is fraudulent, false, misleading, or deceptive</li>
+                <li>Is vulgar, abusive, threatening, harassing, hateful, or defamatory</li>
+                <li>Contains unsolicited advertising or spam</li>
+                <li>Violates any law or regulation</li>
+                <li>Contains malware, viruses, or harmful code</li>
+                <li>Restricts or inhibits others from using the Site</li>
+              </ul>
+              <p className="text-gray-700 leading-relaxed">
+                The Company may remove or disable access to content or services as needed for compliance, security, or operational reasons.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 7 */}
+          <div id="ip" className="mb-12">
+            <h2 className="heading-2 mb-4">7. Intellectual Property</h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                All content on the Site, including text, graphics, logos, product designs, images, and proprietary materials, is owned by or licensed to 50 50 Holdings, Inc.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                The Company&apos;s trademarks, trade names, logos, and trade dress (&quot;Marks&quot;) may not be used without prior written consent.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                Unauthorized use is strictly prohibited.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 8 */}
+          <div className="mb-12">
+            <h2 className="heading-2 mb-4">8. License Restrictions</h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                You may not:
+              </p>
+              <ul className="list-disc pl-6 space-y-1 text-gray-700">
+                <li>Copy, reproduce, distribute, or exploit Site content for commercial purposes</li>
+                <li>Use data mining, robots, scraping, or extraction tools</li>
+                <li>Reverse engineer or attempt to derive proprietary designs</li>
+                <li>Frame or link the Site in a misleading manner</li>
+              </ul>
+              <p className="text-gray-700 leading-relaxed">
+                Any unauthorized use terminates your limited license to use the Site.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 9 */}
+          <div className="mb-12">
+            <h2 className="heading-2 mb-4">9. Disclaimer of Warranties</h2>
+            <div className="bg-white border border-gray-200 rounded-lg p-6">
+              <p className="text-gray-700 leading-relaxed font-semibold mb-4">
+                ALL SERVICES AND SITE CONTENT ARE PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE.&quot;
+              </p>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE COMPANY DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                The Company does not guarantee that the Site will be error-free, uninterrupted, secure, or compatible with all systems.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 10 */}
+          <div className="mb-12">
+            <h2 className="heading-2 mb-4">10. Limitation of Liability</h2>
+            <div className="bg-white border border-gray-200 rounded-lg p-6">
+              <p className="text-gray-700 leading-relaxed mb-4">
+                TO THE FULLEST EXTENT PERMITTED BY LAW, IN NO EVENT SHALL THE COMPANY OR ITS AFFILIATES, LICENSORS, OR SERVICE PROVIDERS BE LIABLE FOR:
+              </p>
+              <ul className="list-disc pl-6 space-y-1 text-gray-700 mb-4">
+                <li>Personal injury or property damage</li>
+                <li>Lost profits or business interruption</li>
+                <li>Loss of data or goodwill</li>
+                <li>Indirect, incidental, consequential, punitive, or exemplary damages</li>
+              </ul>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                TOTAL LIABILITY SHALL NOT EXCEED THE AMOUNT PAID (IF ANY) BY YOU FOR PRODUCTS GIVING RISE TO THE CLAIM IN THE TWELVE (12) MONTHS PRECEDING THE EVENT.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                Some jurisdictions do not allow certain limitations, so some provisions may not apply.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 11 */}
+          <div className="mb-12">
+            <h2 className="heading-2 mb-4">11. Indemnification</h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                You agree to indemnify, defend, and hold harmless the Company and its officers, directors, employees, affiliates, licensors, and agents from any claims, damages, or liabilities arising from:
+              </p>
+              <ul className="list-disc pl-6 space-y-1 text-gray-700">
+                <li>Misuse of the Site or products</li>
+                <li>Improper installation</li>
+                <li>Violation of these Terms</li>
+                <li>Violation of law</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Section 12 */}
+          <div className="mb-12">
+            <h2 className="heading-2 mb-4">12. Binding Arbitration</h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                Any dispute arising out of or relating to these Terms or the Site shall be resolved by binding arbitration, conducted in the State of Florida under applicable commercial arbitration rules.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                The arbitration decision shall be final and binding.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 13 */}
+          <div className="mb-12">
+            <h2 className="heading-2 mb-4">13. Class Action Waiver</h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                All disputes must be brought on an individual basis only.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                You waive any right to participate in a class action, collective action, or representative proceeding.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 14 */}
+          <div className="mb-12">
+            <h2 className="heading-2 mb-4">14. Governing Law and Venue</h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                These Terms are governed by the laws of the State of Florida.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                Any legal action not subject to arbitration shall be brought exclusively in the state or federal courts located in Florida.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 15 */}
+          <div className="mb-12">
+            <h2 className="heading-2 mb-4">15. DMCA Copyright Infringement Claims</h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                If you believe content on the Site infringes your copyright, you may submit a notice under the Digital Millennium Copyright Act (DMCA) to:
+              </p>
+              <div className="bg-primary-50 border border-primary-200 rounded-lg p-6">
+                <p className="text-gray-700">
+                  <EnvelopeIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />
+                  <a href="mailto:info@acdrainwiz.com" className="text-primary-600 hover:text-primary-700 underline">info@acdrainwiz.com</a>
+                </p>
+                <p className="text-gray-700 mt-2">
+                  <PhoneIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />
+                  <a href="tel:+12342237246" className="text-primary-600 hover:text-primary-700 underline">(234) 23 DRAIN</a>
+                </p>
+              </div>
+              <p className="text-gray-700 leading-relaxed">
+                The Company may terminate repeat infringers&apos; access.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 16 */}
+          <div className="mb-12">
+            <h2 className="heading-2 mb-4">16. Export Regulation</h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                You may not export or re-export Site content or services in violation of U.S. export laws.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 17 */}
+          <div className="mb-12">
+            <h2 className="heading-2 mb-4">17. Termination</h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                The Company may terminate or restrict access to the Site at any time for violation of these Terms or for operational or legal reasons.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                Sections that by their nature should survive termination shall survive.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 18 */}
+          <div className="mb-12">
+            <h2 className="heading-2 mb-4">18. New Jersey Legal Notice</h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                Under the New Jersey Truth-in-Consumer Contract, Warranty and Notice Act (TCCWNA), certain limitations or exclusions in these Terms may not apply to New Jersey residents, including limitations related to punitive damages or negligence.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 19 */}
+          <div className="mb-12">
+            <h2 className="heading-2 mb-4">19. Changes to Terms</h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                The Company reserves the right to modify these Terms at any time. Changes become effective immediately upon posting.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                Continued use of the Site constitutes acceptance of the revised Terms.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 20 - Contact */}
+          <div id="contact" className="mb-12">
+            <div className="flex items-center mb-4">
+              <EnvelopeIcon className="h-8 w-8 text-primary-600 mr-3" />
+              <h2 className="heading-2">20. Contact Information</h2>
+            </div>
+            <div className="bg-primary-50 border border-primary-200 rounded-lg p-6">
+              <div className="space-y-2 text-gray-700">
+                <p><strong>AC Drain Wiz</strong></p>
+                <p><PhoneIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />Phone: <a href="tel:+12342237246" className="text-primary-600 hover:text-primary-700 underline">(234) 23 DRAIN</a></p>
+                <p><EnvelopeIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />Email: <a href="mailto:info@acdrainwiz.com" className="text-primary-600 hover:text-primary-700 underline">info@acdrainwiz.com</a></p>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="mt-12 pt-8 border-t border-gray-200">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <button
+                onClick={() => navigate('/contact')}
+                className="btn-secondary w-full"
+              >
+                Contact Us
+              </button>
+              <button
+                onClick={() => window.print()}
+                className="btn-secondary w-full"
+              >
+                Print These Terms
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

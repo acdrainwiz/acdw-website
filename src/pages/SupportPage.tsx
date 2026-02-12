@@ -305,7 +305,7 @@ export function SupportPage() {
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 mb-3">Warranty Coverage</h3>
                     <p className="text-gray-600 mb-4">
-                      All AC Drain Wiz products come with our satisfaction guarantee and industry-leading warranty.
+                      All AC Drain Wiz products come with our industry-leading manufacturer warranty.
                     </p>
                     <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
                       <div className="flex items-start">
@@ -340,21 +340,10 @@ export function SupportPage() {
                     <h3 className="text-lg font-semibold text-gray-900 mb-3">Return Policy</h3>
                     <div className="space-y-3">
                       <div className="border border-gray-200 rounded-lg p-4">
-                        <h4 className="font-semibold text-gray-900 mb-2">30-Day Money-Back Guarantee</h4>
+                        <h4 className="font-semibold text-gray-900 mb-2">Returns & Refunds</h4>
                         <p className="text-sm text-gray-600">
-                          If you're not completely satisfied with your purchase, you can return it within 30 days of delivery 
-                          for a full refund. We cover return shipping.
+                          AC Drain Wiz products are sold through authorized distributors and resellers. Returns and refunds are handled by the distributor or retailer where you purchased the product. Please contact your point of purchase directly for their return policy and process.
                         </p>
-                      </div>
-                      <div className="bg-gray-50 rounded-lg p-4">
-                        <h4 className="font-semibold text-gray-900 mb-2">Return Process</h4>
-                        <ol className="text-sm text-gray-700 space-y-2 list-decimal list-inside">
-                          <li>Contact us at <a href="mailto:info@acdrainwiz.com" className="text-blue-600">info@acdrainwiz.com</a> or call (234) 23 DRAIN</li>
-                          <li>Provide your order number and reason for return</li>
-                          <li>We'll send you a return authorization and shipping label</li>
-                          <li>Package the item securely and ship it back</li>
-                          <li>Once received, we'll process your refund within 5-7 business days</li>
-                        </ol>
                       </div>
                     </div>
                   </div>

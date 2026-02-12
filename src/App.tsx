@@ -8,13 +8,10 @@ import { ScrollToTop } from './components/layout/ScrollToTop'
 import { HomePage } from './pages/HomePage'
 import { HomeownerHomePage } from './pages/HomeownerHomePage'
 import { HVACProsPage } from './pages/HVACProsPage'
-import { PropertyManagersPage } from './pages/PropertyManagersPage'
 import { CodeOfficialsPage } from './pages/CodeOfficialsPage'
 import { PropertyManagerPage } from './pages/PropertyManagerPage'
-import { PromoPage } from './pages/PromoPage'
 import { CustomerSelectionPage } from './pages/CustomerSelectionPage'
 import { ProductsPage } from './pages/ProductsPage'
-import { CartPage } from './pages/CartPage'
 import { ContactPage } from './pages/ContactPage'
 import { AboutPage } from './pages/AboutPage'
 import { SupportHubPage } from './pages/SupportHubPage'
@@ -30,18 +27,14 @@ import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage'
 import { ReturnRefundPolicyPage } from './pages/ReturnRefundPolicyPage'
 import { ShippingPolicyPage } from './pages/ShippingPolicyPage'
 import { WarrantyPolicyPage } from './pages/WarrantyPolicyPage'
+import { TermsOfUsePage } from './pages/TermsOfUsePage'
 import { EmailPreferencesPage } from './pages/EmailPreferencesPage'
 import { UnsubscribePage } from './pages/UnsubscribePage'
-import { HVACProCatalogPage } from './pages/HVACProCatalogPage'
-import { PropertyManagerCatalogPage } from './pages/PropertyManagerCatalogPage'
 import { UnauthorizedPage } from './pages/UnauthorizedPage'
 import { ProfilePage } from './pages/ProfilePage'
-import { CheckoutSuccessPage } from './pages/CheckoutSuccessPage'
-import { CheckoutCancelPage } from './pages/CheckoutCancelPage'
 import { MiniProductPage } from './pages/MiniProductPage'
 import { SensorProductPage } from './pages/SensorProductPage'
 import { ComboProductPage } from './pages/ComboProductPage'
-import { CheckoutPage } from './pages/CheckoutPage'
 import { SensorSetupPage } from './pages/SensorSetupPage'
 import { RecommendedInstallationScenariosPage } from './pages/RecommendedInstallationScenariosPage'
 import { EmailSignaturePage } from './pages/EmailSignaturePage'
@@ -52,8 +45,8 @@ function AppContent() {
 
     usePageTracking()
   
-  // Hide header/footer on checkout and sensor setup pages for cleaner experience
-  const hideHeaderFooter = location.pathname === '/checkout' || location.pathname === '/sensor-setup'
+  // Hide header/footer on sensor setup page for cleaner experience
+  const hideHeaderFooter = location.pathname === '/sensor-setup'
   
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -63,15 +56,12 @@ function AppContent() {
               <Route path="/" element={<HomePage />} />
               <Route path="/homeowner" element={<HomeownerHomePage />} />
               <Route path="/hvac-pros" element={<HVACProsPage />} />
-              <Route path="/property-managers" element={<PropertyManagersPage />} />
+              <Route path="/property-managers" element={<PropertyManagerPage />} />
               <Route path="/code-officials" element={<CodeOfficialsPage />} />
               <Route path="/property-manager" element={<PropertyManagerPage />} />
-              <Route path="/promo" element={<PromoPage />} />
               <Route path="/customer-selection" element={<CustomerSelectionPage />} />
                     <Route path="/products" element={<ProductsPage />} />
                     <Route path="/solutions" element={<ProductsPage />} />
-                    <Route path="/cart" element={<CartPage />} />
-                    <Route path="/checkout" element={<CheckoutPage />} />
                     <Route path="/contact" element={<ContactPage />} />
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="/support" element={<SupportHubPage />} />
@@ -86,17 +76,14 @@ function AppContent() {
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/dashboard/profile" element={<ProfilePage />} />
-              <Route path="/business/pro/catalog" element={<HVACProCatalogPage />} />
-              <Route path="/business/property-manager/catalog" element={<PropertyManagerCatalogPage />} />
               <Route path="/unauthorized" element={<UnauthorizedPage />} />
               <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
               <Route path="/return-refund-policy" element={<ReturnRefundPolicyPage />} />
               <Route path="/shipping-policy" element={<ShippingPolicyPage />} />
               <Route path="/warranty-policy" element={<WarrantyPolicyPage />} />
+              <Route path="/terms-of-use" element={<TermsOfUsePage />} />
               <Route path="/email-preferences" element={<EmailPreferencesPage />} />
               <Route path="/unsubscribe" element={<UnsubscribePage />} />
-              <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
-              <Route path="/checkout/cancel" element={<CheckoutCancelPage />} />
               <Route path="/products/mini" element={<MiniProductPage />} />
                     <Route path="/products/sensor" element={<SensorProductPage />} />
                     <Route path="/products/combo" element={<ComboProductPage />} />

@@ -56,7 +56,6 @@ export function Footer() {
               <ul className="footer-link-list">
                 <li><Link to="/about" className="footer-link">About Us</Link></li>
                 <li><Link to="/contact" className="footer-link">Contact</Link></li>
-                <li><Link to="/promo" className="footer-link">Special Offers</Link></li>
                 <li><Link to="/contact?type=sales" className="footer-link">Contractor Inquiries</Link></li>
                 <li><Link to="/compliance" className="footer-link">Compliance Resources</Link></li>
 
@@ -108,6 +107,7 @@ export function Footer() {
               </h3>
               <ul className="footer-link-list">
                 <li><Link to="/privacy-policy" className="footer-link">Privacy Policy</Link></li>
+                <li><Link to="/terms-of-use" className="footer-link">Terms of Use</Link></li>
                 <li><Link to="/return-refund-policy" className="footer-link">Return & Refund</Link></li>
                 <li><Link to="/shipping-policy" className="footer-link">Shipping Policy</Link></li>
                 <li><Link to="/warranty-policy" className="footer-link">Warranty Policy</Link></li>
