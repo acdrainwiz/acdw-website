@@ -494,7 +494,7 @@
     }
 
     .product-showcase-card-sensor.product-showcase-card-full-width {
-      min-height: 130vh !important;
+      min-height: 120vh !important;
     }
   }
 
@@ -792,7 +792,7 @@
   /* Full width Sensor card - EXACT HERO COPY */
   .product-showcase-card-sensor.product-showcase-card-full-width {
     @apply relative overflow-hidden bg-black;
-    min-height: 140vh;
+    min-height: 110vh;
     margin-bottom: 0;
     border-radius: 0;
     /* Ensure proper stacking context for Safari */
