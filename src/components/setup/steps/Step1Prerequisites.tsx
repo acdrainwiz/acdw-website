@@ -54,10 +54,10 @@ export function Step1Prerequisites({ onComplete }: Step1PrerequisitesProps) {
           </button>
           <div className="flex-1">
             <label className="text-base font-medium text-gray-900 cursor-pointer" onClick={() => handleCheckboxChange('mini', !miniInstalled)}>
-              ACDW Mini Installed
+              Transparent T-Manifold Installed
             </label>
             <p className="text-sm text-gray-600 mt-1">
-              Verify that an ACDW Mini is installed and ready for sensor attachment.
+              The Transparent T-Manifold must be installed by the AC technician before sensor setup.
             </p>
             {!miniInstalled && (
               <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-md">
@@ -65,14 +65,14 @@ export function Step1Prerequisites({ onComplete }: Step1PrerequisitesProps) {
                   <ExclamationTriangleIcon className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
                   <div className="flex-1">
                     <p className="text-sm text-amber-800">
-                      The sensor requires an ACDW Mini to be installed first.
+                      The Transparent T-Manifold must be installed by the AC technician before sensor setup;{' '}
+                      <a
+                        href="/mini-setup"
+                        className="text-sm text-amber-700 hover:text-amber-900 underline inline"
+                      >
+                        view installation steps in the Mini Setup Guide →
+                      </a>
                     </p>
-                    <a
-                      href="/mini-setup"
-                      className="text-sm text-amber-700 hover:text-amber-900 underline mt-1 inline-block"
-                    >
-                      View Mini Setup Guide →
-                    </a>
                   </div>
                 </div>
               </div>

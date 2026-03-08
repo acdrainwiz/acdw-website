@@ -37,14 +37,16 @@ export function Step1Preparation() {
               <div className="sensor-setup-prerequisites-callout-item">
                 <CheckCircleIcon className="sensor-setup-prerequisites-callout-item-icon" />
                 <div className="sensor-setup-prerequisites-callout-item-content">
-                  <p className="sensor-setup-prerequisites-callout-item-title">ACDW Mini Installed</p>
-                  <p className="sensor-setup-prerequisites-callout-item-description">The sensor requires an ACDW Mini to be installed first.</p>
-                  <a
-                    href="/mini-setup"
-                    className="sensor-setup-prerequisites-callout-item-link"
-                  >
-                    View Mini Setup Guide →
-                  </a>
+                  <p className="sensor-setup-prerequisites-callout-item-title">Transparent T-Manifold Installed</p>
+                  <p className="sensor-setup-prerequisites-callout-item-description">
+                    The Transparent T-Manifold must be installed by the AC technician before sensor setup;{' '}
+                    <a
+                      href="/mini-setup"
+                      className="sensor-setup-prerequisites-callout-item-link"
+                    >
+                      view installation steps in the Mini Setup Guide →
+                    </a>
+                  </p>
                 </div>
               </div>
               <div className="sensor-setup-prerequisites-callout-item">
@@ -71,37 +73,37 @@ export function Step1Preparation() {
       <div className="sensor-setup-model-identification">
         <h3 className="sensor-setup-model-identification-title">Identify Your Sensor Model</h3>
         <p className="sensor-setup-model-identification-description">
-          Check your sensor box to identify which model you have. The setup process is the same for both.
+          Both models include a cable for the 24V air-handler connection. The Non‑WiFi model does not require WiFi setup; the WiFi model does. Choose your model to follow the right steps in the next screen.
         </p>
         
         <div className="sensor-setup-model-comparison">
-          {/* Battery Model */}
+          {/* Non-WiFi Model */}
           <div className="sensor-setup-model-card">
             <div className="sensor-setup-model-card-image-wrapper">
               <img
-                src="/images/setup/model-battery.png"
-                alt="Battery-Only Model"
+                src="/images/setup/model-non-wifi.png"
+                alt="Non-WiFi Model"
                 className="sensor-setup-model-card-image"
               />
             </div>
-            <h4 className="sensor-setup-model-card-title">Battery-Only Model</h4>
+            <h4 className="sensor-setup-model-card-title">Non-WiFi Model</h4>
             <p className="sensor-setup-model-card-description">
-              No connection cable included
+              Power from 24V cable. Stops AC at critical water level. No WiFi setup.
             </p>
           </div>
 
-          {/* DC Model */}
+          {/* WiFi Model */}
           <div className="sensor-setup-model-card">
             <div className="sensor-setup-model-card-image-wrapper">
               <img
-                src="/images/setup/model-dc.png"
-                alt="DC + Battery Model"
+                src="/images/setup/model-wifi.png"
+                alt="WiFi-Capable Model"
                 className="sensor-setup-model-card-image"
               />
             </div>
-            <h4 className="sensor-setup-model-card-title">DC + Battery Model</h4>
+            <h4 className="sensor-setup-model-card-title">WiFi Model</h4>
             <p className="sensor-setup-model-card-description">
-              Includes connection cable
+              Same as Non-WiFi plus remote monitoring. 24V or battery. WiFi setup required.
             </p>
           </div>
         </div>
@@ -128,8 +130,17 @@ export function Step1Preparation() {
               <span className="sensor-setup-what-you-need-item-icon">🔌</span>
             </div>
             <div className="sensor-setup-what-you-need-item-content">
-              <p className="sensor-setup-what-you-need-item-title">Battery or DC Cable</p>
-              <p className="sensor-setup-what-you-need-item-description">Depending on model</p>
+              <p className="sensor-setup-what-you-need-item-title">24V Cable</p>
+              <p className="sensor-setup-what-you-need-item-description">Included with both models; connects to air handler 24V</p>
+            </div>
+          </div>
+          <div className="sensor-setup-what-you-need-item">
+            <div className="sensor-setup-what-you-need-item-icon-wrapper">
+              <span className="sensor-setup-what-you-need-item-icon">🔋</span>
+            </div>
+            <div className="sensor-setup-what-you-need-item-content">
+              <p className="sensor-setup-what-you-need-item-title">Battery</p>
+              <p className="sensor-setup-what-you-need-item-description">WiFi model only; backup power</p>
             </div>
           </div>
           <div className="sensor-setup-what-you-need-item">
@@ -147,7 +158,7 @@ export function Step1Preparation() {
             </div>
             <div className="sensor-setup-what-you-need-item-content">
               <p className="sensor-setup-what-you-need-item-title">Wi-Fi Password</p>
-              <p className="sensor-setup-what-you-need-item-description">Homeowner's network</p>
+              <p className="sensor-setup-what-you-need-item-description">Homeowner's network (WiFi model only)</p>
             </div>
           </div>
         </div>
