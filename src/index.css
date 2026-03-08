@@ -384,15 +384,16 @@
   }
 
   .hero-background-image {
-    @apply absolute inset-0 bg-cover bg-center bg-no-repeat;
+    @apply absolute inset-0 bg-center bg-no-repeat;
+    background-size: 160vh;
     background-image: url('/images/hvac-tech-mini-sensor-combined.png');
   }
 
   /* Small mobile devices - adjust hero background position and size */
   @media (max-width: 390px) {
     .hero-background-image {
-      background-position-x: -130px;
-      background-size: 160% auto !important;
+      background-position-x: -60px;
+      background-size: 140% auto !important;
       background-color: black;
       background-position-y: 0px !important;
     }
@@ -561,6 +562,13 @@
   .hero-cta-buttons {
     @apply flex flex-col sm:flex-row gap-4 mb-4;
     margin-top: 800px;
+  }
+
+  /* Large screens (2000px and above) - hero CTA buttons margin */
+  @media (min-width: 2000px) {
+    .hero-cta-buttons {
+      margin-top: 920px;
+    }
   }
 
   /* Mobile - hero CTA buttons margin and layout */
@@ -924,8 +932,8 @@
   .product-showcase-card-sensor.product-showcase-card-full-width .product-showcase-card-background {
     background-image: url('/images/acdw-sensor-showcase-background.png');
     background-position: center;
-    background-position-y: -170px;
-    background-size: cover;
+    background-position-y: 10px;
+    background-size: 100vh;
     background-repeat: no-repeat;
   }
 
@@ -954,8 +962,9 @@
   .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-background {
     background-image: url('/images/acdw-mini-hero-background.png');
     background-position: center top;
-    background-size: cover;
+    background-size: 100vh;
     background-repeat: no-repeat;
+    background-color: black;
   }
 
   /* Small mobile (below 390px) - mini card background styles */
@@ -1022,7 +1031,7 @@
   /* Larger screens - sensor card content spacing */
   @media (min-width: 1024px) {
     .product-showcase-card-sensor.product-showcase-card-full-width .product-showcase-card-content {
-      margin-top: 1210px !important;
+      margin-top: 1080px !important;
     }
   }
 
