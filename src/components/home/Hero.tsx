@@ -208,20 +208,20 @@ export function Hero() {
           {/* Hero Header */}
           <div className="hero-header-section">
             <h1 className="hero-main-heading">
-              Prevent AC Drain Line Clogs And{' '}
+              Stop Drain Line Clogs Before They Become{' '}
               <span className="hero-brand-highlight">Expensive Water Damage</span>
             </h1>
-            
+
             <h2 className="hero-subtitle">
               STAY COOL WHEN <br className="hero-subtitle-mobile-break" /><em>THE <strong style={{ color: 'red' }}>HEAT</strong> IS ON!</em>
             </h2>
             
             <div className="hero-cta-buttons">
               <button 
-                onClick={() => navigate('/products/mini')}
+                onClick={() => navigate('/products/combo')}
                 className="hero-primary-button"
               >
-                Product Details
+                View Complete System
                 <ArrowRightIcon className="hero-button-icon" />
               </button>
               
@@ -234,7 +234,7 @@ export function Hero() {
             </div>
             
             <p className="hero-description-text">
-              Keep your AC running smoothly with the AC Drain Wiz™ Mini
+              The complete AC drain line protection system—proactive cleaning and smart water-level monitoring in one.
             </p>
           </div>
         </div>
@@ -265,20 +265,75 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Customer Type Selector */}
-      <CustomerTypeSelector />
-
-      {/* Product Showcase Section */}
-      <div ref={productShowcaseRef} className="product-showcase-container">
+      {/* Mini Product Intro Header */}
+      <div className="product-showcase-container product-showcase-container-mini">
         <div className="product-showcase-header">
-          <h2 className="product-showcase-title">Code Mandated Float Switch Replacement</h2>
+          <h2 className="product-showcase-title">Meet the AC Drain Wiz Mini</h2>
           <p className="product-showcase-subtitle">
-            Smart monitoring and complete protection systems designed for HVAC professionals. Boost efficiency and deliver premium service to your customers.
+            The fastest way to protect your AC system from drain line clogs. A permanent access point that installs in 5 minutes—so you can flush, clean, and maintain the drain line anytime, without cutting PVC or calling a tech.
           </p>
         </div>
       </div>
 
-      {/* Sensor Card - Full Width, Contractor Only */}
+      {/* ACDW Mini Card - Full Width (second product spot) */}
+      <div className="product-showcase-card product-showcase-card-mini product-showcase-card-full-width">
+        <div className="product-showcase-card-background">
+          {/* ACDW Mini product image background */}
+        </div>
+        
+        <div className="product-showcase-card-content">
+          <div className="product-showcase-card-header">
+            <h3 className="product-showcase-card-title">ACDW Mini</h3>
+            <span className="product-showcase-card-status">Drain Line Protection</span>
+          </div>
+          
+          <h4 className="product-showcase-card-headline">Install Once. Clean Anytime.</h4>
+          
+          <p className="product-showcase-card-description">
+            The AC Drain Wiz Mini gives you permanent, on-demand access to your AC drain line. Install in 5 minutes or less—then flush the line anytime without cutting into PVC or disassembling fittings. Keep drain lines clear, prevent costly backups, and reduce service callbacks.
+          </p>
+          
+          <div className="product-showcase-card-ctas">
+            {isContractor ? (
+              <>
+                <button 
+                  onClick={() => navigate('/products/mini')}
+                  className="product-showcase-card-cta-primary"
+                >
+                  Learn More
+                </button>
+                <a 
+                  href="tel:+15616545237"
+                  className="product-showcase-card-cta-secondary"
+                >
+                  Call (561) 654-5237
+                </a>
+              </>
+            ) : (
+              <>
+                <button 
+                  onClick={() => navigate('/products/mini')}
+                  className="product-showcase-card-cta-primary"
+                >
+                  Learn More
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Sensor Product Intro Header */}
+      <div ref={productShowcaseRef} className="product-showcase-container product-showcase-container-sensor">
+        <div className="product-showcase-header">
+          <h2 className="product-showcase-title">Add Smart Monitoring to Your AC Drain Line</h2>
+          <p className="product-showcase-subtitle">
+            When drain lines back up, the damage can be immediate and expensive. Pair the ACDW Mini with the ACDW Sensor Switch to add automatic AC shutdown and 24/7 water-level monitoring—a code-compliant float switch replacement that protects your customers' properties before a clog becomes a crisis.
+          </p>
+        </div>
+      </div>
+
+      {/* Sensor Card - Full Width, Contractor Only (third product spot) */}
       <div className="product-showcase-card product-showcase-card-sensor product-showcase-card-full-width">
         <div className="product-showcase-card-background">
           {/* Sensor product image background */}
@@ -290,23 +345,21 @@ export function Hero() {
             <span className="product-showcase-card-status available">Contractor Only</span>
           </div>
           
-          <h4 className="product-showcase-card-headline">Smart. Monitoring.</h4>
+          <h4 className="product-showcase-card-headline">Smarter. Safer. Sensor Switch.</h4>
           
           <p className="product-showcase-card-description">
-            Revolutionary no-contact sensing technology that prevents problems before they happen. Get 24/7 alerts before overflow starts. Available exclusively to HVAC contractors—help your customers protect their homes while growing your service offerings.
+            The ACDW Sensor Switch replaces the traditional float switch with none of the drawbacks. The ACDW Sensor Switch comes in a Wifi and Non-Wifi models. Both models wire directly to the air handler and automatically shut off the AC at critical water levels. The WiFi model adds a backup battery, plus remote water-level monitoring, real-time notifications, and battery status alerts through the ACDW Sensor monitoring service.
           </p>
           
           <div className="product-showcase-card-ctas">
             {isContractor ? (
               <>
-                {/* Launch Button Redirect */}
                 <button 
                   onClick={() => navigate('/products/sensor')}
                   className="product-showcase-card-cta-primary"
                 >
                   Learn More
                 </button>
-                {/* Launch Button Redirect */}
                 <a 
                   href="tel:+15616545237"
                   className="product-showcase-card-cta-secondary"
@@ -316,73 +369,11 @@ export function Hero() {
               </>
             ) : (
               <>
-                {/* Non-contractors: Information-first approach - learn about product first */}
                 <button 
                   onClick={() => navigate('/products/sensor')}
                   className="product-showcase-card-cta-primary"
                 >
                   Learn More
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Separator Between Cards */}
-      <div className="product-showcase-separator">
-        <div className="product-showcase-separator-content">
-          <h3 className="product-showcase-separator-title">Complete Protection System</h3>
-          <p className="product-showcase-separator-subtitle">
-            Combine both products for maximum customer satisfaction and increased service value
-          </p>
-        </div>
-      </div>
-
-      {/* Mini + Sensor Combined Card - Full Width */}
-      <div className="product-showcase-card product-showcase-card-mini product-showcase-card-full-width">
-        <div className="product-showcase-card-background">
-          {/* HVAC tech with Mini and Sensor products */}
-        </div>
-        
-        <div className="product-showcase-card-content">
-          <div className="product-showcase-card-header">
-            <h3 className="product-showcase-card-title">Maximum Protection</h3>
-            <span className="product-showcase-card-status">Mini + Sensor</span>
-          </div>
-          
-          <h4 className="product-showcase-card-headline">Complete AC Protection System</h4>
-          
-          <p className="product-showcase-card-description">
-            Combine the Mini's proactive cleaning with the Sensor's smart monitoring for maximum protection. The ultimate solution for HVAC contractors looking to offer premium maintenance packages. Reduce callbacks, increase customer satisfaction, and differentiate your services.
-          </p>
-          
-          <div className="product-showcase-card-ctas">
-            {isContractor ? (
-              <>
-                {/* Launch Button Redirect */}
-                <button 
-                  onClick={() => navigate('/products/combo')}
-                  className="product-showcase-card-cta-primary"
-                >
-                  View Complete System
-                </button>
-                {/* Launch Button Redirect */}
-                <a 
-                  href="tel:+15616545237"
-                  className="product-showcase-card-cta-secondary"
-                >
-                  Call (561) 654-5237
-                </a>
-              </>
-            ) : (
-              <>
-                {/* Non-contractors: Information-first approach - learn about complete system first */}
-                <button 
-                  onClick={() => navigate('/products/combo')}
-                  className="product-showcase-card-cta-primary"
-                >
-                  View Complete System
                 </button>
               </>
             )}
@@ -453,6 +444,9 @@ export function Hero() {
           </div>
         </div>
       </div>
+
+      {/* Customer Type Selector */}
+      <CustomerTypeSelector />
 
           {/* Why Choose AC Drain Wiz Section */}
       <div ref={benefitsRef} className="benefits-section-container">

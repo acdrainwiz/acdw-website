@@ -379,13 +379,13 @@
   /* Mobile - hero header section margin */
   @media (max-width: 767px) {
     .hero-header-section {
-      margin-top: 330px;
+      margin-top: 270px;
     }
   }
 
   .hero-background-image {
     @apply absolute inset-0 bg-cover bg-center bg-no-repeat;
-    background-image: url('/images/acdw-mini-hero-background.png');
+    background-image: url('/images/hvac-tech-mini-sensor-combined.png');
   }
 
   /* Small mobile devices - adjust hero background position and size */
@@ -401,8 +401,8 @@
   /* Mobile - adjust hero background position and size */
   @media (min-width: 391px) and (max-width: 767px) {
     .hero-background-image {
-      background-position-x: -140px;
-      background-size: 160% auto !important;
+      background-position-x: -65px;
+      background-size: 140% auto !important;
       background-color: black;
       background-position-y: 0px !important;
     }
@@ -424,34 +424,101 @@
 
   /* iPad Pro portrait (1024x1366) - specific adjustment */
   @media screen and (width: 1024px) and (height: 1366px) {
+    .hero-main-container {
+      min-height: 1366px;
+    }
+
     .hero-background-image {
-      background-position-x: -340px !important;
+      background-position-x: -200px !important;
+    }
+
+    .hero-cta-buttons {
+      margin-top: 700px !important;
     }
   }
 
   /* Tablet portrait mode - adjust hero background position and size */
   @media screen and (min-width: 768px) and (max-width: 1366px) and (orientation: portrait) {
     .hero-background-image {
-      background-position-x: -250px;
-      background-size: 160% auto !important;
+      background-size: 150% auto !important;
       background-color: black;
     }
   }
 
+  /* iPad Mini portrait (768x1024) - specific adjustment - must come after general tablet rule */
+  @media screen and (width: 768px) and (height: 1024px) {
+    .hero-main-container {
+      min-height: 90vh;
+    }
+
+    .hero-background-image {
+      background-position-x: -60px !important;
+      background-size: 120% auto !important;
+      background-color: black;
+    }
+
+    .hero-cta-buttons {
+      margin-top: 410px !important;
+    }
+
+    .product-showcase-card-mini.product-showcase-card-full-width {
+      height: 100vh !important;
+    }
+
+    .product-showcase-card-mini .product-showcase-card-background {
+      background-position-x: -175px !important;
+      background-size: 140% auto !important;
+      background-color: black !important;
+    }
+  }
+
+  /* iPad Air portrait (820x1180) - specific adjustment - must come after general portrait rule */
+  @media screen and (width: 820px) and (height: 1180px) {
+    .hero-main-container {
+      min-height: 90vh;
+    }
+
+    .hero-background-image {
+      background-position-x: -110px !important;
+      background-size: 130% auto !important;
+      background-color: black;
+    }
+
+    .hero-cta-buttons {
+      margin-top: 500px !important;
+    }
+
+    .product-showcase-card-mini.product-showcase-card-full-width {
+      height: 90vh !important;
+    }
+
+    .product-showcase-card-sensor.product-showcase-card-full-width {
+      min-height: 130vh !important;
+    }
+  }
+
   .hero-background-image::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(0, 0, 0, 0.4) 0%,
-      rgba(0, 0, 0, 0.2) 50%,
-      rgba(0, 0, 0, 0.6) 100%
-    );
-    z-index: 1;
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .hero-background-image::before {
+      display: block;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.75) 0%,
+        rgba(0, 0, 0, 0.5) 15%,
+        rgba(0, 0, 0, 0.2) 30%,
+        transparent 45%
+      );
+      z-index: 1;
+    }
   }
 
   .hero-text-content {
@@ -493,7 +560,7 @@
 
   .hero-cta-buttons {
     @apply flex flex-col sm:flex-row gap-4 mb-4;
-    margin-top: 190px;
+    margin-top: 800px;
   }
 
   /* Mobile - hero CTA buttons margin and layout */
@@ -774,10 +841,10 @@
     }
   }
   
-  /* Full width Mini+Sensor combo card - EXACT HERO COPY */
+  /* ACDW Mini card - full width */
   .product-showcase-card-mini.product-showcase-card-full-width {
     @apply relative overflow-hidden;
-    height: 100vh;
+    height: 140vh;
     margin-top: 0;
     border-radius: 0;
   }
@@ -785,49 +852,64 @@
   /* Large desktop (1920px and above) - mini card height */
   @media (min-width: 1920px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
-      height: 100vh;
+      height: 140vh;
     }
   }
 
   /* Desktop (1440px and above) - mini card height */
   @media (min-width: 1440px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
-      height: 100vh;
+      height: 140vh;
     }
   }
 
   /* Laptop (1280px and above) - mini card height */
   @media (min-width: 1280px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
-      height: 100vh;
+      height: 140vh;
     }
   }
 
   /* Tablet landscape / Small laptop (1024px and above) - mini card height */
   @media (min-width: 1024px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
-      height: 100vh;
+      height: 90vh;
     }
   }
 
   /* Mobile - mini card height */
   @media (max-width: 767px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
-      height: 120vh;
+      height: 150vh;
     }
   }
 
-  /* Small mobile devices (430px and below) - mini card height */
-  @media (max-width: 430px) {
+  /* iPhone 12 Mini and below (389px and below) - mini card height */
+  @media (max-width: 389px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
-      height: 105vh;
+      height: 110vh;
     }
   }
+
+  /* iPhone 12 / iPhone 14 range (390px–430px) - mini card height */
+  @media (min-width: 390px) and (max-width: 430px) {
+    .product-showcase-card-mini.product-showcase-card-full-width {
+      height: 100vh;
+    }
+  }
+
+  /* iPhone 12 (390x844) - mini card height - must come after general range rule */
+  @media screen and (width: 390px) and (height: 844px) {
+    .product-showcase-card-mini.product-showcase-card-full-width {
+      height: 110vh !important;
+    }
+  }
+
 
   /* Very small mobile devices (375px and below) - mini card height */
   @media (max-width: 375px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
-      height: 160vh;
+      height: 150vh;
     }
   }
 
@@ -850,34 +932,34 @@
   /* Mobile - sensor card background position */
   @media (max-width: 767px) {
     .product-showcase-card-sensor.product-showcase-card-full-width .product-showcase-card-background {
-      background-position-y: -120px;
+      background-position-y: -50px;
     }
   }
 
   /* Tablet-specific adjustment for sensor card background (iPad Pro and similar tablets) */
   @media (min-width: 768px) and (max-width: 1366px) {
     .product-showcase-card-sensor.product-showcase-card-full-width .product-showcase-card-background {
-      background-position-y: -140px;
+      background-position-y: -50px;
     }
   }
 
   /* Portrait mode - reset background positioning to show full image */
   @media screen and (orientation: portrait) {
     .product-showcase-card-sensor.product-showcase-card-full-width .product-showcase-card-background {
-      background-size: cover;
+      background-size: 100vh;
     }
   }
 
-  /* Mini + Sensor combo card - full width - matches hero background approach */
+  /* Mini card - full width - uses former hero image (Mini-only second spot) */
   .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-background {
-    background-image: url('/images/hvac-tech-mini-sensor-combined.png');
-    background-position: center;
+    background-image: url('/images/acdw-mini-hero-background.png');
+    background-position: center top;
     background-size: cover;
     background-repeat: no-repeat;
   }
 
-  /* Mobile - mini card background styles */
-  @media (max-width: 767px) {
+  /* Small mobile (below 390px) - mini card background styles */
+  @media (max-width: 389px) {
     .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-background {
       background-position-x: -90px !important;
       background-size: 150% auto !important;
@@ -886,12 +968,40 @@
     }
   }
 
+  /* iPhone 14 and standard mobile (390px–767px) - mini card background styles */
+  @media (min-width: 390px) and (max-width: 767px) {
+    .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-background {
+      background-position-x: -75px !important;
+      background-size: 130% auto !important;
+      background-color: black !important;
+      background-position-y: 30px !important;
+    }
+  }
+
   /* Tablet portrait mode - adjust combo card background position */
   @media screen and (max-width: 1366px) and (orientation: portrait) {
     .product-showcase-card-mini .product-showcase-card-background {
-      background-position-x: -175px !important;
+      background-position-x: -215px !important;
       background-size: 140% auto !important;
       background-color: black;
+    }
+  }
+
+  /* iPad Mini (768x1024) - mini card background - must come AFTER general portrait rule */
+  @media screen and (width: 768px) and (height: 1024px) {
+    .product-showcase-card-mini .product-showcase-card-background {
+      background-position-x: -175px !important;
+      background-size: 140% auto !important;
+      background-color: black !important;
+    }
+  }
+
+  /* iPad Air (820x1180) - mini card background - must come AFTER general portrait rule */
+  @media screen and (width: 820px) and (height: 1180px) {
+    .product-showcase-card-mini .product-showcase-card-background {
+      background-position-x: -185px !important;
+      background-size: 140% auto !important;
+      background-color: black !important;
     }
   }
 
@@ -912,7 +1022,7 @@
   /* Larger screens - sensor card content spacing */
   @media (min-width: 1024px) {
     .product-showcase-card-sensor.product-showcase-card-full-width .product-showcase-card-content {
-      margin-top: 1100px !important;
+      margin-top: 1210px !important;
     }
   }
 
@@ -931,12 +1041,31 @@
     }
   }
 
+  /* iPhone SE (375x667) - sensor card content - must come AFTER general mobile rule */
+  @media screen and (width: 375px) and (height: 667px) {
+    .product-showcase-card-sensor.product-showcase-card-full-width .product-showcase-card-content {
+      justify-content: flex-end;
+      padding-bottom: 4rem !important;
+      width: 100%;
+      max-width: none;
+      margin: 0 auto;
+      box-sizing: border-box;
+      min-height: auto;
+      height: auto;
+      margin-top: 560px !important;
+    }
+  }
+
   .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-content {
-    @apply justify-end pb-12;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
     width: 100%;
     max-width: none;
-    margin: 0 auto;
     box-sizing: border-box;
+    @apply z-10 p-8 pb-12 flex flex-col items-center text-center;
   }
 
 
@@ -10595,6 +10724,71 @@
   @apply text-sm text-gray-600;
 }
 
+/* Step 2: Unbox callout (before model selection) */
+.sensor-setup-unbox-callout {
+  @apply bg-white rounded-lg border border-gray-200 p-6;
+}
+
+.sensor-setup-unbox-callout-title {
+  @apply text-xl font-semibold text-gray-900 mb-2;
+}
+
+.sensor-setup-unbox-callout-description {
+  @apply text-gray-700 mb-4;
+}
+
+.sensor-setup-unbox-callout-image-wrapper {
+  @apply w-full min-h-[420px];
+}
+
+.sensor-setup-unbox-callout-image {
+  @apply w-full h-auto rounded-lg shadow-md block;
+  object-fit: contain;
+}
+
+/* Step 2: Model selector (split path) */
+.sensor-setup-model-selector {
+  @apply bg-white rounded-lg border border-gray-200 p-6;
+}
+
+.sensor-setup-model-selector-title {
+  @apply text-xl font-semibold text-gray-900 mb-1;
+}
+
+.sensor-setup-model-selector-description {
+  @apply text-sm text-gray-600 mb-4;
+}
+
+.sensor-setup-model-selector-cards {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+}
+
+.sensor-setup-model-selector-card {
+  @apply text-left rounded-lg border-2 border-gray-200 p-4 transition-all hover:border-primary-300 hover:bg-primary-50/50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+}
+
+.sensor-setup-model-selector-card-selected {
+  @apply border-primary-600 bg-primary-50 ring-2 ring-primary-600/20;
+}
+
+.sensor-setup-model-selector-card-image-wrapper {
+  @apply mb-3;
+}
+
+.sensor-setup-model-selector-card-image {
+  @apply w-full h-auto rounded-md shadow-sm;
+  max-height: 200px;
+  object-fit: contain;
+}
+
+.sensor-setup-model-selector-card-title {
+  @apply font-semibold text-gray-900 mb-1;
+}
+
+.sensor-setup-model-selector-card-description {
+  @apply text-sm text-gray-600;
+}
+
 .sensor-setup-what-you-need {
   @apply bg-white rounded-lg border border-gray-200 p-6;
 }
@@ -11081,12 +11275,40 @@
   @apply bg-primary-100 text-primary-800;
 }
 
+.sensor-setup-accordion-badge-wifi-only {
+  @apply bg-slate-100 text-slate-700;
+}
+
+.sensor-setup-nonwifi-skip-note {
+  @apply text-sm text-gray-600 px-6 pt-3 pb-1;
+}
+
+.sensor-setup-wps-callout {
+  @apply bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6;
+}
+
+.sensor-setup-wps-callout-title {
+  @apply font-semibold text-gray-900 mb-2;
+}
+
+.sensor-setup-wps-callout-intro {
+  @apply text-sm text-gray-700 mb-3;
+}
+
+.sensor-setup-wps-callout-steps {
+  @apply text-sm text-gray-700 list-decimal list-inside space-y-2 mb-3;
+}
+
+.sensor-setup-wps-callout-note {
+  @apply text-xs text-gray-600 border-t border-blue-200 pt-2;
+}
+
 .sensor-setup-accordion-chevron {
   @apply h-5 w-5 text-gray-500;
 }
 
 .sensor-setup-accordion-content {
-  @apply px-6 pb-6 border-t border-gray-200;
+  @apply px-6 pt-6 pb-6 border-t border-gray-200;
   animation: slideDown 0.3s ease-out;
 }
 
@@ -11230,6 +11452,15 @@
   transition: all 0.3s ease-out;
 }
 
+/* Mobile: allow modal content to scroll when it exceeds viewport */
+@media (max-width: 768px) {
+  .sensor-setup-prerequisite-modal {
+    max-height: 90vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 .sensor-setup-prerequisite-modal-visible {
   transform: scale(1);
   opacity: 1;
@@ -11304,7 +11535,7 @@
 }
 
 .sensor-setup-prerequisite-modal-actions {
-  @apply flex justify-center;
+  @apply flex justify-center mt-6;
 }
 
 .sensor-setup-prerequisite-modal-button {

@@ -11,6 +11,8 @@ export function SensorSetupPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [currentStep, setCurrentStep] = useState(1)
   const [wifiInteracted, setWifiInteracted] = useState(false)
+  const [physicalOpened, setPhysicalOpened] = useState(false)
+  const [step2Model, setStep2Model] = useState<'nonwifi' | 'wifi' | null>(null)
   const step2Ref = useRef<Step2SensorSetupHandle>(null)
 
   // Read step from URL on mount and when URL changes (browser back/forward)
@@ -21,9 +23,11 @@ export function SensorSetupPage() {
       // Validate step number
       if (step >= 1 && step <= TOTAL_STEPS) {
         setCurrentStep(step)
-        // Reset WiFi interaction state when leaving step 2
+        // Reset step 2 interaction state when leaving step 2
         if (step !== 2) {
           setWifiInteracted(false)
+          setPhysicalOpened(false)
+          setStep2Model(null)
         }
       } else {
         // Invalid step number, redirect to step 1
@@ -43,9 +47,11 @@ export function SensorSetupPage() {
       setCurrentStep(step)
       // Update URL with new step (pushes to history for browser back button)
       setSearchParams({ step: step.toString() }, { replace: false })
-      // Reset WiFi interaction state when leaving step 2
+      // Reset step 2 interaction state when leaving step 2
       if (step !== 2) {
         setWifiInteracted(false)
+        setPhysicalOpened(false)
+        setStep2Model(null)
       }
     }
   }
@@ -67,7 +73,14 @@ export function SensorSetupPage() {
       case 1:
         return <Step1CreateAccount />
       case 2:
-        return <Step2SensorSetup ref={step2Ref} onWifiInteraction={handleWifiInteraction} />
+        return (
+          <Step2SensorSetup
+            ref={step2Ref}
+            onWifiInteraction={handleWifiInteraction}
+            onPhysicalOpened={() => setPhysicalOpened(true)}
+            onModelSelect={setStep2Model}
+          />
+        )
       case 3:
         return <Step3AssignCustomer />
       default:
@@ -75,8 +88,12 @@ export function SensorSetupPage() {
     }
   }
 
-  // Disable continue button on step 2 if WiFi hasn't been interacted with
-  const isContinueDisabled = currentStep === 2 && !wifiInteracted
+  // Step 2: require model selection, then path-specific completion (Non-WiFi: physical opened; WiFi: wifi interacted)
+  const isContinueDisabled =
+    currentStep === 2 &&
+    (step2Model === null ||
+      (step2Model === 'nonwifi' && !physicalOpened) ||
+      (step2Model === 'wifi' && !wifiInteracted))
 
   return (
     <SetupWizard

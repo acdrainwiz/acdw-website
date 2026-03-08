@@ -109,9 +109,24 @@ export function PrerequisiteModal({ isOpen, onClose }: PrerequisiteModalProps) {
                 rel="noopener noreferrer"
                 className="sensor-setup-prerequisite-modal-signup-link"
               >
-                Go to Sign Up Page →
+                Create Sensor Monitoring account →
               </a>
             </div>
+          </div>
+
+          {/* Checkbox: set preference before dismissing */}
+          <div className="sensor-setup-prerequisite-modal-checkbox-wrapper">
+            <label className="sensor-setup-prerequisite-modal-checkbox-label">
+              <input
+                type="checkbox"
+                checked={accountCreated}
+                onChange={(e) => setAccountCreated(e.target.checked)}
+                className="sensor-setup-prerequisite-modal-checkbox"
+              />
+              <span className="sensor-setup-prerequisite-modal-checkbox-text">
+                I&apos;ve completed account setup and created a customer profile. Don&apos;t show this again.
+              </span>
+            </label>
           </div>
 
           {/* Action Button */}
@@ -122,21 +137,6 @@ export function PrerequisiteModal({ isOpen, onClose }: PrerequisiteModalProps) {
             >
               Ok I understand
             </button>
-          </div>
-
-          {/* Checkbox */}
-          <div className="sensor-setup-prerequisite-modal-checkbox-wrapper">
-            <label className="sensor-setup-prerequisite-modal-checkbox-label">
-              <input
-                type="checkbox"
-                checked={accountCreated}
-                onChange={(e) => setAccountCreated(e.target.checked)}
-                className="sensor-setup-prerequisite-modal-checkbox"
-              />
-              <span className="sensor-setup-prerequisite-modal-checkbox-text">
-                I have already created my account and my customer profile, dont show this anymore.
-              </span>
-            </label>
           </div>
         </div>
       </div>

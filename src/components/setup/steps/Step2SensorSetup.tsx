@@ -5,12 +5,15 @@ import {
   ChevronUpIcon,
   Battery100Icon,
   BoltIcon,
+  CpuChipIcon,
   DevicePhoneMobileIcon,
   WifiIcon
 } from '@heroicons/react/24/outline'
 
 interface Step2SensorSetupProps {
   onWifiInteraction?: () => void
+  onPhysicalOpened?: () => void
+  onModelSelect?: (model: 'nonwifi' | 'wifi') => void
 }
 
 export interface Step2SensorSetupHandle {
@@ -18,7 +21,8 @@ export interface Step2SensorSetupHandle {
 }
 
 export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSetupProps>(
-  ({ onWifiInteraction }, ref) => {
+  ({ onWifiInteraction, onPhysicalOpened, onModelSelect }, ref) => {
+  const [selectedModel, setSelectedModel] = useState<'nonwifi' | 'wifi' | null>(null)
   const [expandedSection, setExpandedSection] = useState<'physical' | 'wifi' | null>(null)
   const [physicalHasBeenOpened, setPhysicalHasBeenOpened] = useState(false)
   const [wifiHasBeenOpened, setWifiHasBeenOpened] = useState(false)
@@ -30,29 +34,23 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
   // Expose handleContinueClick method to parent
   useImperativeHandle(ref, () => ({
     handleContinueClick: () => {
-      // If Physical Setup is open, open WiFi and scroll to it
-      if (expandedSection === 'physical') {
+      // WiFi path only: if Physical is open, open WiFi and scroll to it (don't advance step yet)
+      if (selectedModel === 'wifi' && expandedSection === 'physical') {
         setExpandedSection('wifi')
         setPhysicalHasBeenOpened(true)
-        
-        // Track WiFi interaction
+        onPhysicalOpened?.()
         if (!wifiHasBeenOpened) {
           setWifiHasBeenOpened(true)
-          if (onWifiInteraction) {
-            onWifiInteraction()
-          }
+          if (onWifiInteraction) onWifiInteraction()
         }
-        
-        // Scroll to WiFi accordion content after a brief delay to allow DOM update
         setTimeout(() => {
           if (wifiAccordionContentRef.current) {
             wifiAccordionContentRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
           }
         }, 150)
-        
-        return true // Handled, don't proceed to next step
+        return true
       }
-      return false // Not handled, proceed normally
+      return false
     }
   }))
 
@@ -91,6 +89,7 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
     // Track when Physical section is opened for the first time
     if (section === 'physical' && !physicalHasBeenOpened) {
       setPhysicalHasBeenOpened(true)
+      onPhysicalOpened?.()
     }
 
     // Track when WiFi section is opened for the first time
@@ -131,41 +130,53 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
     }
   }, [expandedSection])
 
-  const physicalSteps = [
+  // Non-WiFi: physical-only flow (Unbox is above; these are the steps after model selection)
+  const physicalStepsNonWifi = [
     {
       number: 1,
-      title: 'Unbox Sensor',
-      description: 'Remove the sensor from its packaging. Check that all components are included.',
-      image: '/images/setup/step2-1-unbox.png',
-      alt: 'Unboxing the sensor'
-    },
-    {
-      number: 2,
-      title: 'Identify Your Sensor Model',
-      description: 'Check your sensor to identify which model you have. Battery-only models have no cable. DC models have the cable attached to the sensor unit.',
-      image: '/images/setup/step2-2-model-identification.png',
-      alt: 'Sensor model comparison'
-    },
-    {
-      number: 3,
       title: 'Power Up the Sensor',
-      description: 'For battery models: Insert the battery and close the battery door. For DC models: Insert the backup battery, then connect the DC cable to the AC power source insert once you have completed the verification of the LED status and complete the wifi set up.',
+      description: 'Connect the included 24V cable to the air handler (same style connection as a float switch). This is the only power source for the Non‑WiFi model. When there is power, the LED status light will go from red to green and stay a solid green.',
       image: '/images/setup/step2-3-power.png',
       alt: 'Powering up the sensor'
     },
     {
-      number: 4,
-      title: 'Verify LED Status',
-      description: 'The LED should be blinking RED. This indicates the sensor is in pairing mode and ready for Wi-Fi setup.',
+      number: 2,
+      title: 'Verify LED Status & Test the Sensor',
+      description: 'With the LED solid green, the sensor is powered and ready. To verify it is working correctly: place your index finger and thumb on the green PCB board that extends out of the sensor. If the sensor is working correctly, this will trigger the LED to flash red and the AC to shut off—mimicking the behavior of the sensor detecting 95% water levels in the drain line.',
       image: '/images/setup/step2-4-led.png',
-      alt: 'LED blinking red in pairing mode'
+      alt: 'LED solid green; testing sensor with touch on PCB'
     }
   ]
+
+  // WiFi: physical then WiFi (Unbox is above; these are the steps after model selection)
+  const physicalStepsWifi = [
+    {
+      number: 1,
+      title: 'Power Up the Sensor',
+      description: 'Connect the 24V cable to the air handler and/or insert the backup battery. When there is power, the LED status light will begin to blink red. This means the unit is powered up but has not yet connected to a valid Wi‑Fi network. Complete the WiFi Connection steps below.',
+      image: '/images/setup/step2-3-power.png',
+      alt: 'Powering up the sensor'
+    },
+    {
+      number: 2,
+      title: 'Verify LED Status',
+      description: 'While the LED is blinking red, the sensor is ready for WiFi setup. Once you complete the following steps and the sensor connects to the ACDW Sensor Servers over the network, the LED status light will switch to a constant green.',
+      image: '/images/setup/step2-4-led.png',
+      alt: 'LED blinking red (awaiting WiFi); solid green when connected'
+    }
+  ]
+
+  const physicalSteps = selectedModel === 'wifi' ? physicalStepsWifi : physicalStepsNonWifi
+
+  const handleModelSelect = (model: 'nonwifi' | 'wifi') => {
+    setSelectedModel(model)
+    onModelSelect?.(model)
+  }
 
   const wifiSteps = [
     {
       number: 5,
-      title: 'Connect to Sensor Wi-Fi',
+      title: 'Connect to Sensor Wi-Fi (if WPS is not available)',
       description: 'On your phone or tablet, go to Wi-Fi settings and connect to the network named "ACDW Sensor (ID)" or "Sensor (ID)". Once connected, you\'ll be redirected automatically.',
       image: '/images/setup/step2-5-wifi-settings.png',
       alt: 'Phone Wi-Fi settings showing ACDW Sensor network'
@@ -197,9 +208,15 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
 
       {/* Step Title */}
       <div className="sensor-setup-step-title-section">
-        <h2 className="sensor-setup-step-title">Set up Sensor and Connect to WiFi</h2>
+        <h2 className="sensor-setup-step-title">
+          {selectedModel === 'nonwifi' ? 'Set up Sensor (Non‑WiFi)' : selectedModel === 'wifi' ? 'Set up Sensor and Connect to WiFi' : 'Set up Sensor'}
+        </h2>
         <p className="sensor-setup-step-subtitle">
-          Follow these steps to physically install and connect your sensor
+          {selectedModel === 'nonwifi'
+            ? 'Physical installation only—no WiFi setup required.'
+            : selectedModel === 'wifi'
+              ? 'Physical installation and WiFi connection.'
+              : 'Select your model below, then follow the steps for your installation.'}
         </p>
       </div>
 
@@ -210,12 +227,12 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
           <div className="sensor-setup-prerequisites-callout-text">
             <h3 className="sensor-setup-prerequisites-callout-title">Prerequisite</h3>
             <p className="sensor-setup-prerequisites-callout-item-description">
-              The ACDW Mini must already be installed before setting up the sensor. 
+              The Transparent T-Manifold must be installed by the AC technician before sensor setup;{' '}
               <a
                 href="/mini-setup"
                 className="sensor-setup-prerequisites-callout-item-link"
               >
-                View Mini Setup Guide →
+                view installation steps in the Mini Setup Guide →
               </a>
             </p>
           </div>
@@ -228,20 +245,29 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
         <div className="sensor-setup-what-you-need-grid">
           <div className="sensor-setup-what-you-need-item">
             <div className="sensor-setup-what-you-need-item-icon-wrapper">
-              <Battery100Icon className="sensor-setup-what-you-need-item-icon" />
+              <CpuChipIcon className="sensor-setup-what-you-need-item-icon" />
             </div>
             <div className="sensor-setup-what-you-need-item-content">
               <p className="sensor-setup-what-you-need-item-title">ACDW Sensor</p>
               <p className="sensor-setup-what-you-need-item-description">Unboxed</p>
             </div>
           </div>
-          <div className="sensor-setup-what-you-need-item">
+<div className="sensor-setup-what-you-need-item">
             <div className="sensor-setup-what-you-need-item-icon-wrapper">
               <BoltIcon className="sensor-setup-what-you-need-item-icon" />
             </div>
             <div className="sensor-setup-what-you-need-item-content">
-              <p className="sensor-setup-what-you-need-item-title">Battery or DC Power</p>
-              <p className="sensor-setup-what-you-need-item-description">DC cable attached for DC model</p>
+              <p className="sensor-setup-what-you-need-item-title">24V Cable</p>
+              <p className="sensor-setup-what-you-need-item-description">Included with both models; connects to air handler 24V</p>
+            </div>
+          </div>
+          <div className="sensor-setup-what-you-need-item">
+            <div className="sensor-setup-what-you-need-item-icon-wrapper">
+              <Battery100Icon className="sensor-setup-what-you-need-item-icon" />
+            </div>
+            <div className="sensor-setup-what-you-need-item-content">
+              <p className="sensor-setup-what-you-need-item-title">Battery</p>
+              <p className="sensor-setup-what-you-need-item-description">WiFi model only; backup power</p>
             </div>
           </div>
           <div className="sensor-setup-what-you-need-item">
@@ -259,9 +285,48 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
             </div>
             <div className="sensor-setup-what-you-need-item-content">
               <p className="sensor-setup-what-you-need-item-title">Wi-Fi Password</p>
-              <p className="sensor-setup-what-you-need-item-description">Homeowner's network</p>
+              <p className="sensor-setup-what-you-need-item-description">Homeowner's network (WiFi model only)</p>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Unbox Sensor - before model selection (not a numbered step) */}
+      <div className="sensor-setup-unbox-callout">
+        <h3 className="sensor-setup-unbox-callout-title">Unbox Sensor</h3>
+        <p className="sensor-setup-unbox-callout-description">Remove the sensor from its packaging. Check that all components are included (24V cable; WiFi model also includes backup battery).</p>
+        <div className="sensor-setup-unbox-callout-image-wrapper">
+          <img src="/images/setup/step2-1-unbox.png" alt="Unboxing the sensor" className="sensor-setup-unbox-callout-image" />
+        </div>
+      </div>
+
+      {/* Model selection - required before showing steps */}
+      <div className="sensor-setup-model-selector">
+        <h3 className="sensor-setup-model-selector-title">Which model are you installing?</h3>
+        <p className="sensor-setup-model-selector-description">Select one to see the correct installation steps.</p>
+        <div className="sensor-setup-model-selector-cards">
+          <button
+            type="button"
+            onClick={() => handleModelSelect('nonwifi')}
+            className={`sensor-setup-model-selector-card ${selectedModel === 'nonwifi' ? 'sensor-setup-model-selector-card-selected' : ''}`}
+          >
+            <div className="sensor-setup-model-selector-card-image-wrapper">
+              <img src="/images/setup/model-non-wifi.png" alt="Non-WiFi Model" className="sensor-setup-model-selector-card-image" />
+            </div>
+            <h4 className="sensor-setup-model-selector-card-title">Non‑WiFi Model</h4>
+            <p className="sensor-setup-model-selector-card-description">Power from 24V cable only. Stops AC at critical water level. No WiFi setup.</p>
+          </button>
+          <button
+            type="button"
+            onClick={() => handleModelSelect('wifi')}
+            className={`sensor-setup-model-selector-card ${selectedModel === 'wifi' ? 'sensor-setup-model-selector-card-selected' : ''}`}
+          >
+            <div className="sensor-setup-model-selector-card-image-wrapper">
+              <img src="/images/setup/model-wifi.png" alt="WiFi Model" className="sensor-setup-model-selector-card-image" />
+            </div>
+            <h4 className="sensor-setup-model-selector-card-title">WiFi Model</h4>
+            <p className="sensor-setup-model-selector-card-description">Same as Non‑WiFi plus remote monitoring. 24V or battery. WiFi setup required.</p>
+          </button>
         </div>
       </div>
 
@@ -271,13 +336,14 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
           <div className="sensor-setup-notification-content">
             <ExclamationTriangleIcon className="sensor-setup-notification-icon" />
             <p className="sensor-setup-notification-message">
-              Your sensor setup experience requires you to start with the physical setup first.
+              Complete the Physical Setup steps first, then open WiFi Connection.
             </p>
           </div>
         </div>
       )}
 
-      {/* Physical Setup Accordion Section */}
+      {/* Physical Setup Accordion Section - only after model selected */}
+      {selectedModel !== null && (
       <div className={`sensor-setup-accordion-section ${expandedSection === 'physical' ? 'sensor-setup-accordion-section-expanded' : 'sensor-setup-accordion-section-collapsed'} ${!physicalHasBeenOpened ? 'sensor-setup-accordion-section-pulsating' : ''}`}>
         <button
           onClick={() => toggleSection('physical')}
@@ -318,54 +384,13 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
                     <div className="sensor-setup-installation-step-details">
                       <h3 className="sensor-setup-installation-step-title">{step.title}</h3>
                       <p className="sensor-setup-installation-step-description">{step.description}</p>
-                      
-                      {/* Image - Skip for step 2 (model identification) */}
-                      {step.number !== 2 && (
-                        <div className="sensor-setup-installation-step-image-wrapper">
-                          <img
-                            src={step.image}
-                            alt={step.alt}
-                            className="sensor-setup-installation-step-image"
-                          />
-                        </div>
-                      )}
-
-                      {/* Model Comparison - Only for step 2 */}
-                      {step.number === 2 && (
-                        <div className="sensor-setup-model-identification">
-                          <div className="sensor-setup-model-comparison">
-                            {/* Battery Model */}
-                            <div className="sensor-setup-model-card">
-                              <div className="sensor-setup-model-card-image-wrapper">
-                                <img
-                                  src="/images/setup/model-battery.png"
-                                  alt="Battery-Only Model"
-                                  className="sensor-setup-model-card-image"
-                                />
-                              </div>
-                              <h4 className="sensor-setup-model-card-title">Battery-Only Model</h4>
-                              <p className="sensor-setup-model-card-description">
-                                No connection cable
-                              </p>
-                            </div>
-
-                            {/* DC Model */}
-                            <div className="sensor-setup-model-card">
-                              <div className="sensor-setup-model-card-image-wrapper">
-                                <img
-                                  src="/images/setup/model-dc.png"
-                                  alt="DC + Battery Model"
-                                  className="sensor-setup-model-card-image"
-                                />
-                              </div>
-                              <h4 className="sensor-setup-model-card-title">DC + Battery Model</h4>
-                              <p className="sensor-setup-model-card-description">
-                                DC cable attached to sensor unit
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      )}
+                      <div className="sensor-setup-installation-step-image-wrapper">
+                        <img
+                          src={step.image}
+                          alt={step.alt}
+                          className="sensor-setup-installation-step-image"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -382,8 +407,10 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
           </div>
         )}
       </div>
+      )}
 
-      {/* WiFi Connection Accordion Section */}
+      {/* WiFi Connection Accordion Section - WiFi model only */}
+      {selectedModel === 'wifi' && (
       <div className={`sensor-setup-accordion-section ${expandedSection === 'wifi' ? 'sensor-setup-accordion-section-expanded' : 'sensor-setup-accordion-section-collapsed'} ${physicalHasBeenOpened && !wifiHasBeenOpened ? 'sensor-setup-accordion-section-pulsating' : ''}`}>
         <button
           onClick={() => toggleSection('wifi')}
@@ -393,6 +420,7 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
             <div className="sensor-setup-accordion-header-left">
               <div className="sensor-setup-accordion-status-icon sensor-setup-accordion-status-icon-pending" />
               <h3 className="sensor-setup-accordion-title">WiFi Connection</h3>
+              <span className="sensor-setup-accordion-badge sensor-setup-accordion-badge-wifi-only">WiFi model only</span>
               {physicalHasBeenOpened && !wifiHasBeenOpened && (
                 <span className="sensor-setup-accordion-badge sensor-setup-accordion-badge-next-step">Next Step</span>
               )}
@@ -409,6 +437,21 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
 
         {expandedSection === 'wifi' && (
           <div ref={wifiAccordionContentRef} className="sensor-setup-accordion-content">
+            {/* Optional WPS path */}
+            <div className="sensor-setup-wps-callout">
+              <h4 className="sensor-setup-wps-callout-title">Before you connect</h4>
+              <p className="sensor-setup-wps-callout-intro">The sensor should already have power (24V cable or battery). If the LED is still blinking red, place the sensor into the T manifold and twist it into place. Then use either the optional WPS method or the steps below to connect to Wi‑Fi.</p>
+              <h4 className="sensor-setup-wps-callout-title">Optional: Connect via WPS (faster)</h4>
+              <p className="sensor-setup-wps-callout-intro">If your homeowner's router supports Wi‑Fi Protected Setup (WPS), you can connect without entering the network password:</p>
+              <ol className="sensor-setup-wps-callout-steps">
+                <li>Confirm the router has WPS enabled (check router settings or label).</li>
+                <li>Within about 2 minutes, press and hold the <strong>WPS button</strong> on the router (usually on the back or side) until the WPS light flashes.</li>
+                <li>If the sensor successfully connects via the WPS process, the LED light should turn a solid green and the installer can move on to the login and registration step.</li>
+              </ol>
+              <p className="sensor-setup-wps-callout-note">
+                <strong>Note:</strong> Not all routers support WPS. iOS devices cannot use WPS to join a network—use the standard steps below instead.
+              </p>
+            </div>
             <div className="sensor-setup-wifi-steps">
               {wifiSteps.map((step) => (
                 <div key={step.number} className="sensor-setup-wifi-step-card">
@@ -449,6 +492,7 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
           </div>
         )}
       </div>
+      )}
     </div>
   )
 })
