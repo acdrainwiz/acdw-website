@@ -428,20 +428,7 @@ export function Hero() {
             </div>
           </div>
           
-          <div className="how-it-works-ctas">
-            <button 
-              onClick={() => setIsVideoModalOpen(true)}
-              className="how-it-works-cta-primary"
-            >
-              Watch Installation Video
-            </button>
-            <button 
-              onClick={() => navigate('/products')}
-              className="how-it-works-cta-secondary"
-            >
-              Download Guide
-            </button>
-          </div>
+          {/* how-it-works-ctas hidden until final content is ready */}
         </div>
       </div>
 
