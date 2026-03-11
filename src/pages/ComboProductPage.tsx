@@ -20,15 +20,13 @@ import {
   BellAlertIcon,
   UserGroupIcon,
   BuildingOfficeIcon,
-  DevicePhoneMobileIcon,
   ClipboardDocumentListIcon,
   ShieldCheckIcon,
   ClockIcon,
   ChevronDownIcon,
   ChevronUpIcon,
-  WifiIcon,
-  CpuChipIcon,
-  PhoneIcon
+  PhoneIcon,
+  ArrowRightIcon,
 } from '@heroicons/react/24/outline'
 
 export function ComboProductPage() {
@@ -126,65 +124,6 @@ export function ComboProductPage() {
         'Better budgeting with scheduled (not emergency) maintenance',
         'Professional contractor handles all service coordination',
         'Digital records for property management reporting'
-      ]
-    }
-  ]
-
-  // Installation phases
-  const installationPhases = [
-    {
-      phase: 1,
-      title: 'Install AC Drain Wiz Mini',
-      duration: '5-10 minutes',
-      icon: WrenchScrewdriverIcon,
-      steps: [
-        'Locate optimal install point on drain line',
-        'Measure and mark cut points',
-        'Cut drain line with PVC cutter (or hacksaw)',
-        'Clean and prep pipe ends',
-        'Apply Oatey PVC cement',
-        'Install Mini with proper alignment',
-        'Allow cure time per cement instructions',
-        'Test water flow and verify visibility'
-      ]
-    },
-    {
-      phase: 2,
-      title: 'Install & Mount Sensor',
-      duration: '10-15 minutes',
-      icon: CpuChipIcon,
-      steps: [
-        'Insert battery into sensor (battery model) or connect DC power',
-        'Power on and verify LED indicators (LED should blink RED)',
-        'Snap sensor onto Mini\'s bayonet port (snap-to-lock)',
-        'Verify secure connection'
-      ]
-    },
-    {
-      phase: 3,
-      title: 'Connect to Wi-Fi & Dashboard',
-      duration: '5-10 minutes',
-      icon: WifiIcon,
-      steps: [
-        'Connect phone/tablet to sensor\'s Wi-Fi network ("ACDW Sensor ID")',
-        'Automatic redirect to setup page',
-        'Select customer\'s home Wi-Fi network',
-        'Enter Wi-Fi password',
-        'Login to ACDW Monitor dashboard with contractor credentials',
-        'Sensor pairs to your dashboard automatically'
-      ]
-    },
-    {
-      phase: 4,
-      title: 'Assign Sensor to Customer',
-      duration: '5-10 minutes',
-      icon: ClipboardDocumentListIcon,
-      steps: [
-        'View customer list in your dashboard',
-        'Select the customer for this installation',
-        'Select address (if customer has multiple properties)',
-        'Confirm sensor assignment',
-        'Monitoring begins immediately'
       ]
     }
   ]
@@ -597,68 +536,18 @@ export function ComboProductPage() {
       {/* Installation Process */}
       <section className="combo-product-installation">
         <div className="combo-product-installation-content">
-          <h2 className="product-section-title">Professional Installation Process</h2>
+          <WrenchScrewdriverIcon className="combo-product-installation-link-icon" />
+          <h2 className="product-section-title">Ready to Install?</h2>
           <p className="combo-product-section-subtitle">
-            Complete installation in 25-45 minutes with our step-by-step process
+            Our step-by-step installation guide walks you through the full setup — from mounting the Mini to connecting the Sensor to your dashboard. Complete in 25–45 minutes.
           </p>
-
-          <div className="combo-product-installation-phases">
-            {installationPhases.map((phase) => (
-              <div key={phase.phase} className="combo-product-installation-phase">
-                <div className="combo-product-installation-phase-header">
-                  <div className="combo-product-installation-phase-number">
-                    Phase {phase.phase}
-                  </div>
-                  <phase.icon className="combo-product-installation-phase-icon" />
-                  <div className="combo-product-installation-phase-info">
-                    <h3 className="combo-product-installation-phase-title">{phase.title}</h3>
-                    <span className="combo-product-installation-phase-duration">{phase.duration}</span>
-                  </div>
-                </div>
-                <ol className="combo-product-installation-phase-steps">
-                  {phase.steps.map((step, index) => (
-                    <li key={index} className="combo-product-installation-phase-step">
-                      {step}
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            ))}
-          </div>
-
-          {/* Monitoring Workflow */}
-          <div className="combo-product-monitoring-workflow">
-            <h3 className="combo-product-monitoring-workflow-title">Monitoring Workflow - You Control the Relationship</h3>
-            <div className="combo-product-monitoring-workflow-steps">
-              <div className="combo-product-monitoring-workflow-step">
-                <ChartBarIcon className="combo-product-monitoring-workflow-icon" />
-                <span>Daily Monitoring</span>
-              </div>
-              <div className="combo-product-monitoring-workflow-arrow">→</div>
-              <div className="combo-product-monitoring-workflow-step">
-                <BellAlertIcon className="combo-product-monitoring-workflow-icon" />
-                <span>Alert Detected</span>
-              </div>
-              <div className="combo-product-monitoring-workflow-arrow">→</div>
-              <div className="combo-product-monitoring-workflow-step">
-                <DevicePhoneMobileIcon className="combo-product-monitoring-workflow-icon" />
-                <span>You Contact Customer</span>
-              </div>
-              <div className="combo-product-monitoring-workflow-arrow">→</div>
-              <div className="combo-product-monitoring-workflow-step">
-                <ClipboardDocumentListIcon className="combo-product-monitoring-workflow-icon" />
-                <span>You Schedule Service</span>
-              </div>
-              <div className="combo-product-monitoring-workflow-arrow">→</div>
-              <div className="combo-product-monitoring-workflow-step">
-                <CheckIcon className="combo-product-monitoring-workflow-icon" />
-                <span>Problem Resolved</span>
-              </div>
-            </div>
-            <p className="combo-product-monitoring-workflow-note">
-              <strong>Important:</strong> Service calls are NOT automated. You maintain full control of customer communication and scheduling.
-            </p>
-          </div>
+          <button
+            onClick={() => navigate('/support/installation-setup')}
+            className="combo-product-installation-link-btn"
+          >
+            View Installation & Setup Guide
+            <ArrowRightIcon className="combo-product-installation-link-btn-icon" />
+          </button>
         </div>
       </section>
 
