@@ -913,6 +913,13 @@
     }
   }
 
+  /* iPhone 16 Pro (402x874) - mini card height - must come after general range rule */
+  @media screen and (width: 402px) and (height: 874px) {
+    .product-showcase-card-mini.product-showcase-card-full-width {
+      height: 108vh !important;
+    }
+  }
+
 
   /* Very small mobile devices (375px and below) - mini card height */
   @media (max-width: 375px) {
