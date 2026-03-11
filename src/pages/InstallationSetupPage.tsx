@@ -1,16 +1,24 @@
 import { Link } from 'react-router-dom'
-import { 
+import {
   ArrowLeftIcon,
   WrenchScrewdriverIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  WifiIcon,
+  UserCircleIcon,
   DocumentTextIcon,
   VideoCameraIcon,
-  CheckCircleIcon
+  PhoneIcon,
+  CheckIcon,
+  SwatchIcon,
+  ArrowRightIcon,
 } from '@heroicons/react/24/outline'
 
 export function InstallationSetupPage() {
   return (
     <div className="support-section-container">
       <div className="container py-16">
+
         {/* Breadcrumb */}
         <div className="support-section-breadcrumb">
           <Link to="/support" className="support-section-breadcrumb-link">
@@ -20,161 +28,229 @@ export function InstallationSetupPage() {
           <span className="support-section-breadcrumb-current">Installation & Setup</span>
         </div>
 
-        {/* Header */}
-        <div className="support-section-header">
-          <Link 
-            to="/support" 
-            className="support-section-back-link"
-          >
-            <ArrowLeftIcon className="support-section-back-icon" />
-            <span>Back to Support</span>
-          </Link>
-          <div className="support-section-header-content">
-            <WrenchScrewdriverIcon className="support-section-header-icon" />
+        {/* Back Link */}
+        <Link to="/support" className="support-section-back-link">
+          <ArrowLeftIcon className="support-section-back-icon" />
+          <span>Back to Support</span>
+        </Link>
+
+        {/* Page Header */}
+        <div className="install-page-header">
+          <WrenchScrewdriverIcon className="install-page-header-icon" />
+          <div>
+            <h1 className="install-page-title">Installation & Setup</h1>
+            <p className="install-page-subtitle">
+              Let's get you set up. Which product are you installing?
+            </p>
+          </div>
+        </div>
+
+        {/* ─── Product Picker ─── */}
+        <div className="install-picker-grid">
+
+          {/* ── AC Drain Wiz Mini ── */}
+          <div className="install-product-card">
+
+            {/* Image area */}
+            <div className="install-product-image-area">
+              <img
+                src="/images/acdw-mini-hero-background.png"
+                alt="AC Drain Wiz Mini"
+                className="install-product-image"
+              />
+            </div>
+
+            {/* Card body */}
+            <div className="install-product-card-body">
+              <span className="install-product-badge install-product-badge-physical">
+                Physical Installation
+              </span>
+              <h2 className="install-product-name">AC Drain Wiz Mini</h2>
+              <p className="install-product-description">
+                The compact maintenance manifold that installs directly into your existing 3/4" PVC condensate drain line. No app or WiFi required.
+              </p>
+
+              <ul className="install-product-checklist">
+                <li className="install-product-checklist-item">
+                  <CheckIcon className="install-checklist-icon" />
+                  No app, WiFi, or account needed
+                </li>
+                <li className="install-product-checklist-item">
+                  <CheckIcon className="install-checklist-icon" />
+                  Fits standard 3/4" PVC condensate drain line
+                </li>
+                <li className="install-product-checklist-item">
+                  <CheckIcon className="install-checklist-icon" />
+                  Tools required: PVC cutter + PVC cement
+                </li>
+                <li className="install-product-checklist-item">
+                  <CheckIcon className="install-checklist-icon" />
+                  Cut once during install — easy access for maintenance after
+                </li>
+              </ul>
+
+              <div className="install-product-meta">
+                <span className="install-product-meta-item">
+                  <ClockIcon className="install-meta-icon" />
+                  ~5 minutes
+                </span>
+                <span className="install-product-meta-item">
+                  <WrenchScrewdriverIcon className="install-meta-icon" />
+                  Basic tools
+                </span>
+              </div>
+
+              <div className="install-product-actions">
+                <button className="install-product-cta install-product-cta-primary">
+                  View Mini Installation Guide
+                  <ArrowRightIcon className="install-cta-arrow" />
+                </button>
+                <button className="install-product-cta-secondary">
+                  Download PDF Guide
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* ── AC Drain Wiz Sensor Switch ── */}
+          <div className="install-product-card">
+
+            {/* Image area */}
+            <div className="install-product-image-area">
+              <img
+                src="/images/acdw-sensor-showcase-background.png"
+                alt="AC Drain Wiz Sensor Switch"
+                className="install-product-image"
+              />
+            </div>
+
+            {/* Card body */}
+            <div className="install-product-card-body">
+              <span className="install-product-badge install-product-badge-smart">
+                Smart Monitoring Setup
+              </span>
+              <h2 className="install-product-name">AC Drain Wiz Sensor Switch</h2>
+              <p className="install-product-description">
+                The no-contact capacitive water-level sensor that detects drain clogs and sends real-time alerts before water damage occurs.
+              </p>
+
+              <ul className="install-product-checklist">
+                <li className="install-product-checklist-item">
+                  <CheckIcon className="install-checklist-icon" />
+                  Free monitoring account required (set up first)
+                </li>
+                <li className="install-product-checklist-item">
+                  <CheckIcon className="install-checklist-icon" />
+                  WiFi connection needed for smart alerts
+                </li>
+                <li className="install-product-checklist-item">
+                  <CheckIcon className="install-checklist-icon" />
+                  Assign sensor to a customer/property profile
+                </li>
+                <li className="install-product-checklist-item">
+                  <CheckIcon className="install-checklist-icon" />
+                  Supports WiFi and non-WiFi sensor models
+                </li>
+              </ul>
+
+              <div className="install-product-meta">
+                <span className="install-product-meta-item">
+                  <ClockIcon className="install-meta-icon" />
+                  ~15 minutes
+                </span>
+                <span className="install-product-meta-item">
+                  <WifiIcon className="install-meta-icon" />
+                  WiFi + account
+                </span>
+              </div>
+
+              <div className="install-product-actions">
+                <Link to="/sensor-setup" className="install-product-cta install-product-cta-primary">
+                  Start Sensor Setup Guide
+                  <ArrowRightIcon className="install-cta-arrow" />
+                </Link>
+                <p className="install-product-account-note">
+                  <UserCircleIcon className="install-account-note-icon" />
+                  You'll need a free monitoring account before starting
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ─── Have Both? Bundle Callout ─── */}
+        <div className="install-bundle-callout">
+          <SwatchIcon className="install-bundle-icon" />
+          <div className="install-bundle-content">
+            <p className="install-bundle-text">
+              <strong>Have both products?</strong> Installing the Mini and Sensor Switch together? Start with the Mini physical installation, then proceed to the Sensor Setup Guide.
+            </p>
+            <Link to="/support/installation-scenarios" className="install-bundle-link">
+              View recommended installation scenarios →
+            </Link>
+          </div>
+        </div>
+
+        {/* ─── Also Available ─── */}
+        <div className="install-also-section">
+          <h2 className="install-also-title">Additional Resources</h2>
+          <div className="install-also-grid">
+            <Link to="/support/installation-scenarios" className="install-also-card">
+              <DocumentTextIcon className="install-also-icon" />
+              <div>
+                <h3 className="install-also-card-title">Recommended Installation Scenarios</h3>
+                <p className="install-also-card-desc">Standard vs. best-practice configurations and when to use them.</p>
+              </div>
+              <ArrowRightIcon className="install-also-arrow" />
+            </Link>
+            <div className="install-also-card install-also-card-disabled">
+              <VideoCameraIcon className="install-also-icon" />
+              <div>
+                <h3 className="install-also-card-title">Video Tutorial</h3>
+                <p className="install-also-card-desc">Watch a full installation walkthrough video.</p>
+              </div>
+              <span className="install-also-coming-soon">Coming Soon</span>
+            </div>
+          </div>
+        </div>
+
+        {/* ─── Professional Installation CTA ─── */}
+        <div className="support-section-info-box">
+          <div className="support-section-info-box-content">
+            <CheckCircleIcon className="support-section-info-box-icon" />
             <div>
-              <h1 className="support-section-title">Installation & Setup</h1>
-              <p className="support-section-subtitle">
-                Step-by-step guides, video tutorials, and installation scenarios for AC Drain Wiz products.
+              <h3 className="support-section-info-box-title">Not the DIY type? We've got you covered.</h3>
+              <p className="support-section-info-box-text">
+                Contact us at{' '}
+                <a href="tel:+12342237246" className="support-section-info-box-link">(234) 23 DRAIN</a>
+                {' '}or{' '}
+                <Link to="/contact?type=installer" className="support-section-info-box-link">
+                  find a certified installer
+                </Link>
+                {' '}near you.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Main Guides Section */}
-              <div className="support-section-content">
-
-                  {/* Installation Steps */}
-          <div className="support-section-installation-steps">
-            <h2 className="support-section-section-title">Quick Installation Steps</h2>
-            <ol className="support-section-step-list">
-              <li className="support-section-step-item">
-                <span className="support-section-step-number">1</span>
-                <div>
-                  <strong className="support-section-step-title">Cut your existing drain line</strong>
-                  <p className="support-section-step-description">Measure and cut a section of your 3/4" PVC drain line to accommodate the AC Drain Wiz unit. Use a PVC pipe cutter or hacksaw for a clean cut.</p>
-                </div>
-              </li>
-              <li className="support-section-step-item">
-                <span className="support-section-step-number">2</span>
-                <div>
-                  <strong className="support-section-step-title">Solvent-weld in place with Oatey PVC cement</strong>
-                  <p className="support-section-step-description">Use PVC primer and cement to securely attach AC Drain Wiz to your drain line.</p>
-                </div>
-              </li>
-              <li className="support-section-step-item">
-                <span className="support-section-step-number">3</span>
-                <div>
-                  <strong className="support-section-step-title">Verify operation</strong>
-                  <p className="support-section-step-description">Turn on your AC unit and check for proper drainage. Monitor for 24 hours to ensure no leaks.</p>
-                </div>
-              </li>
-            </ol>
-          </div>
-
-
-          <div className="support-section-main-guides">
-            <h2 className="support-section-section-title">Installation Guides</h2>
-            <p className="support-section-section-description">
-              AC Drain Wiz products are designed for easy installation. Most homeowners complete installation in 5 minutes or less using basic tools.
-            </p>
-
-            <div className="support-section-resource-grid">
-              {/* Sensor Setup Guide */}
-              <Link 
-                to="/sensor-setup" 
-                className="support-section-resource-card support-section-resource-card-featured"
-              >
-                <div className="support-section-resource-card-header">
-                  <DocumentTextIcon className="support-section-resource-icon" />
-                  <span className="support-section-resource-badge">Featured</span>
-                </div>
-                <h3 className="support-section-resource-title">ACDW Professional Installer Sensor Setup Guide</h3>
-                <p className="support-section-resource-description">
-                  Complete step-by-step guide for setting up your AC Drain Wiz Sensor, including account creation, WiFi setup, and customer assignment.
-                </p>
-                <div className="support-section-resource-link">
-                  View Setup Guide →
-                </div>
-              </Link>
-
-              {/* Installation Scenarios */}
-              <Link 
-                to="/support/installation-scenarios" 
-                className="support-section-resource-card support-section-resource-card-featured"
-              >
-                <div className="support-section-resource-card-header">
-                  <DocumentTextIcon className="support-section-resource-icon" />
-                  <span className="support-section-resource-badge">Recommended</span>
-                </div>
-                <h3 className="support-section-resource-title">Recommended Installation Scenarios</h3>
-                <p className="support-section-resource-description">
-                  Learn about different installation configurations and when to use standard vs. best-practice setups for optimal protection.
-                </p>
-                <div className="support-section-resource-link">
-                  View Scenarios →
-                </div>
-              </Link>
-
-              {/* Mini Installation */}
-              <div className="support-section-resource-card">
-                <DocumentTextIcon className="support-section-resource-icon" />
-                <h3 className="support-section-resource-title">ACDW Mini Installation</h3>
-                <p className="support-section-resource-description">Step-by-step PDF guide for installing the Mini model</p>
-                <button className="support-section-resource-button">
-                  Download PDF →
-                </button>
-              </div>
-
-              {/* Video Tutorial */}
-              <div className="support-section-resource-card">
-                <VideoCameraIcon className="support-section-resource-icon" />
-                <h3 className="support-section-resource-title">Video Tutorial</h3>
-                <p className="support-section-resource-description">Watch our installation video walkthrough</p>
-                <button className="support-section-resource-button">
-                  Watch Video →
-                </button>
-              </div>
-            </div>
-          </div>
-
-
-          {/* Professional Installation */}
-          <div className="support-section-info-box">
-            <div className="support-section-info-box-content">
-              <CheckCircleIcon className="support-section-info-box-icon" />
-              <div>
-                <h3 className="support-section-info-box-title">Need professional installation?</h3>
-                <p className="support-section-info-box-text">
-                  Contact us at{' '}
-                  <a href="tel:+12342237246" className="support-section-info-box-link">(234) 23 DRAIN</a>{' '}
-                  or{' '}
-                  <Link to="/contact?type=installer" className="support-section-info-box-link">
-                    find a certified installer
-                  </Link>
-                  .
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Related Resources */}
-          <div className="support-section-related">
-            <h2 className="support-section-section-title">Related Resources</h2>
-            <div className="support-section-related-links">
-              <Link to="/support/product-support" className="support-section-related-link">
-                Product Support →
-              </Link>
-              <Link to="/support/warranty-returns" className="support-section-related-link">
-                Warranty Information →
-              </Link>
-              <Link to="/support/contact" className="support-section-related-link">
-                Contact Support →
-              </Link>
-            </div>
+        {/* ─── Related Resources ─── */}
+        <div className="support-section-related">
+          <h2 className="support-section-section-title">Related Support</h2>
+          <div className="support-section-related-links">
+            <Link to="/support/product-support" className="support-section-related-link">
+              Product Support →
+            </Link>
+            <Link to="/support/warranty-returns" className="support-section-related-link">
+              Warranty Information →
+            </Link>
+            <Link to="/support/contact" className="support-section-related-link">
+              <PhoneIcon className="inline h-4 w-4 mr-1" />
+              Contact Support →
+            </Link>
           </div>
         </div>
+
       </div>
     </div>
   )
 }
-
