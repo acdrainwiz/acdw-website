@@ -852,7 +852,7 @@
   /* ACDW Mini card - full width */
   .product-showcase-card-mini.product-showcase-card-full-width {
     @apply relative overflow-hidden;
-    height: 140vh;
+    min-height: 140vh;
     margin-top: 0;
     border-radius: 0;
   }
@@ -860,56 +860,56 @@
   /* Large desktop (1920px and above) - mini card height */
   @media (min-width: 1920px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
-      height: 140vh;
+      min-height: 140vh;
     }
   }
 
   /* Desktop (1440px and above) - mini card height */
   @media (min-width: 1440px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
-      height: 140vh;
+      min-height: 140vh;
     }
   }
 
   /* Laptop (1280px and above) - mini card height */
   @media (min-width: 1280px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
-      height: 140vh;
+      min-height: 140vh;
     }
   }
 
   /* Tablet landscape / Small laptop (1024px and above) - mini card height */
   @media (min-width: 1024px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
-      height: 90vh;
+      min-height: 90vh;
     }
   }
 
   /* Mobile - mini card height */
   @media (max-width: 767px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
-      height: 150vh;
+      min-height: 150vh;
     }
   }
 
   /* iPhone 12 Mini and below (389px and below) - mini card height */
   @media (max-width: 389px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
-      height: 110vh;
+      min-height: 110vh;
     }
   }
 
   /* iPhone 12 / iPhone 14 range (390px–430px) - mini card height */
   @media (min-width: 390px) and (max-width: 430px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
-      height: 100vh;
+      min-height: 100vh;
     }
   }
 
   /* iPhone 12 (390x844) - mini card height - must come after general range rule */
   @media screen and (width: 390px) and (height: 844px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
-      height: 110vh !important;
+      min-height: 110vh !important;
     }
   }
 
@@ -917,15 +917,14 @@
   /* Height condition omitted: Safari viewport height is shorter than device height due to browser chrome */
   @media screen and (width: 402px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
-      height: 108vh !important;
+      min-height: 108vh !important;
     }
   }
-
 
   /* Very small mobile devices (375px and below) - mini card height */
   @media (max-width: 375px) {
     .product-showcase-card-mini.product-showcase-card-full-width {
-      height: 150vh;
+      min-height: 150vh;
     }
   }
 
@@ -998,7 +997,7 @@
   /* Tablet portrait mode - adjust combo card background position */
   @media screen and (max-width: 1366px) and (orientation: portrait) {
     .product-showcase-card-mini .product-showcase-card-background {
-      background-position-x: -215px !important;
+      background-position-x: -245px !important;
       background-size: 140% auto !important;
       background-color: black;
     }
@@ -1021,6 +1020,14 @@
       background-color: black !important;
     }
   }
+
+  /* iPad Air (820x1180) - mini card height */
+  @media screen and (width: 820px) and (height: 1180px) {
+    .product-showcase-card-mini.product-showcase-card-full-width {
+      min-height: 90vh !important;
+    }
+  }
+
 
 
   .product-showcase-card-content {
@@ -1074,15 +1081,85 @@
   }
 
   .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: auto;
+    @apply justify-end;
     width: 100%;
     max-width: none;
+    margin: 0 auto;
     box-sizing: border-box;
-    @apply z-10 p-8 pb-12 flex flex-col items-center text-center;
+    margin-top: 950px !important;
+  }
+
+  /* Tablet landscape / Small laptop (1024px) - mini card content spacing */
+  @media (min-width: 1024px) {
+    .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-content {
+      margin-top: 870px !important;
+    }
+  }
+
+  /* Laptop (1280px) - mini card content spacing */
+  @media (min-width: 1280px) {
+    .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-content {
+      margin-top: 690px !important;
+    }
+  }
+
+  /* Desktop (1440px) - mini card content spacing */
+  @media (min-width: 1440px) {
+    .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-content {
+      margin-top: 690px !important;
+    }
+  }
+
+  /* Large desktop (1920px+) - mini card content spacing */
+  @media (min-width: 1920px) {
+    .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-content {
+      margin-top: 770px !important;
+    }
+  }
+
+  /* Mobile - mini card content (iPhone 14 Pro Max and below, ≤767px) */
+  @media (max-width: 767px) {
+    .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-content {
+      justify-content: flex-end;
+      padding-bottom: 4rem !important;
+      width: 100%;
+      max-width: none;
+      margin: 0 auto;
+      box-sizing: border-box;
+      min-height: auto;
+      height: auto;
+      margin-top: 380px !important;
+    }
+  }
+
+  /* iPad Air (820x1180) - mini card content - must come AFTER all other mini content rules */
+  @media screen and (width: 820px) and (height: 1180px) {
+    .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-content {
+      justify-content: flex-end !important;
+      width: 100%;
+      max-width: none;
+      margin: 0 auto;
+      box-sizing: border-box;
+      margin-top: 0px !important;
+    }
+  }
+
+  /* iPad Mini (768x1024) - mini card height - must come AFTER all other mini card height rules */
+  @media screen and (width: 768px) and (height: 1024px) {
+    .product-showcase-card-mini.product-showcase-card-full-width {
+      min-height: 90vh !important;
+    }
+  }
+
+  /* iPad Mini (768x1024) - mini card content - must come AFTER all other mini content rules */
+  @media screen and (width: 768px) and (height: 1024px) {
+    .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-content {
+      width: 100%;
+      max-width: none;
+      margin: 0 auto;
+      box-sizing: border-box;
+      margin-top: 0px !important;
+    }
   }
 
 
