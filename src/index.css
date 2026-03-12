@@ -409,10 +409,24 @@
     }
   }
 
-  /* Tablet and smaller desktop - adjust hero background position */
-  @media (min-width: 768px) and (max-width: 1024px) {
+  /* Tablet and smaller desktop - adjust hero background position (768–833px) */
+  @media (min-width: 768px) and (max-width: 833px) {
     .hero-background-image {
       background-position-x: -340px;
+    }
+  }
+
+  /* Tablet 834–1024px (iPad Pro 11" portrait overrides via rule below) */
+  @media (min-width: 834px) and (max-width: 1024px) {
+    .hero-background-image {
+      background-position-x: -340px;
+    }
+  }
+
+  /* iPad Pro 11" (834x1194) - specific hero background position */
+  @media screen and (width: 834px) and (height: 1194px) {
+    .hero-background-image {
+      background-position-x: -160px !important;
     }
   }
 
@@ -473,20 +487,20 @@
     }
   }
 
-  /* iPad Air portrait (820x1180) - specific adjustment - must come after general portrait rule */
+  /* iPad Air / Safari "iPad 11-inch" emulator (820x1180) - specific adjustment - must come after general portrait rule */
   @media screen and (width: 820px) and (height: 1180px) {
     .hero-main-container {
       min-height: 90vh;
     }
 
     .hero-background-image {
-      background-position-x: -110px !important;
+      background-position-x: -93px !important;
       background-size: 130% auto !important;
       background-color: black;
     }
 
     .hero-cta-buttons {
-      margin-top: 500px !important;
+      margin-top: 530px !important;
     }
 
     .product-showcase-card-mini.product-showcase-card-full-width {
@@ -1539,8 +1553,8 @@
     @apply h-6 w-6;
   }
 
-  /* Mobile Menu - Slide-over (Meta style) - Mobile only */
-  @media (max-width: 767px) {
+  /* Mobile Menu - Slide-over (Meta style) - Mobile and tablet (up to 1023px, same as hamburger) */
+  @media (max-width: 1023px) {
     .header-mobile-menu-backdrop {
       position: fixed;
       top: 0;
@@ -1558,7 +1572,7 @@
       right: 0;
       bottom: 0;
       width: 95%;
-      max-width: none;
+      max-width: 400px;
       background-color: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(40px);
       -webkit-backdrop-filter: blur(40px);
@@ -1960,8 +1974,8 @@
     }
   }
 
-  /* Hide mobile menu styles on tablet and desktop */
-  @media (min-width: 768px) {
+  /* Hide mobile menu panel only on desktop (match lg: 1024px, when hamburger is hidden) */
+  @media (min-width: 1024px) {
     .header-mobile-menu-backdrop,
     .header-mobile-menu-panel {
       display: none;
