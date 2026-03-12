@@ -596,6 +596,19 @@
     margin-top: 800px;
   }
 
+  /* Desktop / large viewports (1367px+) - lock hero layout so tablet portrait rules don't affect */
+  @media (min-width: 1367px) {
+    .hero-main-container {
+      position: relative;
+      overflow: hidden;
+      background: #000;
+      min-height: 115vh;
+    }
+    .hero-cta-buttons {
+      margin-top: 960px !important;
+    }
+  }
+
   /* Large screens (2000px and above) - hero CTA buttons margin */
   @media (min-width: 2000px) {
     .hero-cta-buttons {
