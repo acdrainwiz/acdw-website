@@ -176,7 +176,7 @@ export function MiniProductPage() {
     },
     {
       question: 'What maintenance is required?',
-      answer: 'The Mini requires minimal maintenance. Simply use the access port to flush or vacuum the drain line when needed. The clear body design makes it easy to see when maintenance is required, and the one-time installation means you never need to cut the line again.'
+      answer: 'The Mini requires minimal maintenance. Simply use the access port to flush or vacuum the drain line when needed. When flushing the drain line with air, check for the presence of a P-trap in the system; after the air flush is complete, refill the P-trap with water to reestablish the required water seal. The clear body design makes it easy to see when maintenance is required, and the one-time installation means you never need to cut the line again.'
     },
     {
       question: 'What\'s the warranty?',

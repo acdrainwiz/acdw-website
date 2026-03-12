@@ -411,7 +411,7 @@ export function Hero() {
               </div>
               <h3 className="how-it-works-step-title">Clean</h3>
               <p className="how-it-works-step-description">
-                When it's time for maintenance, snap in your preferred attachment: air, water, or vacuum. Bayonet mount ensures perfect seal every time.
+                When it's time for maintenance, snap in your preferred attachment: air, water, or vacuum. When using air, check for a P-trap in the system and refill it with water after the flush to reestablish the water seal. Bayonet mount ensures perfect seal every time.
               </p>
             </div>
             
