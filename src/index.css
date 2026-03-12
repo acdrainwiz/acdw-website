@@ -423,10 +423,14 @@
     }
   }
 
-  /* iPad Pro 11" (834x1194) - specific hero background position */
+  /* iPad Pro 11" (834x1194) - real device viewport; emulator "iPad 11-inch" may use 820x1180 */
   @media screen and (width: 834px) and (height: 1194px) {
     .hero-background-image {
       background-position-x: -160px !important;
+    }
+
+    .hero-cta-buttons {
+      margin-top: 530px !important;
     }
   }
 
@@ -455,8 +459,9 @@
   /* Tablet portrait mode - adjust hero background position and size */
   @media screen and (min-width: 768px) and (max-width: 1366px) and (orientation: portrait) {
     .hero-background-image {
-      background-size: 150% auto !important;
-      background-color: black;
+      background-size: 110vh auto !important;
+      background-color: #000;
+      background-position-x: -160px;
     }
   }
 
