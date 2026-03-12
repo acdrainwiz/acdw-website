@@ -511,7 +511,7 @@ export function HomeownerHomePage() {
             </summary>
             <div className="homeowner-faq-answer">
               <p>
-                You'll need a PVC pipe cutter (or hacksaw) and Oatey PVC pipe cement for installation. For ongoing maintenance, we recommend a transfer pump like the Milwaukee M18 model to push clean water through the line when a hose spigot isn't handy. It delivers up to 8 GPM, runs on cordless M18 batteries, and makes attic or crawl-space flushes quick and mess-free.
+                You'll need a PVC pipe cutter (or hacksaw) and Oatey PVC pipe cement for installation. For ongoing maintenance, we recommend a transfer pump like the Milwaukee M18 model to push clean water through the line when a hose spigot isn't handy. It delivers up to 8 GPM, runs on cordless M18 batteries, and makes attic or crawl-space flushes quick and mess-free. If you flush with air, check for a P-trap in the system and refill it with water after the flush to reestablish the water seal.
               </p>
             </div>
           </details>

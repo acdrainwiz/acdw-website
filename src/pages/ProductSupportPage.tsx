@@ -181,6 +181,7 @@ export function ProductSupportPage() {
                     <li>Verify the unit is properly seated and sealed</li>
                     <li>Check for clogs downstream from the unit</li>
                     <li>Use the maintenance flush port to clear any blockage at the unit</li>
+                    <li>When clearing the line with air: check for a P-trap in the system. After the air flush, refill the P-trap with water to restore the water seal.</li>
                   </ul>
                 </div>
 

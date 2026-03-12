@@ -465,6 +465,23 @@
     }
   }
 
+  /* Tablet portrait - hero CTA buttons (same breakpoint as hero-background-image) */
+  @media screen and (min-width: 768px) and (max-width: 1366px) and (orientation: portrait) {
+    .hero-cta-buttons {
+      margin-top: 530px !important;
+    }
+  }
+
+  /* Tablet portrait - hero main container */
+  @media screen and (min-width: 768px) and (max-width: 1366px) and (orientation: portrait) {
+    .hero-main-container {
+      position: relative;
+      overflow: hidden;
+      background: #000;
+      min-height: 110vh;
+    }
+  }
+
   /* iPad Mini portrait (768x1024) - specific adjustment - must come after general tablet rule */
   @media screen and (width: 768px) and (height: 1024px) {
     .hero-main-container {
@@ -502,10 +519,6 @@
       background-position-x: -93px !important;
       background-size: 130% auto !important;
       background-color: black;
-    }
-
-    .hero-cta-buttons {
-      margin-top: 530px !important;
     }
 
     .product-showcase-card-mini.product-showcase-card-full-width {
@@ -581,6 +594,19 @@
   .hero-cta-buttons {
     @apply flex flex-col sm:flex-row gap-4 mb-4;
     margin-top: 800px;
+  }
+
+  /* Desktop / large viewports (1367px+) - lock hero layout so tablet portrait rules don't affect */
+  @media (min-width: 1367px) {
+    .hero-main-container {
+      position: relative;
+      overflow: hidden;
+      background: #000;
+      min-height: 115vh;
+    }
+    .hero-cta-buttons {
+      margin-top: 960px !important;
+    }
   }
 
   /* Large screens (2000px and above) - hero CTA buttons margin */
@@ -1016,9 +1042,29 @@
   /* Tablet portrait mode - adjust combo card background position */
   @media screen and (max-width: 1366px) and (orientation: portrait) {
     .product-showcase-card-mini .product-showcase-card-background {
-      background-position-x: -245px !important;
+      background-position-x: -195px !important;
       background-size: 140% auto !important;
-      background-color: black;
+      background-color: #000;
+    }
+  }
+
+  /* iPad Pro / tablet portrait - mini card full-width container and content */
+  @media screen and (min-width: 768px) and (max-width: 1366px) and (orientation: portrait) {
+    .product-showcase-card-mini.product-showcase-card-full-width {
+      position: relative;
+      overflow: hidden;
+      min-height: 80vh;
+      margin-top: 0;
+      border-radius: 0;
+    }
+
+    .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-content {
+      justify-content: flex-end;
+      width: 100%;
+      max-width: none;
+      margin: 0 auto;
+      box-sizing: border-box;
+      margin-top: 750px !important;
     }
   }
 

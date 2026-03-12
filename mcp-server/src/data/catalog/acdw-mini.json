@@ -49,6 +49,9 @@
       "Attach service tool to bayonet and lock (audible/tactile click TBD)",
       "Perform service and verify clear flow",
       "Insert protective service cap (if sensor not installed)"
+    ],
+    "usage_notes": [
+      "When flushing with air: check for a P-trap in the system; after the air flush, refill the P-trap with water to reestablish the water seal."
     ]
   },
   "packaging": {
