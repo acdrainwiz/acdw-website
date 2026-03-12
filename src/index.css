@@ -1154,6 +1154,18 @@
     margin-top: 950px !important;
   }
 
+  /* Tablet portrait / iPad Pro 11 - mini card content (must come after base 950px rule) */
+  @media screen and (min-width: 768px) and (max-width: 1366px) and (orientation: portrait) {
+    .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-content {
+      justify-content: flex-end;
+      width: 100%;
+      max-width: none;
+      margin: 0 auto;
+      box-sizing: border-box;
+      margin-top: 750px !important;
+    }
+  }
+
   /* Tablet landscape / Small laptop (1024px) - mini card content spacing */
   @media (min-width: 1024px) {
     .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-content {
