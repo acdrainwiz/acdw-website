@@ -468,7 +468,7 @@
   /* Tablet portrait - hero CTA buttons (same breakpoint as hero-background-image) */
   @media screen and (min-width: 768px) and (max-width: 1366px) and (orientation: portrait) {
     .hero-cta-buttons {
-      margin-top: 530px !important;
+      margin-top: 680px !important;
     }
   }
 
