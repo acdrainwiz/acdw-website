@@ -554,6 +554,42 @@
     }
   }
 
+  /* 1280px+ – hero background image */
+  @media (min-width: 1280px) {
+    .hero-background-image {
+      position: absolute;
+      inset: 0;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 120vh;
+      background-image: url('/images/hvac-tech-mini-sensor-combined.png');
+    }
+  }
+
+  /* 1440px+ – hero background image */
+  @media (min-width: 1440px) {
+    .hero-background-image {
+      position: absolute;
+      inset: 0;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 120vh;
+      background-image: url('/images/hvac-tech-mini-sensor-combined.png');
+    }
+  }
+
+  /* 1920px+ – hero background image */
+  @media (min-width: 1920px) {
+    .hero-background-image {
+      position: absolute;
+      inset: 0;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 120vh;
+      background-image: url('/images/hvac-tech-mini-sensor-combined.png');
+    }
+  }
+
   .hero-text-content {
     @apply text-white;
   }
@@ -603,6 +639,16 @@
       overflow: hidden;
       background: #000;
       min-height: 115vh;
+    }
+    .hero-cta-buttons {
+      margin-top: 860px !important;
+    }
+  }
+
+  /* 1920px+ – hero container and CTA */
+  @media (min-width: 1920px) {
+    .hero-main-container {
+      min-height: 105vh;
     }
     .hero-cta-buttons {
       margin-top: 960px !important;
