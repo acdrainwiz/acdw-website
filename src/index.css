@@ -554,14 +554,14 @@
     }
   }
 
-  /* 1280px+ – hero background image */
-  @media (min-width: 1280px) {
+  /* 1367px+ – hero background image (above max iPad width 1366, so iPad Pro/Mini/Air keep their rules) */
+  @media (min-width: 1367px) {
     .hero-background-image {
       position: absolute;
       inset: 0;
       background-position: center;
       background-repeat: no-repeat;
-      background-size: 120vh;
+      background-size: 160vh;
       background-image: url('/images/hvac-tech-mini-sensor-combined.png');
     }
   }
@@ -573,7 +573,7 @@
       inset: 0;
       background-position: center;
       background-repeat: no-repeat;
-      background-size: 120vh;
+      background-size: 160vh;
       background-image: url('/images/hvac-tech-mini-sensor-combined.png');
     }
   }
@@ -585,7 +585,7 @@
       inset: 0;
       background-position: center;
       background-repeat: no-repeat;
-      background-size: 120vh;
+      background-size: 160vh;
       background-image: url('/images/hvac-tech-mini-sensor-combined.png');
     }
   }
@@ -642,6 +642,13 @@
     }
     .hero-cta-buttons {
       margin-top: 860px !important;
+    }
+  }
+
+  /* 1440px+ desktop (not iPad) – hero CTA buttons */
+  @media (min-width: 1440px) {
+    .hero-cta-buttons {
+      margin-top: 800px !important;
     }
   }
 
