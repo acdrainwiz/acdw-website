@@ -1,3 +1,5 @@
+import { MONITORING } from '../../../config/acdwKnowledge'
+
 export function Step3WiFiSetup() {
   const steps = [
     {
@@ -94,7 +96,7 @@ export function Step3WiFiSetup() {
         <p className="sensor-setup-wifi-note-text">
           <strong>Don't have an account?</strong>{' '}
           <a
-            href="https://monitor.acdrainwiz.com/sign-up"
+            href={MONITORING.signUpUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="sensor-setup-wifi-note-link"

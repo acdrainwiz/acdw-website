@@ -1,43 +1,38 @@
 import { Link } from 'react-router-dom'
 import { 
-  ArrowLeftIcon,
   ShieldCheckIcon,
   CheckIcon
 } from '@heroicons/react/24/outline'
+import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 
 export function WarrantyReturnsPage() {
   return (
     <div className="support-section-container">
-      <div className="container py-16">
-        {/* Breadcrumb */}
-        <div className="support-section-breadcrumb">
-          <Link to="/support" className="support-section-breadcrumb-link">
-            Support Center
-          </Link>
-          <span className="support-section-breadcrumb-separator">/</span>
-          <span className="support-section-breadcrumb-current">Warranty & Returns</span>
-        </div>
 
-        {/* Header */}
-        <div className="support-section-header">
-          <Link 
-            to="/support" 
-            className="support-section-back-link"
-          >
-            <ArrowLeftIcon className="support-section-back-icon" />
-            <span>Back to Support</span>
-          </Link>
-          <div className="support-section-header-content">
-            <ShieldCheckIcon className="support-section-header-icon" />
-            <div>
-              <h1 className="support-section-title">Warranty & Returns</h1>
-              <p className="support-section-subtitle">
-                Warranty coverage details, return policy, and how to file a claim.
-              </p>
+      {/* Hero Banner */}
+      <div className="support-hero">
+        <div className="support-hero-content">
+          <div className="support-hero-header">
+            <div className="support-hero-breadcrumb">
+              <Link to="/support" className="support-hero-breadcrumb-link">
+                Support Center
+              </Link>
+              <span className="support-hero-breadcrumb-separator">/</span>
+              <span className="support-hero-breadcrumb-current">Warranty & Returns</span>
+            </div>
+            <h1 className="support-hero-title">Warranty & Returns</h1>
+            <p className="support-hero-subtitle">
+              Warranty coverage details, return policy, and how to file a claim.
+            </p>
+            <div className="support-hero-badge-row">
+              <span className="support-hero-badge">Lifetime Warranty</span>
+              <span className="support-hero-badge">Return Policy</span>
             </div>
           </div>
         </div>
+      </div>
 
+      <div className="container py-12">
         {/* Content */}
         <div className="support-section-content">
           {/* Warranty Coverage */}
@@ -100,9 +95,9 @@ export function WarrantyReturnsPage() {
                 <h3 className="support-section-info-box-title">Questions about warranty or returns?</h3>
                 <p className="support-section-info-box-text">
                   Contact us at{' '}
-                  <a href="tel:+12342237246" className="support-section-info-box-link">(234) 23 DRAIN</a>{' '}
+                  <a href={SUPPORT_CONTACT.telHref} className="support-section-info-box-link">{SUPPORT_CONTACT.phoneDisplay}</a>{' '}
                   or{' '}
-                  <Link to="/support/contact" className="support-section-info-box-link">
+                  <Link to="/contact?type=support" className="support-section-info-box-link">
                     submit a support request
                   </Link>
                   .
@@ -121,7 +116,7 @@ export function WarrantyReturnsPage() {
               <Link to="/support/product-support" className="support-section-related-link">
                 Product Support →
               </Link>
-              <Link to="/support/contact" className="support-section-related-link">
+              <Link to="/contact?type=support" className="support-section-related-link">
                 Contact Support →
               </Link>
             </div>

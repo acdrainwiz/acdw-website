@@ -10,6 +10,7 @@ import {
   ExclamationTriangleIcon,
   CurrencyDollarIcon
 } from '@heroicons/react/24/outline';
+import { SUPPORT_CONTACT } from '../config/acdwKnowledge';
 
 export function CodeOfficialsPage() {
   const navigate = useNavigate();
@@ -41,10 +42,10 @@ export function CodeOfficialsPage() {
                 View Compliance Documentation
               </button>
               <a 
-                href="tel:+12342237246"
+                href={SUPPORT_CONTACT.telHref}
                 className="homeowner-hero-cta-secondary"
               >
-                Call (234) 23 DRAIN
+                Call {SUPPORT_CONTACT.phoneDisplay}
               </a>
             </div>
           </div>
@@ -226,7 +227,7 @@ export function CodeOfficialsPage() {
           <div className="homeowner-faq-item">
             <h3 className="homeowner-faq-question">What documentation is available for approval?</h3>
             <p className="homeowner-faq-answer">
-              We provide complete technical specifications, installation instructions, and IMC compliance documentation. Contact us at (234) 23 DRAIN for approval packets.
+              We provide complete technical specifications, installation instructions, and IMC compliance documentation. Contact us at {SUPPORT_CONTACT.phoneDisplay} for approval packets.
             </p>
           </div>
 
@@ -268,11 +269,11 @@ export function CodeOfficialsPage() {
               View Compliance Page
             </button>
             <a 
-              href="tel:+12342237246"
+              href={SUPPORT_CONTACT.telHref}
               className="homeowner-hero-cta-secondary"
             >
               <PhoneIcon style={{ width: '20px', height: '20px', marginRight: '8px' }} />
-              (234) 23 DRAIN
+              {SUPPORT_CONTACT.phoneDisplay}
             </a>
           </div>
         </div>

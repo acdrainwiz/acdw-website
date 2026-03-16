@@ -2,20 +2,25 @@ import { CustomerTypeSelector } from '../components/home/CustomerTypeSelector'
 
 export function CustomerSelectionPage() {
   return (
-    <div className="section">
-      <div className="container">
-        <div className="text-center mb-16">
-          <h1 className="heading-1 mb-6">
-            Choose Your Experience
-          </h1>
-          <p className="text-large max-w-3xl mx-auto">
-            Get a personalized experience tailored to your specific needs. 
-            Whether you're a homeowner, HVAC professional, or city official, 
-            we have solutions designed for you.
-          </p>
+    <div>
+      {/* Hero Banner */}
+      <div className="support-hero">
+        <div className="support-hero-content">
+          <div className="support-hero-header">
+            <h1 className="support-hero-title">Choose Your Experience</h1>
+            <p className="support-hero-subtitle">
+              Get a personalized experience tailored to your specific needs. 
+              Whether you're a homeowner, HVAC professional, or city official, 
+              we have solutions designed for you.
+            </p>
+          </div>
         </div>
-        
-        <CustomerTypeSelector />
+      </div>
+
+      <div className="section">
+        <div className="container">
+          <CustomerTypeSelector />
+        </div>
       </div>
     </div>
   )

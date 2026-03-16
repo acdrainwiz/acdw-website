@@ -7,6 +7,7 @@ import { VideoModal } from './VideoModal'
 import { CustomerTypeSelector } from './CustomerTypeSelector'
 import { isValidEmail } from '../../utils/emailValidation'
 import { useRecaptcha } from '../../hooks/useRecaptcha'
+import { SUPPORT_CONTACT } from '../../config/acdwKnowledge'
 
 export function Hero() {
   const navigate = useNavigate()
@@ -178,7 +179,7 @@ export function Hero() {
     {
       question: "Do you offer professional contractor pricing?",
       // Launch Button Redirect
-      answer: "Yes! HVAC professionals and contractors qualify for special bulk pricing and support. Contact us at (561) 654-5237 or use our contact form to request contractor pricing."
+      answer: `Yes! HVAC professionals and contractors qualify for special bulk pricing and support. Contact us at ${SUPPORT_CONTACT.phoneDisplay} or use our contact form to request contractor pricing.`
     },
     {
       question: "Is AC Drain Wiz approved by building inspectors and code officials?",
@@ -303,10 +304,10 @@ export function Hero() {
                   Learn More
                 </button>
                 <a 
-                  href="tel:+15616545237"
+                  href={SUPPORT_CONTACT.telHref}
                   className="product-showcase-card-cta-secondary"
                 >
-                  Call (561) 654-5237
+                  Call {SUPPORT_CONTACT.phoneDisplay}
                 </a>
               </>
             ) : (
@@ -348,7 +349,7 @@ export function Hero() {
           <h4 className="product-showcase-card-headline">Smarter. Safer. Sensor Switch.</h4>
           
           <p className="product-showcase-card-description">
-            The ACDW Sensor Switch replaces the traditional float switch with none of the drawbacks. The ACDW Sensor Switch comes in a Wifi and Non-Wifi models. Both models wire directly to the air handler and automatically shut off the AC at critical water levels. The WiFi model adds a backup battery, plus remote water-level monitoring, real-time notifications, and battery status alerts through the ACDW Sensor monitoring service.
+            The ACDW Sensor Switch replaces the traditional float switch with none of the drawbacks. It is available in two models: the AC Drain Wiz WiFi Sensor Switch and the AC Drain Wiz Standard Sensor Switch (Non-WiFi). Both wire directly to the air handler and automatically shut off the AC at critical water levels. The WiFi Sensor Switch adds a backup battery, plus remote water-level monitoring, real-time notifications, and battery status alerts through the ACDW Sensor monitoring service.
           </p>
           
           <div className="product-showcase-card-ctas">
@@ -361,10 +362,10 @@ export function Hero() {
                   Learn More
                 </button>
                 <a 
-                  href="tel:+15616545237"
+                  href={SUPPORT_CONTACT.telHref}
                   className="product-showcase-card-cta-secondary"
                 >
-                  Call (561) 654-5237
+                  Call {SUPPORT_CONTACT.phoneDisplay}
                 </a>
               </>
             ) : (
@@ -870,7 +871,7 @@ export function Hero() {
 
           <div className="risk-reversal-footer">
             <p className="risk-reversal-footer-text">
-              Still have questions? Call us at <a href="tel:+15616545237" className="risk-reversal-footer-link">(561) 654-5237</a> or chat live with our team.
+              Still have questions? Call us at <a href={SUPPORT_CONTACT.telHref} className="risk-reversal-footer-link">{SUPPORT_CONTACT.phoneDisplay}</a> or chat live with our team.
             </p>
           </div>
         </div>
@@ -982,8 +983,8 @@ export function Hero() {
                 Schedule Sales Call
               </button>
               {/* Launch Button Redirect */}
-              <a href="tel:+15616545237" className="cta-band-btn-secondary">
-                Call (561) 654-5237
+              <a href={SUPPORT_CONTACT.telHref} className="cta-band-btn-secondary">
+                Call {SUPPORT_CONTACT.phoneDisplay}
               </a>
             </div>
           </div>

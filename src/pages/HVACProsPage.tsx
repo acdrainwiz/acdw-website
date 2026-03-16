@@ -8,6 +8,7 @@ import {
   PhoneIcon,
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
+import { SUPPORT_CONTACT } from '../config/acdwKnowledge';
 
 export function HVACProsPage() {
   const navigate = useNavigate();
@@ -39,10 +40,10 @@ export function HVACProsPage() {
                 View Complete System
               </button>
               <a 
-                href="tel:+12342237246"
+                href={SUPPORT_CONTACT.telHref}
                 className="homeowner-hero-cta-secondary"
               >
-                Call (234) 23 DRAIN
+                Call {SUPPORT_CONTACT.phoneDisplay}
               </a>
             </div>
           </div>
@@ -206,7 +207,7 @@ export function HVACProsPage() {
           <div className="homeowner-faq-item">
             <h3 className="homeowner-faq-question">What's the bulk pricing for contractors?</h3>
             <p className="homeowner-faq-answer">
-              We offer tiered pricing based on volume. Contact our sales team at (234) 23 DRAIN for custom quotes and contractor program details.
+              We offer tiered pricing based on volume. Contact our sales team at {SUPPORT_CONTACT.phoneDisplay} for custom quotes and contractor program details.
             </p>
           </div>
 
@@ -248,11 +249,11 @@ export function HVACProsPage() {
               Contact Sales
             </button>
             <a 
-              href="tel:+12342237246"
+              href={SUPPORT_CONTACT.telHref}
               className="homeowner-hero-cta-secondary"
             >
               <PhoneIcon style={{ width: '20px', height: '20px', marginRight: '8px' }} />
-              (234) 23 DRAIN
+              {SUPPORT_CONTACT.phoneDisplay}
             </a>
           </div>
         </div>

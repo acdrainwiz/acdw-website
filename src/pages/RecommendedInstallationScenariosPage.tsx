@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom'
 import { 
   CheckCircleIcon, 
   ExclamationTriangleIcon,
-  ArrowLeftIcon,
   HomeIcon,
   BuildingOffice2Icon
 } from '@heroicons/react/24/outline'
@@ -10,35 +9,35 @@ import {
 export function RecommendedInstallationScenariosPage() {
   return (
     <div className="support-installation-scenarios-container">
-      <div className="container py-16">
-        {/* Breadcrumb */}
-        <div className="support-section-breadcrumb">
-          <Link to="/support" className="support-section-breadcrumb-link">
-            Support Center
-          </Link>
-          <span className="support-section-breadcrumb-separator">/</span>
-          <Link to="/support/installation-setup" className="support-section-breadcrumb-link">
-            Installation & Setup
-          </Link>
-          <span className="support-section-breadcrumb-separator">/</span>
-          <span className="support-section-breadcrumb-current">Installation Scenarios</span>
-        </div>
 
-        {/* Header */}
-        <div className="support-installation-scenarios-header">
-          <Link 
-            to="/support/installation-setup" 
-            className="support-installation-scenarios-back-link"
-          >
-            <ArrowLeftIcon className="support-installation-scenarios-back-icon" />
-            <span>Back to Installation & Setup</span>
-          </Link>
-          <h1 className="support-installation-scenarios-title">Recommended Installation Scenarios</h1>
-          <p className="support-installation-scenarios-subtitle">
-            Learn about different installation configurations for AC Drain Wiz products and when to use each approach for optimal protection.
-          </p>
+      {/* Hero Banner */}
+      <div className="support-hero">
+        <div className="support-hero-content">
+          <div className="support-hero-header">
+            <div className="support-hero-breadcrumb">
+              <Link to="/support" className="support-hero-breadcrumb-link">
+                Support Center
+              </Link>
+              <span className="support-hero-breadcrumb-separator">/</span>
+              <Link to="/support/installation-setup" className="support-hero-breadcrumb-link">
+                Installation & Setup
+              </Link>
+              <span className="support-hero-breadcrumb-separator">/</span>
+              <span className="support-hero-breadcrumb-current">Installation Scenarios</span>
+            </div>
+            <h1 className="support-hero-title">Recommended Installation Scenarios</h1>
+            <p className="support-hero-subtitle">
+              Learn about different installation configurations for AC Drain Wiz products and when to use each approach for optimal protection.
+            </p>
+            <div className="support-hero-badge-row">
+              <span className="support-hero-badge">Standard Setup</span>
+              <span className="support-hero-badge">Best Practice</span>
+            </div>
+          </div>
         </div>
+      </div>
 
+      <div className="container py-12">
         {/* Introduction */}
         <div className="support-installation-scenarios-intro">
           <p className="support-installation-scenarios-intro-text">

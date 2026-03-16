@@ -1,27 +1,32 @@
 import { useNavigate } from 'react-router-dom'
 import { ShieldCheckIcon, EnvelopeIcon, EyeIcon, LockClosedIcon, UserGroupIcon, GlobeAltIcon } from '@heroicons/react/24/outline'
+import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 
 export function PrivacyPolicyPage() {
   const navigate = useNavigate()
 
   return (
     <div className="privacy-policy-page">
-      <div className="container py-16">
-        {/* Header */}
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="flex justify-center mb-6">
-              <ShieldCheckIcon className="h-16 w-16 text-primary-600" />
-            </div>
-            <h1 className="heading-1 mb-4">Privacy Policy</h1>
-            <p className="text-large text-gray-600 mb-2">
+
+      {/* Hero Banner */}
+      <div className="support-hero">
+        <div className="support-hero-content">
+          <div className="support-hero-header">
+            <h1 className="support-hero-title">Privacy Policy</h1>
+            <p className="support-hero-subtitle">
               Your privacy is important to us
             </p>
-            <p className="text-sm text-gray-500">
-              Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-            </p>
+            <div className="support-hero-badge-row">
+              <span className="support-hero-badge">Data Protection</span>
+              <span className="support-hero-badge">Your Rights</span>
+              <span className="support-hero-badge">Cookie Policy</span>
+            </div>
           </div>
+        </div>
+      </div>
 
+      <div className="container py-12">
+        <div className="max-w-4xl mx-auto">
           {/* Quick Links */}
           <div className="bg-gray-50 rounded-lg p-6 mb-12">
             <h2 className="font-semibold text-gray-900 mb-4">Quick Navigation</h2>
@@ -336,7 +341,7 @@ export function PrivacyPolicyPage() {
               </p>
               <div className="space-y-2 text-gray-700">
                 <p><strong>Email:</strong> <a href="mailto:privacy@acdrainwiz.com" className="text-primary-600 hover:text-primary-700 underline">privacy@acdrainwiz.com</a></p>
-                <p><strong>Phone:</strong> <a href="tel:+12342237246" className="text-primary-600 hover:text-primary-700 underline">(234) 23 DRAIN</a></p>
+                <p><strong>Phone:</strong> <a href={SUPPORT_CONTACT.telHref} className="text-primary-600 hover:text-primary-700 underline">{SUPPORT_CONTACT.phoneDisplay}</a></p>
                 <p><strong>Mail:</strong> AC Drain Wiz Privacy Team<br />
                 [Address to be provided]</p>
               </div>

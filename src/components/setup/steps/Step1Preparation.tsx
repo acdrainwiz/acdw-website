@@ -1,4 +1,5 @@
 import { ExclamationTriangleIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
+import { SENSOR_STANDARD_DISPLAY, SENSOR_STANDARD_SHORT, SENSOR_WIFI_DISPLAY, SENSOR_WIFI_SHORT, MONITORING } from '../../../config/acdwKnowledge'
 
 export function Step1Preparation() {
   return (
@@ -55,7 +56,7 @@ export function Step1Preparation() {
                   <p className="sensor-setup-prerequisites-callout-item-title">ACDW Sensor Admin Account</p>
                   <p className="sensor-setup-prerequisites-callout-item-description">You need an active contractor account to register and manage sensors.</p>
                   <a
-                    href="https://monitor.acdrainwiz.com/sign-up"
+                    href={MONITORING.signUpUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="sensor-setup-prerequisites-callout-item-link"
@@ -73,37 +74,37 @@ export function Step1Preparation() {
       <div className="sensor-setup-model-identification">
         <h3 className="sensor-setup-model-identification-title">Identify Your Sensor Model</h3>
         <p className="sensor-setup-model-identification-description">
-          Both models include a cable for the 24V air-handler connection. The Non‑WiFi model does not require WiFi setup; the WiFi model does. Choose your model to follow the right steps in the next screen.
+          Both models include a cable for the 24V air-handler connection. The {SENSOR_STANDARD_SHORT} does not require WiFi setup; the {SENSOR_WIFI_SHORT} does. Choose your model to follow the right steps in the next screen.
         </p>
         
         <div className="sensor-setup-model-comparison">
-          {/* Non-WiFi Model */}
+          {/* Standard Sensor Switch (Non-WiFi) */}
           <div className="sensor-setup-model-card">
             <div className="sensor-setup-model-card-image-wrapper">
               <img
                 src="/images/setup/model-non-wifi.png"
-                alt="Non-WiFi Model"
+                alt={SENSOR_STANDARD_DISPLAY}
                 className="sensor-setup-model-card-image"
               />
             </div>
-            <h4 className="sensor-setup-model-card-title">Non-WiFi Model</h4>
+            <h4 className="sensor-setup-model-card-title">{SENSOR_STANDARD_SHORT}</h4>
             <p className="sensor-setup-model-card-description">
               Power from 24V cable. Stops AC at critical water level. No WiFi setup.
             </p>
           </div>
 
-          {/* WiFi Model */}
+          {/* WiFi Sensor Switch */}
           <div className="sensor-setup-model-card">
             <div className="sensor-setup-model-card-image-wrapper">
               <img
                 src="/images/setup/model-wifi.png"
-                alt="WiFi-Capable Model"
+                alt={SENSOR_WIFI_DISPLAY}
                 className="sensor-setup-model-card-image"
               />
             </div>
-            <h4 className="sensor-setup-model-card-title">WiFi Model</h4>
+            <h4 className="sensor-setup-model-card-title">{SENSOR_WIFI_SHORT}</h4>
             <p className="sensor-setup-model-card-description">
-              Same as Non-WiFi plus remote monitoring. 24V or battery. WiFi setup required.
+              Same as {SENSOR_STANDARD_SHORT} plus remote monitoring. 24V or battery. WiFi setup required.
             </p>
           </div>
         </div>

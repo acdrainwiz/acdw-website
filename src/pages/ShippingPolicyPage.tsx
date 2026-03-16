@@ -1,46 +1,38 @@
-import { useNavigate } from 'react-router-dom'
-import { ArrowLeftIcon, TruckIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 
 export function ShippingPolicyPage() {
-  const navigate = useNavigate()
 
   return (
     <div className="legal-page-container">
-      <div className="container py-16">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="mb-8">
-            <button
-              onClick={() => navigate(-1)}
-              className="legal-page-back-button"
-            >
-              <ArrowLeftIcon className="h-5 w-5" />
-              Back
-            </button>
-          </div>
 
-          <div className="text-center mb-12">
-            <div className="flex justify-center mb-6">
-              <TruckIcon className="h-16 w-16 text-orange-600" />
-            </div>
-            <h1 className="heading-1 mb-4">Shipping Policy</h1>
-            <p className="text-large text-gray-600 mb-2">
+      {/* Hero Banner */}
+      <div className="support-hero">
+        <div className="support-hero-content">
+          <div className="support-hero-header">
+            <h1 className="support-hero-title">Shipping Policy</h1>
+            <p className="support-hero-subtitle">
               Delivery information and shipping terms
             </p>
-            <p className="text-sm text-gray-500">
-              Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-            </p>
+            <div className="support-hero-badge-row">
+              <span className="support-hero-badge">Delivery Times</span>
+              <span className="support-hero-badge">Contact for Pricing</span>
+              <span className="support-hero-badge">Tracking</span>
+            </div>
           </div>
+        </div>
+      </div>
 
+      <div className="container py-12">
+        <div className="max-w-4xl mx-auto">
           {/* Important Notice */}
           <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 mb-12">
             <div className="flex items-start">
               <ExclamationTriangleIcon className="h-6 w-6 text-orange-600 mr-3 flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-semibold text-orange-900 mb-2">⚠️ This is a Temporary Policy</h3>
+                <h3 className="font-semibold text-orange-900 mb-2">Shipping details</h3>
                 <p className="text-sm text-orange-800">
-                  This shipping policy is a template based on your current shipping configuration. 
-                  Please review all sections and update with your actual shipping methods, costs, and delivery timeframes before going live.
+                  AC Drain Wiz sells through distributors and does not currently ship to end customers online. For shipping methods, timeframes, and pricing, contact our sales team at <strong>{SUPPORT_CONTACT.phoneDisplay}</strong>.
                 </p>
               </div>
             </div>
@@ -49,12 +41,12 @@ export function ShippingPolicyPage() {
           {/* Introduction */}
           <div className="prose prose-lg max-w-none mb-12">
             <p className="text-gray-700 leading-relaxed">
-              This Shipping Policy outlines our shipping methods, delivery timeframes, costs, and terms. 
-              Please review this information carefully before placing an order.
+              This Shipping Policy outlines our shipping methods, delivery timeframes, and terms for orders through our distribution channel. 
+              We sell directly to distributors rather than to end customers online. For shipping and pricing information, please contact our sales team at <strong>{SUPPORT_CONTACT.phoneDisplay}</strong>.
             </p>
             <p className="text-gray-700 leading-relaxed">
-              All orders are processed and shipped from our fulfillment center. We strive to ship orders quickly 
-              and deliver them safely to your door.
+              Orders are processed and shipped from our fulfillment center. We strive to ship orders quickly 
+              and deliver them safely.
             </p>
           </div>
 
@@ -96,134 +88,27 @@ export function ShippingPolicyPage() {
               </div>
 
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                <h3 className="font-semibold text-blue-900 mb-3">💡 Shipping Cost Calculation</h3>
-                <p className="text-gray-700 mb-3">
-                  Shipping costs are calculated based on <strong>package weight</strong> and <strong>shipping distance</strong> 
-                  from our Boca Raton, Florida facility to your delivery address.
-                </p>
+                <h3 className="font-semibold text-blue-900 mb-3">💡 Shipping &amp; pricing</h3>
                 <p className="text-gray-700 text-sm">
-                  Exact shipping costs are displayed during checkout based on your shipping address. 
-                  See Section 3 below for detailed zone-based pricing.
+                  For shipping costs and pricing, contact our sales team at <strong>{SUPPORT_CONTACT.phoneDisplay}</strong>.
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Section 3: Shipping Costs */}
+          {/* Section 3: Shipping Costs & Pricing */}
           <div id="shipping-costs" className="mb-12">
-            <h2 className="legal-section-title">3. Shipping Costs & Zones</h2>
+            <h2 className="legal-section-title">3. Shipping Costs &amp; Pricing</h2>
             <div className="prose max-w-none">
-              <p className="text-gray-700 mb-6">
-                Shipping costs are calculated based on <strong>shipping distance (zones)</strong> from our 
-                Boca Raton, Florida facility (ZIP 33486) and <strong>package weight</strong>.
+              <p className="text-gray-700 mb-4">
+                AC Drain Wiz does not currently ship to end customers online; we sell directly to distributors. 
+                For shipping costs, pricing, and availability, please contact our sales team.
               </p>
-
-              {/* Zone-Based Pricing Table */}
-              <div className="bg-white border border-gray-200 rounded-lg overflow-hidden mb-6">
-                <div className="bg-orange-600 px-6 py-3">
-                  <h3 className="font-semibold text-white text-lg">Zone-Based Shipping Rates</h3>
-                </div>
-                <div className="p-6">
-                  {/* Zone 1-2 */}
-                  <div className="mb-6">
-                    <h4 className="font-semibold text-gray-900 mb-2">Zone 1-2: Local/Regional ($9-$19)</h4>
-                    <p className="text-sm text-gray-600 mb-2"><strong>States:</strong> Florida, Georgia, South Carolina, Alabama</p>
-                    <p className="text-sm text-gray-600 mb-2"><strong>Delivery:</strong> 3-5 business days</p>
-                    <ul className="text-sm text-gray-700 space-y-1">
-                      <li>• 1-2 units: <strong>$9.00</strong></li>
-                      <li>• 3-4 units: <strong>$13.00</strong></li>
-                      <li>• 5-6 units: <strong>$15.00</strong></li>
-                      <li>• 7-8 units: <strong>$17.00</strong></li>
-                      <li>• 9-10 units: <strong>$19.00</strong></li>
-                    </ul>
-                  </div>
-
-                  <div className="border-t border-gray-200 my-4"></div>
-
-                  {/* Zone 3-4 */}
-                  <div className="mb-6">
-                    <h4 className="font-semibold text-gray-900 mb-2">Zone 3-4: Mid-Range ($11-$22.50)</h4>
-                    <p className="text-sm text-gray-600 mb-2"><strong>States:</strong> North Carolina, Tennessee, Mississippi, Louisiana, Texas, Arkansas, Oklahoma</p>
-                    <p className="text-sm text-gray-600 mb-2"><strong>Delivery:</strong> 4-6 business days</p>
-                    <ul className="text-sm text-gray-700 space-y-1">
-                      <li>• 1-2 units: <strong>$11.00</strong></li>
-                      <li>• 3-4 units: <strong>$15.00</strong></li>
-                      <li>• 5-6 units: <strong>$17.50</strong></li>
-                      <li>• 7-8 units: <strong>$20.00</strong></li>
-                      <li>• 9-10 units: <strong>$22.50</strong></li>
-                    </ul>
-                  </div>
-
-                  <div className="border-t border-gray-200 my-4"></div>
-
-                  {/* Zone 5-6 */}
-                  <div className="mb-6">
-                    <h4 className="font-semibold text-gray-900 mb-2">Zone 5-6: Long Distance ($13.50-$26.50)</h4>
-                    <p className="text-sm text-gray-600 mb-2"><strong>States:</strong> Mid-Atlantic, Midwest (VA, WV, KY, MO, KS, NE, IA, IL, IN, OH, MI, WI, MN, ND, SD)</p>
-                    <p className="text-sm text-gray-600 mb-2"><strong>Delivery:</strong> 5-7 business days</p>
-                    <ul className="text-sm text-gray-700 space-y-1">
-                      <li>• 1-2 units: <strong>$13.50</strong></li>
-                      <li>• 3-4 units: <strong>$17.50</strong></li>
-                      <li>• 5-6 units: <strong>$20.50</strong></li>
-                      <li>• 7-8 units: <strong>$23.50</strong></li>
-                      <li>• 9-10 units: <strong>$26.50</strong></li>
-                    </ul>
-                  </div>
-
-                  <div className="border-t border-gray-200 my-4"></div>
-
-                  {/* Zone 7-8 */}
-                  <div className="mb-6">
-                    <h4 className="font-semibold text-gray-900 mb-2">Zone 7-8: Cross-Country ($16.50-$31)</h4>
-                    <p className="text-sm text-gray-600 mb-2"><strong>States:</strong> West Coast, Pacific Northwest, Northeast (WA, OR, CA, NV, AZ, UT, ID, MT, WY, CO, NM, ME, NH, VT, MA, RI, CT, NY, PA, NJ, DE, MD, DC, AK, HI)</p>
-                    <p className="text-sm text-gray-600 mb-2"><strong>Delivery:</strong> 5-7 business days (7-10 for AK/HI)</p>
-                    <ul className="text-sm text-gray-700 space-y-1">
-                      <li>• 1-2 units: <strong>$16.50</strong></li>
-                      <li>• 3-4 units: <strong>$20.50</strong></li>
-                      <li>• 5-6 units: <strong>$24.00</strong></li>
-                      <li>• 7-8 units: <strong>$27.50</strong></li>
-                      <li>• 9-10 units: <strong>$31.00</strong></li>
-                    </ul>
-                  </div>
-
-                  <div className="border-t border-gray-200 my-4"></div>
-
-                  {/* Canada */}
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Canada: All Provinces ($20-$46)</h4>
-                    <p className="text-sm text-gray-600 mb-2"><strong>Delivery:</strong> 7-14 business days</p>
-                    <ul className="text-sm text-gray-700 space-y-1">
-                      <li>• 1-2 units: <strong>$20.00</strong></li>
-                      <li>• 3-4 units: <strong>$28.00</strong></li>
-                      <li>• 5-6 units: <strong>$34.00</strong></li>
-                      <li>• 7-8 units: <strong>$40.00</strong></li>
-                      <li>• 9-10 units: <strong>$46.00</strong></li>
-                    </ul>
-                    <p className="text-sm text-gray-600 mt-2">
-                      <strong>Note:</strong> Additional customs duties and taxes may apply (customer responsibility)
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <p className="text-sm text-gray-700">
-                  <strong>📦 Product Weights:</strong> AC Drain Wiz Mini (~1.6 lbs with packaging) | AC Drain Wiz Sensor (~1.6 lbs with packaging)
-                </p>
-                <p className="text-sm text-gray-700 mt-2">
-                  <strong>💡 Note:</strong> Exact shipping cost is calculated and displayed during checkout based on your delivery address.
-                  Actual costs may vary slightly (+/- $1-2) based on precise destination and current carrier rates.
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+                <p className="text-gray-700 mb-0">
+                  <strong>Sales &amp; shipping inquiries:</strong> Call our customer support line at <strong>{SUPPORT_CONTACT.phoneDisplay}</strong> for pricing and shipping information.
                 </p>
               </div>
-
-              <p className="text-gray-700 mt-6">
-                <strong>No Additional Fees:</strong>
-              </p>
-              <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                <li>Same shipping rate for residential and commercial addresses</li>
-                <li>No quantity-based shipping discounts</li>
-                <li>No free shipping thresholds</li>
-              </ul>
             </div>
           </div>
 
@@ -231,22 +116,17 @@ export function ShippingPolicyPage() {
           <div id="shipping-destinations" className="mb-12">
             <h2 className="legal-section-title">4. Shipping Destinations</h2>
             <div className="prose max-w-none">
-              <p className="text-gray-700 mb-4">We currently ship to:</p>
-              <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                <li><strong>United States:</strong> All 50 states, including Alaska and Hawaii</li>
-                <li><strong>Canada:</strong> All provinces and territories</li>
-              </ul>
+              <p className="text-gray-700 mb-4">
+                We ship to distributors in the <strong>United States</strong> (all 50 states, including Alaska and Hawaii) and <strong>Canada</strong> (all provinces and territories). 
+                For pricing and shipping to your location, contact our sales team at <strong>{SUPPORT_CONTACT.phoneDisplay}</strong>.
+              </p>
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mt-4">
                 <p className="text-sm text-gray-700">
-                  <strong>International Shipping:</strong> We currently only ship to the United States and Canada. 
-                  If you're interested in international shipping, please contact us at{' '}
-                  <a href="mailto:support@acdrainwiz.com" className="text-orange-600 hover:text-orange-700">support@acdrainwiz.com</a>.
+                  <strong>International shipping:</strong> We currently ship to the United States and Canada. 
+                  For international or other shipping questions, contact us at{' '}
+                  <a href="mailto:support@acdrainwiz.com" className="text-orange-600 hover:text-orange-700">support@acdrainwiz.com</a> or <strong>{SUPPORT_CONTACT.phoneDisplay}</strong>.
                 </p>
               </div>
-              <p className="text-gray-700 mt-4">
-                <strong>Note:</strong> Some remote locations (Alaska, Hawaii, Northern Canada) may have extended delivery times. 
-                Contact us at <a href="mailto:support@acdrainwiz.com" className="text-orange-600 hover:text-orange-700">support@acdrainwiz.com</a> if you have questions about shipping to your location.
-              </p>
             </div>
           </div>
 
@@ -288,7 +168,7 @@ export function ShippingPolicyPage() {
               </p>
               <ul className="list-none space-y-2 text-gray-700">
                 <li>Email: <a href="mailto:support@acdrainwiz.com" className="text-orange-600 hover:text-orange-700">support@acdrainwiz.com</a></li>
-                <li>Phone: <strong>(234) 23 DRAIN</strong></li>
+                <li>Phone: <strong>{SUPPORT_CONTACT.phoneDisplay}</strong></li>
                 <li>Please include your order number and tracking information</li>
               </ul>
             </div>
@@ -299,7 +179,7 @@ export function ShippingPolicyPage() {
             <h2 className="legal-section-title">7. International Shipping (If Applicable)</h2>
             <div className="prose max-w-none">
               <p className="text-gray-700 mb-4">
-                <strong>Note:</strong> Update this section if you ship internationally beyond US and Canada.
+                <strong>Note:</strong> International shipping may be available. For international shipping and pricing, contact our sales team at <strong>{SUPPORT_CONTACT.phoneDisplay}</strong>.
               </p>
               <ul className="list-disc pl-6 space-y-2 text-gray-700">
                 <li>Customs duties and taxes are the responsibility of the customer</li>
@@ -316,7 +196,7 @@ export function ShippingPolicyPage() {
             <h2 className="legal-section-title">8. Shipping Address Accuracy</h2>
             <div className="prose max-w-none">
               <p className="text-gray-700 mb-4">
-                Please ensure your shipping address is correct at checkout. We are not responsible for:
+                Please ensure your shipping address is correct when placing an order. We are not responsible for:
               </p>
               <ul className="list-disc pl-6 space-y-2 text-gray-700">
                 <li>Orders shipped to incorrect addresses provided by the customer</li>
@@ -335,7 +215,8 @@ export function ShippingPolicyPage() {
             <h2 className="legal-section-title">9. Questions About Shipping?</h2>
             <div className="prose max-w-none">
               <p className="text-gray-700 mb-4">
-                If you have questions about our shipping policy, please contact us:
+                For shipping and pricing information, contact our sales team via our customer support line at <strong>{SUPPORT_CONTACT.phoneDisplay}</strong>. 
+                For other questions about our shipping policy:
               </p>
               <div className="bg-gray-50 rounded-lg p-6">
                 <ul className="space-y-2 text-gray-700">
@@ -346,16 +227,10 @@ export function ShippingPolicyPage() {
                     </a>
                   </li>
                   <li>
-                    <strong>Phone:</strong> (234) 23 DRAIN
+                    <strong>Phone:</strong> {SUPPORT_CONTACT.phoneDisplay}
                   </li>
                   <li>
-                    <strong>Business Hours:</strong> [TO BE DETERMINED - Add your business hours]
-                  </li>
-                  <li>
-                    <strong>Website:</strong>{' '}
-                    <a href="https://www.acdrainwiz.com" className="text-orange-600 hover:text-orange-700">
-                      www.acdrainwiz.com
-                    </a>
+                    <strong>Business Hours:</strong> 9:00 AM to 5:00 PM Eastern Standard Time, Monday through Friday
                   </li>
                 </ul>
               </div>
@@ -374,26 +249,6 @@ export function ShippingPolicyPage() {
             </div>
           </div>
 
-          {/* Footer Navigation */}
-          <div className="border-t pt-8 mt-12">
-            <div className="flex flex-wrap gap-4 justify-center">
-              <a href="#processing-time" className="text-orange-600 hover:text-orange-700 text-sm">
-                Processing Time
-              </a>
-              <a href="#shipping-methods" className="text-orange-600 hover:text-orange-700 text-sm">
-                Shipping Methods
-              </a>
-              <a href="#shipping-costs" className="text-orange-600 hover:text-orange-700 text-sm">
-                Shipping Costs
-              </a>
-              <a href="#tracking" className="text-orange-600 hover:text-orange-700 text-sm">
-                Tracking
-              </a>
-              <a href="#contact" className="text-orange-600 hover:text-orange-700 text-sm">
-                Contact Us
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     </div>

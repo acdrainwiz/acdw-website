@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import { MONITORING } from '../../../config/acdwKnowledge'
 
 interface Step4WiFiLoginProps {
   onComplete: (data: {
@@ -224,7 +225,7 @@ export function Step4WiFiLogin({ onComplete }: Step4WiFiLoginProps) {
                       <p className="text-sm font-medium text-amber-900 mb-1">Don't have an account?</p>
                       <p className="text-sm text-amber-800">
                         <a
-                          href="https://monitor.acdrainwiz.com/sign-up"
+                          href={MONITORING.signUpUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-amber-700 hover:text-amber-900 underline"

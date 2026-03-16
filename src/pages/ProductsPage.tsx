@@ -11,6 +11,7 @@ import {
   ChevronUpIcon,
   ArrowRightIcon
 } from '@heroicons/react/24/outline'
+import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 
 export function ProductsPage() {
   const navigate = useNavigate()
@@ -191,7 +192,7 @@ export function ProductsPage() {
     {
       question: "Do you offer professional contractor pricing?",
       // Launch Button Redirect
-      answer: "Yes! HVAC professionals and contractors qualify for special bulk pricing and support. Contact us at (234) 23 DRAIN [(234) 223-7246] or use our contact form to request contractor pricing."
+      answer: `Yes! HVAC professionals and contractors qualify for special bulk pricing and support. Contact us at ${SUPPORT_CONTACT.phoneDisplay} [${SUPPORT_CONTACT.phoneNumeric}] or use our contact form to request contractor pricing.`
     },
     {
       question: "Is AC Drain Wiz approved by building inspectors and code officials?",

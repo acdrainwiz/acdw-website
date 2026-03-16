@@ -1,37 +1,29 @@
-import { useNavigate } from 'react-router-dom'
-import { ArrowLeftIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 
 export function ReturnRefundPolicyPage() {
-  const navigate = useNavigate()
 
   return (
     <div className="legal-page-container">
-      <div className="container py-16">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="mb-8">
-            <button
-              onClick={() => navigate(-1)}
-              className="legal-page-back-button"
-            >
-              <ArrowLeftIcon className="h-5 w-5" />
-              Back
-            </button>
-          </div>
 
-          <div className="text-center mb-12">
-            <div className="flex justify-center mb-6">
-              <ExclamationTriangleIcon className="h-16 w-16 text-orange-600" />
-            </div>
-            <h1 className="heading-1 mb-4">Return & Refund Policy</h1>
-            <p className="text-large text-gray-600 mb-2">
+      {/* Hero Banner */}
+      <div className="support-hero">
+        <div className="support-hero-content">
+          <div className="support-hero-header">
+            <h1 className="support-hero-title">Return & Refund Policy</h1>
+            <p className="support-hero-subtitle">
               Our commitment to your satisfaction
             </p>
-            <p className="text-sm text-gray-500">
-              Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-            </p>
+            <div className="support-hero-badge-row">
+              <span className="support-hero-badge">Returns</span>
+              <span className="support-hero-badge">Refunds</span>
+              <span className="support-hero-badge">Distributor Policy</span>
+            </div>
           </div>
+        </div>
+      </div>
 
+      <div className="container py-12">
+        <div className="max-w-4xl mx-auto">
           {/* Introduction */}
           <div className="prose prose-lg max-w-none mb-12">
             <p className="text-gray-700 leading-relaxed">
@@ -82,7 +74,7 @@ export function ReturnRefundPolicyPage() {
                     </a>
                   </li>
                   <li>
-                    <strong>Phone:</strong> (234) 23 DRAIN
+                    <strong>Phone:</strong> <a href={SUPPORT_CONTACT.telHref} className="text-orange-600 hover:text-orange-700">{SUPPORT_CONTACT.phoneDisplay}</a>
                   </li>
                   <li>
                     <strong>Website:</strong>{' '}

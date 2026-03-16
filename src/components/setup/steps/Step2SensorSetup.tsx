@@ -9,6 +9,7 @@ import {
   DevicePhoneMobileIcon,
   WifiIcon
 } from '@heroicons/react/24/outline'
+import { SENSOR_STANDARD_DISPLAY, SENSOR_STANDARD_SHORT, SENSOR_WIFI_DISPLAY, SENSOR_WIFI_SHORT } from '../../../config/acdwKnowledge'
 
 interface Step2SensorSetupProps {
   onWifiInteraction?: () => void
@@ -311,9 +312,9 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
             className={`sensor-setup-model-selector-card ${selectedModel === 'nonwifi' ? 'sensor-setup-model-selector-card-selected' : ''}`}
           >
             <div className="sensor-setup-model-selector-card-image-wrapper">
-              <img src="/images/setup/model-non-wifi.png" alt="Non-WiFi Model" className="sensor-setup-model-selector-card-image" />
+              <img src="/images/setup/model-non-wifi.png" alt={SENSOR_STANDARD_DISPLAY} className="sensor-setup-model-selector-card-image" />
             </div>
-            <h4 className="sensor-setup-model-selector-card-title">Non‑WiFi Model</h4>
+            <h4 className="sensor-setup-model-selector-card-title">{SENSOR_STANDARD_SHORT}</h4>
             <p className="sensor-setup-model-selector-card-description">Power from 24V cable only. Stops AC at critical water level. No WiFi setup.</p>
           </button>
           <button
@@ -322,9 +323,9 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
             className={`sensor-setup-model-selector-card ${selectedModel === 'wifi' ? 'sensor-setup-model-selector-card-selected' : ''}`}
           >
             <div className="sensor-setup-model-selector-card-image-wrapper">
-              <img src="/images/setup/model-wifi.png" alt="WiFi Model" className="sensor-setup-model-selector-card-image" />
+              <img src="/images/setup/model-wifi.png" alt={SENSOR_WIFI_DISPLAY} className="sensor-setup-model-selector-card-image" />
             </div>
-            <h4 className="sensor-setup-model-selector-card-title">WiFi Model</h4>
+            <h4 className="sensor-setup-model-selector-card-title">{SENSOR_WIFI_SHORT}</h4>
             <p className="sensor-setup-model-selector-card-description">Same as Non‑WiFi plus remote monitoring. 24V or battery. WiFi setup required.</p>
           </button>
         </div>

@@ -18,7 +18,6 @@ import { SupportHubPage } from './pages/SupportHubPage'
 import { InstallationSetupPage } from './pages/InstallationSetupPage'
 import { ProductSupportPage } from './pages/ProductSupportPage'
 import { WarrantyReturnsPage } from './pages/WarrantyReturnsPage'
-import { ContactSupportPage } from './pages/ContactSupportPage'
 import { CompliancePage } from './pages/CompliancePage'
 import { SignInPage } from './pages/SignInPage'
 import { SignUpPage } from './pages/SignUpPage'
@@ -68,7 +67,6 @@ function AppContent() {
                     <Route path="/support/installation-setup" element={<InstallationSetupPage />} />
                     <Route path="/support/product-support" element={<ProductSupportPage />} />
                     <Route path="/support/warranty-returns" element={<WarrantyReturnsPage />} />
-                    <Route path="/support/contact" element={<ContactSupportPage />} />
                     <Route path="/compliance" element={<CompliancePage />} />
                     <Route path="/auth/signin" element={<SignInPage />} />
               <Route path="/auth/signup" element={<SignUpPage />} />

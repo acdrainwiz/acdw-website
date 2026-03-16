@@ -1,37 +1,28 @@
-import { useNavigate } from 'react-router-dom'
-import { ArrowLeftIcon, ShieldCheckIcon } from '@heroicons/react/24/outline'
+import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 
 export function WarrantyPolicyPage() {
-  const navigate = useNavigate()
 
   return (
     <div className="legal-page-container">
-      <div className="container py-16">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="mb-8">
-            <button
-              onClick={() => navigate(-1)}
-              className="legal-page-back-button"
-            >
-              <ArrowLeftIcon className="h-5 w-5" />
-              Back
-            </button>
-          </div>
 
-          <div className="text-center mb-12">
-            <div className="flex justify-center mb-6">
-              <ShieldCheckIcon className="h-16 w-16 text-orange-600" />
-            </div>
-            <h1 className="heading-1 mb-4">Warranty Policy</h1>
-            <p className="text-large text-gray-600 mb-2">
+      {/* Hero Banner */}
+      <div className="support-hero">
+        <div className="support-hero-content">
+          <div className="support-hero-header">
+            <h1 className="support-hero-title">Warranty Policy</h1>
+            <p className="support-hero-subtitle">
               Our commitment to product quality and reliability
             </p>
-            <p className="text-sm text-gray-500">
-              Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-            </p>
+            <div className="support-hero-badge-row">
+              <span className="support-hero-badge">Lifetime Warranty</span>
+              <span className="support-hero-badge">Claim Process</span>
+            </div>
           </div>
+        </div>
+      </div>
 
+      <div className="container py-12">
+        <div className="max-w-4xl mx-auto">
           {/* Introduction */}
           <div className="prose prose-lg max-w-none mb-12">
             <p className="text-gray-700 leading-relaxed">
@@ -153,7 +144,7 @@ export function WarrantyPolicyPage() {
                   <a href="mailto:support@acdrainwiz.com" className="text-orange-600 hover:text-orange-700">
                     support@acdrainwiz.com
                   </a>{' '}
-                  or call us at <strong>(234) 23 DRAIN</strong> to initiate a warranty claim.
+                  or call us at <strong>{SUPPORT_CONTACT.phoneDisplay}</strong> to initiate a warranty claim.
                 </li>
                 <li>
                   <strong>Provide Information:</strong> Include the following information:
@@ -233,7 +224,7 @@ export function WarrantyPolicyPage() {
                   the warranty claim internally with the distributor.
                 </p>
                 <p className="text-gray-700 mt-2 text-sm">
-                  <strong>Note:</strong> Contact us at <a href="mailto:support@acdrainwiz.com" className="text-orange-600 hover:text-orange-700">support@acdrainwiz.com</a> or <strong>(234) 23 DRAIN</strong> 
+                  <strong>Note:</strong> Contact us at <a href="mailto:support@acdrainwiz.com" className="text-orange-600 hover:text-orange-700">support@acdrainwiz.com</a> or <strong>{SUPPORT_CONTACT.phoneDisplay}</strong> 
                   to find a distributor near you.
                 </p>
               </div>
@@ -279,10 +270,6 @@ export function WarrantyPolicyPage() {
                 This warranty is <strong>non-transferable</strong> and applies only to the original purchaser. 
                 The warranty does not extend to subsequent owners or users of the product.
               </p>
-              <p className="text-gray-700 mt-4">
-                <strong>Note:</strong> If you want to make the warranty transferable (which can increase product value), 
-                you would need to update this section accordingly.
-              </p>
             </div>
           </div>
 
@@ -302,10 +289,10 @@ export function WarrantyPolicyPage() {
                     </a>
                   </li>
                   <li>
-                    <strong>Phone:</strong> (234) 23 DRAIN
+                    <strong>Phone:</strong> {SUPPORT_CONTACT.phoneDisplay}
                   </li>
                   <li>
-                    <strong>Business Hours:</strong> [TO BE DETERMINED - Add your business hours]
+                    <strong>Business Hours:</strong> 9:00 AM to 5:00 PM Eastern Standard Time, Monday through Friday
                   </li>
                   <li>
                     <strong>Website:</strong>{' '}

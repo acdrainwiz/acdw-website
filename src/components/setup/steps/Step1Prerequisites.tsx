@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import { MONITORING } from '../../../config/acdwKnowledge'
 
 interface Step1PrerequisitesProps {
   onComplete: (data: { miniInstalled: boolean; hasAccount: boolean }) => void
@@ -110,7 +111,7 @@ export function Step1Prerequisites({ onComplete }: Step1PrerequisitesProps) {
                       Don't have an account yet?
                     </p>
                     <a
-                      href="https://monitor.acdrainwiz.com/sign-up"
+                      href={MONITORING.signUpUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-blue-700 hover:text-blue-900 underline mt-1 inline-block"

@@ -1,5 +1,6 @@
 import { CheckCircleIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 import { useNavigate } from 'react-router-dom'
+import { MONITORING } from '../../../config/acdwKnowledge'
 
 interface Step4SuccessProps {
   deviceData?: {
@@ -134,7 +135,7 @@ export function Step4Success({ deviceData }: Step4SuccessProps) {
       {/* Action Buttons */}
       <div className="sensor-setup-success-actions">
         <button
-          onClick={() => window.open('https://monitor.acdrainwiz.com', '_blank')}
+          onClick={() => window.open(MONITORING.portalUrl, '_blank')}
           className="sensor-setup-success-button sensor-setup-success-button-primary"
         >
           <span>View Dashboard</span>

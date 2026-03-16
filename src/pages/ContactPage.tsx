@@ -16,6 +16,7 @@ import {
 } from '@heroicons/react/24/solid'
 import { validateEmail } from '../utils/emailValidation'
 import { useRecaptcha } from '../hooks/useRecaptcha'
+import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 
 type ContactFormType = 'general' | 'support' | 'sales' | 'installer' | 'demo'
 
@@ -639,16 +640,26 @@ export function ContactPage() {
 
   return (
     <div className="contact-page-container">
-      <div className="container py-16">
-        {/* Header */}
-        <div className="contact-page-header">
-          <h1 className="heading-1 mb-6">Contact AC Drain Wiz</h1>
-          <p className="text-large max-w-3xl mx-auto">
-            Get in touch with our team for product information, pricing, technical support, 
-            or to schedule a demo. We're here to help with your AC drain line maintenance needs.
-          </p>
-        </div>
 
+      {/* Hero Banner */}
+      <div className="support-hero">
+        <div className="support-hero-content">
+          <div className="support-hero-header">
+            <h1 className="support-hero-title">Contact AC Drain Wiz</h1>
+            <p className="support-hero-subtitle">
+              Get in touch with our team for product information, pricing, technical support, 
+              or to schedule a demo. We're here to help with your AC drain line maintenance needs.
+            </p>
+            <div className="support-hero-badge-row">
+              <span className="support-hero-badge">General Inquiry</span>
+              <span className="support-hero-badge">Technical Support</span>
+              <span className="support-hero-badge">Sales &amp; Demos</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container py-12">
         <div className="contact-content-wrapper">
           {/* Tabs */}
           <div className="contact-tabs-container">
@@ -1654,11 +1665,11 @@ export function ContactPage() {
                           <span>ariddle@acdrainwiz.com</span>
                         </a>
                         <a 
-                          href="tel:+12342237246" 
+                          href={SUPPORT_CONTACT.telHref} 
                           className="contact-leadership-link"
                         >
                           <PhoneIcon className="contact-leadership-link-icon" />
-                          <span>(234) 23 DRAIN</span>
+                          <span>{SUPPORT_CONTACT.phoneDisplay}</span>
                         </a>
                       </div>
                     </div>
@@ -1670,8 +1681,8 @@ export function ContactPage() {
                   <h3 className="contact-quick-info-title">Quick Contact</h3>
                   <div className="contact-quick-info-list">
                     <p><strong>Email:</strong> info@acdrainwiz.com</p>
-                    <p><strong>Phone:</strong> (234) 23 DRAIN</p>
-                    <p><strong>Hours:</strong> Mon-Fri, 9:00 AM - 5:00 PM EST</p>
+                    <p><strong>Phone:</strong> {SUPPORT_CONTACT.phoneDisplay}</p>
+                    <p><strong>Hours:</strong> 9:00 AM to 5:00 PM Eastern Standard Time, Monday through Friday</p>
                   </div>
                 </div>
               </div>

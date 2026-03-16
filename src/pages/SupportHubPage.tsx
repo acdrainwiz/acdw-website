@@ -9,31 +9,35 @@ import {
   BookOpenIcon,
   DocumentTextIcon
 } from '@heroicons/react/24/outline'
+import { MONITORING } from '../config/acdwKnowledge'
 
 export function SupportHubPage() {
   return (
     <div className="support-hub-container">
-      <div className="container py-16">
-        {/* Header */}
-        <div className="support-hub-header">
-          <h1 className="support-hub-title">Support Center</h1>
-          <p className="support-hub-subtitle">
-            Find answers to common questions, installation guides, warranty information, and get the help you need.
-          </p>
-          
-          {/* Search Bar */}
-          <div className="support-hub-search">
-            <div className="support-hub-search-wrapper">
-              <MagnifyingGlassIcon className="support-hub-search-icon" />
-              <input
-                type="text"
-                placeholder="Search for help..."
-                className="support-hub-search-input"
-              />
+
+      {/* Hero Banner */}
+      <div className="support-hero">
+        <div className="support-hero-content">
+          <div className="support-hero-header">
+            <h1 className="support-hero-title">Support Center</h1>
+            <p className="support-hero-subtitle">
+              Find answers to common questions, installation guides, warranty information, and get the help you need.
+            </p>
+            <div className="support-hero-search">
+              <div className="support-hero-search-wrapper">
+                <MagnifyingGlassIcon className="support-hero-search-icon" />
+                <input
+                  type="text"
+                  placeholder="Search for help..."
+                  className="support-hero-search-input"
+                />
+              </div>
             </div>
           </div>
         </div>
+      </div>
 
+      <div className="container py-12">
         {/* Main Navigation Cards */}
         <div className="support-hub-cards">
           <Link 
@@ -88,7 +92,7 @@ export function SupportHubPage() {
           </Link>
 
           <Link 
-            to="/support/contact" 
+            to="/contact?type=support" 
             className="support-hub-card support-hub-card-primary"
           >
             <div className="support-hub-card-icon-wrapper">
@@ -118,7 +122,7 @@ export function SupportHubPage() {
               <span>Installation Scenarios</span>
             </Link>
             <a 
-              href="https://monitor.acdrainwiz.com/login" 
+              href={MONITORING.portalUrl} 
               target="_blank" 
               rel="noopener noreferrer"
               className="support-hub-quick-link"
