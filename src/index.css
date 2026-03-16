@@ -13677,3 +13677,399 @@
 .product-installation-video-description {
     @apply text-white/80 text-lg;
 }
+
+/* ============================================================
+   MINI SETUP WIZARD
+   All classes prefixed mini-setup-* to keep namespace separate
+   from sensor-setup-* for independent future styling.
+   Shell classes (wizard header, nav, progress bars) are shared
+   with sensor-setup-wizard-* via SetupWizard.tsx.
+   ============================================================ */
+
+/* Callouts -------------------------------------------------- */
+.mini-setup-notice-callout {
+  @apply bg-amber-50 border border-amber-200 rounded-lg px-4 py-3;
+}
+
+.mini-setup-notice-callout-content {
+  @apply flex items-start space-x-3;
+}
+
+.mini-setup-notice-callout-icon {
+  @apply h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5;
+}
+
+.mini-setup-notice-callout-text {
+  @apply flex-1;
+}
+
+.mini-setup-notice-callout-title {
+  @apply text-sm font-semibold text-amber-900 mb-1;
+}
+
+.mini-setup-notice-callout-description {
+  @apply text-sm text-amber-800 leading-relaxed;
+}
+
+.mini-setup-tip-callout {
+  @apply bg-blue-50 border border-blue-200 rounded-lg px-4 py-3;
+}
+
+.mini-setup-tip-callout-content {
+  @apply flex items-start;
+}
+
+.mini-setup-tip-callout-text {
+  @apply text-sm text-blue-800 leading-relaxed;
+}
+
+/* What You'll Need ------------------------------------------ */
+.mini-setup-what-you-need {
+  @apply bg-white rounded-lg border border-gray-200 p-6;
+}
+
+.mini-setup-what-you-need-title {
+  @apply text-lg font-semibold text-gray-900 mb-4;
+}
+
+.mini-setup-what-you-need-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-4;
+}
+
+.mini-setup-what-you-need-item {
+  @apply flex items-start space-x-3;
+}
+
+.mini-setup-what-you-need-item-icon-wrapper {
+  @apply flex-shrink-0 w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center mt-0.5;
+}
+
+.mini-setup-what-you-need-item-icon {
+  @apply h-4 w-4 text-primary-600;
+}
+
+.mini-setup-what-you-need-item-content {
+  @apply flex-1;
+}
+
+.mini-setup-what-you-need-item-title {
+  @apply text-sm font-semibold text-gray-900;
+}
+
+.mini-setup-what-you-need-item-description {
+  @apply text-xs text-gray-600 mt-0.5 leading-relaxed;
+}
+
+/* Section Divider ------------------------------------------- */
+.mini-setup-section-divider {
+  @apply flex items-center gap-4 my-2;
+}
+
+.mini-setup-section-divider::before,
+.mini-setup-section-divider::after {
+  content: '';
+  @apply flex-1 h-px bg-gray-200;
+}
+
+.mini-setup-section-divider-title {
+  @apply text-sm font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap;
+}
+
+/* Numbered Step Cards (Steps 1 & 3) ------------------------- */
+.mini-setup-steps {
+  @apply space-y-6;
+}
+
+.mini-setup-step-card {
+  @apply bg-white rounded-lg border border-gray-200 p-5;
+}
+
+.mini-setup-step-content {
+  @apply flex items-start space-x-4;
+}
+
+.mini-setup-step-number-wrapper {
+  @apply flex-shrink-0;
+}
+
+.mini-setup-step-number-badge {
+  @apply w-9 h-9 rounded-full bg-primary-600 flex items-center justify-center;
+}
+
+.mini-setup-step-number {
+  @apply text-sm font-bold text-white;
+}
+
+.mini-setup-step-details {
+  @apply flex-1 min-w-0;
+}
+
+.mini-setup-step-title {
+  @apply text-base font-semibold text-gray-900 mb-1;
+}
+
+.mini-setup-step-description {
+  @apply text-sm text-gray-700 leading-relaxed;
+}
+
+.mini-setup-step-image-wrapper {
+  @apply mt-4 rounded-lg overflow-hidden bg-gray-100;
+}
+
+.mini-setup-step-image {
+  @apply w-full h-auto object-cover;
+  max-height: 300px;
+}
+
+/* Accordions (Step 2) --------------------------------------- */
+@keyframes mini-setup-pulse-outline {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(37, 99, 235, 0); }
+}
+
+.mini-setup-accordion-section {
+  @apply bg-white border border-gray-200 rounded-lg overflow-hidden;
+}
+
+.mini-setup-accordion-section-pulsating {
+  animation: mini-setup-pulse-outline 2s ease-in-out infinite;
+}
+
+.mini-setup-accordion-section-expanded {
+  @apply border-primary-300;
+}
+
+.mini-setup-accordion-section-collapsed {
+  @apply border-gray-200;
+}
+
+.mini-setup-accordion-header {
+  @apply w-full px-5 py-4 text-left hover:bg-gray-50 transition-colors focus:outline-none;
+}
+
+.mini-setup-accordion-header-content {
+  @apply flex items-center justify-between;
+}
+
+.mini-setup-accordion-header-left {
+  @apply flex items-center space-x-3;
+}
+
+.mini-setup-accordion-header-right {
+  @apply flex items-center space-x-3;
+}
+
+.mini-setup-accordion-status-icon {
+  @apply h-5 w-5 flex-shrink-0;
+}
+
+.mini-setup-accordion-status-icon-complete {
+  @apply text-green-600;
+}
+
+.mini-setup-accordion-status-icon-pending {
+  @apply w-5 h-5 rounded-full border-2 border-gray-300 bg-white;
+}
+
+.mini-setup-accordion-title {
+  @apply text-base font-semibold text-gray-900;
+}
+
+.mini-setup-accordion-badge {
+  @apply text-xs font-medium px-2.5 py-0.5 rounded-full;
+}
+
+.mini-setup-accordion-badge-ready {
+  @apply bg-blue-100 text-blue-800;
+}
+
+.mini-setup-accordion-badge-complete {
+  @apply bg-green-100 text-green-800;
+}
+
+.mini-setup-accordion-chevron {
+  @apply h-5 w-5 text-gray-400;
+}
+
+@keyframes mini-setup-slide-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mini-setup-accordion-content {
+  @apply px-5 pb-5 border-t border-gray-100;
+  animation: mini-setup-slide-down 0.2s ease-out;
+}
+
+/* Installation Step Cards (inside accordions, Step 2) ------- */
+.mini-setup-installation-steps {
+  @apply space-y-5 pt-4;
+}
+
+.mini-setup-installation-step-card {
+  @apply bg-gray-50 rounded-lg p-4 border border-gray-100;
+}
+
+.mini-setup-installation-step-card-warning {
+  @apply bg-red-50 border-red-100;
+}
+
+.mini-setup-installation-step-content {
+  @apply flex items-start space-x-4;
+}
+
+.mini-setup-installation-step-number-wrapper {
+  @apply flex-shrink-0;
+}
+
+.mini-setup-installation-step-number-badge {
+  @apply w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center;
+}
+
+.mini-setup-installation-step-number-badge-warning {
+  @apply bg-red-500;
+}
+
+.mini-setup-installation-step-number {
+  @apply text-xs font-bold text-white;
+}
+
+.mini-setup-installation-step-warning-icon {
+  @apply h-4 w-4 text-white;
+}
+
+.mini-setup-installation-step-details {
+  @apply flex-1 min-w-0;
+}
+
+.mini-setup-installation-step-title {
+  @apply text-sm font-semibold text-gray-900 mb-1;
+}
+
+.mini-setup-installation-step-title-warning {
+  @apply text-red-800;
+}
+
+.mini-setup-installation-step-description {
+  @apply text-sm text-gray-700 leading-relaxed;
+}
+
+.mini-setup-installation-step-image-wrapper {
+  @apply mt-3 rounded-md overflow-hidden bg-gray-200;
+}
+
+.mini-setup-installation-step-image {
+  @apply w-full h-auto object-cover;
+  max-height: 260px;
+}
+
+/* Cure Time Badge ------------------------------------------- */
+.mini-setup-cure-time-badge {
+  @apply inline-flex items-center gap-2 mt-2 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-full text-xs font-medium text-blue-800;
+}
+
+.mini-setup-cure-time-badge-icon {
+  @apply h-3.5 w-3.5 text-blue-600 flex-shrink-0;
+}
+
+/* Maintenance Callout (Step 3) ------------------------------ */
+.mini-setup-maintenance-callout {
+  @apply bg-white border border-gray-200 rounded-xl p-6 space-y-4;
+}
+
+.mini-setup-maintenance-callout-header {
+  @apply flex items-center space-x-3;
+}
+
+.mini-setup-maintenance-callout-icon {
+  @apply h-6 w-6 text-green-600 flex-shrink-0;
+}
+
+.mini-setup-maintenance-callout-title {
+  @apply text-lg font-semibold text-gray-900;
+}
+
+.mini-setup-maintenance-callout-intro {
+  @apply text-sm text-gray-700 leading-relaxed;
+}
+
+.mini-setup-maintenance-callout-checks {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-3;
+}
+
+.mini-setup-maintenance-check-item {
+  @apply rounded-lg p-4;
+}
+
+.mini-setup-maintenance-check-item-good {
+  @apply bg-green-50 border border-green-200;
+}
+
+.mini-setup-maintenance-check-item-action {
+  @apply bg-amber-50 border border-amber-200;
+}
+
+.mini-setup-maintenance-check-label {
+  @apply block text-xs font-semibold uppercase tracking-wide mb-1;
+}
+
+.mini-setup-maintenance-check-item-good .mini-setup-maintenance-check-label {
+  @apply text-green-700;
+}
+
+.mini-setup-maintenance-check-item-action .mini-setup-maintenance-check-label {
+  @apply text-amber-700;
+}
+
+.mini-setup-maintenance-check-description {
+  @apply text-sm leading-relaxed;
+}
+
+.mini-setup-maintenance-check-item-good .mini-setup-maintenance-check-description {
+  @apply text-green-800;
+}
+
+.mini-setup-maintenance-check-item-action .mini-setup-maintenance-check-description {
+  @apply text-amber-800;
+}
+
+.mini-setup-maintenance-callout-footer {
+  @apply text-sm text-gray-600 italic;
+}
+
+/* Sensor Upsell Block --------------------------------------- */
+.mini-setup-sensor-upsell {
+  @apply bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-5 space-y-3 mt-2;
+}
+
+.mini-setup-sensor-upsell-header {
+  @apply space-y-1;
+}
+
+.mini-setup-sensor-upsell-eyebrow {
+  @apply block text-xs font-semibold uppercase tracking-widest text-blue-200;
+}
+
+.mini-setup-sensor-upsell-title {
+  @apply text-base font-bold text-white;
+}
+
+.mini-setup-sensor-upsell-description {
+  @apply text-sm text-blue-100 leading-relaxed;
+}
+
+.mini-setup-sensor-upsell-actions {
+  @apply flex flex-col sm:flex-row gap-2 pt-1;
+}
+
+.mini-setup-sensor-upsell-link {
+  @apply inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-white/15 hover:bg-white/25 border border-white/30 rounded-lg px-4 py-2 transition-colors;
+}
+
+.mini-setup-sensor-upsell-link-secondary {
+  @apply bg-transparent hover:bg-white/10;
+}
+
+.mini-setup-sensor-upsell-link-icon {
+  @apply h-4 w-4 flex-shrink-0;
+}
