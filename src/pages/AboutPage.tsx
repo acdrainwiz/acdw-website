@@ -1,19 +1,30 @@
 import { EnvelopeIcon, PhoneIcon, BuildingOfficeIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
+import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 
 export function AboutPage() {
 
   return (
     <div className="about-page-container">
-      <div className="about-page-content">
-        {/* Header */}
-        <div className="about-page-header">
-          <h1 className="about-page-title">About AC Drain Wiz</h1>
-          <p className="about-page-subtitle">
-            Making AC maintenance easier, faster, and more profitable with innovative 
-            one-time installed solutions that proactively keep condensate drain lines clear.
-          </p>
-        </div>
 
+      {/* Hero Banner */}
+      <div className="support-hero">
+        <div className="support-hero-content">
+          <div className="support-hero-header">
+            <h1 className="support-hero-title">About AC Drain Wiz</h1>
+            <p className="support-hero-subtitle">
+              Making AC maintenance easier, faster, and more profitable with innovative 
+              one-time installed solutions that proactively keep condensate drain lines clear.
+            </p>
+            <div className="support-hero-badge-row">
+              <span className="support-hero-badge">Our Mission</span>
+              <span className="support-hero-badge">Leadership</span>
+              <span className="support-hero-badge">Innovation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="about-page-content">
         {/* Mission Section */}
         <div className="about-page-section">
           <h2 className="about-page-section-title">Our Mission</h2>
@@ -73,11 +84,11 @@ export function AboutPage() {
                     <span className="about-page-leadership-contact-text">ariddle@acdrainwiz.com</span>
                   </a>
                   <a 
-                    href="tel:+12342237246" 
+                    href={SUPPORT_CONTACT.telHref} 
                     className="about-page-leadership-contact-link"
                   >
                     <PhoneIcon className="about-page-leadership-contact-icon" />
-                    <span className="about-page-leadership-contact-text">(234) 23 DRAIN</span>
+                    <span className="about-page-leadership-contact-text">{SUPPORT_CONTACT.phoneDisplay}</span>
                   </a>
                 </div>
               </div>

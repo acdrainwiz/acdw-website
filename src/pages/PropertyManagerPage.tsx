@@ -12,6 +12,7 @@ import {
   SparklesIcon,
   CheckCircleIcon
 } from '@heroicons/react/24/outline';
+import { SUPPORT_CONTACT } from '../config/acdwKnowledge';
 
 export function PropertyManagerPage() {
   const navigate = useNavigate();
@@ -42,10 +43,10 @@ export function PropertyManagerPage() {
             <div className="property-manager-hero-ctas">
               {/* Launch Button Redirect */}
               <a 
-                href="tel:+12342237246"
+                href={SUPPORT_CONTACT.telHref}
                 className="property-manager-hero-cta-primary"
               >
-                Call (234) 23 DRAIN
+                Call {SUPPORT_CONTACT.phoneDisplay}
               </a>
               <button 
                 onClick={handleContactSales}
@@ -549,10 +550,10 @@ export function PropertyManagerPage() {
           <div className="property-manager-cta-buttons">
             {/* Launch Button Redirect */}
             <a 
-              href="tel:+12342237246"
+              href={SUPPORT_CONTACT.telHref}
               className="property-manager-cta-button-primary"
             >
-              Call (234) 23 DRAIN
+              Call {SUPPORT_CONTACT.phoneDisplay}
             </a>
             <button 
               onClick={handleContactSales}

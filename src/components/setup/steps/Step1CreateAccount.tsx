@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { PrerequisiteModal } from '../PrerequisiteModal'
+import { MONITORING } from '../../../config/acdwKnowledge'
 
 export function Step1CreateAccount() {
   const [showModal, setShowModal] = useState(false)
@@ -23,7 +24,7 @@ export function Step1CreateAccount() {
         <>
           Go to the{' '}
           <a
-            href="https://monitor.acdrainwiz.com/sign-up"
+            href={MONITORING.signUpUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="sensor-setup-account-step-link"

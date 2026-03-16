@@ -14,6 +14,7 @@ import {
   VideoCameraIcon,
   ArrowRightIcon
 } from '@heroicons/react/24/outline'
+import { SUPPORT_CONTACT, MONITORING } from '../config/acdwKnowledge'
 
 export function SupportPage() {
   const location = useLocation()
@@ -166,7 +167,7 @@ export function SupportPage() {
                   <div className="support-info-box">
                     <p className="support-info-text">
                       <strong>Need professional installation?</strong> Contact us at{' '}
-                      <a href="tel:+12342237246" className="text-blue-600 hover:text-blue-700">(234) 23 DRAIN</a>{' '}
+                      <a href={SUPPORT_CONTACT.telHref} className="text-blue-600 hover:text-blue-700">{SUPPORT_CONTACT.phoneDisplay}</a>{' '}
                       or{' '}
                       <Link to="/contact?type=installer" className="text-blue-600 hover:text-blue-700">
                         find a certified installer
@@ -265,11 +266,11 @@ export function SupportPage() {
                     </p>
                     <div className="support-action-buttons">
                       <a 
-                        href="tel:+12342237246" 
+                        href={SUPPORT_CONTACT.telHref} 
                         className="support-action-button-primary"
                       >
                         <PhoneIcon className="support-action-icon" />
-                        Call (234) 23 DRAIN
+                        Call {SUPPORT_CONTACT.phoneDisplay}
                       </a>
                       <Link
                         to="/contact?type=support"
@@ -353,7 +354,7 @@ export function SupportPage() {
                   <div className="bg-blue-50 rounded-lg p-4">
                     <p className="text-sm text-gray-700">
                       <strong>Questions about warranty or returns?</strong> Contact us at{' '}
-                      <a href="tel:+12342237246" className="text-blue-600 hover:text-blue-700">(234) 23 DRAIN</a>{' '}
+                      <a href={SUPPORT_CONTACT.telHref} className="text-blue-600 hover:text-blue-700">{SUPPORT_CONTACT.phoneDisplay}</a>{' '}
                       or{' '}
                       <Link to="/contact?type=support" className="text-blue-600 hover:text-blue-700">
                         submit a support request
@@ -424,7 +425,7 @@ export function SupportPage() {
                       </li>
                       <li className="flex items-center">
                         <CheckIcon className="h-5 w-5 text-green-600 mr-3" />
-                        <a href="https://monitor.acdrainwiz.com/login" target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-blue-600">
+                        <a href={MONITORING.portalUrl} target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-blue-600">
                           Sensor Monitoring Portal
                         </a>
                       </li>
@@ -463,9 +464,9 @@ export function SupportPage() {
                       <div className="support-contact-card">
                         <PhoneIcon className="support-contact-icon" />
                         <h4 className="support-contact-title">Phone Support</h4>
-                        <p className="support-contact-details">Monday - Friday, 8 AM - 5 PM EST</p>
-                        <a href="tel:+12342237246" className="support-contact-link">
-                          (234) 23 DRAIN
+                        <p className="support-contact-details">9:00 AM to 5:00 PM Eastern Standard Time, Monday through Friday</p>
+                        <a href={SUPPORT_CONTACT.telHref} className="support-contact-link">
+                          {SUPPORT_CONTACT.phoneDisplay}
                         </a>
                       </div>
                       <div className="support-contact-card">

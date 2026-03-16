@@ -112,7 +112,7 @@
       "weight": "0.4 lbs",
       "material": "Waterproof ABS plastic",
       "powerSource": "Battery powered (1 year life)",
-      "connectivity": "Wi-Fi, Bluetooth",
+      "connectivity": "Wi-Fi (2.4 GHz)",
       "alertTypes": "SMS, Email, Push notification"
     },
     "iccCompliance": [

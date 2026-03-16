@@ -4,6 +4,7 @@ import {
   PhoneIcon, 
   MapPinIcon
 } from '@heroicons/react/24/outline'
+import { SUPPORT_CONTACT } from '../../config/acdwKnowledge'
 
 export function Footer() {
   return (
@@ -72,7 +73,7 @@ export function Footer() {
                 <li><Link to="/support/installation-setup" className="footer-link">Installation & Setup</Link></li>
                 <li><Link to="/support/product-support" className="footer-link">Product Support</Link></li>
                 <li><Link to="/support/warranty-returns" className="footer-link">Warranty & Returns</Link></li>
-                <li><Link to="/support/contact" className="footer-link">Contact Support</Link></li>
+                <li><Link to="/contact?type=support" className="footer-link">Contact Support</Link></li>
               </ul>
             </div>
 
@@ -126,7 +127,7 @@ export function Footer() {
             </div>
             <div className="footer-contact-item">
               <PhoneIcon className="footer-contact-icon" />
-              <span>(234) 23 DRAIN</span>
+              <a href={SUPPORT_CONTACT.telHref} className="footer-contact-link">{SUPPORT_CONTACT.phoneDisplay}</a>
             </div>
             <div className="footer-contact-item">
               <MapPinIcon className="footer-contact-icon" />

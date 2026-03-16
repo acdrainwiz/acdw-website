@@ -22,12 +22,13 @@ import {
   ShieldCheckIcon
 } from '@heroicons/react/24/outline'
 import { useAuth } from '../../contexts/AuthContext'
+import { MONITORING } from '../../config/acdwKnowledge'
 
 const baseNavigation = [
   { name: 'Products', href: '/products' },
   { name: 'About', href: '/about' },
   { name: 'Contact', href: '/contact' },
-  { name: 'Sensor Monitoring', href: 'https://monitor.acdrainwiz.com/login', external: true },
+  { name: 'Sensor Monitoring', href: MONITORING.portalUrl, external: true },
 ]
 
 // Enhanced mobile navigation structure
@@ -477,7 +478,7 @@ export function Header() {
 
                   {/* Sensor Monitoring - External Link */}
                   <a
-                    href="https://monitor.acdrainwiz.com/login"
+                    href={MONITORING.portalUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="header-mobile-nav-item header-mobile-nav-item-external"

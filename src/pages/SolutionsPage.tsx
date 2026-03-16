@@ -90,16 +90,26 @@ export function SolutionsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-16">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="heading-1 mb-6">AC Drain Wiz Solutions</h1>
-          <p className="text-large text-gray-600 max-w-3xl mx-auto">
-            Comprehensive AC drain line maintenance solutions designed for different markets and applications. 
-            From residential homes to commercial buildings and municipal systems.
-          </p>
-        </div>
 
+      {/* Hero Banner */}
+      <div className="support-hero">
+        <div className="support-hero-content">
+          <div className="support-hero-header">
+            <h1 className="support-hero-title">AC Drain Wiz Solutions</h1>
+            <p className="support-hero-subtitle">
+              Comprehensive AC drain line maintenance solutions designed for different markets and applications. 
+              From residential homes to commercial buildings and municipal systems.
+            </p>
+            <div className="support-hero-badge-row">
+              <span className="support-hero-badge">Residential</span>
+              <span className="support-hero-badge">Light Commercial</span>
+              <span className="support-hero-badge">Municipal</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-12">
         {/* Solutions Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
           {solutions.map((solution) => (

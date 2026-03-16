@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ExclamationTriangleIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { MONITORING } from '../../config/acdwKnowledge'
 
 interface PrerequisiteModalProps {
   isOpen: boolean
@@ -104,7 +105,7 @@ export function PrerequisiteModal({ isOpen, onClose }: PrerequisiteModalProps) {
             </p>
             <div className="sensor-setup-prerequisite-modal-signup-link-wrapper">
               <a
-                href="https://monitor.acdrainwiz.com/sign-up"
+                href={MONITORING.signUpUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="sensor-setup-prerequisite-modal-signup-link"

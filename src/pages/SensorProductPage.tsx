@@ -38,6 +38,7 @@ import {
   //PlayIcon,
   PhoneIcon
 } from '@heroicons/react/24/outline'
+import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 
 export function SensorProductPage() {
   const navigate = useNavigate()
@@ -261,7 +262,7 @@ export function SensorProductPage() {
   ]
 
   // Launch Button Redirect: pause pro/pm account creation during launch
-  const salesPhone = 'tel:+12342237246'
+  const salesPhone = SUPPORT_CONTACT.telHref
 
   return (
     <div className="sensor-product-page">
@@ -314,14 +315,14 @@ export function SensorProductPage() {
                       href={salesPhone}
                       className="sensor-product-purchase-button-primary md:hidden"
                     >
-                      Call (234) 23 DRAIN
+                      Call {SUPPORT_CONTACT.phoneDisplay}
                     </a>
                     {/* Desktop: Phone badge (non-clickable) */}
                     <div className="sensor-product-phone-badge hidden md:flex">
                       <PhoneIcon className="sensor-product-phone-badge-icon" />
                       <div className="sensor-product-phone-badge-text">
-                        <div className="sensor-product-phone-vanity">(234) 23 DRAIN</div>
-                        <div className="sensor-product-phone-numeric">(234) 223-7246</div>
+                        <div className="sensor-product-phone-vanity">{SUPPORT_CONTACT.phoneDisplay}</div>
+                                      <div className="sensor-product-phone-numeric">{SUPPORT_CONTACT.phoneNumeric}</div>
                       </div>
                     </div>
                     {/* Launch Button Redirect */}
@@ -343,14 +344,14 @@ export function SensorProductPage() {
                       href={salesPhone}
                       className="sensor-product-purchase-button-primary md:hidden"
                     >
-                      Call (234) 23 DRAIN
+                      Call {SUPPORT_CONTACT.phoneDisplay}
                     </a>
                     {/* Desktop: Phone badge (non-clickable) */}
                     <div className="sensor-product-phone-badge hidden md:flex">
                       <PhoneIcon className="sensor-product-phone-badge-icon" />
                       <div className="sensor-product-phone-badge-text">
-                        <div className="sensor-product-phone-vanity">(234) 23 DRAIN</div>
-                        <div className="sensor-product-phone-numeric">(234) 223-7246</div>
+                        <div className="sensor-product-phone-vanity">{SUPPORT_CONTACT.phoneDisplay}</div>
+                                      <div className="sensor-product-phone-numeric">{SUPPORT_CONTACT.phoneNumeric}</div>
                       </div>
                     </div>
                     {/* Launch Button Redirect */}
@@ -372,14 +373,14 @@ export function SensorProductPage() {
                       href={salesPhone}
                       className="sensor-product-purchase-button-primary md:hidden"
                     >
-                      Call (234) 23 DRAIN
+                      Call {SUPPORT_CONTACT.phoneDisplay}
                     </a>
                     {/* Desktop: Phone badge (non-clickable) */}
                     <div className="sensor-product-phone-badge hidden md:flex">
                       <PhoneIcon className="sensor-product-phone-badge-icon" />
                       <div className="sensor-product-phone-badge-text">
-                        <div className="sensor-product-phone-vanity">(234) 23 DRAIN</div>
-                        <div className="sensor-product-phone-numeric">(234) 223-7246</div>
+                        <div className="sensor-product-phone-vanity">{SUPPORT_CONTACT.phoneDisplay}</div>
+                                      <div className="sensor-product-phone-numeric">{SUPPORT_CONTACT.phoneNumeric}</div>
                       </div>
                     </div>
                     {/* Launch Button Redirect */}
@@ -401,14 +402,14 @@ export function SensorProductPage() {
                       href={salesPhone}
                       className="sensor-product-purchase-button-primary md:hidden"
                     >
-                      Call (234) 23 DRAIN
+                      Call {SUPPORT_CONTACT.phoneDisplay}
                     </a>
                     {/* Desktop: Phone badge (non-clickable) */}
                     <div className="sensor-product-phone-badge hidden md:flex">
                       <PhoneIcon className="sensor-product-phone-badge-icon" />
                       <div className="sensor-product-phone-badge-text">
-                        <div className="sensor-product-phone-vanity">(234) 23 DRAIN</div>
-                        <div className="sensor-product-phone-numeric">(234) 223-7246</div>
+                        <div className="sensor-product-phone-vanity">{SUPPORT_CONTACT.phoneDisplay}</div>
+                                      <div className="sensor-product-phone-numeric">{SUPPORT_CONTACT.phoneNumeric}</div>
                       </div>
                     </div>
                     {/* Launch Button Redirect */}

@@ -26,6 +26,7 @@ import {
     PhoneIcon
 } from '@heroicons/react/24/outline'
 import { VideoModal } from '../components/home/VideoModal'
+import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 
 export function MiniProductPage() {
   const navigate = useNavigate()
@@ -249,17 +250,17 @@ export function MiniProductPage() {
                                   </p>
 
                                   {/* Mobile: Clickable phone button */}
-                                  <a href="tel:+12342337246" className="sensor-product-purchase-button-primary md:hidden">
+                                  <a href={SUPPORT_CONTACT.telHref} className="sensor-product-purchase-button-primary md:hidden">
 
-                                  Call (234) 23 DRAIN
+                                  Call {SUPPORT_CONTACT.phoneDisplay}
                               </a>
 
                               {/* Desktop: Phone badge (non-clickable) */}
                               <div className="sensor-product-phone-badge hidden md:flex">
                                   <PhoneIcon className="sensor-product-phone-badge-icon" />
                                   <div className="sensor-product-phone-badge-text">
-                                      <div className="sensor-product-phone-vanity">(234) 23 DRAIN</div>
-                                      <div className="sensor-product-phone-numeric">(234) 223-7246</div>
+                                      <div className="sensor-product-phone-vanity">{SUPPORT_CONTACT.phoneDisplay}</div>
+                                      <div className="sensor-product-phone-numeric">{SUPPORT_CONTACT.phoneNumeric}</div>
                                   </div>
                               </div>
 

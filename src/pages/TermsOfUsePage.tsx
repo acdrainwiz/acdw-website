@@ -1,24 +1,32 @@
 import { useNavigate } from 'react-router-dom'
-import { DocumentTextIcon, EnvelopeIcon, PhoneIcon } from '@heroicons/react/24/outline'
+import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/24/outline'
+import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 
 export function TermsOfUsePage() {
   const navigate = useNavigate()
 
   return (
     <div className="terms-of-use-page">
-      <div className="container py-16">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <div className="flex justify-center mb-6">
-              <DocumentTextIcon className="h-16 w-16 text-primary-600" />
-            </div>
-            <h1 className="heading-1 mb-4">ACDrainWiz.com Site Terms of Use</h1>
-            <p className="text-sm text-gray-500">
-              Effective Date: January 1, 2026
-            </p>
-          </div>
 
+      {/* Hero Banner */}
+      <div className="support-hero">
+        <div className="support-hero-content">
+          <div className="support-hero-header">
+            <h1 className="support-hero-title">Site Terms of Use</h1>
+            <p className="support-hero-subtitle">
+              ACDrainWiz.com — Effective January 1, 2026
+            </p>
+            <div className="support-hero-badge-row">
+              <span className="support-hero-badge">User Conduct</span>
+              <span className="support-hero-badge">Intellectual Property</span>
+              <span className="support-hero-badge">Liability</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container py-12">
+        <div className="max-w-4xl mx-auto">
           {/* Introduction */}
           <div className="prose prose-lg max-w-none mb-12">
             <p className="text-gray-700 leading-relaxed mb-4">
@@ -100,7 +108,7 @@ export function TermsOfUsePage() {
               <div className="bg-primary-50 border border-primary-200 rounded-lg p-6">
                 <p className="text-gray-700">
                   <PhoneIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />
-                  Phone: <a href="tel:+12342237246" className="text-primary-600 hover:text-primary-700 underline">(234) 23 DRAIN</a>
+                  Phone: <a href={SUPPORT_CONTACT.telHref} className="text-primary-600 hover:text-primary-700 underline">{SUPPORT_CONTACT.phoneDisplay}</a>
                 </p>
                 <p className="text-gray-700 mt-2">
                   <EnvelopeIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />
@@ -310,7 +318,7 @@ export function TermsOfUsePage() {
                 </p>
                 <p className="text-gray-700 mt-2">
                   <PhoneIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />
-                  <a href="tel:+12342237246" className="text-primary-600 hover:text-primary-700 underline">(234) 23 DRAIN</a>
+                  <a href={SUPPORT_CONTACT.telHref} className="text-primary-600 hover:text-primary-700 underline">{SUPPORT_CONTACT.phoneDisplay}</a>
                 </p>
               </div>
               <p className="text-gray-700 leading-relaxed">
@@ -374,7 +382,7 @@ export function TermsOfUsePage() {
             <div className="bg-primary-50 border border-primary-200 rounded-lg p-6">
               <div className="space-y-2 text-gray-700">
                 <p><strong>AC Drain Wiz</strong></p>
-                <p><PhoneIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />Phone: <a href="tel:+12342237246" className="text-primary-600 hover:text-primary-700 underline">(234) 23 DRAIN</a></p>
+                <p><PhoneIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />Phone: <a href={SUPPORT_CONTACT.telHref} className="text-primary-600 hover:text-primary-700 underline">{SUPPORT_CONTACT.phoneDisplay}</a></p>
                 <p><EnvelopeIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />Email: <a href="mailto:info@acdrainwiz.com" className="text-primary-600 hover:text-primary-700 underline">info@acdrainwiz.com</a></p>
               </div>
             </div>

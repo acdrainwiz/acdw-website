@@ -7,19 +7,30 @@ import {
   ArrowRightIcon,
   BookOpenIcon
 } from '@heroicons/react/24/outline'
+import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 
 export function CompliancePage() {
   return (
     <div className="compliance-page-container">
-      <div className="container py-16">
-        {/* Header */}
-        <div className="compliance-page-header">
-          <h1 className="heading-1 mb-6">Code Compliance & Certification</h1>
-          <p className="text-large max-w-3xl mx-auto">
-            AC Drain Wiz products meet International Mechanical Code (IMC) standards and are approved for use in municipalities nationwide.
-          </p>
-        </div>
 
+      {/* Hero Banner */}
+      <div className="support-hero">
+        <div className="support-hero-content">
+          <div className="support-hero-header">
+            <h1 className="support-hero-title">Code Compliance & Certification</h1>
+            <p className="support-hero-subtitle">
+              AC Drain Wiz products meet International Mechanical Code (IMC) standards and are approved for use in municipalities nationwide.
+            </p>
+            <div className="support-hero-badge-row">
+              <span className="support-hero-badge">IMC Compliant</span>
+              <span className="support-hero-badge">Nationwide Approved</span>
+              <span className="support-hero-badge">Documentation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container py-12">
         {/* Compliance Overview */}
         <div className="compliance-content-wrapper">
           <div className="compliance-overview-card">
@@ -196,12 +207,12 @@ export function CompliancePage() {
                 <ArrowRightIcon className="compliance-contact-icon" />
               </Link>
               <a
-                href="tel:+12342237246"
+                href={SUPPORT_CONTACT.telHref}
                 className="compliance-contact-button-secondary"
               >
                 <div>
-                  <div>Call (234) 23 DRAIN</div>
-                  <div style={{ fontSize: '0.875rem', opacity: 0.75, marginTop: '0.25rem' }}>(234) 223-7246</div>
+                  <div>Call {SUPPORT_CONTACT.phoneDisplay}</div>
+                  <div style={{ fontSize: '0.875rem', opacity: 0.75, marginTop: '0.25rem' }}>{SUPPORT_CONTACT.phoneNumeric}</div>
                 </div>
               </a>
             </div>

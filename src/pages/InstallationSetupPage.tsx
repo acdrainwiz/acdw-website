@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
+import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 import {
-  ArrowLeftIcon,
   WrenchScrewdriverIcon,
   CheckCircleIcon,
   ClockIcon,
@@ -17,34 +17,32 @@ import {
 export function InstallationSetupPage() {
   return (
     <div className="support-section-container">
-      <div className="container py-16">
 
-        {/* Breadcrumb */}
-        <div className="support-section-breadcrumb">
-          <Link to="/support" className="support-section-breadcrumb-link">
-            Support Center
-          </Link>
-          <span className="support-section-breadcrumb-separator">/</span>
-          <span className="support-section-breadcrumb-current">Installation & Setup</span>
-        </div>
-
-        {/* Back Link */}
-        <Link to="/support" className="support-section-back-link">
-          <ArrowLeftIcon className="support-section-back-icon" />
-          <span>Back to Support</span>
-        </Link>
-
-        {/* Page Header */}
-        <div className="install-page-header">
-          <WrenchScrewdriverIcon className="install-page-header-icon" />
-          <div>
-            <h1 className="install-page-title">Installation & Setup</h1>
-            <p className="install-page-subtitle">
+      {/* Hero Banner */}
+      <div className="support-hero">
+        <div className="support-hero-content">
+          <div className="support-hero-header">
+            <div className="support-hero-breadcrumb">
+              <Link to="/support" className="support-hero-breadcrumb-link">
+                Support Center
+              </Link>
+              <span className="support-hero-breadcrumb-separator">/</span>
+              <span className="support-hero-breadcrumb-current">Installation & Setup</span>
+            </div>
+            <h1 className="support-hero-title">Installation & Setup</h1>
+            <p className="support-hero-subtitle">
               Let's get you set up. Which product are you installing?
             </p>
+            <div className="support-hero-badge-row">
+              <span className="support-hero-badge">Step-by-Step Guides</span>
+              <span className="support-hero-badge">Video Tutorials</span>
+              <span className="support-hero-badge">Installation Scenarios</span>
+            </div>
           </div>
         </div>
+      </div>
 
+      <div className="container py-12">
         {/* ─── Product Picker ─── */}
         <div className="install-picker-grid">
 
@@ -149,7 +147,7 @@ export function InstallationSetupPage() {
                 </li>
                 <li className="install-product-checklist-item">
                   <CheckIcon className="install-checklist-icon" />
-                  Supports WiFi and non-WiFi sensor models
+                  Supports both the AC Drain Wiz WiFi Sensor Switch and the AC Drain Wiz Standard Sensor Switch (Non-WiFi)
                 </li>
               </ul>
 
@@ -222,7 +220,7 @@ export function InstallationSetupPage() {
               <h3 className="support-section-info-box-title">Not the DIY type? We've got you covered.</h3>
               <p className="support-section-info-box-text">
                 Contact us at{' '}
-                <a href="tel:+12342237246" className="support-section-info-box-link">(234) 23 DRAIN</a>
+                <a href={SUPPORT_CONTACT.telHref} className="support-section-info-box-link">{SUPPORT_CONTACT.phoneDisplay}</a>
                 {' '}or{' '}
                 <Link to="/contact?type=installer" className="support-section-info-box-link">
                   find a certified installer
@@ -243,7 +241,7 @@ export function InstallationSetupPage() {
             <Link to="/support/warranty-returns" className="support-section-related-link">
               Warranty Information →
             </Link>
-            <Link to="/support/contact" className="support-section-related-link">
+            <Link to="/contact?type=support" className="support-section-related-link">
               <PhoneIcon className="inline h-4 w-4 mr-1" />
               Contact Support →
             </Link>
