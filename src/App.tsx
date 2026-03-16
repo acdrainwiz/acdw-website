@@ -35,6 +35,7 @@ import { MiniProductPage } from './pages/MiniProductPage'
 import { SensorProductPage } from './pages/SensorProductPage'
 import { ComboProductPage } from './pages/ComboProductPage'
 import { SensorSetupPage } from './pages/SensorSetupPage'
+import { MiniSetupPage } from './pages/MiniSetupPage'
 import { RecommendedInstallationScenariosPage } from './pages/RecommendedInstallationScenariosPage'
 import { EmailSignaturePage } from './pages/EmailSignaturePage'
 import { usePageTracking } from './hooks/useAnalytics'
@@ -45,7 +46,7 @@ function AppContent() {
     usePageTracking()
   
   // Hide header/footer on sensor setup page for cleaner experience
-  const hideHeaderFooter = location.pathname === '/sensor-setup'
+  const hideHeaderFooter = location.pathname === '/sensor-setup' || location.pathname === '/mini-setup'
   
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -86,6 +87,7 @@ function AppContent() {
                     <Route path="/products/sensor" element={<SensorProductPage />} />
                     <Route path="/products/combo" element={<ComboProductPage />} />
                     <Route path="/sensor-setup" element={<SensorSetupPage />} />
+                    <Route path="/mini-setup" element={<MiniSetupPage />} />
                     <Route path="/support/installation-scenarios" element={<RecommendedInstallationScenariosPage />} />
                     <Route path="/email-signature" element={<EmailSignaturePage />} />
             </Routes>

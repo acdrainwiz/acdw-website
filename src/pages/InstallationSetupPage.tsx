@@ -99,13 +99,10 @@ export function InstallationSetupPage() {
               </div>
 
               <div className="install-product-actions">
-                <button className="install-product-cta install-product-cta-primary">
-                  View Mini Installation Guide
+                <Link to="/mini-setup" className="install-product-cta install-product-cta-primary">
+                  Start Mini Installation Guide
                   <ArrowRightIcon className="install-cta-arrow" />
-                </button>
-                <button className="install-product-cta-secondary">
-                  Download PDF Guide
-                </button>
+                </Link>
               </div>
             </div>
           </div>
