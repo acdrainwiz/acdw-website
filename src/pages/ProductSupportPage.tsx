@@ -390,7 +390,7 @@ export function ProductSupportPage() {
                     <h4 className="support-troubleshooting-title">Low battery or battery replacement</h4>
                     <ul className="support-troubleshooting-list">
                       <li>The Sensor battery is rated for approximately 2 years under normal use</li>
-                      <li>A low battery warning will appear on the dashboard and trigger a notification before shutdown</li>
+                      <li>A low battery warning will appear on the dashboard and trigger a notification to the AC technician to schedule a service call to replace the battery. A dead backup battery does not mean the AC system will automatically shut off once it is completely dead as long as the Sensor is wired into the AC 24V electrical.</li>
                       <li>To replace: remove the Sensor from the bayonet mount, open the battery compartment, and swap in the specified battery type</li>
                       <li>DC-powered models with a backup battery do not require routine replacement — check the DC connection if the unit loses power</li>
                     </ul>

@@ -10,7 +10,6 @@ import {
   VideoCameraIcon,
   PhoneIcon,
   CheckIcon,
-  SwatchIcon,
   ArrowRightIcon,
 } from '@heroicons/react/24/outline'
 
@@ -174,19 +173,6 @@ export function InstallationSetupPage() {
                 </p>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* ─── Have Both? Bundle Callout ─── */}
-        <div className="install-bundle-callout">
-          <SwatchIcon className="install-bundle-icon" />
-          <div className="install-bundle-content">
-            <p className="install-bundle-text">
-              <strong>Have both products?</strong> Installing the Mini and Sensor Switch together? Start with the Mini physical installation, then proceed to the Sensor Setup Guide.
-            </p>
-            <Link to="/support/installation-scenarios" className="install-bundle-link">
-              View recommended installation scenarios →
-            </Link>
           </div>
         </div>
 

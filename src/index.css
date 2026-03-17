@@ -6893,27 +6893,6 @@
   @apply h-4 w-4 flex-shrink-0 text-amber-500;
 }
 
-/* Bundle callout */
-.install-bundle-callout {
-  @apply flex items-start gap-4 bg-blue-50 border border-blue-200 rounded-xl p-6 mb-10;
-}
-
-.install-bundle-icon {
-  @apply h-6 w-6 text-blue-600 flex-shrink-0 mt-0.5;
-}
-
-.install-bundle-content {
-  @apply space-y-1;
-}
-
-.install-bundle-text {
-  @apply text-gray-700 text-sm;
-}
-
-.install-bundle-link {
-  @apply text-blue-600 text-sm font-medium hover:text-blue-700 hover:underline;
-}
-
 /* Additional Resources section */
 .install-also-section {
   @apply mb-10;
