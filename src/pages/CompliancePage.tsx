@@ -72,7 +72,7 @@ export function CompliancePage() {
                 </p>
                 <p className="compliance-code-item-note">
                   <strong>Compliance:</strong> The clear inspection window and bayonet port design ensure easy access for 
-                  maintenance without requiring disassembly of the drain line system.
+                  maintenance without requiring disassembly of the drain line system. The clear view also allows verification that cleaning was successful and visible identification of drain line condition.
                 </p>
               </div>
 

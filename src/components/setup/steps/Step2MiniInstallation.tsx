@@ -94,11 +94,45 @@ const cureSteps = [
   },
 ]
 
-export function Step2MiniInstallation() {
+interface Step2MiniInstallationProps {
+  /** Called once when the user opens the second accordion (Cure & Leak Test). Used to enable the Continue button. */
+  onSecondAccordionOpened?: () => void
+}
+
+const DELAY_OPEN_PREP_MS = 2000
+
+export function Step2MiniInstallation({ onSecondAccordionOpened }: Step2MiniInstallationProps) {
   const [expandedSection, setExpandedSection] = useState<'prep' | 'cure' | null>(null)
   const [prepOpened, setPrepOpened] = useState(false)
+  const [cureHasBeenOpened, setCureHasBeenOpened] = useState(false)
+  const [isCureSectionInView, setIsCureSectionInView] = useState(false)
+  const secondAccordionNotifiedRef = useRef(false)
+  const skipPrepScrollRef = useRef(false)
   const prepContentRef = useRef<HTMLDivElement>(null)
   const cureContentRef = useRef<HTMLDivElement>(null)
+  const cureSectionRef = useRef<HTMLDivElement>(null)
+
+  // After page load, open the first drawer in place after 2s — no scroll or focus change.
+  useEffect(() => {
+    const t = setTimeout(() => {
+      skipPrepScrollRef.current = true
+      setExpandedSection('prep')
+      setPrepOpened(true)
+    }, DELAY_OPEN_PREP_MS)
+    return () => clearTimeout(t)
+  }, [])
+
+  // Pulse the second accordion when it scrolls into view (until the user opens it).
+  useEffect(() => {
+    const el = cureSectionRef.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([entry]) => setIsCureSectionInView(entry.isIntersecting),
+      { threshold: 0.2, rootMargin: '0px' }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
 
   const toggleSection = (section: 'prep' | 'cure') => {
     if (expandedSection === section) {
@@ -108,14 +142,27 @@ export function Step2MiniInstallation() {
       if (section === 'prep' && !prepOpened) {
         setPrepOpened(true)
       }
+      if (section === 'cure') {
+        setCureHasBeenOpened(true)
+        if (!secondAccordionNotifiedRef.current && onSecondAccordionOpened) {
+          secondAccordionNotifiedRef.current = true
+          onSecondAccordionOpened()
+        }
+      }
     }
   }
 
   useEffect(() => {
-    if (expandedSection === 'prep' && prepContentRef.current) {
-      setTimeout(() => {
-        prepContentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }, 100)
+    if (expandedSection === 'prep') {
+      if (skipPrepScrollRef.current) {
+        skipPrepScrollRef.current = false
+        return
+      }
+      if (prepContentRef.current) {
+        setTimeout(() => {
+          prepContentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }, 100)
+      }
     }
     if (expandedSection === 'cure' && cureContentRef.current) {
       setTimeout(() => {
@@ -125,18 +172,18 @@ export function Step2MiniInstallation() {
   }, [expandedSection])
 
   return (
-    <div className="sensor-setup-step-container">
+    <div className="mini-setup-step-container">
       {/* Step Number Badge */}
-      <div className="sensor-setup-step-badge-wrapper">
-        <div className="sensor-setup-step-badge sensor-setup-step-badge-step2">
-          <span className="sensor-setup-step-badge-number">2</span>
+      <div className="mini-setup-step-badge-wrapper">
+        <div className="mini-setup-step-badge mini-setup-step-badge-step2">
+          <span className="mini-setup-step-badge-number">2</span>
         </div>
       </div>
 
       {/* Step Title */}
-      <div className="sensor-setup-step-title-section">
-        <h2 className="sensor-setup-step-title">Cement & Install</h2>
-        <p className="sensor-setup-step-subtitle">
+      <div className="mini-setup-step-title-section">
+        <h2 className="mini-setup-step-title">Cement & Install</h2>
+        <p className="mini-setup-step-subtitle">
           Prep the pipe ends, bond the T-Manifold permanently, allow the cement to cure, and verify a leak-free installation
         </p>
       </div>
@@ -217,7 +264,8 @@ export function Step2MiniInstallation() {
 
       {/* Accordion 2: Cure & Leak Test */}
       <div
-        className={`mini-setup-accordion-section ${expandedSection === 'cure' ? 'mini-setup-accordion-section-expanded' : 'mini-setup-accordion-section-collapsed'}`}
+        ref={cureSectionRef}
+        className={`mini-setup-accordion-section ${expandedSection === 'cure' ? 'mini-setup-accordion-section-expanded' : 'mini-setup-accordion-section-collapsed'} ${isCureSectionInView && !cureHasBeenOpened ? 'mini-setup-accordion-section-pulsating' : ''}`}
       >
         <button
           className="mini-setup-accordion-header"

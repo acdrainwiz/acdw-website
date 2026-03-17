@@ -56,7 +56,7 @@ export function MiniProductPage() {
     {
       icon: CheckIcon,
       title: 'Clear Visual Monitoring',
-      description: 'See water flow and detect issues at a glance'
+      description: 'Clear view into the drain line so you can verify that cleaning was successful and spot rising water or biofilm before it becomes a backup. Homeowners can do a quick visual check and call their technician if something looks off.'
     },
     {
       icon: ClockIcon,
@@ -136,7 +136,7 @@ export function MiniProductPage() {
     {
       number: 2,
       title: 'Monitor Water Flow',
-      description: 'Clear body design lets you visually inspect water flow and detect issues at a glance.',
+      description: 'The clear body gives a direct view into the condensate line. Verify that your clean-out worked—and spot high water or biofilm early. Homeowners can do a monthly visual check and call their AC technician to clean the line if needed.',
       icon: CheckIcon
     },
     {
@@ -173,11 +173,11 @@ export function MiniProductPage() {
     },
     {
       question: 'How often do I need to clean it?',
-      answer: 'The frequency depends on your specific conditions, but the Mini makes maintenance so easy that many homeowners check and clean it during regular AC maintenance (typically every 3-6 months). The clear body design lets you see when cleaning is needed.'
+      answer: 'The frequency depends on your specific conditions, but the Mini makes maintenance so easy that many homeowners check and clean it during regular AC maintenance (typically every 3-6 months). The clear body design lets you see when cleaning is needed. You can also verify that a cleaning was successful by looking at the line. If you see rising water or algae, call your technician to service the line before a backup.'
     },
     {
       question: 'What maintenance is required?',
-      answer: 'The Mini requires minimal maintenance. Simply use the access port to flush or vacuum the drain line when needed. When flushing the drain line with air, check for the presence of a P-trap in the system; after the air flush is complete, refill the P-trap with water to reestablish the required water seal. The clear body design makes it easy to see when maintenance is required, and the one-time installation means you never need to cut the line again.'
+      answer: 'The Mini requires minimal maintenance. Simply use the access port to flush or vacuum the drain line when needed. When flushing the drain line with air, check for the presence of a P-trap in the system; after the air flush is complete, refill the P-trap with water to reestablish the required water seal. The clear body design makes it easy to see when maintenance is required—technicians can confirm the line is clear after flushing; homeowners can spot biofilm or high water and schedule service before a clog forms—and the one-time installation means you never need to cut the line again.'
     },
     {
       question: 'What\'s the warranty?',

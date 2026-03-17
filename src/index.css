@@ -4538,6 +4538,87 @@
     @apply text-gray-500 italic;
   }
 
+  /* About page: story, audience, values, UVP, social proof, CTA */
+  .about-page-prose {
+    @apply max-w-3xl mx-auto text-left space-y-4;
+  }
+
+  .about-page-prose-p {
+    @apply text-gray-600 leading-relaxed m-0;
+  }
+
+  .about-page-audience-grid {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-8;
+  }
+
+  .about-page-audience-item {
+    @apply text-center p-4;
+  }
+
+  .about-page-audience-icon {
+    @apply h-10 w-10 mx-auto mb-3 text-blue-600;
+  }
+
+  .about-page-audience-title {
+    @apply font-semibold text-gray-900 mb-2;
+  }
+
+  .about-page-audience-text {
+    @apply text-sm text-gray-600;
+  }
+
+  .about-page-values-list {
+    @apply max-w-3xl mx-auto space-y-4 text-left;
+  }
+
+  .about-page-value-item {
+    @apply text-gray-700;
+  }
+
+  .about-page-value-name {
+    @apply text-gray-900;
+  }
+
+  .about-page-value-desc {
+    @apply font-normal text-gray-600;
+  }
+
+  .about-page-social-proof {
+    @apply text-center;
+  }
+
+  .about-page-social-proof-text {
+    @apply text-gray-600 mb-6 max-w-2xl mx-auto;
+  }
+
+  .about-page-social-proof-badges {
+    @apply flex flex-wrap justify-center gap-3;
+  }
+
+  .about-page-social-proof-badge {
+    @apply inline-flex px-4 py-2 rounded-full bg-gray-100 text-gray-800 text-sm font-medium;
+  }
+
+  .about-page-cta-section {
+    @apply text-center;
+  }
+
+  .about-page-cta-text {
+    @apply text-lg text-gray-700 mb-6;
+  }
+
+  .about-page-cta-buttons {
+    @apply flex flex-wrap justify-center gap-4;
+  }
+
+  .about-page-cta-primary {
+    @apply inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium;
+  }
+
+  .about-page-cta-secondary {
+    @apply inline-flex items-center px-6 py-3 border border-gray-300 bg-white text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium;
+  }
+
 }
 /* ==========================================
    HOMEOWNER LANDING PAGE STYLES
@@ -6506,9 +6587,9 @@
   @apply max-w-6xl mx-auto space-y-12;
 }
 
-/* Product Support picker grid (3 cards: Mini | Sensor | General) */
+/* Product Support picker grid (2 cards: Mini | Sensor) */
 .support-picker-grid {
-  @apply grid grid-cols-1 md:grid-cols-3 gap-6 mb-10;
+  @apply grid grid-cols-1 md:grid-cols-2 gap-6 mb-10;
 }
 
 .support-picker-card {
@@ -6576,6 +6657,97 @@
 
 .support-section-link {
   @apply text-blue-600 hover:text-blue-700 underline;
+}
+
+/* Product Support — Mobile: "Change product" bar (Option C) */
+.support-mobile-product-bar {
+  @apply w-full flex items-center justify-between gap-3 py-4 px-5 rounded-xl border-2 border-gray-200 bg-white
+         text-left shadow-sm transition-colors hover:border-gray-300 hover:bg-gray-50
+         focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2;
+}
+
+.support-mobile-product-bar-label {
+  @apply text-base font-semibold text-gray-900;
+}
+
+.support-mobile-product-bar-icon {
+  @apply h-5 w-5 text-gray-500 flex-shrink-0;
+}
+
+/* Product Support — Mobile bottom sheet (Option C) */
+.support-product-sheet-overlay {
+  @apply fixed inset-0 z-50 bg-black/50 backdrop-blur-[2px];
+  animation: support-sheet-overlay-in 0.2s ease-out;
+}
+
+.support-product-sheet {
+  @apply absolute left-0 right-0 bottom-0 rounded-t-2xl bg-white shadow-2xl
+         max-h-[85vh] flex flex-col overflow-hidden;
+  animation: support-sheet-slide-up 0.3s ease-out;
+}
+
+.support-product-sheet-handle {
+  @apply mx-auto mt-3 w-10 h-1 rounded-full bg-gray-300 flex-shrink-0;
+}
+
+.support-product-sheet-header {
+  @apply px-5 pt-2 pb-4 border-b border-gray-100 flex-shrink-0;
+}
+
+.support-product-sheet-title {
+  @apply text-lg font-bold text-gray-900;
+}
+
+.support-product-sheet-list {
+  @apply overflow-y-auto overscroll-contain py-2 px-3 flex flex-col gap-1;
+}
+
+.support-product-sheet-item {
+  @apply flex items-center gap-4 w-full py-3 px-4 rounded-xl text-left
+         border-2 border-transparent bg-gray-50/80 transition-colors
+         hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2;
+}
+
+.support-product-sheet-item-active {
+  @apply border-primary-500 bg-primary-50/80 hover:bg-primary-50;
+}
+
+.support-product-sheet-item-img {
+  @apply w-12 h-12 rounded-lg object-cover flex-shrink-0;
+}
+
+.support-product-sheet-item-icon {
+  @apply w-12 h-12 rounded-lg bg-gray-200 flex items-center justify-center flex-shrink-0;
+}
+
+.support-product-sheet-icon {
+  @apply h-6 w-6 text-gray-500;
+}
+
+.support-product-sheet-item-text {
+  @apply flex flex-col flex-1 min-w-0;
+}
+
+.support-product-sheet-item-label {
+  @apply font-semibold text-gray-900;
+}
+
+.support-product-sheet-item-desc {
+  @apply text-sm text-gray-600 truncate;
+}
+
+.support-product-sheet-item-check {
+  @apply text-primary-600 font-bold flex-shrink-0;
+}
+
+@keyframes support-sheet-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes support-sheet-slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
 
 /* Installation Setup Page — Option A: Product-First Picker */
@@ -13682,9 +13854,195 @@
    MINI SETUP WIZARD
    All classes prefixed mini-setup-* to keep namespace separate
    from sensor-setup-* for independent future styling.
-   Shell classes (wizard header, nav, progress bars) are shared
-   with sensor-setup-wizard-* via SetupWizard.tsx.
    ============================================================ */
+
+/* Mini Setup Wizard Shell (header, content, nav, progress) ---- */
+.mini-setup-wizard-container {
+  @apply min-h-screen bg-gray-50;
+}
+
+.mini-setup-wizard-header {
+  @apply bg-white border-b border-gray-200 sticky top-0 z-50;
+}
+
+.mini-setup-wizard-header-content {
+  @apply container mx-auto px-4 py-4 max-w-4xl;
+}
+
+.mini-setup-wizard-header-back-link {
+  @apply mb-4;
+}
+
+.mini-setup-wizard-header-back-link-content {
+  @apply flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors;
+}
+
+.mini-setup-wizard-header-back-link-icon {
+  @apply h-4 w-4;
+}
+
+.mini-setup-wizard-header-top {
+  @apply flex items-center justify-between mb-4;
+}
+
+.mini-setup-wizard-header-brand {
+  @apply flex items-center space-x-2;
+}
+
+.mini-setup-wizard-header-logo-link {
+  @apply flex items-center;
+}
+
+.mini-setup-wizard-header-logo {
+  @apply h-8 w-auto;
+}
+
+.mini-setup-wizard-header-title {
+  @apply text-lg font-semibold text-gray-900;
+}
+
+.mini-setup-wizard-header-step-indicator {
+  @apply text-sm text-gray-600;
+}
+
+.mini-setup-wizard-progress-bars-container {
+  @apply flex gap-2 w-full;
+}
+
+.mini-setup-wizard-progress-bar {
+  @apply h-2 rounded-full transition-all duration-300 flex-1;
+}
+
+.mini-setup-wizard-content {
+  @apply container mx-auto px-4 py-8 max-w-4xl;
+}
+
+.mini-setup-wizard-content-inner {
+  @apply animate-fade-in;
+}
+
+.mini-setup-wizard-navigation {
+  @apply bg-white border-t border-gray-200 sticky bottom-0 z-50;
+}
+
+.mini-setup-wizard-navigation-content {
+  @apply container mx-auto px-4 py-4 max-w-4xl;
+}
+
+.mini-setup-wizard-navigation-buttons {
+  @apply flex items-center justify-between;
+}
+
+.mini-setup-wizard-navigation-button {
+  @apply flex items-center space-x-2 px-6 py-3 rounded-md font-medium transition-colors;
+}
+
+.mini-setup-wizard-navigation-button-back.mini-setup-wizard-navigation-button-enabled {
+  @apply text-gray-700 hover:text-gray-900 hover:bg-gray-100;
+}
+
+.mini-setup-wizard-navigation-button-continue.mini-setup-wizard-navigation-button-enabled {
+  @apply bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800;
+}
+
+.mini-setup-wizard-navigation-button-back.mini-setup-wizard-navigation-button-disabled {
+  @apply text-gray-400 cursor-not-allowed;
+}
+
+.mini-setup-wizard-navigation-button-continue.mini-setup-wizard-navigation-button-disabled {
+  @apply bg-gray-300 text-gray-500 cursor-not-allowed;
+}
+
+.mini-setup-wizard-navigation-button-icon {
+  @apply h-5 w-5;
+}
+
+/* Mini Setup Step Container & Title (steps 1–3) ------------- */
+.mini-setup-step-container {
+  @apply space-y-8;
+}
+
+.mini-setup-step-badge-wrapper {
+  @apply flex justify-center;
+}
+
+.mini-setup-step-badge {
+  @apply w-20 h-20 rounded-full bg-primary-600 flex items-center justify-center;
+}
+
+.mini-setup-step-badge-step2 {
+  background: linear-gradient(135deg, #2563eb 0%, #5b21b6 50%, #7c3aed 100%);
+}
+
+.mini-setup-step-badge-step3 {
+  @apply bg-purple-800;
+  background-color: #6b21a8;
+}
+
+.mini-setup-step-badge-number {
+  @apply text-3xl font-bold text-white;
+}
+
+.mini-setup-step-title-section {
+  @apply text-center;
+}
+
+.mini-setup-step-title {
+  @apply text-3xl font-bold text-gray-900 mb-2;
+}
+
+.mini-setup-step-subtitle {
+  @apply text-lg text-gray-600;
+}
+
+/* Mini Setup Success & Actions (step 3) ---------------------- */
+.mini-setup-assignment-success {
+  @apply bg-green-50 border-2 border-green-200 rounded-lg p-8 text-center mt-8;
+}
+
+.mini-setup-assignment-success-icon-wrapper {
+  @apply flex justify-center mb-4;
+}
+
+.mini-setup-assignment-success-icon {
+  @apply h-16 w-16 text-green-600;
+}
+
+.mini-setup-assignment-success-title {
+  @apply text-3xl font-bold text-gray-900 mb-3;
+}
+
+.mini-setup-assignment-success-message {
+  @apply text-lg text-gray-700;
+}
+
+.mini-setup-assignment-actions-wrapper {
+  @apply mt-6;
+}
+
+.mini-setup-assignment-actions-heading {
+  @apply text-xl font-semibold text-gray-900 mb-4 text-center;
+}
+
+.mini-setup-assignment-actions {
+  @apply flex flex-col sm:flex-row gap-3;
+}
+
+.mini-setup-assignment-button {
+  @apply flex-1 py-3 px-4 rounded-md font-medium transition-colors;
+}
+
+.mini-setup-assignment-button-primary {
+  @apply bg-primary-600 text-white hover:bg-primary-700;
+}
+
+.mini-setup-assignment-button-secondary {
+  @apply bg-white border-2 border-primary-600 text-primary-600 hover:bg-primary-50;
+}
+
+.mini-setup-assignment-button-tertiary {
+  @apply bg-gray-100 border border-gray-300 text-gray-700 hover:bg-gray-200 hover:border-gray-400;
+}
 
 /* Callouts -------------------------------------------------- */
 .mini-setup-notice-callout {

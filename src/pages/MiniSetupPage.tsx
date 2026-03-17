@@ -10,6 +10,8 @@ const TOTAL_STEPS = 3
 export function MiniSetupPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [currentStep, setCurrentStep] = useState(1)
+  /** Step 2: Continue is disabled until the user has opened the second accordion (Cure & Leak Test). */
+  const [step2SecondAccordionOpened, setStep2SecondAccordionOpened] = useState(false)
 
   useEffect(() => {
     const stepParam = searchParams.get('step')
@@ -29,6 +31,9 @@ export function MiniSetupPage() {
 
   const handleStepChange = (step: number) => {
     if (step >= 1 && step <= TOTAL_STEPS) {
+      if (currentStep === 2 && step !== 2) {
+        setStep2SecondAccordionOpened(false)
+      }
       setCurrentStep(step)
       setSearchParams({ step: step.toString() }, { replace: false })
     }
@@ -39,7 +44,11 @@ export function MiniSetupPage() {
       case 1:
         return <Step1MiniPreparation />
       case 2:
-        return <Step2MiniInstallation />
+        return (
+          <Step2MiniInstallation
+            onSecondAccordionOpened={() => setStep2SecondAccordionOpened(true)}
+          />
+        )
       case 3:
         return <Step3MiniCompletion />
       default:
@@ -49,10 +58,12 @@ export function MiniSetupPage() {
 
   return (
     <SetupWizard
+      variant="mini"
       totalSteps={TOTAL_STEPS}
       currentStep={currentStep}
       onStepChange={handleStepChange}
       continueLabel={currentStep === TOTAL_STEPS ? 'Finish' : 'Continue'}
+      isContinueDisabled={currentStep === 2 && !step2SecondAccordionOpened}
     >
       {renderStep()}
     </SetupWizard>

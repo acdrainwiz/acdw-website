@@ -533,7 +533,7 @@ export function PropertyManagerPage() {
               <div className="property-manager-step-number">3</div>
               <h3 className="property-manager-step-title">Monitor & Maintain</h3>
               <p className="property-manager-step-description">
-                Access to a centralized dashboard for remote monitoring with the Sensor, while the Mini provides clear visual verification of drain line health. Together, they offer the best of both worlds: real-time alerts and visual confirmation, resulting in happy tenants and bottom lines.
+                Access to a centralized dashboard for remote monitoring with the Sensor, while the Mini provides clear visual verification of drain line health. Together, they offer the best of both worlds: real-time alerts and visual confirmation—technicians can verify that a clean-out worked; tenants can do a quick visual check and report rising water or biofilm so you can schedule service before a backup—resulting in happy tenants and bottom lines.
               </p>
             </div>
           </div>

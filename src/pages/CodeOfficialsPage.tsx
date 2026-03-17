@@ -113,7 +113,7 @@ export function CodeOfficialsPage() {
             </div>
             <h3 className="homeowner-benefit-title">Easy to Inspect</h3>
             <p className="homeowner-benefit-description">
-              Visual verification is straightforward. Clear access port, professional installation, and obvious functionality simplify inspection approval.
+              Visual verification is straightforward. Clear access port, professional installation, and obvious functionality simplify inspection approval. Also allows verification that drain line cleaning was successful and visible identification of blockages or buildup.
             </p>
           </div>
 
@@ -174,9 +174,13 @@ export function CodeOfficialsPage() {
                     <CheckCircleIcon style={{ width: '24px', height: '24px', color: '#16a34a', marginRight: '12px', flexShrink: 0, marginTop: '2px' }} />
                     <span style={{ color: '#475569' }}>Professional-grade construction meets mechanical code standards</span>
                   </li>
-                  <li style={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <li style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
                     <CheckCircleIcon style={{ width: '24px', height: '24px', color: '#16a34a', marginRight: '12px', flexShrink: 0, marginTop: '2px' }} />
                     <span style={{ color: '#475569' }}>Clear visual identification during inspections</span>
+                  </li>
+                  <li style={{ display: 'flex', alignItems: 'flex-start' }}>
+                    <CheckCircleIcon style={{ width: '24px', height: '24px', color: '#16a34a', marginRight: '12px', flexShrink: 0, marginTop: '2px' }} />
+                    <span style={{ color: '#475569' }}>Enables verification of successful cleaning and visible condition of the drain line</span>
                   </li>
                 </ul>
               </div>
