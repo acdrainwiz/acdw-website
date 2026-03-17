@@ -76,18 +76,18 @@ const measureSteps = [
 
 export function Step1MiniPreparation() {
   return (
-    <div className="sensor-setup-step-container">
+    <div className="mini-setup-step-container">
       {/* Step Number Badge */}
-      <div className="sensor-setup-step-badge-wrapper">
-        <div className="sensor-setup-step-badge">
-          <span className="sensor-setup-step-badge-number">1</span>
+      <div className="mini-setup-step-badge-wrapper">
+        <div className="mini-setup-step-badge">
+          <span className="mini-setup-step-badge-number">1</span>
         </div>
       </div>
 
       {/* Step Title */}
-      <div className="sensor-setup-step-title-section">
-        <h2 className="sensor-setup-step-title">Prepare & Measure</h2>
-        <p className="sensor-setup-step-subtitle">
+      <div className="mini-setup-step-title-section">
+        <h2 className="mini-setup-step-title">Prepare & Measure</h2>
+        <p className="mini-setup-step-subtitle">
           Gather your tools, measure accurately, and cut the primary drain line to receive the Mini T-Manifold
         </p>
       </div>

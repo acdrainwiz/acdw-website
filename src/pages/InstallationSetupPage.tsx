@@ -85,6 +85,10 @@ export function InstallationSetupPage() {
                   <CheckIcon className="install-checklist-icon" />
                   Cut once during install — easy access for maintenance after
                 </li>
+                <li className="install-product-checklist-item">
+                  <CheckIcon className="install-checklist-icon" />
+                  Clear view into the drain line to verify cleaning and spot biofilm or high water
+                </li>
               </ul>
 
               <div className="install-product-meta">

@@ -6,7 +6,7 @@ const serviceSteps = [
   {
     number: 1,
     title: 'Insert Bi-Directional Valve — Outward Direction',
-    description: 'Insert the bi-directional valve into the T-Manifold cap opening with the flow arrow pointing toward the exterior drain line exit. Using compressed air or water pressure, push air or water outward through the line. This clears any newly formed biofilm, algae, or debris that may have accumulated during installation toward the outside of the building.',
+    description: 'Insert the bi-directional valve into the T-Manifold cap opening with the flow arrow pointing toward the exterior drain line exit. Using compressed air or water pressure, push air or water outward through the line. This clears any newly formed biofilm, algae, or debris that may have accumulated during installation toward the outside of the building. When using air, check for the presence of a P-trap in the condensate line; after the air flush is complete, refill the P-trap with water to reestablish the required water seal.',
     image: '/images/mini-setup/step3-valve-outward.jpg',
     alt: 'Inserting bi-directional valve in the outward-facing direction',
   },
@@ -37,18 +37,18 @@ export function Step3MiniCompletion() {
   const navigate = useNavigate()
 
   return (
-    <div className="sensor-setup-step-container">
+    <div className="mini-setup-step-container">
       {/* Step Number Badge */}
-      <div className="sensor-setup-step-badge-wrapper">
-        <div className="sensor-setup-step-badge sensor-setup-step-badge-step3">
-          <span className="sensor-setup-step-badge-number">3</span>
+      <div className="mini-setup-step-badge-wrapper">
+        <div className="mini-setup-step-badge mini-setup-step-badge-step3">
+          <span className="mini-setup-step-badge-number">3</span>
         </div>
       </div>
 
       {/* Step Title */}
-      <div className="sensor-setup-step-title-section">
-        <h2 className="sensor-setup-step-title">First Service &amp; Completion</h2>
-        <p className="sensor-setup-step-subtitle">
+      <div className="mini-setup-step-title-section">
+        <h2 className="mini-setup-step-title">First Service &amp; Completion</h2>
+        <p className="mini-setup-step-subtitle">
           Perform the initial line clear, install the cap, store your tools, and set your customer up for long-term protection
         </p>
       </div>
@@ -80,12 +80,12 @@ export function Step3MiniCompletion() {
       </div>
 
       {/* Success Block */}
-      <div className="sensor-setup-assignment-success">
-        <div className="sensor-setup-assignment-success-icon-wrapper">
-          <CheckCircleIcon className="sensor-setup-assignment-success-icon" />
+      <div className="mini-setup-assignment-success">
+        <div className="mini-setup-assignment-success-icon-wrapper">
+          <CheckCircleIcon className="mini-setup-assignment-success-icon" />
         </div>
-        <h3 className="sensor-setup-assignment-success-title">Installation Complete!</h3>
-        <p className="sensor-setup-assignment-success-message">
+        <h3 className="mini-setup-assignment-success-title">Installation Complete!</h3>
+        <p className="mini-setup-assignment-success-message">
           The AC Drain Wiz Mini T-Manifold is permanently bonded, the line has been cleared, and all accessories are stored on-site. Your customer is now protected against condensate drain backups.
         </p>
       </div>
@@ -110,7 +110,7 @@ export function Step3MiniCompletion() {
           </div>
         </div>
         <p className="mini-setup-maintenance-callout-footer">
-          Early servicing prevents emergency calls, protects the property, and creates consistent recurring service opportunities for your business.
+          Early servicing prevents emergency calls, protects the property, and creates consistent recurring service opportunities for your business. Homeowners can call their AC technician to clean the line before a full backup forms.
         </p>
 
         {/* Sensor Upsell */}
@@ -142,24 +142,24 @@ export function Step3MiniCompletion() {
       </div>
 
       {/* Action Buttons */}
-      <div className="sensor-setup-assignment-actions-wrapper">
-        <h3 className="sensor-setup-assignment-actions-heading">What's Next?</h3>
-        <div className="sensor-setup-assignment-actions">
+      <div className="mini-setup-assignment-actions-wrapper">
+        <h3 className="mini-setup-assignment-actions-heading">What's Next?</h3>
+        <div className="mini-setup-assignment-actions">
           <button
             onClick={() => navigate('/contact?type=support')}
-            className="sensor-setup-assignment-button sensor-setup-assignment-button-primary"
+            className="mini-setup-assignment-button mini-setup-assignment-button-primary"
           >
             Contact Support
           </button>
           <button
             onClick={() => { window.location.href = '/mini-setup' }}
-            className="sensor-setup-assignment-button sensor-setup-assignment-button-secondary"
+            className="mini-setup-assignment-button mini-setup-assignment-button-secondary"
           >
             Install Another Mini
           </button>
           <button
             onClick={() => navigate('/support')}
-            className="sensor-setup-assignment-button sensor-setup-assignment-button-tertiary"
+            className="mini-setup-assignment-button mini-setup-assignment-button-tertiary"
           >
             Back to Support
           </button>

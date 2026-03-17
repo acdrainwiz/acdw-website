@@ -291,7 +291,7 @@ export function Hero() {
           <h4 className="product-showcase-card-headline">Install Once. Clean Anytime.</h4>
           
           <p className="product-showcase-card-description">
-            The AC Drain Wiz Mini gives you permanent, on-demand access to your AC drain line. Install in 5 minutes or less—then flush the line anytime without cutting into PVC or disassembling fittings. Keep drain lines clear, prevent costly backups, and reduce service callbacks.
+            The AC Drain Wiz Mini gives you permanent, on-demand access to your AC drain line. Install in 5 minutes or less—then flush the line anytime without cutting into PVC or disassembling fittings. Keep drain lines clear, prevent costly backups, and reduce service callbacks. The clear body gives a direct view into the line so you can verify that cleaning worked and spot issues before they become backups.
           </p>
           
           <div className="product-showcase-card-ctas">

@@ -1,13 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { 
-  QuestionMarkCircleIcon,
   PhoneIcon,
   EnvelopeIcon,
   WrenchScrewdriverIcon,
-  BellAlertIcon
+  BellAlertIcon,
+  ChevronDownIcon
 } from '@heroicons/react/24/outline'
-import { SENSOR_LED_STANDARD, SENSOR_LED_WIFI, SENSOR_STANDARD_DISPLAY, SENSOR_WIFI_SHORT, SUPPORT_CONTACT, MONITORING, FAQ, type ProductSupportTab, type SensorVariantFilter } from '../config/acdwKnowledge'
+import { SENSOR_LED_STANDARD, SENSOR_LED_WIFI, SENSOR_LED_ANSWER, SENSOR_STANDARD_DISPLAY, SENSOR_WIFI_SHORT, SUPPORT_CONTACT, MONITORING, FAQ, type ProductSupportTab, type SensorVariantFilter } from '../config/acdwKnowledge'
 
 // FAQPage schema for SEO (same source as visible FAQs)
 const faqPageSchema = {
@@ -26,7 +26,6 @@ const faqPageSchema = {
 const PICKER_OPTIONS: { id: ProductSupportTab; label: string; description: string; image?: string; imageAlt?: string; Icon?: typeof WrenchScrewdriverIcon }[] = [
   { id: 'mini', label: 'AC Drain Wiz Mini', description: 'FAQs and troubleshooting for the drain line maintenance manifold.', image: '/images/acdw-mini-hero-background.png', imageAlt: 'AC Drain Wiz Mini' },
   { id: 'sensor', label: 'Sensor Switch', description: 'LED guides, WiFi setup, alerts, and Sensor troubleshooting.', image: '/images/acdw-sensor-showcase-background.png', imageAlt: 'AC Drain Wiz Sensor Switch' },
-  { id: 'general', label: 'General', description: 'Product comparison, compatibility, and installation overview.', Icon: QuestionMarkCircleIcon },
 ]
 
 const SENSOR_VARIANT_OPTIONS: { id: SensorVariantFilter; label: string }[] = [
@@ -35,9 +34,15 @@ const SENSOR_VARIANT_OPTIONS: { id: SensorVariantFilter; label: string }[] = [
   { id: 'standard', label: 'Standard Sensor Switch (Non-WiFi)' },
 ]
 
+const ACTIVE_TAB_LABEL: Record<ProductSupportTab, string> = {
+  mini: 'AC Drain Wiz Mini',
+  sensor: 'Sensor Switch',
+}
+
 export function ProductSupportPage() {
   const [activeTab, setActiveTab] = useState<ProductSupportTab>('mini')
   const [sensorVariant, setSensorVariant] = useState<SensorVariantFilter>('all')
+  const [mobileSheetOpen, setMobileSheetOpen] = useState(false)
 
   const faqsForTab = FAQ.filter((item) => {
     if (!(item.tabs as readonly ProductSupportTab[]).includes(activeTab)) return false
@@ -53,6 +58,29 @@ export function ProductSupportPage() {
     if (tab !== 'sensor') setSensorVariant('all')
   }
 
+  const handleMobileProductSelect = (tab: ProductSupportTab) => {
+    setActiveTabAndResetSensorVariant(tab)
+    setMobileSheetOpen(false)
+  }
+
+  useEffect(() => {
+    if (mobileSheetOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [mobileSheetOpen])
+
+  useEffect(() => {
+    if (!mobileSheetOpen) return
+    const onEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileSheetOpen(false)
+    }
+    document.addEventListener('keydown', onEscape)
+    return () => document.removeEventListener('keydown', onEscape)
+  }, [mobileSheetOpen])
+
   const sensorTypeLabel = activeTab === 'sensor'
     ? sensorVariant === 'all'
       ? ' — All Sensors'
@@ -65,9 +93,7 @@ export function ProductSupportPage() {
     ? ' — AC Drain Wiz Mini'
     : activeTab === 'sensor'
       ? sensorTypeLabel
-      : activeTab === 'general'
-        ? ' — General (comparison & compatibility)'
-        : ''
+      : ''
 
   return (
     <div className="support-section-container">
@@ -99,8 +125,8 @@ export function ProductSupportPage() {
 
       {/* Page Body */}
       <div className="container py-12">
-        {/* Product Picker */}
-        <div className="support-section-content mb-12">
+        {/* Desktop: Product Picker (cards + sensor pills) */}
+        <div className="hidden md:block support-section-content mb-12">
           <h2 className="support-section-section-title">Select your product for FAQs and troubleshooting</h2>
           <div className="support-picker-grid" role="tablist" aria-label="Product support options">
             {PICKER_OPTIONS.map((option) => {
@@ -154,6 +180,40 @@ export function ProductSupportPage() {
           )}
         </div>
 
+        {/* Mobile: "Change product" bar + sensor pills — content-first, open sheet to switch */}
+        <div className="md:hidden support-section-content mb-6">
+          <button
+            type="button"
+            onClick={() => setMobileSheetOpen(true)}
+            className="support-mobile-product-bar"
+            aria-expanded={mobileSheetOpen}
+            aria-haspopup="dialog"
+            aria-label="Change product for support content"
+          >
+            <span className="support-mobile-product-bar-label">{ACTIVE_TAB_LABEL[activeTab]}</span>
+            <ChevronDownIcon className="support-mobile-product-bar-icon" aria-hidden />
+          </button>
+          {activeTab === 'sensor' && (
+            <div className="support-sensor-variant-row mt-4" role="tablist" aria-label="Sensor type">
+              {SENSOR_VARIANT_OPTIONS.map((opt) => {
+                const isActive = sensorVariant === opt.id
+                return (
+                  <button
+                    key={opt.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    className={`support-sensor-variant-pill ${isActive ? 'support-sensor-variant-pill-active' : ''}`}
+                    onClick={() => setSensorVariant(opt.id)}
+                  >
+                    {opt.label}
+                  </button>
+                )
+              })}
+            </div>
+          )}
+        </div>
+
         {/* Content */}
         <div className="support-section-content">
 
@@ -173,35 +233,46 @@ export function ProductSupportPage() {
                       . Log in with the credentials created during Sensor setup. If you haven&apos;t set up an account yet, start with the{' '}
                       <Link to="/sensor-setup" className="support-section-link">Sensor Setup Guide</Link>.
                     </p>
+                  ) : item.id === 'sensor_leds' ? (
+                    <p className="support-section-faq-answer">{SENSOR_LED_ANSWER[sensorVariant]}</p>
                   ) : (
                     <p className="support-section-faq-answer">{item.answer}</p>
                   )}
                   {item.id === 'sensor_leds' && (
                     <>
-                      <p className="support-section-faq-answer font-medium mt-2">{SENSOR_STANDARD_DISPLAY}</p>
-                      <div className="support-led-table">
-                        {Object.entries(SENSOR_LED_STANDARD).map(([key, { label, description }]) => (
-                          <div key={key} className="support-led-row">
-                            <span className={`support-led-indicator support-led-${key === 'noLight' ? 'off' : key === 'green' ? 'green' : key === 'flashingRed' || key === 'solidRed' ? 'red' : 'off'}`} />
-                            <div>
-                              <span className="support-led-label">{label} — </span>
-                              <span className="support-led-desc">{description}</span>
-                            </div>
+                      {/* Show only the selected sensor model's LED guide; when "All Sensors", show both. */}
+                      {(sensorVariant === 'all' || sensorVariant === 'standard') && (
+                        <>
+                          <p className="support-section-faq-answer font-medium mt-2">{SENSOR_STANDARD_DISPLAY}</p>
+                          <div className="support-led-table">
+                            {Object.entries(SENSOR_LED_STANDARD).map(([key, { label, description }]) => (
+                              <div key={key} className="support-led-row">
+                                <span className={`support-led-indicator support-led-${key === 'noLight' ? 'off' : key === 'green' ? 'green' : key === 'flashingRed' || key === 'solidRed' ? 'red' : 'off'}`} />
+                                <div>
+                                  <span className="support-led-label">{label} — </span>
+                                  <span className="support-led-desc">{description}</span>
+                                </div>
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                      <p className="support-section-faq-answer font-medium mt-4">{SENSOR_WIFI_SHORT}</p>
-                      <div className="support-led-table">
-                        {Object.entries(SENSOR_LED_WIFI).map(([key, { label, description }]) => (
-                          <div key={key} className="support-led-row">
-                            <span className={`support-led-indicator support-led-${key === 'noLight' ? 'off' : key === 'green' ? 'green' : key === 'flashingRed' || key === 'solidRed' ? 'red' : 'off'}`} />
-                            <div>
-                              <span className="support-led-label">{label} — </span>
-                              <span className="support-led-desc">{description}</span>
-                            </div>
+                        </>
+                      )}
+                      {(sensorVariant === 'all' || sensorVariant === 'wifi') && (
+                        <>
+                          <p className="support-section-faq-answer font-medium mt-4">{SENSOR_WIFI_SHORT}</p>
+                          <div className="support-led-table">
+                            {Object.entries(SENSOR_LED_WIFI).map(([key, { label, description }]) => (
+                              <div key={key} className="support-led-row">
+                                <span className={`support-led-indicator support-led-${key === 'noLight' ? 'off' : key === 'green' ? 'green' : key === 'flashingRed' || key === 'solidRed' ? 'red' : 'off'}`} />
+                                <div>
+                                  <span className="support-led-label">{label} — </span>
+                                  <span className="support-led-desc">{description}</span>
+                                </div>
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
+                        </>
+                      )}
                     </>
                   )}
                 </div>
@@ -329,11 +400,6 @@ export function ProductSupportPage() {
               </div>
             )}
 
-            {activeTab === 'general' && (
-              <p className="support-section-faq-answer">
-                For product-specific troubleshooting, use the <strong>AC Drain Wiz Mini</strong> or <strong>Sensor Switch</strong> tabs above. General comparison and compatibility questions are in Common Questions.
-              </p>
-            )}
           </div>
 
           {/* Sensor Resources (Sensor tab only) */}
@@ -403,6 +469,58 @@ export function ProductSupportPage() {
 
         </div>
       </div>
+
+      {/* Mobile bottom sheet: choose product (Option C) */}
+      {mobileSheetOpen && (
+        <div
+          className="support-product-sheet-overlay"
+          onClick={() => setMobileSheetOpen(false)}
+          onKeyDown={(e) => e.key === 'Escape' && setMobileSheetOpen(false)}
+          role="presentation"
+        >
+          <div
+            className="support-product-sheet"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Select product for support"
+          >
+            <div className="support-product-sheet-handle" aria-hidden />
+            <div className="support-product-sheet-header">
+              <h2 className="support-product-sheet-title">Select product</h2>
+            </div>
+            <div className="support-product-sheet-list" role="list">
+              {PICKER_OPTIONS.map((option) => {
+                const isActive = activeTab === option.id
+                return (
+                  <button
+                    key={option.id}
+                    type="button"
+                    className={`support-product-sheet-item ${isActive ? 'support-product-sheet-item-active' : ''}`}
+                    onClick={() => handleMobileProductSelect(option.id)}
+                    role="listitem"
+                  >
+                    {option.image ? (
+                      <img src={option.image} alt="" className="support-product-sheet-item-img" />
+                    ) : (
+                      <span className="support-product-sheet-item-icon">
+                        {option.Icon && <option.Icon className="support-product-sheet-icon" />}
+                      </span>
+                    )}
+                    <div className="support-product-sheet-item-text">
+                      <span className="support-product-sheet-item-label">{option.label}</span>
+                      <span className="support-product-sheet-item-desc">{option.description}</span>
+                    </div>
+                    {isActive && (
+                      <span className="support-product-sheet-item-check" aria-hidden>✓</span>
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

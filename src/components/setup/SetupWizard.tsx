@@ -11,6 +11,8 @@ interface SetupWizardProps {
   backLabel?: string
   isContinueDisabled?: boolean
   onContinueClick?: () => boolean // Returns true if handled, false to proceed normally
+  /** 'sensor' | 'mini' — controls shell class prefix and header title */
+  variant?: 'sensor' | 'mini'
 }
 
 export function SetupWizard({
@@ -21,8 +23,11 @@ export function SetupWizard({
   continueLabel = 'Continue',
   backLabel = 'Back',
   isContinueDisabled = false,
-  onContinueClick
+  onContinueClick,
+  variant = 'sensor'
 }: SetupWizardProps) {
+  const prefix = variant === 'mini' ? 'mini-setup-wizard' : 'sensor-setup-wizard'
+  const title = variant === 'mini' ? 'Mini Setup' : 'Sensor Setup'
   // Scroll to top when step changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -63,40 +68,40 @@ export function SetupWizard({
   }
 
   return (
-    <div className="sensor-setup-wizard-container">
+    <div className={`${prefix}-container`}>
       {/* Header */}
-      <div className="sensor-setup-wizard-header">
-        <div className="sensor-setup-wizard-header-content">
+      <div className={`${prefix}-header`}>
+        <div className={`${prefix}-header-content`}>
           {/* Back to Support Link */}
-          <div className="sensor-setup-wizard-header-back-link">
-            <Link to="/support" className="sensor-setup-wizard-header-back-link-content">
-              <ArrowLeftIcon className="sensor-setup-wizard-header-back-link-icon" />
+          <div className={`${prefix}-header-back-link`}>
+            <Link to="/support" className={`${prefix}-header-back-link-content`}>
+              <ArrowLeftIcon className={`${prefix}-header-back-link-icon`} />
               <span>Back to Support</span>
             </Link>
           </div>
 
-          <div className="sensor-setup-wizard-header-top">
-            <div className="sensor-setup-wizard-header-brand">
-              <Link to="/" className="sensor-setup-wizard-header-logo-link">
+          <div className={`${prefix}-header-top`}>
+            <div className={`${prefix}-header-brand`}>
+              <Link to="/" className={`${prefix}-header-logo-link`}>
                 <img 
                   src="/images/ac-drain-wiz-logo.png" 
                   alt="AC Drain Wiz" 
-                  className="sensor-setup-wizard-header-logo"
+                  className={`${prefix}-header-logo`}
                 />
               </Link>
-              <h1 className="sensor-setup-wizard-header-title">Sensor Setup</h1>
+              <h1 className={`${prefix}-header-title`}>{title}</h1>
             </div>
-            <div className="sensor-setup-wizard-header-step-indicator">
+            <div className={`${prefix}-header-step-indicator`}>
               Step {currentStep} of {totalSteps}
             </div>
           </div>
           
           {/* Progress Bars - 3 separate bars matching content width */}
-          <div className="sensor-setup-wizard-progress-bars-container">
+          <div className={`${prefix}-progress-bars-container`}>
             {[1, 2, 3].map((step) => (
               <div
                 key={step}
-                className="sensor-setup-wizard-progress-bar"
+                className={`${prefix}-progress-bar`}
                 style={{ 
                   backgroundColor: getStepColor(step)
                 }}
@@ -107,25 +112,25 @@ export function SetupWizard({
       </div>
 
       {/* Content with Fade Transition */}
-      <div className="sensor-setup-wizard-content">
+      <div className={`${prefix}-content`}>
         <div 
           key={currentStep}
-          className="sensor-setup-wizard-content-inner"
+          className={`${prefix}-content-inner`}
         >
           {children}
         </div>
       </div>
 
       {/* Navigation - Show on all steps, but only back button on final step */}
-      <div className="sensor-setup-wizard-navigation">
-        <div className="sensor-setup-wizard-navigation-content">
-          <div className="sensor-setup-wizard-navigation-buttons">
+      <div className={`${prefix}-navigation`}>
+        <div className={`${prefix}-navigation-content`}>
+          <div className={`${prefix}-navigation-buttons`}>
             <button
               onClick={handleBack}
               disabled={currentStep === 1}
-              className={`sensor-setup-wizard-navigation-button sensor-setup-wizard-navigation-button-back ${currentStep > 1 ? 'sensor-setup-wizard-navigation-button-enabled' : 'sensor-setup-wizard-navigation-button-disabled'}`}
+              className={`${prefix}-navigation-button ${prefix}-navigation-button-back ${currentStep > 1 ? `${prefix}-navigation-button-enabled` : `${prefix}-navigation-button-disabled`}`}
             >
-              <ChevronLeftIcon className="sensor-setup-wizard-navigation-button-icon" />
+              <ChevronLeftIcon className={`${prefix}-navigation-button-icon`} />
               <span>{backLabel}</span>
             </button>
 
@@ -134,10 +139,10 @@ export function SetupWizard({
               <button
                 onClick={handleContinue}
                 disabled={isContinueDisabled}
-                className={`sensor-setup-wizard-navigation-button sensor-setup-wizard-navigation-button-continue ${isContinueDisabled ? 'sensor-setup-wizard-navigation-button-disabled' : 'sensor-setup-wizard-navigation-button-enabled'}`}
+                className={`${prefix}-navigation-button ${prefix}-navigation-button-continue ${isContinueDisabled ? `${prefix}-navigation-button-disabled` : `${prefix}-navigation-button-enabled`}`}
               >
                 <span>{continueLabel}</span>
-                <ChevronRightIcon className="sensor-setup-wizard-navigation-button-icon" />
+                <ChevronRightIcon className={`${prefix}-navigation-button-icon`} />
               </button>
             )}
           </div>

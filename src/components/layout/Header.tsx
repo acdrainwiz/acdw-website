@@ -31,7 +31,10 @@ const baseNavigation = [
   { name: 'Sensor Monitoring', href: MONITORING.portalUrl, external: true },
 ]
 
-// Enhanced mobile navigation structure
+// Mobile drawer key: only one can be open at a time
+type MobileDrawerKey = 'shop' | 'support' | 'legal' | null
+
+// Enhanced mobile navigation structure (aligned with footer links)
 const mobileNavigationSections = {
   shop: {
     title: 'Products',
@@ -41,17 +44,30 @@ const mobileNavigationSections = {
       { name: 'AC Drain Wiz Mini', href: '/products/mini', icon: WrenchScrewdriverIcon },
       { name: 'AC Drain Wiz Sensor', href: '/products/sensor', icon: CpuChipIcon },
       { name: 'Mini + Sensor Combo', href: '/products/combo', icon: SparklesIcon },
+      { name: 'Request Demo', href: '/contact?type=demo-request', icon: EnvelopeIcon },
     ]
   },
   support: {
     title: 'Support',
     icon: QuestionMarkCircleIcon,
     items: [
-      { name: 'Get Help', href: '/support', icon: QuestionMarkCircleIcon },
-      { name: 'Installation Guide', href: '/support/installation-scenarios', icon: DocumentTextIcon },
+      { name: 'Support Center', href: '/support', icon: QuestionMarkCircleIcon },
+      { name: 'Installation & Setup', href: '/support/installation-setup', icon: DocumentTextIcon },
       { name: 'Sensor Setup', href: '/sensor-setup', icon: CpuChipIcon },
-      { name: 'Warranty & Returns', href: '/support/warranty-returns', icon: CreditCardIcon },
       { name: 'Product Support', href: '/support/product-support', icon: WrenchScrewdriverIcon },
+      { name: 'Warranty & Returns', href: '/support/warranty-returns', icon: CreditCardIcon },
+      { name: 'Contact Support', href: '/contact?type=support', icon: EnvelopeIcon },
+    ]
+  },
+  legal: {
+    title: 'Legal',
+    icon: DocumentTextIcon,
+    items: [
+      { name: 'Privacy Policy', href: '/privacy-policy', icon: DocumentTextIcon },
+      { name: 'Terms of Use', href: '/terms-of-use', icon: DocumentTextIcon },
+      { name: 'Return & Refund', href: '/return-refund-policy', icon: DocumentTextIcon },
+      { name: 'Shipping Policy', href: '/shipping-policy', icon: DocumentTextIcon },
+      { name: 'Warranty Policy', href: '/warranty-policy', icon: DocumentTextIcon },
     ]
   }
 }
@@ -59,8 +75,7 @@ const mobileNavigationSections = {
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
-  const [shopExpanded, setShopExpanded] = useState(false)
-  const [supportExpanded, setSupportExpanded] = useState(false)
+  const [openDrawer, setOpenDrawer] = useState<MobileDrawerKey>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchFocused, setSearchFocused] = useState(false)
   const { user, logout, isAuthenticated } = useAuth()
@@ -75,15 +90,16 @@ export function Header() {
       ]
     : baseNavigation
 
-  // Check if a navigation item is active
+  // Check if a navigation item is active (href may include query string)
   const isActive = (href: string) => {
-    if (href === '/') {
+    const path = href.split('?')[0]
+    if (path === '/') {
       return location.pathname === '/'
     }
-    if (href === '/dashboard') {
+    if (path === '/dashboard') {
       return location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/business/pro')
     }
-    return location.pathname.startsWith(href)
+    return location.pathname.startsWith(path)
   }
 
   // Handle search submission
@@ -97,11 +113,15 @@ export function Header() {
     }
   }
 
-  // Close mobile menu when route changes
+  // Close mobile menu when route changes; collapse any open drawer
   const handleMobileNavClick = () => {
     setMobileMenuOpen(false)
-    setShopExpanded(false)
-    setSupportExpanded(false)
+    setOpenDrawer(null)
+  }
+
+  // Open one drawer at a time: opening a section closes any other
+  const handleDrawerToggle = (key: 'shop' | 'support' | 'legal') => {
+    setOpenDrawer((prev) => (prev === key ? null : key))
   }
 
   return (
@@ -371,23 +391,23 @@ export function Header() {
                   {/* Expandable Products Section */}
                   <div className="header-mobile-nav-section">
                     <button
-                      onClick={() => setShopExpanded(!shopExpanded)}
+                      onClick={() => handleDrawerToggle('shop')}
                       className="header-mobile-nav-section-button"
-                      aria-expanded={shopExpanded}
+                      aria-expanded={openDrawer === 'shop'}
                       aria-controls="shop-menu"
                     >
                       <div className="header-mobile-nav-section-title">
                         <ShoppingBagIcon className="header-mobile-nav-icon" aria-hidden="true" />
                         <span>Products</span>
                       </div>
-                      {shopExpanded ? (
+                      {openDrawer === 'shop' ? (
                         <ChevronUpIcon className="header-mobile-nav-chevron" aria-hidden="true" />
                       ) : (
                         <ChevronDownIcon className="header-mobile-nav-chevron" aria-hidden="true" />
                       )}
                     </button>
                     
-                    {shopExpanded && (
+                    {openDrawer === 'shop' && (
                       <div className="header-mobile-nav-submenu" id="shop-menu">
                         {mobileNavigationSections.shop.items.map((item) => {
                           const Icon = item.icon
@@ -410,25 +430,64 @@ export function Header() {
                   {/* Expandable Support Section */}
                   <div className="header-mobile-nav-section">
                     <button
-                      onClick={() => setSupportExpanded(!supportExpanded)}
+                      onClick={() => handleDrawerToggle('support')}
                       className="header-mobile-nav-section-button"
-                      aria-expanded={supportExpanded}
+                      aria-expanded={openDrawer === 'support'}
                       aria-controls="support-menu"
                     >
                       <div className="header-mobile-nav-section-title">
                         <QuestionMarkCircleIcon className="header-mobile-nav-icon" aria-hidden="true" />
                         <span>Support</span>
                       </div>
-                      {supportExpanded ? (
+                      {openDrawer === 'support' ? (
                         <ChevronUpIcon className="header-mobile-nav-chevron" aria-hidden="true" />
                       ) : (
                         <ChevronDownIcon className="header-mobile-nav-chevron" aria-hidden="true" />
                       )}
                     </button>
                     
-                    {supportExpanded && (
+                    {openDrawer === 'support' && (
                       <div className="header-mobile-nav-submenu" id="support-menu">
                         {mobileNavigationSections.support.items.map((item) => {
+                          const Icon = item.icon
+                          return (
+                            <Link
+                              key={item.name}
+                              to={item.href}
+                              className={`header-mobile-nav-subitem ${isActive(item.href) ? 'active' : ''}`}
+                              onClick={handleMobileNavClick}
+                            >
+                              <Icon className="header-mobile-nav-subicon" aria-hidden="true" />
+                              <span>{item.name}</span>
+                            </Link>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Expandable Legal Section */}
+                  <div className="header-mobile-nav-section">
+                    <button
+                      onClick={() => handleDrawerToggle('legal')}
+                      className="header-mobile-nav-section-button"
+                      aria-expanded={openDrawer === 'legal'}
+                      aria-controls="legal-menu"
+                    >
+                      <div className="header-mobile-nav-section-title">
+                        <DocumentTextIcon className="header-mobile-nav-icon" aria-hidden="true" />
+                        <span>Legal</span>
+                      </div>
+                      {openDrawer === 'legal' ? (
+                        <ChevronUpIcon className="header-mobile-nav-chevron" aria-hidden="true" />
+                      ) : (
+                        <ChevronDownIcon className="header-mobile-nav-chevron" aria-hidden="true" />
+                      )}
+                    </button>
+                    
+                    {openDrawer === 'legal' && (
+                      <div className="header-mobile-nav-submenu" id="legal-menu">
+                        {mobileNavigationSections.legal.items.map((item) => {
                           const Icon = item.icon
                           return (
                             <Link

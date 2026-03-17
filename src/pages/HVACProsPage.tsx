@@ -101,7 +101,7 @@ export function HVACProsPage() {
             </div>
             <h3 className="homeowner-benefit-title">Eliminate Callbacks</h3>
             <p className="homeowner-benefit-description">
-              Mini installs in 5 minutes during any service call. Give customers permanent access to their drain line—no more repeat visits for the same clog.
+              Mini installs in 5 minutes during any service call. Give customers permanent access to their drain line—no more repeat visits for the same clog. Clear view into the line lets you verify every clean-out and show the customer the result.
             </p>
           </div>
 

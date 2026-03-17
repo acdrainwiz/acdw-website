@@ -88,21 +88,37 @@ export const SENSOR_LED_WIFI = {
   },
 } as const
 
+/** Model-specific intro copy for the "What do the sensor lights mean?" FAQ. Use the variant that matches the user's selected sensor view. */
+export const SENSOR_LED_ANSWER: Record<SensorVariantFilter, string> = {
+  all: 'Sensor LED meanings depend on your model. Use the guides below for the Standard Sensor Switch (Non-WiFi) and the WiFi Sensor Switch.',
+  standard:
+    'For the Standard Sensor Switch: no light means no power, green means monitoring active, flashing red means testing mode, and solid red means 95% water level detected and AC shutdown triggered.',
+  wifi: 'For the WiFi Sensor Switch: no light means no power, flashing red means awaiting WiFi connection, green means connected to the monitoring platform, and solid red means 95% water level detected and AC shutdown triggered.',
+} as const
+
 // ─── FAQ (approved answers; use for support pages and structured data) ─────
-/** Tab(s) where this FAQ appears on Product Support: mini | sensor | general */
-export type ProductSupportTab = 'mini' | 'sensor' | 'general'
+/** Tab(s) where this FAQ appears on Product Support: mini | sensor */
+export type ProductSupportTab = 'mini' | 'sensor'
 
 /** When on Sensor tab: 'wifi' = WiFi-only FAQ, 'standard' = Standard-only; unset = both */
 export type SensorVariantFilter = 'all' | 'wifi' | 'standard'
 
 export const FAQ = [
   {
-    id: 'mini_vs_sensor',
-    question: 'What is the difference between the AC Drain Wiz Mini and the Sensor Switch?',
+    id: 'mini_what_and_relation',
+    question: 'What does the Mini do, and how does it relate to the Sensor?',
     answer:
-      'The Mini is the drain line maintenance device. It gives technicians a permanent access point to flush with water, clear clogs with compressed air, and vacuum sludge without cutting PVC. The Sensor Switch is the overflow protection device. It monitors water levels inside the drain line and shuts down the AC at 95% water level. The WiFi Sensor Switch adds remote monitoring, email and SMS alerts, and configurable service alerts before shutdown; the Standard Sensor Switch does not include WiFi or remote alerts.',
-    tags: ['products', 'comparison', 'contractor'],
-    tabs: ['general'] as const,
+      'The Mini is the drain line maintenance device. It gives technicians a permanent access point to flush with water, clear clogs with compressed air, and vacuum sludge without cutting PVC—no cutting or reattaching pipe. The clear body gives you a direct view into the drain line so you can verify that cleaning was successful and spot biofilm or high water before it becomes a backup. The Sensor Switch is a separate product for overflow protection: it monitors water level in the drain line and automatically shuts down the AC at 95%. The WiFi Sensor Switch adds remote monitoring, email and SMS alerts, and configurable service alerts; the Standard Sensor Switch (Non-WiFi) does not. You can use the Mini on its own for maintenance; adding a Sensor is optional for overflow protection and monitoring.',
+    tags: ['mini', 'products', 'comparison'],
+    tabs: ['mini'] as const,
+  },
+  {
+    id: 'mini_without_sensor',
+    question: 'Can I use the Mini without a Sensor?',
+    answer:
+      'Yes. The Mini is the maintenance device and works on its own. It provides permanent access for flush, air, and vacuum so you can clean the drain line without cutting PVC. The Sensor is optional and adds overflow protection and, with the WiFi model, remote monitoring and alerts. Many users start with the Mini and add a Sensor later if they want automatic shutdown and monitoring. Homeowners can also visually inspect the Mini to see if water levels or biofilm are building up and call their AC technician to clean the line before a backup.',
+    tags: ['mini', 'support'],
+    tabs: ['mini'] as const,
   },
   {
     id: 'compatibility',
@@ -110,13 +126,13 @@ export const FAQ = [
     answer:
       'AC Drain Wiz works with 3/4 inch condensate drain lines and is installed on the main condensate drain line between the condensate pan and exterior drain outlet. It works seamlessly with most residential AC units and is adaptable for various setups, including transfer pumps. If you have questions about your specific system or setup, contact support.',
     tags: ['compatibility', 'installation'],
-    tabs: ['mini', 'general'] as const,
+    tabs: ['mini'] as const,
   },
   {
     id: 'mini_how_it_works',
     question: 'How does the Mini work?',
     answer:
-      'The Mini is the drain line maintenance device. It gives technicians a permanent access point to flush with water, clear clogs with compressed air, and vacuum sludge without cutting PVC. Installation is a one-time PVC solvent weld; no specialized tools required.',
+      'The Mini is the drain line maintenance device. It gives technicians a permanent access point to flush with water, clear clogs with compressed air, and vacuum sludge without cutting PVC. The transparent design lets you see inside the line to confirm the clean-out worked and to spot rising water or algae before it causes a clog. Installation is a one-time PVC solvent weld; no specialized tools required.',
     tags: ['mini', 'support'],
     tabs: ['mini'] as const,
   },
@@ -126,6 +142,14 @@ export const FAQ = [
     answer:
       'No. Both sensor models include a Transparent T Manifold identical to the ACDW Mini manifold, so contractors do not need to purchase the Mini first to install a Sensor Switch. If service is needed later, the Sensor Switch can be removed, the Mini valve installed temporarily for drain cleaning, and then the Sensor Switch reinstalled.',
     tags: ['sensor', 'mini', 'installation'],
+    tabs: ['sensor'] as const,
+  },
+  {
+    id: 'sensor_what_and_mini',
+    question: 'What does the Sensor do, and do I need the Mini?',
+    answer:
+      'The Sensor monitors water level in the drain line and automatically shuts down the AC at 95% to prevent overflow. The Standard Sensor Switch (Non-WiFi) provides that protection with no connectivity. The WiFi Sensor Switch adds remote monitoring, email and SMS alerts, and configurable service alerts. You do not need the Mini to install a Sensor—both sensor models include their own Transparent T Manifold. If you already have a Mini, the Sensor installs in the same bayonet port; for service, you can remove the Sensor, use the Mini valve for cleaning, then reinstall the Sensor.',
+    tags: ['sensor', 'products', 'support'],
     tabs: ['sensor'] as const,
   },
   {
