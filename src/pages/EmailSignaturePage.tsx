@@ -9,6 +9,10 @@ import { PasswordProtection } from '../components/email-signature/PasswordProtec
 // Set VITE_EMAIL_SIGNATURE_PASSWORD in your .env file
 const EMAIL_SIGNATURE_PASSWORD = import.meta.env.VITE_EMAIL_SIGNATURE_PASSWORD || 'acdw2024'
 
+/** Miami Heat partnership images — live under public/images/miami-heat-sponsorship/ (lowercase, no spaces). */
+const MIAMI_HEAT_SPONSORSHIP_BADGE_URL =
+  'https://acdrainwiz.com/images/miami-heat-sponsorship/signature-badge.png'
+
 function EmailSignatureContent() {
   const [name, setName] = useState('')
   const [title, setTitle] = useState('')
@@ -112,6 +116,7 @@ Follow these steps to add or update your email signature in the Outlook desktop 
 ### Logo Not Showing?
 - Make sure you're connected to the internet
 - The logo loads from https://acdrainwiz.com/images/ac-drain-wiz-logo-signature.png
+- Miami Heat mark: ${MIAMI_HEAT_SPONSORSHIP_BADGE_URL}
 - If it still doesn't show, try refreshing Outlook or restarting the application
 
 ### Signature Shows as Code Instead of Formatted?
@@ -139,7 +144,8 @@ If you encounter any issues:
 
 **Quick Reference:**
 - Signature Generator: https://acdrainwiz.com/email-signature
-- Logo URL: https://acdrainwiz.com/images/ac-drain-wiz-logo-signature.png`
+- Logo URL: https://acdrainwiz.com/images/ac-drain-wiz-logo-signature.png
+- Miami Heat (signature): ${MIAMI_HEAT_SPONSORSHIP_BADGE_URL}`
 
   const office365GuideContent = `# How to Add/Update Your Email Signature in Outlook 365 (Web)
 
@@ -234,6 +240,7 @@ If the above methods don't work:
 ### Logo Not Showing?
 - Make sure you're connected to the internet
 - The logo loads from https://acdrainwiz.com/images/ac-drain-wiz-logo-signature.png
+- Miami Heat mark: ${MIAMI_HEAT_SPONSORSHIP_BADGE_URL}
 - Some email clients block external images - recipients may need to "Download images" or "Show images"
 - Try refreshing the page or clearing browser cache
 
@@ -286,7 +293,8 @@ If you encounter any issues:
 **Quick Reference:**
 - Signature Generator: https://acdrainwiz.com/email-signature
 - Outlook 365: https://outlook.office.com
-- Logo URL: https://acdrainwiz.com/images/ac-drain-wiz-logo-signature.png`
+- Logo URL: https://acdrainwiz.com/images/ac-drain-wiz-logo-signature.png
+- Miami Heat (signature): ${MIAMI_HEAT_SPONSORSHIP_BADGE_URL}`
 
   const departments = [
     'Sales & Marketing',
@@ -474,12 +482,29 @@ If you encounter any issues:
         </tr>
       </table>
       
-      <!-- Bottom Section: Logo Column (empty) and Contact Info Column -->
+      <!-- Bottom Section: Sponsorship badge (aligned with logo column) and Contact Info Column -->
       <table border="0" cellpadding="0" cellspacing="0" class="sig-bottom-section" width="100%">
         <tr>
-          <!-- Empty Logo Column (to maintain alignment) -->
           <td class="sig-bottom-logo-column" style="padding-right: 20px; vertical-align: top; width: 200px;">
-            &nbsp;
+            <table border="0" cellpadding="0" cellspacing="0" width="180" style="max-width: 180px;">
+              <tr>
+                <td style="padding: 0;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="font-family: 'Poppins', Arial, Helvetica, sans-serif;">
+                    <tr>
+                      <td style="vertical-align: middle; padding: 10px 6px 10px 10px; width: 56px;">
+                        <img src="${MIAMI_HEAT_SPONSORSHIP_BADGE_URL}" alt="Miami Heat" width="48" height="49" style="display: block; max-width: 48px; height: auto;" />
+                      </td>
+                      <td style="width: 1px; min-width: 1px; background-color: #b8c5d6; padding: 0; font-size: 0; line-height: 0;">&nbsp;</td>
+                      <td style="vertical-align: middle; padding: 10px 10px 10px 10px; text-align: left;">
+                        <span style="display: block; font-size: 9px; line-height: 1.4; color: #1e3a8a; font-weight: 500;">AC Drain Wiz is</span>
+                        <span style="display: block; font-size: 9px; line-height: 1.4; color: #1e3a8a; font-weight: 500;">proud partner of</span>
+                        <span style="display: block; font-size: 9px; line-height: 1.4; color: #1e3a8a; font-weight: 600;">the Miami Heat</span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
           </td>
           <!-- Contact Information Column (aligned with name/title) -->
           <td class="sig-contact-column" style="vertical-align: top; padding-left: 0; text-align: left;">
@@ -510,6 +535,12 @@ If you encounter any issues:
   </tr>
 </table>
   `.trim()
+
+  /** In dev, load signature images from the current origin so preview works before deploy. */
+  const previewSignatureHTML =
+    import.meta.env.DEV && typeof window !== 'undefined'
+      ? signatureHTML.replaceAll('https://acdrainwiz.com', window.location.origin)
+      : signatureHTML
 
   const handleCopy = async () => {
     // Validate form before copying
@@ -788,7 +819,7 @@ If you encounter any issues:
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Preview</h2>
             <div className="border-2 border-gray-200 rounded-lg p-6 bg-gray-50">
               <div 
-                dangerouslySetInnerHTML={{ __html: signatureHTML }}
+                dangerouslySetInnerHTML={{ __html: previewSignatureHTML }}
                 className="email-signature-preview"
               />
             </div>
