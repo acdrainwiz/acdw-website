@@ -496,9 +496,7 @@ If you encounter any issues:
                       </td>
                       <td style="width: 1px; min-width: 1px; background-color: #b8c5d6; padding: 0; font-size: 0; line-height: 0;">&nbsp;</td>
                       <td style="vertical-align: middle; padding: 10px 10px 10px 10px; text-align: left;">
-                        <span style="display: block; font-size: 9px; line-height: 1.4; color: #1e3a8a; font-weight: 500;">AC Drain Wiz is</span>
-                        <span style="display: block; font-size: 9px; line-height: 1.4; color: #1e3a8a; font-weight: 500;">proud partner of</span>
-                        <span style="display: block; font-size: 9px; line-height: 1.4; color: #1e3a8a; font-weight: 600;">the Miami Heat</span>
+                        <span style="display: block; font-size: 9px; line-height: 1.4; color: #1e3a8a; font-weight: 600;">Proud partner of the Miami Heat</span>
                       </td>
                     </tr>
                   </table>
