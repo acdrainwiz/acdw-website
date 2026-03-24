@@ -1,8 +1,34 @@
-import { CheckCircleIcon } from '@heroicons/react/24/outline'
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import {
+  ArrowRightIcon,
+  CheckCircleIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  WrenchScrewdriverIcon,
+} from '@heroicons/react/24/outline'
+import { Link, useNavigate } from 'react-router-dom'
+import { buildSensorSetupHref, PRODUCT_NAMES, type SensorSetupModelSlug } from '../../../config/acdwKnowledge'
 
-export function Step3AssignCustomer() {
+interface Step3AssignCustomerProps {
+  /** Matches URL `model` for copy and restart link */
+  setupModel?: SensorSetupModelSlug | null
+  /** Wizard step index in the badge (e.g. 5 for WiFi five-step flow) */
+  wizardStepNumber?: 2 | 3 | 4 | 5
+}
+
+function assignCustomerBadgeClass(step: number): string {
+  const base = 'sensor-setup-step-badge'
+  if (step === 2) return `${base} sensor-setup-step-badge-step2`
+  if (step === 3) return `${base} sensor-setup-step-badge-step3`
+  if (step === 4) return `${base} sensor-setup-step-badge-step4`
+  if (step === 5) return `${base} sensor-setup-step-badge-step5`
+  return base
+}
+
+export function Step3AssignCustomer({ setupModel = null, wizardStepNumber = 3 }: Step3AssignCustomerProps) {
   const navigate = useNavigate()
+  const isWifiFinalStep = setupModel === 'wifi' && wizardStepNumber === 5
+  const [assignmentDrawerExpanded, setAssignmentDrawerExpanded] = useState(true)
 
   const substeps = [
     {
@@ -35,12 +61,33 @@ export function Step3AssignCustomer() {
     }
   ]
 
+  const assignmentStepCards = substeps.map((substep) => (
+    <div key={substep.number} className="sensor-setup-assignment-step-card">
+      <div className="sensor-setup-assignment-step-content">
+        <div className="sensor-setup-assignment-step-number-wrapper">
+          <div className="sensor-setup-assignment-step-number-badge">
+            <span className="sensor-setup-assignment-step-number">{substep.number}</span>
+          </div>
+        </div>
+
+        <div className="sensor-setup-assignment-step-details">
+          <h3 className="sensor-setup-assignment-step-title">{substep.title}</h3>
+          <p className="sensor-setup-assignment-step-description">{substep.description}</p>
+
+          <div className="sensor-setup-assignment-step-image-wrapper">
+            <img src={substep.image} alt={substep.alt} className="sensor-setup-assignment-step-image" />
+          </div>
+        </div>
+      </div>
+    </div>
+  ))
+
   return (
     <div className="sensor-setup-step-container">
       {/* Step Number Badge */}
       <div className="sensor-setup-step-badge-wrapper">
-        <div className="sensor-setup-step-badge sensor-setup-step-badge-step3">
-          <span className="sensor-setup-step-badge-number">3</span>
+        <div className={assignCustomerBadgeClass(wizardStepNumber)}>
+          <span className="sensor-setup-step-badge-number">{wizardStepNumber}</span>
         </div>
       </div>
 
@@ -48,52 +95,104 @@ export function Step3AssignCustomer() {
       <div className="sensor-setup-step-title-section">
         <h2 className="sensor-setup-step-title">Assign Sensor to Customer</h2>
         <p className="sensor-setup-step-subtitle">
-          Link the sensor to your customer's account
+          {setupModel === 'standard'
+            ? 'Link the installed Standard Sensor to your customer in the portal so the install is on record.'
+            : 'Link the WiFi Sensor to your customer account for remote monitoring and alerts.'}
         </p>
       </div>
 
-      {/* Assignment Steps */}
-      <div className="sensor-setup-assignment-steps">
-        {substeps.map((substep) => (
-          <div key={substep.number} className="sensor-setup-assignment-step-card">
-            <div className="sensor-setup-assignment-step-content">
-              {/* Step Number */}
-              <div className="sensor-setup-assignment-step-number-wrapper">
-                <div className="sensor-setup-assignment-step-number-badge">
-                  <span className="sensor-setup-assignment-step-number">{substep.number}</span>
+      {isWifiFinalStep ? (
+        <div
+          className={`mini-setup-accordion-section ${
+            assignmentDrawerExpanded ? 'mini-setup-accordion-section-expanded' : 'mini-setup-accordion-section-collapsed'
+          }`}
+        >
+          <button
+            type="button"
+            onClick={() => setAssignmentDrawerExpanded((open) => !open)}
+            className="mini-setup-accordion-header"
+            aria-expanded={assignmentDrawerExpanded}
+          >
+            <div className="mini-setup-accordion-header-content">
+              <div className="mini-setup-accordion-header-left">
+                <div className="mini-setup-accordion-wizard-step-badge" aria-hidden>
+                  <span className="mini-setup-accordion-wizard-step-badge-number">1</span>
                 </div>
+                <span className="mini-setup-accordion-title">Portal assignment</span>
               </div>
-
-              {/* Content */}
-              <div className="sensor-setup-assignment-step-details">
-                <h3 className="sensor-setup-assignment-step-title">{substep.title}</h3>
-                <p className="sensor-setup-assignment-step-description">{substep.description}</p>
-                
-                {/* Screenshot Image */}
-                <div className="sensor-setup-assignment-step-image-wrapper">
-                  <img
-                    src={substep.image}
-                    alt={substep.alt}
-                    className="sensor-setup-assignment-step-image"
-                  />
-                </div>
+              <div className="mini-setup-accordion-header-right">
+                <span className="mini-setup-accordion-badge mini-setup-accordion-badge-ready">
+                  {substeps.length} Steps
+                </span>
+                {assignmentDrawerExpanded ? (
+                  <ChevronUpIcon className="mini-setup-accordion-chevron" aria-hidden />
+                ) : (
+                  <ChevronDownIcon className="mini-setup-accordion-chevron" aria-hidden />
+                )}
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          </button>
 
-      {/* Success Message */}
+          {assignmentDrawerExpanded && (
+            <div className="mini-setup-accordion-content">
+              <div className="sensor-setup-assignment-steps sensor-setup-assignment-steps-in-drawer">
+                {assignmentStepCards}
+              </div>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="sensor-setup-assignment-steps">{assignmentStepCards}</div>
+      )}
+
+      {/* Success Message — before drain-line / Mini sections on WiFi final step */}
       <div className="sensor-setup-assignment-success">
         <div className="sensor-setup-assignment-success-icon-wrapper">
           <CheckCircleIcon className="sensor-setup-assignment-success-icon" />
         </div>
         <h3 className="sensor-setup-assignment-success-title">Installation and Setup Complete!</h3>
         <p className="sensor-setup-assignment-success-message">
-          Your sensor is now installed, connected, and assigned to your customer. 
-          You can monitor it from your dashboard and set up alerts as needed.
+          {setupModel === 'standard'
+            ? 'Your Standard Sensor is installed and assigned to your customer. This model provides local overflow protection and automatic AC shutdown at 95% water level—no Wi‑Fi connection required.'
+            : 'Your WiFi Sensor is installed, connected, and assigned to your customer. You can monitor it from your dashboard and configure email, SMS, and service alerts as needed.'}
         </p>
       </div>
+
+      {isWifiFinalStep && (
+        <>
+          <div className="sensor-setup-standard-maintenance-callout">
+            <h3 className="sensor-setup-standard-maintenance-title">When to service the drain line</h3>
+            <p className="sensor-setup-standard-maintenance-text">
+              If the sensor shuts down the AC at high water level, or a visual check through the manifold shows
+              biofilm, algae, or water not draining normally, the condensate line needs cleaning—not just the sensor.
+              Clearing the line prevents repeat trips and water damage.
+            </p>
+          </div>
+
+          <div className="sensor-setup-mini-upsell">
+            <div className="sensor-setup-mini-upsell-header">
+              <WrenchScrewdriverIcon className="sensor-setup-mini-upsell-wrench" aria-hidden />
+              <span className="sensor-setup-mini-upsell-eyebrow">Add maintenance access</span>
+              <h3 className="sensor-setup-mini-upsell-title">{PRODUCT_NAMES.mini}</h3>
+            </div>
+            <p className="sensor-setup-mini-upsell-description">
+              The Mini adds a permanent service port on the 3/4&quot; drain line for flush, compressed air, and
+              vacuum—so technicians can clear sludge without cutting PVC. For service, the Sensor can be removed and the
+              Mini valve used in the same bayonet port, then the Sensor reinstalled.
+            </p>
+            <div className="sensor-setup-mini-upsell-actions">
+              <Link to="/products/mini" className="sensor-setup-mini-upsell-link sensor-setup-mini-upsell-link-primary">
+                View {PRODUCT_NAMES.mini}
+                <ArrowRightIcon className="sensor-setup-mini-upsell-link-icon" aria-hidden />
+              </Link>
+              <Link to="/mini-setup" className="sensor-setup-mini-upsell-link sensor-setup-mini-upsell-link-secondary">
+                Mini installation guide
+                <ArrowRightIcon className="sensor-setup-mini-upsell-link-icon" aria-hidden />
+              </Link>
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Action Buttons */}
       <div className="sensor-setup-assignment-actions-wrapper">
@@ -108,11 +207,12 @@ export function Step3AssignCustomer() {
           
           <button
             onClick={() => {
-              // Clear session storage to restart setup
               sessionStorage.removeItem('sensor-setup-prerequisite-dismissed')
               sessionStorage.removeItem('sensor-setup-prerequisite-dismiss-reason')
-              // Navigate to restart the setup
-              window.location.href = '/sensor-setup'
+              window.location.href =
+                setupModel === 'standard' || setupModel === 'wifi'
+                  ? buildSensorSetupHref({ model: setupModel, step: 1 })
+                  : '/sensor-setup'
             }}
             className="sensor-setup-assignment-button sensor-setup-assignment-button-secondary"
           >

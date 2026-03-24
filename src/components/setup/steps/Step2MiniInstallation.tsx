@@ -3,7 +3,6 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
   ExclamationTriangleIcon,
-  CheckCircleIcon,
   ClockIcon,
 } from '@heroicons/react/24/outline'
 
@@ -94,56 +93,93 @@ const cureSteps = [
   },
 ]
 
-interface Step2MiniInstallationProps {
+export interface Step2MiniInstallationProps {
   /** Called once when the user opens the second accordion (Cure & Leak Test). Used to enable the Continue button. */
   onSecondAccordionOpened?: () => void
+  /** Sensor Standard guide: hide duplicate wizard badge; copy references T manifold from Sensor package */
+  variant?: 'mini' | 'sensorStandard'
+  /**
+   * Standard Sensor manifold step: parent coordinates one open drawer with Part A (Measure & Cut).
+   * When `onPrepCureToggle` is set, expanded state is controlled; omit for Mini setup.
+   */
+  expandedPrepCure?: 'prep' | 'cure' | null
+  onPrepCureToggle?: (section: 'prep' | 'cure') => void
+  /** Standard Sensor manifold: parent controls which drawer pulses (next linear step, collapsed). */
+  pulsePrep?: boolean
+  pulseCure?: boolean
+  /** When parent renders the full wizard hero (e.g. split manifold steps), hide duplicate Part B heading. */
+  hideSensorPartHeading?: boolean
+}
+
+function adaptMiniStepsForSensor<T extends { title: string; description: string }>(steps: T[]): T[] {
+  return steps.map((step) => ({
+    ...step,
+    title: step.title.replace(/Mini T-Manifold/g, 'T-Manifold'),
+    description: step.description
+      .replace(/Mini T-Manifold/g, 'T-Manifold')
+      .replace(/the Mini T-Manifold sockets/g, 'the T-Manifold sockets')
+      .replace(/of the Mini T-Manifold/g, 'of the T-Manifold'),
+  }))
 }
 
 const DELAY_OPEN_PREP_MS = 2000
 
-export function Step2MiniInstallation({ onSecondAccordionOpened }: Step2MiniInstallationProps) {
-  const [expandedSection, setExpandedSection] = useState<'prep' | 'cure' | null>(null)
-  const [prepOpened, setPrepOpened] = useState(false)
-  const [cureHasBeenOpened, setCureHasBeenOpened] = useState(false)
-  const [isCureSectionInView, setIsCureSectionInView] = useState(false)
+export function Step2MiniInstallation({
+  onSecondAccordionOpened,
+  variant = 'mini',
+  expandedPrepCure,
+  onPrepCureToggle,
+  pulsePrep: pulsePrepFromParent,
+  pulseCure: pulseCureFromParent,
+  hideSensorPartHeading = false,
+}: Step2MiniInstallationProps) {
+  const isSensor = variant === 'sensorStandard'
+  /** Linear substeps for install: Measure & Cut = 1 (step 1 page), Prep = 2, Cure = 3 — same for Mini and Standard Sensor manifold. */
+  const prepDrawerBadgeNumber = 2
+  const cureDrawerBadgeNumber = 3
+  const isPrepCureControlled = Boolean(onPrepCureToggle)
+  const prepStepsDisplay = isSensor ? adaptMiniStepsForSensor(prepSteps) : prepSteps
+  const cureStepsDisplay = isSensor ? adaptMiniStepsForSensor(cureSteps) : cureSteps
+  const [internalExpandedSection, setInternalExpandedSection] = useState<'prep' | 'cure' | null>(null)
+  const expandedSection = isPrepCureControlled ? (expandedPrepCure ?? null) : internalExpandedSection
+  const [internalPrepOpened, setInternalPrepOpened] = useState(false)
+  const [internalCureHasBeenOpened, setInternalCureHasBeenOpened] = useState(false)
   const secondAccordionNotifiedRef = useRef(false)
-  const skipPrepScrollRef = useRef(false)
-  const prepContentRef = useRef<HTMLDivElement>(null)
-  const cureContentRef = useRef<HTMLDivElement>(null)
-  const cureSectionRef = useRef<HTMLDivElement>(null)
 
-  // After page load, open the first drawer in place after 2s — no scroll or focus change.
+  /** Pulse: parent drives Standard Sensor; Mini uses linear prep → cure when uncontrolled. */
+  const pulsePrepEffective =
+    isSensor && isPrepCureControlled
+      ? Boolean(pulsePrepFromParent)
+      : !isPrepCureControlled && !internalPrepOpened && expandedSection !== 'prep'
+  const pulseCureEffective =
+    isSensor && isPrepCureControlled
+      ? Boolean(pulseCureFromParent)
+      : !isPrepCureControlled && internalPrepOpened && !internalCureHasBeenOpened && expandedSection !== 'cure'
+
+  // After page load, open Prep & Bond after 2s without scrolling the page (drawer expands below; viewport stays anchored).
   useEffect(() => {
+    if (isSensor || isPrepCureControlled) return
     const t = setTimeout(() => {
-      skipPrepScrollRef.current = true
-      setExpandedSection('prep')
-      setPrepOpened(true)
+      setInternalExpandedSection('prep')
+      setInternalPrepOpened(true)
     }, DELAY_OPEN_PREP_MS)
     return () => clearTimeout(t)
-  }, [])
-
-  // Pulse the second accordion when it scrolls into view (until the user opens it).
-  useEffect(() => {
-    const el = cureSectionRef.current
-    if (!el) return
-    const obs = new IntersectionObserver(
-      ([entry]) => setIsCureSectionInView(entry.isIntersecting),
-      { threshold: 0.2, rootMargin: '0px' }
-    )
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [])
+  }, [isSensor, isPrepCureControlled])
 
   const toggleSection = (section: 'prep' | 'cure') => {
-    if (expandedSection === section) {
-      setExpandedSection(null)
+    if (isPrepCureControlled) {
+      onPrepCureToggle!(section)
+      return
+    }
+    if (internalExpandedSection === section) {
+      setInternalExpandedSection(null)
     } else {
-      setExpandedSection(section)
-      if (section === 'prep' && !prepOpened) {
-        setPrepOpened(true)
+      setInternalExpandedSection(section)
+      if (section === 'prep' && !internalPrepOpened) {
+        setInternalPrepOpened(true)
       }
       if (section === 'cure') {
-        setCureHasBeenOpened(true)
+        setInternalCureHasBeenOpened(true)
         if (!secondAccordionNotifiedRef.current && onSecondAccordionOpened) {
           secondAccordionNotifiedRef.current = true
           onSecondAccordionOpened()
@@ -152,41 +188,35 @@ export function Step2MiniInstallation({ onSecondAccordionOpened }: Step2MiniInst
     }
   }
 
-  useEffect(() => {
-    if (expandedSection === 'prep') {
-      if (skipPrepScrollRef.current) {
-        skipPrepScrollRef.current = false
-        return
-      }
-      if (prepContentRef.current) {
-        setTimeout(() => {
-          prepContentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }, 100)
-      }
-    }
-    if (expandedSection === 'cure' && cureContentRef.current) {
-      setTimeout(() => {
-        cureContentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }, 100)
-    }
-  }, [expandedSection])
-
   return (
     <div className="mini-setup-step-container">
-      {/* Step Number Badge */}
-      <div className="mini-setup-step-badge-wrapper">
-        <div className="mini-setup-step-badge mini-setup-step-badge-step2">
-          <span className="mini-setup-step-badge-number">2</span>
-        </div>
-      </div>
+      {!isSensor && (
+        <>
+          {/* Step Number Badge */}
+          <div className="mini-setup-step-badge-wrapper">
+            <div className="mini-setup-step-badge mini-setup-step-badge-step2">
+              <span className="mini-setup-step-badge-number">2</span>
+            </div>
+          </div>
 
-      {/* Step Title */}
-      <div className="mini-setup-step-title-section">
-        <h2 className="mini-setup-step-title">Cement & Install</h2>
-        <p className="mini-setup-step-subtitle">
-          Prep the pipe ends, bond the T-Manifold permanently, allow the cement to cure, and verify a leak-free installation
-        </p>
-      </div>
+          {/* Step Title */}
+          <div className="mini-setup-step-title-section">
+            <h2 className="mini-setup-step-title">Cement & Install</h2>
+            <p className="mini-setup-step-subtitle">
+              Prep the pipe ends, bond the T-Manifold permanently, allow the cement to cure, and verify a leak-free installation
+            </p>
+          </div>
+        </>
+      )}
+
+      {isSensor && !hideSensorPartHeading && (
+        <div className="mini-setup-step-title-section mini-setup-step-title-section-sensor-part">
+          <h3 className="text-lg font-semibold text-gray-900">Part B — Cement &amp; install</h3>
+          <p className="mini-setup-step-subtitle mt-1">
+            Prep pipe ends, solvent-weld the T manifold, cure, and leak-test—same procedure as the AC Drain Wiz Mini.
+          </p>
+        </div>
+      )}
 
       {/* Safety reminder */}
       <div className="mini-setup-notice-callout">
@@ -203,7 +233,7 @@ export function Step2MiniInstallation({ onSecondAccordionOpened }: Step2MiniInst
 
       {/* Accordion 1: Prep & Bond */}
       <div
-        className={`mini-setup-accordion-section ${expandedSection === 'prep' ? 'mini-setup-accordion-section-expanded' : 'mini-setup-accordion-section-collapsed'} ${!prepOpened ? 'mini-setup-accordion-section-pulsating' : ''}`}
+        className={`mini-setup-accordion-section ${expandedSection === 'prep' ? 'mini-setup-accordion-section-expanded' : 'mini-setup-accordion-section-collapsed'} ${pulsePrepEffective ? 'mini-setup-accordion-section-pulsating' : ''}`}
       >
         <button
           className="mini-setup-accordion-header"
@@ -212,16 +242,14 @@ export function Step2MiniInstallation({ onSecondAccordionOpened }: Step2MiniInst
         >
           <div className="mini-setup-accordion-header-content">
             <div className="mini-setup-accordion-header-left">
-              {prepOpened ? (
-                <CheckCircleIcon className="mini-setup-accordion-status-icon mini-setup-accordion-status-icon-complete" />
-              ) : (
-                <div className="mini-setup-accordion-status-icon mini-setup-accordion-status-icon-pending" />
-              )}
+              <div className="mini-setup-accordion-wizard-step-badge" aria-hidden>
+                <span className="mini-setup-accordion-wizard-step-badge-number">{prepDrawerBadgeNumber}</span>
+              </div>
               <span className="mini-setup-accordion-title">Prep &amp; Bond</span>
             </div>
             <div className="mini-setup-accordion-header-right">
-              <span className={`mini-setup-accordion-badge ${prepOpened ? 'mini-setup-accordion-badge-complete' : 'mini-setup-accordion-badge-ready'}`}>
-                {prepOpened ? 'Complete' : '8 Steps'}
+              <span className="mini-setup-accordion-badge mini-setup-accordion-badge-ready">
+                {prepStepsDisplay.length} Steps
               </span>
               {expandedSection === 'prep' ? (
                 <ChevronUpIcon className="mini-setup-accordion-chevron" />
@@ -233,24 +261,24 @@ export function Step2MiniInstallation({ onSecondAccordionOpened }: Step2MiniInst
         </button>
 
         {expandedSection === 'prep' && (
-          <div className="mini-setup-accordion-content" ref={prepContentRef}>
-            <div className="mini-setup-installation-steps">
-              {prepSteps.map((step) => (
-                <div key={step.number} className="mini-setup-installation-step-card">
-                  <div className="mini-setup-installation-step-content">
-                    <div className="mini-setup-installation-step-number-wrapper">
-                      <div className="mini-setup-installation-step-number-badge">
-                        <span className="mini-setup-installation-step-number">{step.number}</span>
+          <div className="mini-setup-accordion-content">
+            <div className="sensor-setup-installation-steps mini-setup-accordion-sensor-steps">
+              {prepStepsDisplay.map((step) => (
+                <div key={step.number} className="sensor-setup-installation-step-card">
+                  <div className="sensor-setup-installation-step-content">
+                    <div className="sensor-setup-installation-step-number-wrapper">
+                      <div className="sensor-setup-installation-step-number-badge">
+                        <span className="sensor-setup-installation-step-number">{step.number}</span>
                       </div>
                     </div>
-                    <div className="mini-setup-installation-step-details">
-                      <h3 className="mini-setup-installation-step-title">{step.title}</h3>
-                      <p className="mini-setup-installation-step-description">{step.description}</p>
-                      <div className="mini-setup-installation-step-image-wrapper">
+                    <div className="sensor-setup-installation-step-details">
+                      <h3 className="sensor-setup-installation-step-title">{step.title}</h3>
+                      <p className="sensor-setup-installation-step-description">{step.description}</p>
+                      <div className="sensor-setup-installation-step-image-wrapper">
                         <img
                           src={step.image}
                           alt={step.alt}
-                          className="mini-setup-installation-step-image"
+                          className="sensor-setup-installation-step-image"
                         />
                       </div>
                     </div>
@@ -264,8 +292,7 @@ export function Step2MiniInstallation({ onSecondAccordionOpened }: Step2MiniInst
 
       {/* Accordion 2: Cure & Leak Test */}
       <div
-        ref={cureSectionRef}
-        className={`mini-setup-accordion-section ${expandedSection === 'cure' ? 'mini-setup-accordion-section-expanded' : 'mini-setup-accordion-section-collapsed'} ${isCureSectionInView && !cureHasBeenOpened ? 'mini-setup-accordion-section-pulsating' : ''}`}
+        className={`mini-setup-accordion-section ${expandedSection === 'cure' ? 'mini-setup-accordion-section-expanded' : 'mini-setup-accordion-section-collapsed'} ${pulseCureEffective ? 'mini-setup-accordion-section-pulsating' : ''}`}
       >
         <button
           className="mini-setup-accordion-header"
@@ -274,12 +301,14 @@ export function Step2MiniInstallation({ onSecondAccordionOpened }: Step2MiniInst
         >
           <div className="mini-setup-accordion-header-content">
             <div className="mini-setup-accordion-header-left">
-              <div className="mini-setup-accordion-status-icon mini-setup-accordion-status-icon-pending" />
+              <div className="mini-setup-accordion-wizard-step-badge" aria-hidden>
+                <span className="mini-setup-accordion-wizard-step-badge-number">{cureDrawerBadgeNumber}</span>
+              </div>
               <span className="mini-setup-accordion-title">Cure &amp; Leak Test</span>
             </div>
             <div className="mini-setup-accordion-header-right">
               <span className="mini-setup-accordion-badge mini-setup-accordion-badge-ready">
-                3 Steps
+                {cureStepsDisplay.length} Steps
               </span>
               {expandedSection === 'cure' ? (
                 <ChevronUpIcon className="mini-setup-accordion-chevron" />
@@ -291,34 +320,49 @@ export function Step2MiniInstallation({ onSecondAccordionOpened }: Step2MiniInst
         </button>
 
         {expandedSection === 'cure' && (
-          <div className="mini-setup-accordion-content" ref={cureContentRef}>
-            <div className="mini-setup-installation-steps">
-              {cureSteps.map((step) => (
-                <div key={step.number} className={`mini-setup-installation-step-card ${step.isWarning ? 'mini-setup-installation-step-card-warning' : ''}`}>
-                  <div className="mini-setup-installation-step-content">
-                    <div className="mini-setup-installation-step-number-wrapper">
-                      <div className={`mini-setup-installation-step-number-badge ${step.isWarning ? 'mini-setup-installation-step-number-badge-warning' : ''}`}>
+          <div className="mini-setup-accordion-content">
+            <div className="sensor-setup-installation-steps mini-setup-accordion-sensor-steps">
+              {cureStepsDisplay.map((step) => (
+                <div
+                  key={step.number}
+                  className={`sensor-setup-installation-step-card ${
+                    step.isWarning ? 'mini-setup-installation-step-card-warning' : ''
+                  }`}
+                >
+                  <div className="sensor-setup-installation-step-content">
+                    <div className="sensor-setup-installation-step-number-wrapper">
+                      <div
+                        className={`sensor-setup-installation-step-number-badge ${
+                          step.isWarning ? 'mini-setup-installation-step-number-badge-warning' : ''
+                        }`}
+                      >
                         {step.isWarning ? (
                           <ExclamationTriangleIcon className="mini-setup-installation-step-warning-icon" />
                         ) : (
-                          <span className="mini-setup-installation-step-number">{step.number}</span>
+                          <span className="sensor-setup-installation-step-number">{step.number}</span>
                         )}
                       </div>
                     </div>
-                    <div className="mini-setup-installation-step-details">
-                      <h3 className={`mini-setup-installation-step-title ${step.isWarning ? 'mini-setup-installation-step-title-warning' : ''}`}>{step.title}</h3>
-                      <p className="mini-setup-installation-step-description">{step.description}</p>
+                    <div className="sensor-setup-installation-step-details">
+                      <h3
+                        className={`sensor-setup-installation-step-title ${
+                          step.isWarning ? 'mini-setup-installation-step-title-warning' : ''
+                        }`}
+                      >
+                        {step.title}
+                      </h3>
+                      <p className="sensor-setup-installation-step-description">{step.description}</p>
                       {step.isCure && (
                         <div className="mini-setup-cure-time-badge">
                           <ClockIcon className="mini-setup-cure-time-badge-icon" />
                           <span>Minimum 2 hrs (drain line) — 24 hrs recommended for full cure</span>
                         </div>
                       )}
-                      <div className="mini-setup-installation-step-image-wrapper">
+                      <div className="sensor-setup-installation-step-image-wrapper">
                         <img
                           src={step.image}
                           alt={step.alt}
-                          className="mini-setup-installation-step-image"
+                          className="sensor-setup-installation-step-image"
                         />
                       </div>
                     </div>

@@ -1,5 +1,15 @@
 import { useNavigate } from 'react-router-dom'
-import { ShieldCheckIcon, EnvelopeIcon, EyeIcon, LockClosedIcon, UserGroupIcon, GlobeAltIcon } from '@heroicons/react/24/outline'
+import {
+  ShieldCheckIcon,
+  EnvelopeIcon,
+  EyeIcon,
+  LockClosedIcon,
+  UserGroupIcon,
+  GlobeAltIcon,
+  EnvelopeOpenIcon,
+  ChatBubbleLeftRightIcon,
+  PrinterIcon,
+} from '@heroicons/react/24/outline'
 import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 
 export function PrivacyPolicyPage() {
@@ -348,27 +358,38 @@ export function PrivacyPolicyPage() {
             </div>
           </div>
 
-          {/* Quick Actions */}
+          {/* Quick Actions — match support hub CTA styling (Product Support, etc.) */}
           <div className="mt-12 pt-8 border-t border-gray-200">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <button
-                onClick={() => navigate('/email-preferences')}
-                className="btn-secondary w-full"
-              >
-                Manage Email Preferences
-              </button>
-              <button
-                onClick={() => navigate('/contact')}
-                className="btn-secondary w-full"
-              >
-                Contact Privacy Team
-              </button>
-              <button
-                onClick={() => window.print()}
-                className="btn-secondary w-full"
-              >
-                Print This Policy
-              </button>
+            <div className="support-section-cta-box">
+              <p className="support-section-cta-text">
+                <strong>Quick actions</strong> — manage preferences, reach our privacy team, or print this policy.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <button
+                  type="button"
+                  onClick={() => navigate('/email-preferences')}
+                  className="support-action-button-primary support-action-button-large w-full justify-center"
+                >
+                  <EnvelopeOpenIcon className="support-action-icon" aria-hidden />
+                  Manage email preferences
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigate('/contact')}
+                  className="support-action-button-secondary support-action-button-large w-full justify-center"
+                >
+                  <ChatBubbleLeftRightIcon className="support-action-icon" aria-hidden />
+                  Contact privacy team
+                </button>
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="support-action-button-secondary support-action-button-large w-full justify-center"
+                >
+                  <PrinterIcon className="support-action-icon" aria-hidden />
+                  Print this policy
+                </button>
+              </div>
             </div>
           </div>
         </div>

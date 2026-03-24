@@ -1,11 +1,32 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { SetupWizard } from '../components/setup/SetupWizard'
+import { SensorSetupModelPicker } from '../components/setup/SensorSetupModelPicker'
 import { Step1CreateAccount } from '../components/setup/steps/Step1CreateAccount'
-import { Step2SensorSetup, type Step2SensorSetupHandle } from '../components/setup/steps/Step2SensorSetup'
+import { type Step2SensorSetupHandle } from '../components/setup/steps/Step2SensorSetup'
 import { Step3AssignCustomer } from '../components/setup/steps/Step3AssignCustomer'
+import { Step3StandardSensorUnified } from '../components/setup/steps/Step3StandardSensorUnified'
+import { Step4WifiSensorUnified } from '../components/setup/steps/Step4WifiSensorUnified'
+import { StandardSensorManifoldStep } from '../components/setup/steps/StandardSensorManifoldStep'
+import {
+  parseSensorSetupModelParam,
+  type SensorSetupModelSlug,
+  SENSOR_STANDARD_SHORT,
+  SENSOR_WIFI_SHORT,
+} from '../config/acdwKnowledge'
 
-const TOTAL_STEPS = 3
+function totalStepsForModel(model: SensorSetupModelSlug | null): number {
+  if (model === 'standard') return 3
+  if (model === 'wifi') return 5
+  return 3
+}
+
+/** Wizard step index where on-site sensor install + Wi‑Fi UI lives (power, pairing, etc.). */
+function physicalInstallStepIndex(model: SensorSetupModelSlug | null): number {
+  if (model === 'standard') return 3
+  if (model === 'wifi') return 4
+  return 2
+}
 
 export function SensorSetupPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -13,42 +34,103 @@ export function SensorSetupPage() {
   const [wifiInteracted, setWifiInteracted] = useState(false)
   const [physicalOpened, setPhysicalOpened] = useState(false)
   const [step2Model, setStep2Model] = useState<'nonwifi' | 'wifi' | null>(null)
+  /** Manifold prep/cure: Standard wizard step 2 or WiFi wizard step 3 — Continue disabled until Cure & Leak Test opened. */
+  const [manifoldPrepCureReady, setManifoldPrepCureReady] = useState(false)
   const step2Ref = useRef<Step2SensorSetupHandle>(null)
 
-  // Read step from URL on mount and when URL changes (browser back/forward)
+  const urlModel = parseSensorSetupModelParam(searchParams.get('model'))
+  const totalSteps = totalStepsForModel(urlModel)
+  const physicalStep = physicalInstallStepIndex(urlModel)
+
+  const mergeParams = useCallback(
+    (
+      updates: { step?: number; model?: SensorSetupModelSlug | null },
+      replaceHistory = false
+    ) => {
+      const next = new URLSearchParams(searchParams)
+      if (updates.step !== undefined) {
+        next.set('step', String(updates.step))
+      }
+      if (updates.model !== undefined) {
+        if (updates.model === null) {
+          next.delete('model')
+        } else {
+          next.set('model', updates.model)
+        }
+      }
+      setSearchParams(next, { replace: replaceHistory })
+    },
+    [searchParams, setSearchParams]
+  )
+
+  // Sync step + model from URL
   useEffect(() => {
     const stepParam = searchParams.get('step')
+    if (!urlModel) {
+      setCurrentStep(1)
+      setWifiInteracted(false)
+      setPhysicalOpened(false)
+      setStep2Model(null)
+      setManifoldPrepCureReady(false)
+      return
+    }
+
+    const maxStep = totalStepsForModel(urlModel)
+
     if (stepParam) {
       const step = parseInt(stepParam, 10)
-      // Validate step number
-      if (step >= 1 && step <= TOTAL_STEPS) {
+      if (step >= 1 && step <= maxStep) {
         setCurrentStep(step)
-        // Reset step 2 interaction state when leaving step 2
-        if (step !== 2) {
+        if (urlModel === 'standard' && step === 1) {
+          setManifoldPrepCureReady(false)
+        }
+        if (urlModel === 'wifi' && step === 2) {
+          setManifoldPrepCureReady(false)
+        }
+        const phys = physicalInstallStepIndex(urlModel)
+        if (step !== phys) {
           setWifiInteracted(false)
           setPhysicalOpened(false)
           setStep2Model(null)
         }
       } else {
-        // Invalid step number, redirect to step 1
-        setSearchParams({ step: '1' }, { replace: true })
+        mergeParams({ step: 1 }, true)
         setCurrentStep(1)
+        if (urlModel === 'standard') setManifoldPrepCureReady(false)
+        if (urlModel === 'wifi') setManifoldPrepCureReady(false)
       }
     } else {
-      // No step parameter, default to step 1 and add it to URL
-      setSearchParams({ step: '1' }, { replace: true })
+      mergeParams({ step: 1 }, true)
       setCurrentStep(1)
+      if (urlModel === 'standard') setManifoldPrepCureReady(false)
+      if (urlModel === 'wifi') setManifoldPrepCureReady(false)
     }
-  }, [searchParams, setSearchParams])
+  }, [searchParams, urlModel, mergeParams])
+
+  /** Going back to the measure manifold step resets the prep/cure gate. */
+  useEffect(() => {
+    if (urlModel === 'standard' && currentStep === 1) {
+      setManifoldPrepCureReady(false)
+    }
+    if (urlModel === 'wifi' && currentStep === 2) {
+      setManifoldPrepCureReady(false)
+    }
+  }, [urlModel, currentStep])
 
   const handleStepChange = (step: number) => {
-    // Validate step number
-    if (step >= 1 && step <= TOTAL_STEPS) {
+    if (!urlModel) return
+    const maxStep = totalStepsForModel(urlModel)
+    if (step >= 1 && step <= maxStep) {
+      if (urlModel === 'standard' && step === 1) {
+        setManifoldPrepCureReady(false)
+      }
+      if (urlModel === 'wifi' && step === 2) {
+        setManifoldPrepCureReady(false)
+      }
       setCurrentStep(step)
-      // Update URL with new step (pushes to history for browser back button)
-      setSearchParams({ step: step.toString() }, { replace: false })
-      // Reset step 2 interaction state when leaving step 2
-      if (step !== 2) {
+      mergeParams({ step })
+      const phys = physicalInstallStepIndex(urlModel)
+      if (step !== phys) {
         setWifiInteracted(false)
         setPhysicalOpened(false)
         setStep2Model(null)
@@ -61,48 +143,101 @@ export function SensorSetupPage() {
   }
 
   const handleContinueClick = (): boolean => {
-    // On Step 2, check if Step2SensorSetup wants to handle the Continue click
-    if (currentStep === 2 && step2Ref.current) {
+    if (!urlModel) return false
+    if (currentStep === physicalStep && step2Ref.current) {
       return step2Ref.current.handleContinueClick()
     }
-    return false // Proceed normally
+    return false
   }
 
   const renderStep = () => {
+    if (!urlModel) return null
+
+    if (urlModel === 'standard') {
+      switch (currentStep) {
+        case 1:
+          return <StandardSensorManifoldStep key="standard-manifold-measure" phase="measure" />
+        case 2:
+          return (
+            <StandardSensorManifoldStep
+              key="standard-manifold-prep-cure"
+              phase="prepCure"
+              onManifoldInstallReady={() => setManifoldPrepCureReady(true)}
+            />
+          )
+        case 3:
+          return (
+            <Step3StandardSensorUnified
+              ref={step2Ref}
+              key="step-standard-unified"
+              onWifiInteraction={handleWifiInteraction}
+              onPhysicalOpened={() => setPhysicalOpened(true)}
+              onModelSelect={setStep2Model}
+            />
+          )
+        default:
+          return null
+      }
+    }
+
+    // WiFi — 5 steps: account → manifold (measure → prep/cure) → install/Wi‑Fi → assign
     switch (currentStep) {
       case 1:
         return <Step1CreateAccount />
       case 2:
+        return <StandardSensorManifoldStep key="wifi-manifold-measure" phase="measure" flow="wifi" />
+      case 3:
         return (
-          <Step2SensorSetup
+          <StandardSensorManifoldStep
+            key="wifi-manifold-prep-cure"
+            phase="prepCure"
+            flow="wifi"
+            onManifoldInstallReady={() => setManifoldPrepCureReady(true)}
+          />
+        )
+      case 4:
+        return (
+          <Step4WifiSensorUnified
             ref={step2Ref}
+            key="step-wifi-install-unified"
             onWifiInteraction={handleWifiInteraction}
             onPhysicalOpened={() => setPhysicalOpened(true)}
             onModelSelect={setStep2Model}
           />
         )
-      case 3:
-        return <Step3AssignCustomer />
+      case 5:
+        return <Step3AssignCustomer setupModel="wifi" wizardStepNumber={5} />
       default:
         return null
     }
   }
 
-  // Step 2: require model selection, then path-specific completion (Non-WiFi: physical opened; WiFi: wifi interacted)
   const isContinueDisabled =
-    currentStep === 2 &&
-    (step2Model === null ||
-      (step2Model === 'nonwifi' && !physicalOpened) ||
-      (step2Model === 'wifi' && !wifiInteracted))
+    (urlModel === 'standard' && currentStep === 2 && !manifoldPrepCureReady) ||
+    (urlModel === 'wifi' && currentStep === 3 && !manifoldPrepCureReady) ||
+    (currentStep === physicalStep &&
+      (step2Model === null ||
+        (step2Model === 'nonwifi' && !physicalOpened) ||
+        (step2Model === 'wifi' && !wifiInteracted)))
+
+  if (!urlModel) {
+    return <SensorSetupModelPicker />
+  }
+
+  const wizardHeaderTitle =
+    urlModel === 'standard'
+      ? `${SENSOR_STANDARD_SHORT} Setup`
+      : `${SENSOR_WIFI_SHORT} Setup`
 
   return (
     <SetupWizard
-      totalSteps={TOTAL_STEPS}
+      totalSteps={totalSteps}
       currentStep={currentStep}
       onStepChange={handleStepChange}
-      continueLabel={currentStep === TOTAL_STEPS ? 'Finish' : 'Continue'}
+      continueLabel={currentStep === totalSteps ? 'Finish' : 'Continue'}
       isContinueDisabled={isContinueDisabled}
       onContinueClick={handleContinueClick}
+      headerTitle={wizardHeaderTitle}
     >
       {renderStep()}
     </SetupWizard>

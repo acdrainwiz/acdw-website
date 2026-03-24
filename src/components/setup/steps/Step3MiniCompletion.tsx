@@ -64,7 +64,7 @@ export function Step3MiniCompletion() {
                 </div>
               </div>
               <div className="mini-setup-step-details">
-                <h3 className="mini-setup-step-title">{step.title}</h3>
+                <h3 className="mini-setup-step-card-title">{step.title}</h3>
                 <p className="mini-setup-step-description">{step.description}</p>
                 <div className="mini-setup-step-image-wrapper">
                   <img

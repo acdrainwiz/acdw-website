@@ -15,7 +15,7 @@
  */
 
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import {
   ArrowLeftIcon,
@@ -36,9 +36,19 @@ import {
   ClipboardDocumentListIcon,
   Cog6ToothIcon,
   //PlayIcon,
-  PhoneIcon
+  PhoneIcon,
+  BookOpenIcon,
+  ArrowRightIcon
 } from '@heroicons/react/24/outline'
-import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
+import {
+  SUPPORT_CONTACT,
+  SENSOR_STANDARD_SHORT,
+  SENSOR_WIFI_SHORT,
+  SENSOR_STANDARD_DISPLAY,
+  SENSOR_WIFI_DISPLAY,
+  WIFI_REQUIREMENT,
+  buildSensorSetupHref,
+} from '../config/acdwKnowledge'
 
 export function SensorProductPage() {
   const navigate = useNavigate()
@@ -183,32 +193,41 @@ export function SensorProductPage() {
   const howItWorksSteps = [
     {
       number: 1,
-      title: 'Professional Installation',
-      description: 'HVAC Pro installs AC Drain Wiz Mini + Sensor. Sensor pairs automatically with dashboard. No calibration needed.',
+      title: 'Professional installation',
+      description:
+        'The sensor installs in the bayonet port on the included Transparent T Manifold—you do not need the AC Drain Wiz Mini first. WiFi model: connect to 2.4 GHz Wi‑Fi and your contractor account. Standard model: 24V power and on-site LED checks only—no Wi‑Fi pairing.',
       icon: WrenchScrewdriverIcon
     },
     {
       number: 2,
-      title: 'Real-Time Monitoring',
-      description: 'Sensor continuously monitors drain line. Data syncs to cloud dashboard. Status visible 24/7.',
+      title: 'Drain line monitoring',
+      description:
+        'WiFi Sensor Switch: water level and status sync to the monitoring dashboard. Standard Sensor Switch (Non-WiFi): capacitive sensing with automatic AC shutdown at 95%—no cloud connection.',
       icon: EyeIcon
     },
     {
       number: 3,
-      title: 'Smart Alerts',
-      description: 'System detects issues early. Alerts sent to contractor and homeowner. Actionable notifications with clear next steps.',
+      title: 'Alerts & shutdown',
+      description:
+        'Both models shut down the AC at 95% water level. WiFi adds email/SMS and service alerts between 50–90% before shutdown.',
       icon: BellAlertIcon
     },
     {
       number: 4,
-      title: 'Proactive Service',
-      description: 'Contractor receives maintenance alerts and creates service calls manually. Assign technicians to specific locations for faster, more controlled service delivery.',
+      title: 'Proactive service',
+      description:
+        'WiFi: contractors use dashboard insights and create service calls manually. Standard: reliable overflow protection for jobs where remote monitoring is not required.',
       icon: ClockIcon
     }
   ]
 
   // FAQ data
   const faqs = [
+    {
+      question: 'What is the difference between the Standard and WiFi Sensor Switch?',
+      answer:
+        'The AC Drain Wiz Standard Sensor Switch (Non-WiFi) provides capacitive water sensing, automatic AC shutdown at 95% water level, no moving parts, and fail-safe shutdown if power is lost. The AC Drain Wiz WiFi Sensor Switch adds remote water-level monitoring, contractor account monitoring, email notifications, SMS notifications, and configurable service alerts from 50% to 90% water level so contractors can schedule preventative maintenance before shutdown occurs.'
+    },
     {
       question: 'Can I purchase the Sensor directly?',
       answer: 'The Sensor requires professional installation and is available through authorized HVAC contractors. Homeowners should contact a local HVAC professional for installation. Contractors can create an account to access pricing and purchase directly.'
@@ -219,7 +238,7 @@ export function SensorProductPage() {
     },
     {
       question: 'What does professional installation involve?',
-      answer: 'Professional installation includes mounting the Sensor to your AC Drain Wiz Mini, connecting to your Wi-Fi network, and pairing with the monitoring dashboard. The entire process typically takes 15-20 minutes.'
+      answer: `${SENSOR_STANDARD_DISPLAY}: the guide starts with solvent-weld install of the Transparent T manifold on the 3/4" drain line, then power and touch testing, then final bayonet mounting and maintenance tips—no portal assignment step. ${SENSOR_WIFI_DISPLAY}: create your monitoring account first, then physical install and ${WIFI_REQUIREMENT} Wi‑Fi pairing, then assign the sensor in the portal. Typical on-site time is about 25–40 minutes for the Standard model and about 15–20 minutes for the WiFi model depending on site conditions.`
     },
     {
       question: 'How do I get pricing as a contractor?',
@@ -227,7 +246,7 @@ export function SensorProductPage() {
     },
     {
       question: 'What dashboard features are included?',
-      answer: 'The dashboard includes real-time monitoring, smart alerts, customer management, employee management, service call creation, alerts management, and historical data tracking. All features are included with your Sensor purchase.'
+      answer: `WiFi Sensor Switch: the monitoring application includes real-time status, smart alerts, customer and property records, service call workflows, and historical data—aligned with your contractor account. The Standard Sensor Switch (Non-WiFi) does not connect to the remote dashboard; it provides local overflow protection and automatic shutdown at 95% water level.`
     },
     {
       question: 'Can I manage multiple customers?',
@@ -243,7 +262,7 @@ export function SensorProductPage() {
     },
     {
       question: 'Can I monitor multiple properties?',
-      answer: 'Absolutely. Property managers can monitor all properties from one dashboard, set up automated alerts, and manage service calls across multiple locations.'
+      answer: 'With the WiFi Sensor Switch, property managers and contractors can monitor multiple properties from the dashboard, configure alerts, and manage service workflows across locations. The Standard Sensor Switch (Non-WiFi) does not provide remote multi-property monitoring.'
     },
     {
       question: 'What training is available?',
@@ -251,14 +270,17 @@ export function SensorProductPage() {
     }
   ]
 
-  // Specifications
-  const specifications = [
-    { label: 'Dimensions', value: '2" × 3" × 1.5"' },
-    { label: 'Power', value: 'Battery (2-year life) or DC + backup battery' },
-    { label: 'Connectivity', value: 'Wi-Fi' },
-    { label: 'Integration', value: 'Snap-to-lock bayonet (ACDW Mini)' },
-    { label: 'Installation Time', value: '15 minutes (with Mini)' },
-    { label: 'Compliance', value: 'IMC 307.2.3' }
+  const specificationCompareRows = [
+    { label: 'Dimensions', standard: '2" × 3" × 1.5"', wifi: '2" × 3" × 1.5"' },
+    { label: 'Power', standard: '24V from air handler', wifi: '24V and/or Li-ion backup (~2 years)' },
+    { label: 'Connectivity', standard: 'None (local shutdown only)', wifi: `Wi‑Fi (${WIFI_REQUIREMENT} only)` },
+    {
+      label: 'Integration',
+      standard: 'Snap-to-lock bayonet (included T manifold)',
+      wifi: 'Snap-to-lock bayonet (included T manifold)'
+    },
+    { label: 'Typical install time', standard: '~15 minutes', wifi: '~15–20 minutes' },
+    { label: 'Compliance', standard: 'IMC 307.2.3', wifi: 'IMC 307.2.3' }
   ]
 
   // Launch Button Redirect: pause pro/pm account creation during launch
@@ -291,11 +313,10 @@ export function SensorProductPage() {
           <div className="sensor-product-hero-content-wrapper">
             <div className="sensor-product-hero-info">
               <h1 className="sensor-product-hero-title">
-                Know Before It Clogs. Monitor Your AC Drain Line in Real Time
+                Stop Overflows: Standard or WiFi Sensor Switch
               </h1>
               <p className="sensor-product-hero-subtitle">
-                Real-time drain line monitoring with smart alerts, fleet management, and seamless integration. 
-                Professional installation required—contact us to connect with a local HVAC Pro or request contractor pricing.
+                Two sensor models share the same capacitive overflow protection—automatic AC shutdown at 95% water level. The WiFi Sensor Switch adds remote monitoring, alerts, and contractor dashboard tools on a {WIFI_REQUIREMENT} network. Professional installation required—contact us for a local HVAC Pro or contractor pricing.
               </p>
             </div>
 
@@ -429,14 +450,58 @@ export function SensorProductPage() {
                   </div>
                   <div className="sensor-product-trust-badge">
                     <CheckIcon className="sensor-product-trust-icon" />
-                    <span>24/7 Monitoring</span>
+                    <span>Standard &amp; WiFi models</span>
                   </div>
                   <div className="sensor-product-trust-badge">
                     <BoltIcon className="sensor-product-trust-icon" />
-                    <span>Smart Alerts</span>
+                    <span>WiFi adds remote tools</span>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Standard vs WiFi — comparison */}
+      <section className="sensor-product-variant-compare">
+        <div className="sensor-product-variant-compare-inner">
+          <h2 className="product-section-title">Choose your Sensor model</h2>
+          <p className="sensor-product-section-subtitle sensor-product-variant-compare-intro">
+            Both include a Transparent T Manifold for install—you do not need the AC Drain Wiz Mini first. Pick the model that matches how you want to service and monitor the home.
+          </p>
+          <div className="sensor-product-variant-compare-grid">
+            <div className="sensor-product-variant-card">
+              <h3 className="sensor-product-variant-card-title">{SENSOR_STANDARD_SHORT}</h3>
+              <p className="sensor-product-variant-card-desc">
+                Local overflow protection: capacitive sensing, automatic AC shutdown at 95%, no moving parts, fail-safe on power loss. No Wi‑Fi setup and no remote dashboard requirement.
+              </p>
+              <ul className="sensor-product-variant-card-list">
+                <li>
+                  <CheckIcon className="sensor-product-variant-card-check" />
+                  Ideal when remote monitoring is not required
+                </li>
+                <li>
+                  <CheckIcon className="sensor-product-variant-card-check" />
+                  LED: green = active; flashing red = test; solid red = shutdown
+                </li>
+              </ul>
+            </div>
+            <div className="sensor-product-variant-card sensor-product-variant-card-wifi">
+              <h3 className="sensor-product-variant-card-title">{SENSOR_WIFI_SHORT}</h3>
+              <p className="sensor-product-variant-card-desc">
+                Everything the Standard model does on site, plus remote water-level monitoring, email/SMS alerts, contractor app, and service alerts between 50–90% (shutdown still at 95%). Lithium backup battery (~2 years) on the WiFi model.
+              </p>
+              <ul className="sensor-product-variant-card-list">
+                <li>
+                  <CheckIcon className="sensor-product-variant-card-check" />
+                  Requires {WIFI_REQUIREMENT} Wi‑Fi for the monitoring dashboard (5 GHz not supported)
+                </li>
+                <li>
+                  <CheckIcon className="sensor-product-variant-card-check" />
+                  Connectivity is Wi‑Fi only—no Bluetooth pairing
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -447,7 +512,7 @@ export function SensorProductPage() {
         <div className="sensor-product-value-props-content">
           <h2 className="product-section-title">Built for Everyone</h2>
           <p className="sensor-product-section-subtitle">
-            Whether you're a homeowner, HVAC professional, or property manager, the Sensor delivers value tailored to your needs.
+            Whether you're a homeowner, HVAC professional, or property manager, the Sensor family delivers overflow protection—with optional remote monitoring and fleet tools on the WiFi Sensor Switch.
           </p>
           
           <div className="sensor-product-value-props-grid">
@@ -483,7 +548,7 @@ export function SensorProductPage() {
         <div className="sensor-product-visibility-content">
           <h2 className="product-section-title">See What's Happening, When It's Happening</h2>
           <p className="sensor-product-section-subtitle">
-            Real-time monitoring gives you instant visibility into your drain line status without opening the unit or cutting pipes.
+            With the WiFi Sensor Switch, the monitoring dashboard reflects sensor state in real time. The Standard Sensor Switch (Non-WiFi) focuses on reliable on-site shutdown protection without remote connectivity.
           </p>
           
           <div className="sensor-product-visibility-grid">
@@ -503,7 +568,7 @@ export function SensorProductPage() {
         <div className="sensor-product-alerts-content">
           <h2 className="product-section-title">Stop Problems Before They Start</h2>
           <p className="sensor-product-section-subtitle">
-            Proactive cleaning eliminates blockages before they cause overflows—saving time, money, and preventing emergency service calls.
+            On the WiFi Sensor Switch, proactive service alerts and notifications help you schedule maintenance before shutdown. Both models protect against overflow with automatic AC shutdown at 95% water level.
           </p>
           
           <div className="sensor-product-alerts-grid">
@@ -523,7 +588,7 @@ export function SensorProductPage() {
         <div className="sensor-product-fleet-content">
           <h2 className="product-section-title">Manage Every Installation From One Dashboard</h2>
           <p className="sensor-product-section-subtitle">
-            Turn every sensor into a recurring touchpoint. Monitor all installations, schedule service, and identify upsell opportunities.
+            WiFi Sensor Switch: turn every install into a recurring touchpoint—monitor sites, schedule service, and review alerts from one dashboard. Standard Sensor Switch installs remain ideal when remote monitoring is not required.
           </p>
           
           <div className="sensor-product-fleet-grid">
@@ -625,6 +690,31 @@ export function SensorProductPage() {
             ))}
           </div>
 
+          <div className="sensor-product-install-guides">
+            <p className="sensor-product-install-guides-eyebrow">Installation resources</p>
+            <p className="sensor-product-install-guides-intro">
+              Step-by-step contractor guides with screenshots. Standard: T manifold install, then power and test, then final bayonet mount and maintenance tips (includes Mini cross-sell). WiFi: monitoring account, physical install, Wi‑Fi pairing, then customer assignment.
+            </p>
+            <div className="sensor-product-install-guides-buttons">
+              <Link
+                to={buildSensorSetupHref({ model: 'standard', step: 1 })}
+                className="sensor-product-install-guide-button"
+              >
+                <BookOpenIcon className="sensor-product-install-guide-button-icon" aria-hidden />
+                <span>{SENSOR_STANDARD_SHORT} guide</span>
+                <ArrowRightIcon className="sensor-product-install-guide-button-arrow" aria-hidden />
+              </Link>
+              <Link
+                to={buildSensorSetupHref({ model: 'wifi', step: 1 })}
+                className="sensor-product-install-guide-button"
+              >
+                <BookOpenIcon className="sensor-product-install-guide-button-icon" aria-hidden />
+                <span>{SENSOR_WIFI_SHORT} guide</span>
+                <ArrowRightIcon className="sensor-product-install-guide-button-arrow" aria-hidden />
+              </Link>
+            </div>
+          </div>
+
           {/* Installation Video Placeholder */}
         {/*  <div className="product-installation-video">*/}
         {/*    <div className="product-installation-video-placeholder">*/}
@@ -644,11 +734,32 @@ export function SensorProductPage() {
       <section className="product-specs">
         <div className="product-specs-content">
           <h2 className="product-section-title">Specifications</h2>
-          <div className="product-specs-grid">
-            {specifications.map((spec, index) => (
-              <div key={index} className="sensor-product-spec-item">
-                <span className="sensor-product-spec-label">{spec.label}</span>
-                <span className="sensor-product-spec-value">{spec.value}</span>
+          <p className="sensor-product-spec-compare-lead">
+            Side-by-side reference for {SENSOR_STANDARD_SHORT} and {SENSOR_WIFI_SHORT}.
+          </p>
+          <div className="sensor-product-spec-compare" role="table" aria-label="Sensor specifications by model">
+            <div className="sensor-product-spec-compare-row sensor-product-spec-compare-row-head" role="row">
+              <div className="sensor-product-spec-compare-cell" role="columnheader">
+                {' '}
+              </div>
+              <div className="sensor-product-spec-compare-cell" role="columnheader">
+                {SENSOR_STANDARD_SHORT}
+              </div>
+              <div className="sensor-product-spec-compare-cell" role="columnheader">
+                {SENSOR_WIFI_SHORT}
+              </div>
+            </div>
+            {specificationCompareRows.map((row) => (
+              <div key={row.label} className="sensor-product-spec-compare-row" role="row">
+                <div className="sensor-product-spec-compare-cell sensor-product-spec-compare-label" role="rowheader">
+                  {row.label}
+                </div>
+                <div className="sensor-product-spec-compare-cell" role="cell">
+                  {row.standard}
+                </div>
+                <div className="sensor-product-spec-compare-cell" role="cell">
+                  {row.wifi}
+                </div>
               </div>
             ))}
           </div>

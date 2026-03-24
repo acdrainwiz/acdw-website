@@ -1,20 +1,53 @@
 import { useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react'
 import { 
   ExclamationTriangleIcon,
+  CheckCircleIcon,
   ChevronDownIcon,
   ChevronUpIcon,
   Battery100Icon,
   BoltIcon,
   CpuChipIcon,
   DevicePhoneMobileIcon,
-  WifiIcon
+  WifiIcon,
+  WrenchScrewdriverIcon,
+  BeakerIcon
 } from '@heroicons/react/24/outline'
-import { SENSOR_STANDARD_DISPLAY, SENSOR_STANDARD_SHORT, SENSOR_WIFI_DISPLAY, SENSOR_WIFI_SHORT } from '../../../config/acdwKnowledge'
+import {
+  SENSOR_STANDARD_DISPLAY,
+  SENSOR_STANDARD_SHORT,
+  SENSOR_WIFI_DISPLAY,
+  SENSOR_WIFI_SHORT,
+} from '../../../config/acdwKnowledge'
 
 interface Step2SensorSetupProps {
   onWifiInteraction?: () => void
   onPhysicalOpened?: () => void
   onModelSelect?: (model: 'nonwifi' | 'wifi') => void
+  /** When set (e.g. from URL), pre-select WiFi vs Standard path */
+  presetModel?: 'nonwifi' | 'wifi' | null
+  /**
+   * When true, the user arrived via a model-specific URL (`?model=`) — model is pre-selected.
+   * (Previously showed a separate locked banner; the same model cards are always shown now.)
+   */
+  lockModelSelection?: boolean
+  /** Wizard step index shown in the badge (e.g. 2 legacy WiFi; 4 unified WiFi install step). */
+  wizardStepNumber?: 1 | 2 | 3 | 4 | 5
+  /** Standard 3-step flow: T manifold was installed in wizard steps 1–2 */
+  manifoldInstalledInPriorWizardStep?: boolean
+  /** When embedded in a parent that already shows the wizard title (e.g. unified step 3). */
+  omitWizardHeader?: boolean
+  /** Hide the Standard vs WiFi model cards (e.g. Standard-only unified step; model is implicit). */
+  hideModelSelector?: boolean
+  /** When true, omit the Unbox callout (shown on Standard manifold step 1 instead). */
+  hideUnboxCallout?: boolean
+  /** Badge number on the Physical Setup drawer; defaults to `wizardStepNumber`. */
+  physicalDrawerBadgeNumber?: 1 | 2 | 3 | 4 | 5
+  /** Open Physical Setup on first paint (e.g. unified Standard step 3). */
+  initialPhysicalExpanded?: boolean
+  /**
+   * When true, do not scroll the open Physical/WiFi accordion into view on expand (avoids jump on load when `initialPhysicalExpanded` is set—e.g. WiFi step 4).
+   */
+  suppressAccordionScrollIntoView?: boolean
 }
 
 export interface Step2SensorSetupHandle {
@@ -22,10 +55,44 @@ export interface Step2SensorSetupHandle {
 }
 
 export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSetupProps>(
-  ({ onWifiInteraction, onPhysicalOpened, onModelSelect }, ref) => {
-  const [selectedModel, setSelectedModel] = useState<'nonwifi' | 'wifi' | null>(null)
-  const [expandedSection, setExpandedSection] = useState<'physical' | 'wifi' | null>(null)
-  const [physicalHasBeenOpened, setPhysicalHasBeenOpened] = useState(false)
+  (
+    {
+      onWifiInteraction,
+      onPhysicalOpened,
+      onModelSelect,
+      presetModel = null,
+      lockModelSelection = false,
+      wizardStepNumber = 2,
+      manifoldInstalledInPriorWizardStep = false,
+      omitWizardHeader = false,
+      hideModelSelector = false,
+      hideUnboxCallout = false,
+      physicalDrawerBadgeNumber,
+      initialPhysicalExpanded = false,
+      suppressAccordionScrollIntoView = false,
+    },
+    ref
+  ) => {
+  const [selectedModel, setSelectedModel] = useState<'nonwifi' | 'wifi' | null>(presetModel ?? null)
+
+  useEffect(() => {
+    if (presetModel) {
+      setSelectedModel(presetModel)
+      onModelSelect?.(presetModel)
+    }
+  }, [presetModel, onModelSelect])
+
+  useEffect(() => {
+    if (initialPhysicalExpanded) {
+      onPhysicalOpened?.()
+    }
+    // Mount only: parent tracks physicalOpened for Continue; inline callbacks would retrigger deps every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  const [expandedSection, setExpandedSection] = useState<'physical' | 'wifi' | null>(
+    initialPhysicalExpanded ? 'physical' : null
+  )
+  const [physicalHasBeenOpened, setPhysicalHasBeenOpened] = useState(initialPhysicalExpanded)
   const [wifiHasBeenOpened, setWifiHasBeenOpened] = useState(false)
   const [showNotification, setShowNotification] = useState(false)
   const notificationRef = useRef<HTMLDivElement>(null)
@@ -112,8 +179,9 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
     }
   }, [expandedSection, wifiHasBeenOpened, onWifiInteraction])
 
-  // Scroll to accordion content when it opens
+  // Scroll to accordion content when it opens (optional; disabled on WiFi unified step 4 to avoid jump on load)
   useEffect(() => {
+    if (suppressAccordionScrollIntoView) return
     if (expandedSection === 'physical' && physicalAccordionContentRef.current) {
       // Small delay to allow DOM to update
       setTimeout(() => {
@@ -129,7 +197,7 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
         }
       }, 150)
     }
-  }, [expandedSection])
+  }, [expandedSection, suppressAccordionScrollIntoView])
 
   // Non-WiFi: physical-only flow (Unbox is above; these are the steps after model selection)
   const physicalStepsNonWifi = [
@@ -154,14 +222,16 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
     {
       number: 1,
       title: 'Power Up the Sensor',
-      description: 'Connect the 24V cable to the air handler and/or insert the backup battery. When there is power, the LED status light will begin to blink red. This means the unit is powered up but has not yet connected to a valid Wi‑Fi network. Complete the WiFi Connection steps below.',
+      description:
+        'Connect the included 24V cable to the air handler (same style connection as a float switch). This is the primary power path when using 24V—confirm a solid connection at the terminals before continuing. You may also insert the included backup battery for backup power or use it alongside 24V per your install. When there is power, the LED status light will begin to blink red. This means the unit is powered up but has not yet connected to a valid Wi‑Fi network. Complete the WiFi Connection steps below.',
       image: '/images/setup/step2-3-power.png',
-      alt: 'Powering up the sensor'
+      alt: 'Connecting 24V power cable at the air handler'
     },
     {
       number: 2,
       title: 'Verify LED Status',
-      description: 'While the LED is blinking red, the sensor is ready for WiFi setup. Once you complete the following steps and the sensor connects to the ACDW Sensor Servers over the network, the LED status light will switch to a constant green.',
+      description:
+        'While the LED is blinking red, the sensor is ready for WiFi setup. Once you complete the following steps and the sensor connects to the ACDW Sensor Servers over the network, the LED status light will switch to a constant green.',
       image: '/images/setup/step2-4-led.png',
       alt: 'LED blinking red (awaiting WiFi); solid green when connected'
     }
@@ -200,99 +270,158 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
 
   return (
     <div className="sensor-setup-step-container">
-      {/* Step Number Badge */}
-      <div className="sensor-setup-step-badge-wrapper">
-        <div className="sensor-setup-step-badge sensor-setup-step-badge-step2">
-          <span className="sensor-setup-step-badge-number">2</span>
-        </div>
-      </div>
+      {!omitWizardHeader && (
+        <>
+          <div className="sensor-setup-step-badge-wrapper">
+            <div
+              className={
+                wizardStepNumber === 2
+                  ? 'sensor-setup-step-badge sensor-setup-step-badge-step2'
+                  : wizardStepNumber === 3
+                    ? 'sensor-setup-step-badge sensor-setup-step-badge-step3'
+                    : wizardStepNumber === 4
+                      ? 'sensor-setup-step-badge sensor-setup-step-badge-step4'
+                      : wizardStepNumber === 5
+                        ? 'sensor-setup-step-badge sensor-setup-step-badge-step5'
+                        : 'sensor-setup-step-badge'
+              }
+            >
+              <span className="sensor-setup-step-badge-number">{wizardStepNumber}</span>
+            </div>
+          </div>
 
-      {/* Step Title */}
-      <div className="sensor-setup-step-title-section">
-        <h2 className="sensor-setup-step-title">
-          {selectedModel === 'nonwifi' ? 'Set up Sensor (Non‑WiFi)' : selectedModel === 'wifi' ? 'Set up Sensor and Connect to WiFi' : 'Set up Sensor'}
-        </h2>
-        <p className="sensor-setup-step-subtitle">
-          {selectedModel === 'nonwifi'
-            ? 'Physical installation only—no WiFi setup required.'
-            : selectedModel === 'wifi'
-              ? 'Physical installation and WiFi connection.'
-              : 'Select your model below, then follow the steps for your installation.'}
-        </p>
-      </div>
-
-      {/* Prerequisites Callout */}
-      <div className="sensor-setup-prerequisites-callout">
-        <div className="sensor-setup-prerequisites-callout-content">
-          <ExclamationTriangleIcon className="sensor-setup-prerequisites-callout-icon" />
-          <div className="sensor-setup-prerequisites-callout-text">
-            <h3 className="sensor-setup-prerequisites-callout-title">Prerequisite</h3>
-            <p className="sensor-setup-prerequisites-callout-item-description">
-              The Transparent T-Manifold must be installed by the AC technician before sensor setup;{' '}
-              <a
-                href="/mini-setup"
-                className="sensor-setup-prerequisites-callout-item-link"
-              >
-                view installation steps in the Mini Setup Guide →
-              </a>
+          <div className="sensor-setup-step-title-section">
+            <h2 className="sensor-setup-step-title">
+              {selectedModel === 'nonwifi' ? 'Set up Sensor (Non‑WiFi)' : selectedModel === 'wifi' ? 'Set up Sensor and Connect to WiFi' : 'Set up Sensor'}
+            </h2>
+            <p className="sensor-setup-step-subtitle">
+              {selectedModel === 'nonwifi'
+                ? 'Physical installation only—no WiFi setup required.'
+                : selectedModel === 'wifi'
+                  ? 'Physical installation and WiFi connection.'
+                  : 'Select your model below, then follow the steps for your installation.'}
             </p>
           </div>
-        </div>
-      </div>
+        </>
+      )}
 
-      {/* What You'll Need */}
-      <div className="sensor-setup-what-you-need">
-        <h3 className="sensor-setup-what-you-need-title">What You'll Need</h3>
-        <div className="sensor-setup-what-you-need-grid">
-          <div className="sensor-setup-what-you-need-item">
-            <div className="sensor-setup-what-you-need-item-icon-wrapper">
-              <CpuChipIcon className="sensor-setup-what-you-need-item-icon" />
-            </div>
-            <div className="sensor-setup-what-you-need-item-content">
-              <p className="sensor-setup-what-you-need-item-title">ACDW Sensor</p>
-              <p className="sensor-setup-what-you-need-item-description">Unboxed</p>
-            </div>
-          </div>
-<div className="sensor-setup-what-you-need-item">
-            <div className="sensor-setup-what-you-need-item-icon-wrapper">
-              <BoltIcon className="sensor-setup-what-you-need-item-icon" />
-            </div>
-            <div className="sensor-setup-what-you-need-item-content">
-              <p className="sensor-setup-what-you-need-item-title">24V Cable</p>
-              <p className="sensor-setup-what-you-need-item-description">Included with both models; connects to air handler 24V</p>
-            </div>
-          </div>
-          <div className="sensor-setup-what-you-need-item">
-            <div className="sensor-setup-what-you-need-item-icon-wrapper">
-              <Battery100Icon className="sensor-setup-what-you-need-item-icon" />
-            </div>
-            <div className="sensor-setup-what-you-need-item-content">
-              <p className="sensor-setup-what-you-need-item-title">Battery</p>
-              <p className="sensor-setup-what-you-need-item-description">WiFi model only; backup power</p>
-            </div>
-          </div>
-          <div className="sensor-setup-what-you-need-item">
-            <div className="sensor-setup-what-you-need-item-icon-wrapper">
-              <DevicePhoneMobileIcon className="sensor-setup-what-you-need-item-icon" />
-            </div>
-            <div className="sensor-setup-what-you-need-item-content">
-              <p className="sensor-setup-what-you-need-item-title">Smartphone / Tablet</p>
-              <p className="sensor-setup-what-you-need-item-description">For setup</p>
-            </div>
-          </div>
-          <div className="sensor-setup-what-you-need-item">
-            <div className="sensor-setup-what-you-need-item-icon-wrapper">
-              <WifiIcon className="sensor-setup-what-you-need-item-icon" />
-            </div>
-            <div className="sensor-setup-what-you-need-item-content">
-              <p className="sensor-setup-what-you-need-item-title">Wi-Fi Password</p>
-              <p className="sensor-setup-what-you-need-item-description">Homeowner's network (WiFi model only)</p>
+      {/* Prerequisites — or confirmation when manifold was completed in this guide (Standard steps 1–2) */}
+      {manifoldInstalledInPriorWizardStep ? (
+        <div className="sensor-setup-prerequisites-callout sensor-setup-prerequisites-callout-done">
+          <div className="sensor-setup-prerequisites-callout-content">
+            <CheckCircleIcon className="sensor-setup-prerequisites-callout-icon sensor-setup-prerequisites-callout-icon-done" />
+            <div className="sensor-setup-prerequisites-callout-text">
+              <h3 className="sensor-setup-prerequisites-callout-title">T manifold installed</h3>
+              <p className="sensor-setup-prerequisites-callout-item-description">
+                You completed the solvent-weld install in steps 1 and 2. Continue below with sensor power, testing, and bayonet mounting. If the manifold was installed earlier outside this guide, confirm joints are cured and leak-free before proceeding.
+              </p>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="sensor-setup-prerequisites-callout">
+          <div className="sensor-setup-prerequisites-callout-content">
+            <ExclamationTriangleIcon className="sensor-setup-prerequisites-callout-icon" />
+            <div className="sensor-setup-prerequisites-callout-text">
+              <h3 className="sensor-setup-prerequisites-callout-title">Prerequisite</h3>
+              <p className="sensor-setup-prerequisites-callout-item-description">
+                The Transparent T-Manifold must be installed by the AC technician before sensor setup;{' '}
+                <a href="/mini-setup" className="sensor-setup-prerequisites-callout-item-link">
+                  view installation steps in the Mini Setup Guide →
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
-      {/* Unbox Sensor - before model selection (not a numbered step) */}
+      {/* What You'll Need — WiFi only on this step; Standard guide lists manifold/PVC tools in step 1 + Unbox below */}
+      {selectedModel !== 'nonwifi' && (
+        <div className="sensor-setup-what-you-need">
+          <h3 className="sensor-setup-what-you-need-title">What You&apos;ll Need</h3>
+          <div className="sensor-setup-what-you-need-grid">
+            <div className="sensor-setup-what-you-need-item">
+              <div className="sensor-setup-what-you-need-item-icon-wrapper">
+                <CpuChipIcon className="sensor-setup-what-you-need-item-icon" />
+              </div>
+              <div className="sensor-setup-what-you-need-item-content">
+                <p className="sensor-setup-what-you-need-item-title">ACDW Sensor</p>
+                <p className="sensor-setup-what-you-need-item-description">Unboxed</p>
+              </div>
+            </div>
+            <div className="sensor-setup-what-you-need-item">
+              <div className="sensor-setup-what-you-need-item-icon-wrapper">
+                <BoltIcon className="sensor-setup-what-you-need-item-icon" />
+              </div>
+              <div className="sensor-setup-what-you-need-item-content">
+                <p className="sensor-setup-what-you-need-item-title">24V Cable</p>
+                <p className="sensor-setup-what-you-need-item-description">Included; connects to air handler 24V</p>
+              </div>
+            </div>
+
+            {selectedModel === 'wifi' ? (
+              <>
+                <div className="sensor-setup-what-you-need-item">
+                  <div className="sensor-setup-what-you-need-item-icon-wrapper">
+                    <Battery100Icon className="sensor-setup-what-you-need-item-icon" />
+                  </div>
+                  <div className="sensor-setup-what-you-need-item-content">
+                    <p className="sensor-setup-what-you-need-item-title">Battery</p>
+                    <p className="sensor-setup-what-you-need-item-description">WiFi model; backup power (~2 years)</p>
+                  </div>
+                </div>
+                <div className="sensor-setup-what-you-need-item">
+                  <div className="sensor-setup-what-you-need-item-icon-wrapper">
+                    <DevicePhoneMobileIcon className="sensor-setup-what-you-need-item-icon" />
+                  </div>
+                  <div className="sensor-setup-what-you-need-item-content">
+                    <p className="sensor-setup-what-you-need-item-title">Smartphone / tablet</p>
+                    <p className="sensor-setup-what-you-need-item-description">Wi‑Fi pairing and captive portal</p>
+                  </div>
+                </div>
+                <div className="sensor-setup-what-you-need-item">
+                  <div className="sensor-setup-what-you-need-item-icon-wrapper">
+                    <WifiIcon className="sensor-setup-what-you-need-item-icon" />
+                  </div>
+                  <div className="sensor-setup-what-you-need-item-content">
+                    <p className="sensor-setup-what-you-need-item-title">Wi‑Fi password</p>
+                    <p className="sensor-setup-what-you-need-item-description">Homeowner&apos;s 2.4 GHz network</p>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="sensor-setup-what-you-need-item">
+                  <div className="sensor-setup-what-you-need-item-icon-wrapper">
+                    <WrenchScrewdriverIcon className="sensor-setup-what-you-need-item-icon" />
+                  </div>
+                  <div className="sensor-setup-what-you-need-item-content">
+                    <p className="sensor-setup-what-you-need-item-title">PVC cutter or hacksaw</p>
+                    <p className="sensor-setup-what-you-need-item-description">Cut 3/4&quot; drain line for Transparent T manifold</p>
+                  </div>
+                </div>
+                <div className="sensor-setup-what-you-need-item">
+                  <div className="sensor-setup-what-you-need-item-icon-wrapper">
+                    <BeakerIcon className="sensor-setup-what-you-need-item-icon" />
+                  </div>
+                  <div className="sensor-setup-what-you-need-item-content">
+                    <p className="sensor-setup-what-you-need-item-title">PVC primer &amp; cement</p>
+                    <p className="sensor-setup-what-you-need-item-description">e.g. Oatey all-purpose cement; solvent-weld manifold to line</p>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+          {selectedModel === null && (
+            <p className="sensor-setup-what-you-need-model-hint">
+              Select a model above: Standard shows tools for manifold and drain line; WiFi adds phone, battery, and network for pairing.
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* Unbox Sensor — WiFi flow here; Standard (Non-WiFi) wizard shows this on manifold step 1 */}
+      {!hideUnboxCallout && (
       <div className="sensor-setup-unbox-callout">
         <h3 className="sensor-setup-unbox-callout-title">Unbox Sensor</h3>
         <p className="sensor-setup-unbox-callout-description">Remove the sensor from its packaging. Check that all components are included (24V cable; WiFi model also includes backup battery).</p>
@@ -300,9 +429,14 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
           <img src="/images/setup/step2-1-unbox.png" alt="Unboxing the sensor" className="sensor-setup-unbox-callout-image" />
         </div>
       </div>
+      )}
 
-      {/* Model selection - required before showing steps */}
-      <div className="sensor-setup-model-selector">
+      {/* Model selection (same UI whether user picked a model on the picker page or via ?model= URL) */}
+      {!hideModelSelector && (
+      <div
+        className="sensor-setup-model-selector"
+        data-sensor-setup-from-model-link={lockModelSelection ? true : undefined}
+      >
         <h3 className="sensor-setup-model-selector-title">Which model are you installing?</h3>
         <p className="sensor-setup-model-selector-description">Select one to see the correct installation steps.</p>
         <div className="sensor-setup-model-selector-cards">
@@ -330,6 +464,7 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
           </button>
         </div>
       </div>
+      )}
 
       {/* Notification Message */}
       {showNotification && (
@@ -343,45 +478,53 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
         </div>
       )}
 
-      {/* Physical Setup Accordion Section - only after model selected */}
+      {/* Physical Setup — same drawer chrome as Mini / Standard manifold step (mini-setup-accordion-*) */}
       {selectedModel !== null && (
-      <div className={`sensor-setup-accordion-section ${expandedSection === 'physical' ? 'sensor-setup-accordion-section-expanded' : 'sensor-setup-accordion-section-collapsed'} ${!physicalHasBeenOpened ? 'sensor-setup-accordion-section-pulsating' : ''}`}>
+      <div
+        className={`mini-setup-accordion-section ${
+          expandedSection === 'physical' ? 'mini-setup-accordion-section-expanded' : 'mini-setup-accordion-section-collapsed'
+        } ${!physicalHasBeenOpened ? 'mini-setup-accordion-section-pulsating' : ''}`}
+      >
         <button
+          type="button"
           onClick={() => toggleSection('physical')}
-          className="sensor-setup-accordion-header"
+          className="mini-setup-accordion-header"
+          aria-expanded={expandedSection === 'physical'}
         >
-          <div className="sensor-setup-accordion-header-content">
-            <div className="sensor-setup-accordion-header-left">
-              <div className="sensor-setup-accordion-status-icon sensor-setup-accordion-status-icon-pending" />
-              <h3 className="sensor-setup-accordion-title">Physical Setup</h3>
-              {!physicalHasBeenOpened && (
-                <span className="sensor-setup-accordion-badge sensor-setup-accordion-badge-next-step">Next Step</span>
-              )}
+          <div className="mini-setup-accordion-header-content">
+            <div className="mini-setup-accordion-header-left">
+              <div className="mini-setup-accordion-wizard-step-badge" aria-hidden>
+                <span className="mini-setup-accordion-wizard-step-badge-number">
+                  {physicalDrawerBadgeNumber ?? wizardStepNumber}
+                </span>
+              </div>
+              <span className="mini-setup-accordion-title">Physical Setup</span>
             </div>
-            <div className="sensor-setup-accordion-header-right">
+            <div className="mini-setup-accordion-header-right">
+              <span className="mini-setup-accordion-badge mini-setup-accordion-badge-ready">
+                {physicalSteps.length} Steps
+              </span>
               {expandedSection === 'physical' ? (
-                <ChevronUpIcon className="sensor-setup-accordion-chevron" />
+                <ChevronUpIcon className="mini-setup-accordion-chevron" aria-hidden />
               ) : (
-                <ChevronDownIcon className="sensor-setup-accordion-chevron" />
+                <ChevronDownIcon className="mini-setup-accordion-chevron" aria-hidden />
               )}
             </div>
           </div>
         </button>
 
         {expandedSection === 'physical' && (
-          <div ref={physicalAccordionContentRef} className="sensor-setup-accordion-content">
-            <div className="sensor-setup-installation-steps">
+          <div ref={physicalAccordionContentRef} className="mini-setup-accordion-content">
+            <div className="sensor-setup-installation-steps mini-setup-accordion-sensor-steps">
               {physicalSteps.map((step) => (
                 <div key={step.number} className="sensor-setup-installation-step-card">
                   <div className="sensor-setup-installation-step-content">
-                    {/* Step Number */}
                     <div className="sensor-setup-installation-step-number-wrapper">
                       <div className="sensor-setup-installation-step-number-badge">
                         <span className="sensor-setup-installation-step-number">{step.number}</span>
                       </div>
                     </div>
 
-                    {/* Content */}
                     <div className="sensor-setup-installation-step-details">
                       <h3 className="sensor-setup-installation-step-title">{step.title}</h3>
                       <p className="sensor-setup-installation-step-description">{step.description}</p>
@@ -399,45 +542,47 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
             </div>
           </div>
         )}
-
-        {expandedSection !== 'physical' && (
-          <div className="sensor-setup-accordion-preview">
-            <p className="sensor-setup-accordion-preview-text">
-              {physicalSteps.length} steps to complete
-            </p>
-          </div>
-        )}
       </div>
       )}
 
-      {/* WiFi Connection Accordion Section - WiFi model only */}
+      {/* WiFi Connection — same drawer chrome as Physical Setup (mini-setup-accordion-*) */}
       {selectedModel === 'wifi' && (
-      <div className={`sensor-setup-accordion-section ${expandedSection === 'wifi' ? 'sensor-setup-accordion-section-expanded' : 'sensor-setup-accordion-section-collapsed'} ${physicalHasBeenOpened && !wifiHasBeenOpened ? 'sensor-setup-accordion-section-pulsating' : ''}`}>
+      <div
+        className={`mini-setup-accordion-section ${
+          expandedSection === 'wifi' ? 'mini-setup-accordion-section-expanded' : 'mini-setup-accordion-section-collapsed'
+        } ${physicalHasBeenOpened && !wifiHasBeenOpened ? 'mini-setup-accordion-section-pulsating' : ''}`}
+      >
         <button
+          type="button"
           onClick={() => toggleSection('wifi')}
-          className="sensor-setup-accordion-header"
+          className="mini-setup-accordion-header"
+          aria-expanded={expandedSection === 'wifi'}
         >
-          <div className="sensor-setup-accordion-header-content">
-            <div className="sensor-setup-accordion-header-left">
-              <div className="sensor-setup-accordion-status-icon sensor-setup-accordion-status-icon-pending" />
-              <h3 className="sensor-setup-accordion-title">WiFi Connection</h3>
-              <span className="sensor-setup-accordion-badge sensor-setup-accordion-badge-wifi-only">WiFi model only</span>
+          <div className="mini-setup-accordion-header-content">
+            <div className="mini-setup-accordion-header-left">
+              <div className="mini-setup-accordion-wizard-step-badge" aria-hidden>
+                <span className="mini-setup-accordion-wizard-step-badge-number">2</span>
+              </div>
+              <span className="mini-setup-accordion-title">WiFi Connection</span>
               {physicalHasBeenOpened && !wifiHasBeenOpened && (
                 <span className="sensor-setup-accordion-badge sensor-setup-accordion-badge-next-step">Next Step</span>
               )}
             </div>
-            <div className="sensor-setup-accordion-header-right">
+            <div className="mini-setup-accordion-header-right">
+              <span className="mini-setup-accordion-badge mini-setup-accordion-badge-ready">
+                {wifiSteps.length} Steps
+              </span>
               {expandedSection === 'wifi' ? (
-                <ChevronUpIcon className="sensor-setup-accordion-chevron" />
+                <ChevronUpIcon className="mini-setup-accordion-chevron" aria-hidden />
               ) : (
-                <ChevronDownIcon className="sensor-setup-accordion-chevron" />
+                <ChevronDownIcon className="mini-setup-accordion-chevron" aria-hidden />
               )}
             </div>
           </div>
         </button>
 
         {expandedSection === 'wifi' && (
-          <div ref={wifiAccordionContentRef} className="sensor-setup-accordion-content">
+          <div ref={wifiAccordionContentRef} className="mini-setup-accordion-content">
             {/* Optional WPS path */}
             <div className="sensor-setup-wps-callout">
               <h4 className="sensor-setup-wps-callout-title">Before you connect</h4>
@@ -482,14 +627,6 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
                 </div>
               ))}
             </div>
-          </div>
-        )}
-
-        {expandedSection !== 'wifi' && (
-          <div className="sensor-setup-accordion-preview">
-            <p className="sensor-setup-accordion-preview-text">
-              {wifiSteps.length} steps to connect your sensor to WiFi
-            </p>
           </div>
         )}
       </div>

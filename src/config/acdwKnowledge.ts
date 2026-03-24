@@ -67,6 +67,20 @@ export const SENSOR_WIFI_DISPLAY = 'AC Drain Wiz WiFi Sensor Switch' as const
 export const SENSOR_STANDARD_SHORT = 'Standard Sensor Switch (Non-WiFi)' as const
 export const SENSOR_WIFI_SHORT = 'WiFi Sensor Switch' as const
 
+/** URL query value for `/sensor-setup?model=` (Standard vs WiFi install guides). */
+export type SensorSetupModelSlug = 'standard' | 'wifi'
+
+export function buildSensorSetupHref(options: { model: SensorSetupModelSlug; step?: number }): string {
+  const step = options.step ?? 1
+  const params = new URLSearchParams({ step: String(step), model: options.model })
+  return `/sensor-setup?${params.toString()}`
+}
+
+export function parseSensorSetupModelParam(value: string | null): SensorSetupModelSlug | null {
+  if (value === 'standard' || value === 'wifi') return value
+  return null
+}
+
 // ─── LED status indicators (from knowledge package) ───────────────────────
 export const SENSOR_LED_STANDARD = {
   noLight: { label: 'No light', description: 'No power' },
