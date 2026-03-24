@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   WrenchScrewdriverIcon,
   ExclamationTriangleIcon,
@@ -5,6 +6,8 @@ import {
   CubeIcon,
   BeakerIcon,
   HandRaisedIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
 } from '@heroicons/react/24/outline'
 
 const tools = [
@@ -50,7 +53,7 @@ const tools = [
   },
 ]
 
-const measureSteps = [
+const measureStepsMini = [
   {
     number: 1,
     title: 'Measure the Mini T-Manifold Width',
@@ -74,21 +77,106 @@ const measureSteps = [
   },
 ]
 
-export function Step1MiniPreparation() {
+const measureStepsSensor = measureStepsMini.map((step) =>
+  step.number === 1
+    ? {
+        ...step,
+        title: 'Measure the T-Manifold width',
+        description:
+          'Hold the Transparent T manifold (included with your Sensor) alongside the drain line and measure the full width from socket opening to socket opening. Both pipe ends will slide into these sockets, so you must account for the socket depth on each side when determining your cut length.',
+      }
+    : step
+)
+
+const toolsSensor = tools.map((tool) =>
+  tool.title === 'AC Drain Wiz Mini Unit'
+    ? {
+        ...tool,
+        title: 'Transparent T manifold',
+        description:
+          'Included with the Standard Sensor Switch; same T fitting geometry as the AC Drain Wiz Mini assembly (bayonet port faces up for the sensor).',
+      }
+    : tool
+)
+
+const SENSOR_UNBOX_COPY_STANDARD =
+  'Remove the sensor from its packaging. Verify the 24V cable and Transparent T manifold are included before you measure and cut the drain line.'
+
+const SENSOR_UNBOX_COPY_WIFI =
+  'Remove the sensor from its packaging. Check that all components are included (24V cable; WiFi model also includes backup battery).'
+
+export interface Step1MiniPreparationProps {
+  /** Sensor Standard guide: same steps, copy references included T manifold instead of Mini SKU */
+  variant?: 'mini' | 'sensorStandard'
+  /**
+   * Standard Sensor combined manifold step: parent coordinates one open drawer across Part A + B.
+   * When set, `measureCutExpanded` / `onMeasureCutToggle` control the Measure & Cut accordion.
+   */
+  measureCutExpanded?: boolean
+  onMeasureCutToggle?: () => void
+  /** Standard Sensor: pulse when this drawer is the next linear step and collapsed. */
+  measureShouldPulse?: boolean
+  /** Sensor Standard: wizard step number in the hero badge (e.g. WiFi measure = 2). */
+  wizardHeroStepNumber?: 1 | 2 | 3 | 4 | 5
+  /** Sensor Standard: which unbox copy to use (WiFi mentions backup battery). */
+  sensorUnboxCopy?: 'standard' | 'wifi'
+}
+
+export function Step1MiniPreparation({
+  variant = 'mini',
+  measureCutExpanded,
+  onMeasureCutToggle,
+  measureShouldPulse = false,
+  wizardHeroStepNumber = 1,
+  sensorUnboxCopy = 'standard',
+}: Step1MiniPreparationProps) {
+  const isSensor = variant === 'sensorStandard'
+  const measureSteps = isSensor ? measureStepsSensor : measureStepsMini
+  const toolsList = isSensor ? toolsSensor : tools
+  /** Measure & Cut: local state (Mini step 1), or parent-controlled (Standard Sensor manifold page). */
+  const isMeasureControlled = onMeasureCutToggle != null
+  const [internalMeasureOpen, setInternalMeasureOpen] = useState(true)
+  const measureCutOpen = isMeasureControlled ? Boolean(measureCutExpanded) : internalMeasureOpen
+
+  const handleMeasureToggle = () => {
+    if (isMeasureControlled) onMeasureCutToggle()
+    else setInternalMeasureOpen((open) => !open)
+  }
+
+  const unboxDescription =
+    sensorUnboxCopy === 'wifi' ? SENSOR_UNBOX_COPY_WIFI : SENSOR_UNBOX_COPY_STANDARD
+  /** Placed after What You'll Need (same order for Standard and WiFi manifold measure steps). */
+  const showUnboxAfterTools = isSensor
+  const heroStepNumber = isSensor ? wizardHeroStepNumber : 1
+
+  const unboxCallout = (
+    <div className="sensor-setup-unbox-callout">
+      <h3 className="sensor-setup-unbox-callout-title">Unbox Sensor</h3>
+      <p className="sensor-setup-unbox-callout-description">{unboxDescription}</p>
+      <div className="sensor-setup-unbox-callout-image-wrapper">
+        <img
+          src="/images/setup/step2-1-unbox.png"
+          alt="Unboxing the sensor"
+          className="sensor-setup-unbox-callout-image"
+        />
+      </div>
+    </div>
+  )
+
   return (
     <div className="mini-setup-step-container">
-      {/* Step Number Badge */}
+      {/* Step Number Badge + title — same structure for Mini and Standard Sensor (manifold step 1). */}
       <div className="mini-setup-step-badge-wrapper">
         <div className="mini-setup-step-badge">
-          <span className="mini-setup-step-badge-number">1</span>
+          <span className="mini-setup-step-badge-number">{heroStepNumber}</span>
         </div>
       </div>
-
-      {/* Step Title */}
       <div className="mini-setup-step-title-section">
-        <h2 className="mini-setup-step-title">Prepare & Measure</h2>
+        <h2 className="mini-setup-step-title">Prepare &amp; Measure</h2>
         <p className="mini-setup-step-subtitle">
-          Gather your tools, measure accurately, and cut the primary drain line to receive the Mini T-Manifold
+          {isSensor
+            ? 'Gather your tools, measure accurately, and cut the primary drain line to receive the Transparent T manifold.'
+            : 'Gather your tools, measure accurately, and cut the primary drain line to receive the Mini T-Manifold'}
         </p>
       </div>
 
@@ -99,7 +187,15 @@ export function Step1MiniPreparation() {
           <div className="mini-setup-notice-callout-text">
             <p className="mini-setup-notice-callout-title">Before You Begin</p>
             <p className="mini-setup-notice-callout-description">
-              The AC Drain Wiz Mini is installed on the <strong>primary drain port</strong> of the AC unit. Confirm the drain line is white PVC before proceeding. Turn off the AC unit at the thermostat and at the breaker before cutting the drain line.
+              {isSensor ? (
+                <>
+                  Install on the <strong>primary condensate drain port</strong> of the AC unit. Confirm the drain line is white PVC. Turn off the AC at the thermostat and at the breaker before cutting.
+                </>
+              ) : (
+                <>
+                  The AC Drain Wiz Mini is installed on the <strong>primary drain port</strong> of the AC unit. Confirm the drain line is white PVC before proceeding. Turn off the AC unit at the thermostat and at the breaker before cutting the drain line.
+                </>
+              )}
             </p>
           </div>
         </div>
@@ -109,7 +205,7 @@ export function Step1MiniPreparation() {
       <div className="mini-setup-what-you-need">
         <h3 className="mini-setup-what-you-need-title">What You'll Need</h3>
         <div className="mini-setup-what-you-need-grid">
-          {tools.map((tool, index) => (
+          {toolsList.map((tool, index) => (
             <div key={index} className="mini-setup-what-you-need-item">
               <div className="mini-setup-what-you-need-item-icon-wrapper">
                 <tool.icon className="mini-setup-what-you-need-item-icon" />
@@ -123,43 +219,76 @@ export function Step1MiniPreparation() {
         </div>
       </div>
 
-      {/* Measure & Cut Steps */}
-      <div className="mini-setup-section-divider">
-        <span className="mini-setup-section-divider-title">Measure & Cut</span>
-      </div>
+      {/* Unbox Sensor — after What You'll Need (Standard manifold step 1 & WiFi manifold step 2) */}
+      {showUnboxAfterTools && <div className="mt-8">{unboxCallout}</div>}
 
-      <div className="mini-setup-steps">
-        {measureSteps.map((step) => (
-          <div key={step.number} className="mini-setup-step-card">
-            <div className="mini-setup-step-content">
-              <div className="mini-setup-step-number-wrapper">
-                <div className="mini-setup-step-number-badge">
-                  <span className="mini-setup-step-number">{step.number}</span>
-                </div>
+      {/* Measure & Cut — collapsible (same drawer pattern as Prep & Bond / Cure in Step 2); open by default */}
+      <div
+        className={`mini-setup-accordion-section ${
+          measureCutOpen ? 'mini-setup-accordion-section-expanded' : 'mini-setup-accordion-section-collapsed'
+        } ${isSensor && measureShouldPulse ? 'mini-setup-accordion-section-pulsating' : ''}`}
+      >
+        <button
+          type="button"
+          className="mini-setup-accordion-header"
+          onClick={handleMeasureToggle}
+          aria-expanded={measureCutOpen}
+        >
+          <div className="mini-setup-accordion-header-content">
+            <div className="mini-setup-accordion-header-left">
+              <div className="mini-setup-accordion-wizard-step-badge" aria-hidden>
+                <span className="mini-setup-accordion-wizard-step-badge-number">1</span>
               </div>
-              <div className="mini-setup-step-details">
-                <h3 className="mini-setup-step-title">{step.title}</h3>
-                <p className="mini-setup-step-description">{step.description}</p>
-                <div className="mini-setup-step-image-wrapper">
-                  <img
-                    src={step.image}
-                    alt={step.alt}
-                    className="mini-setup-step-image"
-                  />
+              <span className="mini-setup-accordion-title">Measure &amp; Cut</span>
+            </div>
+            <div className="mini-setup-accordion-header-right">
+              <span className="mini-setup-accordion-badge mini-setup-accordion-badge-ready">
+                {measureSteps.length} Steps
+              </span>
+              {measureCutOpen ? (
+                <ChevronUpIcon className="mini-setup-accordion-chevron" aria-hidden />
+              ) : (
+                <ChevronDownIcon className="mini-setup-accordion-chevron" aria-hidden />
+              )}
+            </div>
+          </div>
+        </button>
+
+        {measureCutOpen && (
+          <div className="mini-setup-accordion-content">
+            <div className="sensor-setup-installation-steps mini-setup-accordion-sensor-steps">
+              {measureSteps.map((step) => (
+                <div key={step.number} className="sensor-setup-installation-step-card">
+                  <div className="sensor-setup-installation-step-content">
+                    <div className="sensor-setup-installation-step-number-wrapper">
+                      <div className="sensor-setup-installation-step-number-badge">
+                        <span className="sensor-setup-installation-step-number">{step.number}</span>
+                      </div>
+                    </div>
+                    <div className="sensor-setup-installation-step-details">
+                      <h3 className="sensor-setup-installation-step-title">{step.title}</h3>
+                      <p className="sensor-setup-installation-step-description">{step.description}</p>
+                      <div className="sensor-setup-installation-step-image-wrapper">
+                        <img src={step.image} alt={step.alt} className="sensor-setup-installation-step-image" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              ))}
+            </div>
+
+            <div className="mini-setup-tip-callout mt-4">
+              <div className="mini-setup-tip-callout-content">
+                <p className="mini-setup-tip-callout-text">
+                  <strong>Accuracy matters here.</strong>{' '}
+                  {isSensor
+                    ? 'Dry-fit the T manifold against the cut section before applying any cement. The bayonet port should point straight upward at a clean 90° angle for the sensor and drainage.'
+                    : 'Take a moment to dry-fit the Mini against the cut section before applying any cement. The T-Manifold cap opening should point straight upward at a clean 90° angle to allow for proper drainage and future servicing.'}
+                </p>
               </div>
             </div>
           </div>
-        ))}
-      </div>
-
-      {/* Accuracy reminder */}
-      <div className="mini-setup-tip-callout">
-        <div className="mini-setup-tip-callout-content">
-          <p className="mini-setup-tip-callout-text">
-            <strong>Accuracy matters here.</strong> Take a moment to dry-fit the Mini against the cut section before applying any cement. The T-Manifold cap opening should point straight upward at a clean 90° angle to allow for proper drainage and future servicing.
-          </p>
-        </div>
+        )}
       </div>
     </div>
   )

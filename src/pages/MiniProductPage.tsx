@@ -10,7 +10,7 @@
  */
 
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
     CheckIcon,
     ShieldCheckIcon,
@@ -23,6 +23,8 @@ import {
     StarIcon,
     ChevronLeftIcon,
     ChevronRightIcon,
+    ArrowRightIcon,
+    BookOpenIcon,
     PhoneIcon
 } from '@heroicons/react/24/outline'
 import { VideoModal } from '../components/home/VideoModal'
@@ -313,18 +315,45 @@ export function MiniProductPage() {
             ))}
           </div>
 
-          {/* Installation Video Placeholder */}
+          {/* Installation video + written guide */}
                   <div className="product-installation-video">
-                      <div
-                          className="product-installation-video-placeholder"
-                          onClick={() => setIsVideoModalOpen(true)}
-                      >
-                          <div className="product-installation-video-placeholder-content">
-                              <PlayIcon className="product-installation-video-play-icon" />
-                              <h3 className="product-installation-video-title">Watch Installation Video</h3>
-                              <p className="product-installation-video-description">
-                                  See how easy it is to install the AC Drain Wiz Mini in just 5 minutes
+                      <div className="product-installation-video-stack">
+                          <div
+                              className="product-installation-video-placeholder"
+                              onClick={() => setIsVideoModalOpen(true)}
+                              role="button"
+                              tabIndex={0}
+                              onKeyDown={(e) => {
+                                  if (e.key === 'Enter' || e.key === ' ') {
+                                      e.preventDefault()
+                                      setIsVideoModalOpen(true)
+                                  }
+                              }}
+                              aria-label="Play installation video"
+                          >
+                              <div className="product-installation-video-placeholder-content">
+                                  <PlayIcon className="product-installation-video-play-icon" />
+                                  <h3 className="product-installation-video-title">Watch Installation Video</h3>
+                                  <p className="product-installation-video-description">
+                                      See how easy it is to install the AC Drain Wiz Mini in just 5 minutes
+                                  </p>
+                              </div>
+                          </div>
+                          <div className="product-installation-video-guide">
+                              <p className="product-installation-video-guide-eyebrow">
+                                  Installation resources
                               </p>
+                              <p className="product-installation-video-guide-label">
+                                  Prefer written walkthroughs? Open the full guide with photos and checkpoints for each stage.
+                              </p>
+                              <Link
+                                  to="/mini-setup?step=1"
+                                  className="product-installation-video-guide-link"
+                              >
+                                  <BookOpenIcon className="product-installation-video-guide-link-lead-icon" aria-hidden />
+                                  <span>Step-by-step installation guide</span>
+                                  <ArrowRightIcon className="product-installation-video-guide-link-trail-icon" aria-hidden />
+                              </Link>
                           </div>
                       </div>
                   </div>        </div>

@@ -13,6 +13,8 @@ interface SetupWizardProps {
   onContinueClick?: () => boolean // Returns true if handled, false to proceed normally
   /** 'sensor' | 'mini' — controls shell class prefix and header title */
   variant?: 'sensor' | 'mini'
+  /** When variant is sensor, overrides the default "Sensor Setup" title (e.g. Standard vs WiFi). */
+  headerTitle?: string
 }
 
 export function SetupWizard({
@@ -24,28 +26,25 @@ export function SetupWizard({
   backLabel = 'Back',
   isContinueDisabled = false,
   onContinueClick,
-  variant = 'sensor'
+  variant = 'sensor',
+  headerTitle
 }: SetupWizardProps) {
   const prefix = variant === 'mini' ? 'mini-setup-wizard' : 'sensor-setup-wizard'
-  const title = variant === 'mini' ? 'Mini Setup' : 'Sensor Setup'
+  const title =
+    variant === 'mini' ? 'Mini Setup' : headerTitle?.trim() ? headerTitle.trim() : 'Sensor Setup'
   // Scroll to top when step changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [currentStep])
 
-  // Get color for each progress bar based on step
+  // Get color for each progress bar based on step (works for 2- or 3-step flows)
   const getStepColor = (step: number) => {
     if (step <= currentStep) {
-      // Completed or current step
-      if (step === 1) {
-        return '#2563eb' // Blue
-      } else if (step === 2) {
-        return '#5b21b6' // Purple mix
-      } else {
-        return '#6b21a8' // Deep purple
-      }
+      if (step === 1) return '#2563eb'
+      if (step === 2) return '#5b21b6'
+      return '#6b21a8'
     }
-    return '#e5e7eb' // Gray for incomplete steps
+    return '#e5e7eb'
   }
 
   const handleBack = () => {
@@ -96,14 +95,14 @@ export function SetupWizard({
             </div>
           </div>
           
-          {/* Progress Bars - 3 separate bars matching content width */}
+          {/* Progress bars — count matches totalSteps (e.g. 2 for Standard sensor, 3 for WiFi) */}
           <div className={`${prefix}-progress-bars-container`}>
-            {[1, 2, 3].map((step) => (
+            {Array.from({ length: totalSteps }, (_, i) => i + 1).map((step) => (
               <div
                 key={step}
                 className={`${prefix}-progress-bar`}
-                style={{ 
-                  backgroundColor: getStepColor(step)
+                style={{
+                  backgroundColor: getStepColor(step),
                 }}
               />
             ))}

@@ -5,9 +5,11 @@ import { MONITORING } from '../../config/acdwKnowledge'
 interface PrerequisiteModalProps {
   isOpen: boolean
   onClose: () => void
+  /** WiFi: monitoring/dashboard emphasis. Standard: overflow protection, no Wi‑Fi pairing. */
+  variant?: 'wifi' | 'standard'
 }
 
-export function PrerequisiteModal({ isOpen, onClose }: PrerequisiteModalProps) {
+export function PrerequisiteModal({ isOpen, onClose, variant = 'wifi' }: PrerequisiteModalProps) {
   const [isVisible, setIsVisible] = useState(false)
   const [accountCreated, setAccountCreated] = useState(false)
 
@@ -75,20 +77,26 @@ export function PrerequisiteModal({ isOpen, onClose }: PrerequisiteModalProps) {
 
           {/* Title */}
           <h2 className="sensor-setup-prerequisite-modal-title">
-            Important: Complete Account Setup First
+            {variant === 'standard'
+              ? 'Important: Complete your contractor account first'
+              : 'Important: Complete Account Setup First'}
           </h2>
 
           {/* Message */}
           <div className="sensor-setup-prerequisite-modal-message">
             <p className="sensor-setup-prerequisite-modal-text">
-              Before you visit a customer's home to install an AC Drain Wiz Sensor, you must complete your account setup.
+              {variant === 'standard'
+                ? 'Before you install a Standard Sensor Switch (Non-WiFi), complete your contractor account in the ACDW portal. This model does not connect to Wi‑Fi; the account is used to register the install and assign the sensor to your customer in a later step.'
+                : 'Before you visit a customer\'s home to install a WiFi Sensor Switch, you must complete your account setup for remote monitoring and alerts.'}
             </p>
             <p className="sensor-setup-prerequisite-modal-text">
               This includes:
             </p>
             <ul className="sensor-setup-prerequisite-modal-list">
               <li className="sensor-setup-prerequisite-modal-list-item">
-                Creating your Sensor Monitoring Account
+                {variant === 'standard'
+                  ? 'Creating your ACDW contractor account'
+                  : 'Creating your Sensor Monitoring account'}
               </li>
               <li className="sensor-setup-prerequisite-modal-list-item">
                 Verifying your email
@@ -110,7 +118,7 @@ export function PrerequisiteModal({ isOpen, onClose }: PrerequisiteModalProps) {
                 rel="noopener noreferrer"
                 className="sensor-setup-prerequisite-modal-signup-link"
               >
-                Create Sensor Monitoring account →
+                {variant === 'standard' ? 'Open sign-up page →' : 'Create Sensor Monitoring account →'}
               </a>
             </div>
           </div>

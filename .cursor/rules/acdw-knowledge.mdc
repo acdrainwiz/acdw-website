@@ -1,0 +1,60 @@
+---
+description: AC Drain Wiz product truth, brand voice, and support—use for all marketing, support, and site copy
+alwaysApply: true
+---
+
+# AC Drain Wiz – Product & Brand Knowledge
+
+Use this rule plus `src/config/acdwKnowledge.ts` as the source of truth for product names, support details, and copy. Do not invent specs, URLs, warranty terms, or compatibility claims not present in these sources.
+
+## Products (official names and roles)
+
+- **AC Drain Wiz Mini** (ACDW Mini): Drain line **maintenance access** device. Permanent service port on the 3/4" condensate drain line for flush (water), air (compressed air), and vacuum—no cutting PVC. One-time install, horizontal only; PVC solvent weld (e.g. Oatey All-Purpose Cement).
+- **AC Drain Wiz Standard Sensor Switch**: **Non-WiFi** overflow protection. Capacitive sensing, automatic AC shutdown at 95% water level, no moving parts, fail-safe on power loss. **Does not require the Mini to install**—sensors include their own Transparent T Manifold.
+- **AC Drain Wiz WiFi Sensor Switch**: **WiFi** variant. Adds remote monitoring, email/SMS alerts, contractor app, service alerts between 50–90% (shutdown still at 95%). Lithium-ion backup battery ~2 years; low-battery warning in platform.
+
+**Relationship**: Sensor Switch installs in the same bayonet port as the Mini valve/cap. For service: remove Sensor → install Mini valve → clean → reinstall Sensor. Contractors can install Sensor-only (with its own manifold) without buying Mini first.
+
+## Product naming and positioning
+
+- Use **"AC Drain Wiz Mini"** and **"AC Drain Wiz Sensor"** as acceptable shorthand in UI/marketing when full names are too long.
+- **Sensor variants—use consistently across the site:**
+  - **Full name (when distinguishing):** "AC Drain Wiz Standard Sensor Switch (Non-WiFi)" and "AC Drain Wiz WiFi Sensor Switch". Use `SENSOR_STANDARD_DISPLAY` and `SENSOR_WIFI_DISPLAY` from `acdwKnowledge.ts`.
+  - **Short label (tight spaces, e.g. card titles):** "Standard Sensor Switch (Non-WiFi)" and "WiFi Sensor Switch". Use `SENSOR_STANDARD_SHORT` and `SENSOR_WIFI_SHORT`.
+  - Avoid standalone "Non-WiFi model" or "Non-WiFi Model" without "Standard Sensor Switch"; avoid "Wifi and Non-Wifi models".
+- **Mini**: position as permanent service access, one-time installation, lifetime benefits, 35% faster clean-out, no cut-and-reattach.
+- **Sensors**: position as overflow protection and (WiFi) predictive maintenance; avoid implying the Sensor "requires" the Mini for initial installation.
+
+## Support and contact (single source: `acdwKnowledge.ts`)
+
+- **Phone**: Use `SUPPORT_CONTACT` from `src/config/acdwKnowledge.ts`: display **(234) 23 DRAIN**, `tel:` use `SUPPORT_CONTACT.telHref`. Do not hardcode a different number.
+- **Email**: Use the value from `SUPPORT_CONTACT` (e.g. technical/support contact). General inquiries may use a different address only if defined in config.
+- **Monitoring portal**: **Approved.** Use `MONITORING.portalUrl` (monitor.acdrainwiz.com/login) and `MONITORING.signUpUrl` (monitor.acdrainwiz.com/sign-up) from config for links and copy.
+
+## Warranty and returns
+
+- **Limited Lifetime** wording on the site is **under legal review**. Do not add new warranty or return claims until legal confirms. Do not remove or alter existing warranty/return copy on the site without stakeholder approval. When generating new content and warranty is unclear, use the safe copy from `acdwKnowledge.ts`.
+
+## Connectivity and WiFi requirement
+
+- **WiFi Sensor** requires a **2.4 GHz Wi-Fi network** for the monitoring dashboard; 5 GHz is not supported. State this where relevant (compatibility, setup, troubleshooting).
+- **Connectivity is Wi-Fi only.** Do not claim Bluetooth support or pairing via Bluetooth anywhere.
+
+## LED status (sensors)
+
+- **Only red (blinking or solid) and green are used.** There is no blue LED.
+- **Standard Sensor Switch**: No light = no power. Green = monitoring active. Flashing red = testing mode. Solid red = 95% water level, AC shutdown triggered.
+- **WiFi Sensor Switch**: No light = no power. Flashing red = awaiting WiFi connection (pairing mode). Green = connected to monitoring platform. Solid red = 95% water level, AC shutdown triggered.
+- Do not add LED states (e.g. yellow, blue) that are not in the package or config.
+
+## Brand voice and guardrails
+
+- **Tone**: Helpful, technical-but-clear, confident, practical, benefit-focused, professional, not hype-heavy.
+- **Preferred phrases**: One-time installation, lifetime benefits, permanent installation, streamlined maintenance process, predictive maintenance, automatic overflow protection, works seamlessly with most residential AC units, adaptable for various setups (e.g. transfer pumps).
+- **Do not claim**: Universal compatibility with all HVAC systems; warranty/return terms not confirmed by legal; guaranteed prevention of all clogs or all water damage; medical/mold/health claims; that the product replaces all code-required devices in every jurisdiction; a release date for the industrial-grade Mini; Bluetooth support or pairing via Bluetooth; blue LED (only red and green are used).
+
+## Content generation
+
+- Keep copy practical, contractor-friendly, and benefit-oriented.
+- Prefer exact product names and approved compatibility language from this rule and `acdwKnowledge.ts`.
+- For FAQs and support text, use the `faq` array and LED definitions in `acdwKnowledge.ts` so site and AI stay aligned.

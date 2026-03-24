@@ -63,10 +63,7 @@ export function Step1CreateAccount() {
   return (
     <>
       {/* Prerequisite Modal */}
-      <PrerequisiteModal 
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-      />
+      <PrerequisiteModal isOpen={showModal} onClose={() => setShowModal(false)} variant="wifi" />
 
       <div className="sensor-setup-step-container">
         {/* Step Number Badge */}
@@ -80,7 +77,7 @@ export function Step1CreateAccount() {
       <div className="sensor-setup-step-title-section">
         <h2 className="sensor-setup-step-title">Create Account</h2>
         <p className="sensor-setup-step-subtitle">
-          Set up your account before installing your first AC Drain Wiz Sensor at a customer's home
+          Set up your monitoring account before installing a WiFi Sensor Switch—remote alerts and dashboard access require a completed sign-up, profile, and customer record.
         </p>
       </div>
 

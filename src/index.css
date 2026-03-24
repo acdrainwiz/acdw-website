@@ -6774,15 +6774,60 @@
   @apply grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10;
 }
 
+/* When only the Mini card is in the grid, keep it readable width */
+.install-picker-grid-mini-only {
+  @apply lg:grid-cols-1 lg:max-w-xl lg:mx-auto;
+}
+
+/* Mini section — title + subtitle align with sensor family block below */
+.install-mini-family {
+  @apply mb-10;
+}
+
+.install-mini-family .install-picker-grid {
+  @apply mb-0;
+}
+
+/* Sensor family (Standard vs WiFi) below Mini */
+.install-sensor-family {
+  @apply mb-10;
+}
+
+.install-sensor-family-title {
+  @apply text-2xl font-bold text-gray-900 text-center mb-2;
+}
+
+.install-sensor-family-subtitle {
+  @apply text-center text-gray-600 max-w-3xl mx-auto mb-8 text-base leading-relaxed;
+}
+
+.install-sensor-model-grid {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-8;
+}
+
+.install-sensor-family-cross {
+  @apply text-center text-sm text-gray-600 mt-8 max-w-2xl mx-auto leading-relaxed;
+}
+
+.install-sensor-family-cross-link {
+  @apply text-primary-600 font-medium hover:text-primary-700 underline-offset-2 hover:underline;
+}
+
+.install-product-image-contain {
+  @apply object-contain p-4;
+}
+
 /* Individual product card */
 .install-product-card {
   @apply bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden
          hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col;
 }
 
-/* Image area — tall placeholder or real img */
+/* Image area — tall placeholder or real img (often a Link to the install guide) */
 .install-product-image-area {
-  @apply w-full bg-gray-100 overflow-hidden;
+  @apply w-full bg-gray-100 overflow-hidden block cursor-pointer
+         transition-opacity hover:opacity-95
+         focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500;
   height: 317px; /* ~32% taller than original 240px */
 }
 
@@ -10808,6 +10853,107 @@
   @apply h-4 w-4 text-primary-600;
 }
 
+/* Standard vs WiFi comparison band */
+.sensor-product-variant-compare {
+  @apply py-14 md:py-20 bg-white border-y border-gray-100;
+}
+
+.sensor-product-variant-compare-inner {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.sensor-product-variant-compare-intro {
+  @apply mb-10;
+}
+
+.sensor-product-variant-compare-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto;
+}
+
+.sensor-product-variant-card {
+  @apply rounded-2xl border border-gray-200 bg-gray-50/80 p-8 shadow-sm;
+}
+
+.sensor-product-variant-card-wifi {
+  @apply border-primary-200 bg-primary-50/40;
+}
+
+.sensor-product-variant-card-title {
+  @apply text-xl font-bold text-gray-900 mb-3;
+}
+
+.sensor-product-variant-card-desc {
+  @apply text-gray-600 text-sm leading-relaxed mb-5;
+}
+
+.sensor-product-variant-card-list {
+  @apply space-y-3 text-sm text-gray-700;
+}
+
+.sensor-product-variant-card-list li {
+  @apply flex items-start gap-2;
+}
+
+.sensor-product-variant-card-check {
+  @apply h-5 w-5 shrink-0 text-green-600 mt-0.5;
+}
+
+/* How It Works — installation guide CTAs */
+.sensor-product-install-guides {
+  @apply mt-16 max-w-3xl mx-auto text-center;
+}
+
+.sensor-product-install-guides-eyebrow {
+  @apply text-xs font-semibold uppercase tracking-[0.12em] text-primary-700 mb-2;
+}
+
+.sensor-product-install-guides-intro {
+  @apply text-sm sm:text-base text-gray-600 leading-relaxed mb-6;
+}
+
+.sensor-product-install-guides-buttons {
+  @apply flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center;
+}
+
+.sensor-product-install-guide-button {
+  @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-base;
+  @apply bg-primary-600 text-white shadow-md hover:bg-primary-700 hover:shadow-lg transition-all;
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2;
+}
+
+.sensor-product-install-guide-button-icon {
+  @apply h-5 w-5 shrink-0;
+}
+
+.sensor-product-install-guide-button-arrow {
+  @apply h-5 w-5 shrink-0 opacity-90;
+}
+
+/* Specifications comparison table */
+.sensor-product-spec-compare-lead {
+  @apply text-center text-gray-600 mb-8 max-w-2xl mx-auto;
+}
+
+.sensor-product-spec-compare {
+  @apply max-w-4xl mx-auto rounded-xl border border-gray-200 overflow-hidden bg-white shadow-sm;
+}
+
+.sensor-product-spec-compare-row {
+  @apply grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 px-4 py-4 sm:px-6 border-b border-gray-100 last:border-b-0;
+}
+
+.sensor-product-spec-compare-row-head {
+  @apply bg-gray-50 font-semibold text-gray-900 text-sm;
+}
+
+.sensor-product-spec-compare-cell {
+  @apply text-sm text-gray-700 leading-snug;
+}
+
+.sensor-product-spec-compare-label {
+  @apply font-medium text-gray-900 sm:col-span-1;
+}
+
 /* Value Propositions by Customer Type */
 .sensor-product-value-props {
   @apply py-16 md:py-24 bg-gray-50;
@@ -11355,6 +11501,15 @@
   background-color: #6b21a8;
 }
 
+.sensor-setup-step-badge-step4 {
+  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #7c3aed 100%);
+}
+
+.sensor-setup-step-badge-step5 {
+  @apply bg-violet-900;
+  background-color: #5b21b6;
+}
+
 .sensor-setup-step-badge-complete {
   @apply bg-green-600;
 }
@@ -11387,6 +11542,11 @@
 
 .sensor-setup-step-subtitle {
   @apply text-lg text-gray-600;
+}
+
+/* WiFi wizard step 4: extra space before Physical Setup accordion */
+.sensor-setup-step-subtitle-wifi-step4 {
+  @apply mb-8;
 }
 
 .sensor-setup-step-signup-link-wrapper {
@@ -11450,6 +11610,47 @@
   @apply text-sm text-amber-700 hover:text-amber-900 underline mt-1 inline-block;
 }
 
+.sensor-setup-prerequisites-callout-done {
+  @apply bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-3;
+}
+
+.sensor-setup-prerequisites-callout-icon-done {
+  @apply text-emerald-600;
+}
+
+.sensor-setup-prerequisites-callout-done .sensor-setup-prerequisites-callout-title {
+  @apply text-emerald-900;
+}
+
+.sensor-setup-prerequisites-callout-done .sensor-setup-prerequisites-callout-item-description {
+  @apply text-emerald-900;
+}
+
+/* Standard sensor wizard step 1: T manifold (reuses Mini prep/install components) */
+.sensor-standard-manifold-wrapper {
+  @apply space-y-8;
+}
+
+.sensor-standard-manifold-intro {
+  @apply pb-0;
+}
+
+.sensor-standard-manifold-reference {
+  @apply mt-4 text-center;
+}
+
+.sensor-standard-manifold-reference-link {
+  @apply inline-flex items-center gap-1.5 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors;
+}
+
+.sensor-standard-manifold-reference-icon {
+  @apply h-4 w-4 flex-shrink-0;
+}
+
+.mini-setup-step-title-section-sensor-part {
+  @apply mt-8 mb-4 text-center;
+}
+
 .sensor-setup-model-identification {
   @apply bg-white rounded-lg border border-gray-200 p-6;
 }
@@ -11488,7 +11689,7 @@
   @apply text-sm text-gray-600;
 }
 
-/* Step 2: Unbox callout (before model selection) */
+/* Sensor setup: Unbox callout (manifold measure after What You'll Need; WiFi install step 4 hides duplicate) */
 .sensor-setup-unbox-callout {
   @apply bg-white rounded-lg border border-gray-200 p-6;
 }
@@ -11587,6 +11788,10 @@
 
 .sensor-setup-what-you-need-item-description {
   @apply text-sm text-gray-600;
+}
+
+.sensor-setup-what-you-need-model-hint {
+  @apply mt-4 text-sm text-gray-600 leading-relaxed;
 }
 
 /* Notification Message */
@@ -12039,10 +12244,6 @@
   @apply bg-primary-100 text-primary-800;
 }
 
-.sensor-setup-accordion-badge-wifi-only {
-  @apply bg-slate-100 text-slate-700;
-}
-
 .sensor-setup-nonwifi-skip-note {
   @apply text-sm text-gray-600 px-6 pt-3 pb-1;
 }
@@ -12110,6 +12311,11 @@
 /* Step 3: Assign Customer */
 .sensor-setup-assignment-steps {
   @apply space-y-8;
+}
+
+/* WiFi step 5: assignment substeps inside mini-setup accordion (match sensor install drawers) */
+.mini-setup-accordion-content .sensor-setup-assignment-steps-in-drawer {
+  @apply pt-2;
 }
 
 .sensor-setup-assignment-step-card {
@@ -12200,6 +12406,71 @@
 
 .sensor-setup-assignment-button-tertiary {
   @apply bg-gray-100 border border-gray-300 text-gray-700 hover:bg-gray-200 hover:border-gray-400;
+}
+
+/* Standard sensor step 3: mount substeps inside accordion */
+.sensor-setup-standard-final-mount-steps .sensor-setup-installation-step-card:first-child {
+  @apply mt-0;
+}
+
+.sensor-setup-standard-maintenance-callout {
+  @apply mt-8 rounded-xl border border-amber-200 bg-amber-50/80 p-5;
+}
+
+.sensor-setup-standard-maintenance-title {
+  @apply font-semibold text-gray-900 mb-2;
+}
+
+.sensor-setup-standard-maintenance-text {
+  @apply text-sm text-gray-700 leading-relaxed;
+}
+
+.sensor-setup-mini-upsell {
+  @apply mt-8 rounded-xl border border-primary-200 bg-gradient-to-b from-primary-50/90 to-white p-6 shadow-sm;
+}
+
+.sensor-setup-mini-upsell-header {
+  @apply mb-3;
+}
+
+.sensor-setup-mini-upsell-wrench {
+  @apply h-8 w-8 text-primary-600 mb-2;
+}
+
+.sensor-setup-mini-upsell-eyebrow {
+  @apply text-xs font-semibold uppercase tracking-wide text-primary-700;
+}
+
+.sensor-setup-mini-upsell-title {
+  @apply text-xl font-bold text-gray-900 mt-1;
+}
+
+.sensor-setup-mini-upsell-description {
+  @apply text-sm text-gray-600 leading-relaxed mb-5;
+}
+
+.sensor-setup-mini-upsell-actions {
+  @apply flex flex-col sm:flex-row gap-3;
+}
+
+.sensor-setup-mini-upsell-link {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold text-sm transition-colors;
+}
+
+.sensor-setup-mini-upsell-link-primary {
+  @apply bg-primary-600 text-white hover:bg-primary-700;
+}
+
+.sensor-setup-mini-upsell-link-secondary {
+  @apply bg-white border-2 border-primary-600 text-primary-600 hover:bg-primary-50;
+}
+
+.sensor-setup-mini-upsell-link-icon {
+  @apply h-4 w-4 shrink-0;
+}
+
+.sensor-setup-standard-complete-actions {
+  @apply mt-10 pt-4 border-t border-gray-200;
 }
 
 /* Prerequisite Modal */
@@ -12315,6 +12586,47 @@
   @apply min-h-screen bg-gray-50;
 }
 
+/* Model picker (no model in URL) */
+.sensor-setup-model-picker-content {
+  @apply container mx-auto px-4 py-10 max-w-5xl;
+}
+
+.sensor-setup-model-picker-title {
+  @apply text-2xl sm:text-3xl font-bold text-gray-900 text-center mb-3;
+}
+
+.sensor-setup-model-picker-subtitle {
+  @apply text-center text-gray-600 max-w-2xl mx-auto mb-10 text-base leading-relaxed;
+}
+
+.sensor-setup-model-picker-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8;
+}
+
+.sensor-setup-model-picker-card {
+  @apply flex flex-col rounded-2xl border-2 border-gray-200 bg-white p-6 shadow-md hover:border-primary-400 hover:shadow-lg transition-all;
+}
+
+.sensor-setup-model-picker-card-image-wrap {
+  @apply flex justify-center mb-4;
+}
+
+.sensor-setup-model-picker-card-image {
+  @apply max-h-40 w-auto object-contain;
+}
+
+.sensor-setup-model-picker-card-title {
+  @apply text-xl font-bold text-gray-900 mb-2;
+}
+
+.sensor-setup-model-picker-card-desc {
+  @apply text-gray-600 text-sm leading-relaxed flex-1 mb-4;
+}
+
+.sensor-setup-model-picker-card-cta {
+  @apply text-primary-600 font-semibold text-base;
+}
+
 /* Header */
 .sensor-setup-wizard-header {
   @apply bg-white border-b border-gray-200 sticky top-0 z-50;
@@ -12341,7 +12653,7 @@
 }
 
 .sensor-setup-wizard-header-brand {
-  @apply flex items-center space-x-2;
+  @apply flex items-center space-x-2 min-w-0 flex-1 mr-2;
 }
 
 .sensor-setup-wizard-header-logo-link {
@@ -12353,11 +12665,11 @@
 }
 
 .sensor-setup-wizard-header-title {
-  @apply text-lg font-semibold text-gray-900;
+  @apply text-base sm:text-lg font-semibold text-gray-900 leading-snug;
 }
 
 .sensor-setup-wizard-header-step-indicator {
-  @apply text-sm text-gray-600;
+  @apply text-sm text-gray-600 flex-shrink-0;
 }
 
 .sensor-setup-wizard-progress-bars-container {
@@ -13806,8 +14118,46 @@
     @apply mt-36;
 }
 
+.product-installation-video-stack {
+    @apply max-w-4xl mx-auto flex flex-col items-stretch;
+}
+
+.product-installation-video-guide {
+    @apply mt-8 sm:mt-10 flex flex-col items-center text-center gap-4;
+    @apply w-full rounded-2xl border border-primary-200/80 bg-gradient-to-b from-primary-50/90 to-white;
+    @apply px-5 py-6 sm:px-8 sm:py-7;
+    @apply shadow-md shadow-primary-900/5 ring-1 ring-primary-900/[0.04];
+}
+
+.product-installation-video-guide-eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.12em] text-primary-700;
+}
+
+.product-installation-video-guide-label {
+    @apply text-sm sm:text-base text-gray-600 leading-relaxed max-w-lg mx-auto;
+}
+
+.product-installation-video-guide-link {
+    @apply inline-flex w-full max-w-md items-center justify-center gap-2.5;
+    @apply py-3.5 px-6 sm:px-8 rounded-xl;
+    @apply bg-primary-600 text-white text-base font-semibold;
+    @apply shadow-md shadow-primary-900/20;
+    @apply hover:bg-primary-700 hover:shadow-lg hover:shadow-primary-900/25;
+    @apply active:bg-primary-800;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2;
+}
+
+.product-installation-video-guide-link-lead-icon {
+    @apply h-5 w-5 shrink-0 text-white/95;
+}
+
+.product-installation-video-guide-link-trail-icon {
+    @apply h-5 w-5 shrink-0 text-white/90;
+}
+
 .product-installation-video-placeholder {
-    @apply relative w-full max-w-4xl mx-auto;
+    @apply relative w-full;
     @apply aspect-video bg-gray-900 rounded-2xl overflow-hidden;
     @apply flex items-center justify-center;
     @apply cursor-pointer hover:bg-gray-800 transition-colors;
@@ -14141,7 +14491,8 @@
   @apply flex-1 min-w-0;
 }
 
-.mini-setup-step-title {
+/* Card-level subheadings inside numbered steps (not the main h2 step title) */
+.mini-setup-step-card-title {
   @apply text-base font-semibold text-gray-900 mb-1;
 }
 
@@ -14190,6 +14541,15 @@
 
 .mini-setup-accordion-header-left {
   @apply flex items-center space-x-3;
+}
+
+/* Wizard step index in drawer header (e.g. Physical Setup on sensor step 2) */
+.mini-setup-accordion-wizard-step-badge {
+  @apply w-10 h-10 rounded-full bg-primary-600 flex items-center justify-center flex-shrink-0;
+}
+
+.mini-setup-accordion-wizard-step-badge-number {
+  @apply text-lg font-bold text-white leading-none;
 }
 
 .mini-setup-accordion-header-right {
@@ -14241,6 +14601,15 @@
 /* Installation Step Cards (inside accordions, Step 2) ------- */
 .mini-setup-installation-steps {
   @apply space-y-5 pt-4;
+}
+
+/* Mini accordions (Measure & Cut, Prep & Bond, Cure): Sensor-style large step badges; tame first-card margin */
+.mini-setup-accordion-content .mini-setup-accordion-sensor-steps.sensor-setup-installation-steps {
+  @apply space-y-6 pt-2;
+}
+
+.mini-setup-accordion-content .mini-setup-accordion-sensor-steps .sensor-setup-installation-step-card:first-child {
+  @apply mt-0;
 }
 
 .mini-setup-installation-step-card {
