@@ -1,6 +1,6 @@
 import { CheckCircleIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 import { useNavigate } from 'react-router-dom'
-import { MONITORING } from '../../../config/acdwKnowledge'
+import { MONITORING, SENSOR_SETUP_MODEL_CHOICE_HREF } from '../../../config/acdwKnowledge'
 
 interface Step4SuccessProps {
   deviceData?: {
@@ -143,7 +143,7 @@ export function Step4Success({ deviceData }: Step4SuccessProps) {
         </button>
         
         <button
-          onClick={() => navigate('/sensor-setup')}
+          onClick={() => navigate(SENSOR_SETUP_MODEL_CHOICE_HREF)}
           className="sensor-setup-success-button sensor-setup-success-button-secondary"
         >
           Setup Another Sensor

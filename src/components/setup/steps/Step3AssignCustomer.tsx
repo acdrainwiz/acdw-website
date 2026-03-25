@@ -7,7 +7,14 @@ import {
   WrenchScrewdriverIcon,
 } from '@heroicons/react/24/outline'
 import { Link, useNavigate } from 'react-router-dom'
-import { buildSensorSetupHref, PRODUCT_NAMES, type SensorSetupModelSlug } from '../../../config/acdwKnowledge'
+import {
+  buildSensorSetupHref,
+  PRODUCT_NAMES,
+  SENSOR_SETUP_MODEL_CHOICE_HREF,
+  type SensorSetupModelSlug,
+} from '../../../config/acdwKnowledge'
+import { InstallationWorkflowHelpFooter } from '../InstallationWorkflowHelpFooter'
+import type { InstallationWorkflowProduct } from '../InstallationWorkflowHelpFooter'
 
 interface Step3AssignCustomerProps {
   /** Matches URL `model` for copy and restart link */
@@ -27,6 +34,8 @@ function assignCustomerBadgeClass(step: number): string {
 
 export function Step3AssignCustomer({ setupModel = null, wizardStepNumber = 3 }: Step3AssignCustomerProps) {
   const navigate = useNavigate()
+  const installationHelpProduct: InstallationWorkflowProduct =
+    setupModel === 'wifi' ? 'sensor-wifi' : 'sensor-standard'
   const isWifiFinalStep = setupModel === 'wifi' && wizardStepNumber === 5
   const [assignmentDrawerExpanded, setAssignmentDrawerExpanded] = useState(true)
 
@@ -34,31 +43,35 @@ export function Step3AssignCustomer({ setupModel = null, wizardStepNumber = 3 }:
     {
       number: 1,
       title: 'View Customer List',
-      description: 'After logging in, you\'ll be presented with a list of your existing customers. This list includes all clients you\'ve created in your account.',
+      description:
+        'After logging in, you\'ll be presented with a list of your existing customers. This list includes all clients you\'ve created in your account.',
       image: '/images/setup/step3-1-customer-list.png',
-      alt: 'Customer list screen'
+      alt: 'Customer list screen',
     },
     {
       number: 2,
       title: 'Select Customer',
-      description: 'Tap on the customer name where you\'re installing the sensor. This will open the customer details page.',
+      description:
+        'Tap on the customer name where you\'re installing the sensor. This will open the customer details page.',
       image: '/images/setup/step3-2-select-customer.png',
-      alt: 'Selecting a customer from the list'
+      alt: 'Selecting a customer from the list',
     },
     {
       number: 3,
       title: 'Select Address (if multiple)',
-      description: 'If the customer has multiple addresses on file, you\'ll be asked to select which address this sensor will be assigned to. Choose the correct location.',
+      description:
+        'If the customer has multiple addresses on file, you\'ll be asked to select which address this sensor will be assigned to. Choose the correct location.',
       image: '/images/setup/step3-3-select-address.png',
-      alt: 'Address selection screen'
+      alt: 'Address selection screen',
     },
     {
       number: 4,
       title: 'Sensor Assigned',
-      description: 'The sensor will be automatically assigned to your selected customer. You\'ll see a confirmation message when the assignment is complete.',
+      description:
+        'The sensor will be automatically assigned to your selected customer. You\'ll see a confirmation message when the assignment is complete.',
       image: '/images/setup/step3-4-complete.png',
-      alt: 'Assignment complete confirmation'
-    }
+      alt: 'Assignment complete confirmation',
+    },
   ]
 
   const assignmentStepCards = substeps.map((substep) => (
@@ -158,76 +171,140 @@ export function Step3AssignCustomer({ setupModel = null, wizardStepNumber = 3 }:
         </p>
       </div>
 
-      {isWifiFinalStep && (
+      {isWifiFinalStep ? (
         <>
-          <div className="sensor-setup-standard-maintenance-callout">
-            <h3 className="sensor-setup-standard-maintenance-title">When to service the drain line</h3>
-            <p className="sensor-setup-standard-maintenance-text">
-              If the sensor shuts down the AC at high water level, or a visual check through the manifold shows
-              biofilm, algae, or water not draining normally, the condensate line needs cleaning—not just the sensor.
-              Clearing the line prevents repeat trips and water damage.
-            </p>
+          <InstallationWorkflowHelpFooter
+            product="sensor-wifi"
+            showPhone={false}
+            title="Troubleshooting"
+            intro="Most LED, Wi‑Fi, and install questions are answered in these guides."
+            className="install-workflow-help-footer--troubleshooting-hero"
+          />
+
+          <div className="sensor-setup-assignment-actions-wrapper sensor-setup-wifi-assignment-actions">
+            <h3 className="sensor-setup-assignment-actions-heading">What&apos;s next?</h3>
+            <div className="sensor-setup-assignment-actions">
+              <button
+                type="button"
+                onClick={() => navigate('/contact?type=support')}
+                className="sensor-setup-assignment-button sensor-setup-assignment-button-primary"
+              >
+                Contact Support
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  sessionStorage.removeItem('sensor-setup-prerequisite-dismissed')
+                  sessionStorage.removeItem('sensor-setup-prerequisite-dismiss-reason')
+                  window.location.href = buildSensorSetupHref({ model: 'wifi', step: 1 })
+                }}
+                className="sensor-setup-assignment-button sensor-setup-assignment-button-secondary"
+              >
+                Setup Another Sensor
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate('/')}
+                className="sensor-setup-assignment-button sensor-setup-assignment-button-tertiary"
+              >
+                Back to Home
+              </button>
+            </div>
           </div>
 
-          <div className="sensor-setup-mini-upsell">
-            <div className="sensor-setup-mini-upsell-header">
-              <WrenchScrewdriverIcon className="sensor-setup-mini-upsell-wrench" aria-hidden />
-              <span className="sensor-setup-mini-upsell-eyebrow">Add maintenance access</span>
-              <h3 className="sensor-setup-mini-upsell-title">{PRODUCT_NAMES.mini}</h3>
+          <details className="sensor-setup-maintenance-details">
+            <summary className="sensor-setup-maintenance-details-summary list-none">
+              <div className="sensor-setup-maintenance-details-summary-row">
+                <div className="sensor-setup-maintenance-details-summary-text">
+                  <span className="sensor-setup-maintenance-details-summary-eyebrow">Maintenance</span>
+                  <span className="sensor-setup-maintenance-details-summary-headline">
+                    Condensate line service &amp; adding the Mini
+                  </span>
+                  <span className="sensor-setup-maintenance-details-summary-sub">
+                    When to service the drain line and how the Mini pairs with your sensor setup
+                  </span>
+                </div>
+                <ChevronDownIcon className="sensor-setup-maintenance-details-summary-chevron" aria-hidden />
+              </div>
+            </summary>
+            <div className="sensor-setup-maintenance-details-body">
+              <div className="sensor-setup-standard-maintenance-callout sensor-setup-maintenance-details-callout">
+                <h3 className="sensor-setup-standard-maintenance-title">When to service the drain line</h3>
+                <p className="sensor-setup-standard-maintenance-text">
+                  If the sensor shuts down the AC at high water level, or a visual check through the manifold shows
+                  biofilm, algae, or water not draining normally, the condensate line needs cleaning—not just the
+                  sensor. Clearing the line prevents repeat trips and water damage.
+                </p>
+              </div>
+
+              <div className="sensor-setup-mini-upsell sensor-setup-maintenance-details-mini">
+                <div className="sensor-setup-mini-upsell-header">
+                  <WrenchScrewdriverIcon className="sensor-setup-mini-upsell-wrench" aria-hidden />
+                  <span className="sensor-setup-mini-upsell-eyebrow">Add maintenance access</span>
+                  <h3 className="sensor-setup-mini-upsell-title">{PRODUCT_NAMES.mini}</h3>
+                </div>
+                <p className="sensor-setup-mini-upsell-description">
+                  The Mini adds a permanent service port on the 3/4&quot; drain line for flush, compressed air, and
+                  vacuum—so technicians can clear sludge without cutting PVC. For service, the Sensor can be removed and
+                  the Mini valve used in the same bayonet port, then the Sensor reinstalled.
+                </p>
+                <div className="sensor-setup-mini-upsell-actions">
+                  <Link to="/products/mini" className="sensor-setup-mini-upsell-link sensor-setup-mini-upsell-link-primary">
+                    View {PRODUCT_NAMES.mini}
+                    <ArrowRightIcon className="sensor-setup-mini-upsell-link-icon" aria-hidden />
+                  </Link>
+                  <Link to="/mini-setup" className="sensor-setup-mini-upsell-link sensor-setup-mini-upsell-link-secondary">
+                    Mini installation guide
+                    <ArrowRightIcon className="sensor-setup-mini-upsell-link-icon" aria-hidden />
+                  </Link>
+                </div>
+              </div>
             </div>
-            <p className="sensor-setup-mini-upsell-description">
-              The Mini adds a permanent service port on the 3/4&quot; drain line for flush, compressed air, and
-              vacuum—so technicians can clear sludge without cutting PVC. For service, the Sensor can be removed and the
-              Mini valve used in the same bayonet port, then the Sensor reinstalled.
-            </p>
-            <div className="sensor-setup-mini-upsell-actions">
-              <Link to="/products/mini" className="sensor-setup-mini-upsell-link sensor-setup-mini-upsell-link-primary">
-                View {PRODUCT_NAMES.mini}
-                <ArrowRightIcon className="sensor-setup-mini-upsell-link-icon" aria-hidden />
-              </Link>
-              <Link to="/mini-setup" className="sensor-setup-mini-upsell-link sensor-setup-mini-upsell-link-secondary">
-                Mini installation guide
-                <ArrowRightIcon className="sensor-setup-mini-upsell-link-icon" aria-hidden />
-              </Link>
+          </details>
+        </>
+      ) : (
+        <>
+          <div className="sensor-setup-assignment-actions-wrapper">
+            <h3 className="sensor-setup-assignment-actions-heading">What&apos;s Next?</h3>
+            <div className="sensor-setup-assignment-actions">
+              <button
+                type="button"
+                onClick={() => navigate('/contact?type=support')}
+                className="sensor-setup-assignment-button sensor-setup-assignment-button-primary"
+              >
+                Contact Support
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  sessionStorage.removeItem('sensor-setup-prerequisite-dismissed')
+                  sessionStorage.removeItem('sensor-setup-prerequisite-dismiss-reason')
+                  window.location.href =
+                    setupModel === 'standard' || setupModel === 'wifi'
+                      ? buildSensorSetupHref({ model: setupModel, step: 1 })
+                      : SENSOR_SETUP_MODEL_CHOICE_HREF
+                }}
+                className="sensor-setup-assignment-button sensor-setup-assignment-button-secondary"
+              >
+                Setup Another Sensor
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate('/')}
+                className="sensor-setup-assignment-button sensor-setup-assignment-button-tertiary"
+              >
+                Back to Home
+              </button>
             </div>
           </div>
+
+          <InstallationWorkflowHelpFooter product={installationHelpProduct} />
         </>
       )}
-
-      {/* Action Buttons */}
-      <div className="sensor-setup-assignment-actions-wrapper">
-        <h3 className="sensor-setup-assignment-actions-heading">What's Next?</h3>
-        <div className="sensor-setup-assignment-actions">
-          <button
-            onClick={() => navigate('/contact?type=support')}
-            className="sensor-setup-assignment-button sensor-setup-assignment-button-primary"
-          >
-            Contact Support
-          </button>
-          
-          <button
-            onClick={() => {
-              sessionStorage.removeItem('sensor-setup-prerequisite-dismissed')
-              sessionStorage.removeItem('sensor-setup-prerequisite-dismiss-reason')
-              window.location.href =
-                setupModel === 'standard' || setupModel === 'wifi'
-                  ? buildSensorSetupHref({ model: setupModel, step: 1 })
-                  : '/sensor-setup'
-            }}
-            className="sensor-setup-assignment-button sensor-setup-assignment-button-secondary"
-          >
-            Setup Another Sensor
-          </button>
-          
-          <button
-            onClick={() => navigate('/')}
-            className="sensor-setup-assignment-button sensor-setup-assignment-button-tertiary"
-          >
-            Back to Home
-          </button>
-        </div>
-      </div>
     </div>
   )
 }
-

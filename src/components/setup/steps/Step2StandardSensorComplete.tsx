@@ -1,7 +1,14 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ArrowRightIcon, ChevronDownIcon, ChevronUpIcon, WrenchScrewdriverIcon } from '@heroicons/react/24/outline'
-import { PRODUCT_NAMES, buildSensorSetupHref } from '../../../config/acdwKnowledge'
+import {
+  ArrowRightIcon,
+  CheckCircleIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  WrenchScrewdriverIcon,
+} from '@heroicons/react/24/outline'
+import { PRODUCT_NAMES, SENSOR_SETUP_MODEL_CHOICE_HREF } from '../../../config/acdwKnowledge'
+import { InstallationWorkflowHelpFooter } from '../InstallationWorkflowHelpFooter'
 
 const FINAL_MOUNT_STEPS = [
   {
@@ -36,7 +43,7 @@ interface Step2StandardSensorCompleteProps {
 
 /**
  * Final step for Standard (Non-WiFi) sensor setup: mount in T manifold after successful test,
- * plus optional AC Drain Wiz Mini cross-sell for drain line maintenance access.
+ * success state, troubleshooting, actions, and optional maintenance / Mini content.
  */
 export function Step2StandardSensorComplete({
   omitWizardHeader = false,
@@ -44,8 +51,13 @@ export function Step2StandardSensorComplete({
 }: Step2StandardSensorCompleteProps) {
   const navigate = useNavigate()
   const mountDrawerBadgeNumber = mountDrawerBadgeNumberProp ?? (omitWizardHeader ? 2 : 1)
-  // Unified Standard step 3: Physical Setup drawer opens first; Mount & lock starts collapsed.
   const [mountExpanded, setMountExpanded] = useState(!omitWizardHeader)
+
+  const runSetupAnotherSensor = () => {
+    sessionStorage.removeItem('sensor-setup-prerequisite-dismissed')
+    sessionStorage.removeItem('sensor-setup-prerequisite-dismiss-reason')
+    window.location.href = SENSOR_SETUP_MODEL_CHOICE_HREF
+  }
 
   return (
     <div className={`sensor-setup-step-container ${omitWizardHeader ? 'mt-6' : ''}`}>
@@ -60,7 +72,8 @@ export function Step2StandardSensorComplete({
           <div className="sensor-setup-step-title-section">
             <h2 className="sensor-setup-step-title">Mount &amp; lock the sensor</h2>
             <p className="sensor-setup-step-subtitle">
-              After power-up and the touch test pass (LED flashes red and the AC shuts off as expected), install the sensor in its final position on the Transparent T manifold.
+              After power-up and the touch test pass (LED flashes red and the AC shuts off as expected), install the
+              sensor in its final position on the Transparent T manifold.
             </p>
           </div>
         </>
@@ -120,35 +133,26 @@ export function Step2StandardSensorComplete({
         )}
       </div>
 
-      <div className="sensor-setup-standard-maintenance-callout">
-        <h3 className="sensor-setup-standard-maintenance-title">When to service the drain line</h3>
-        <p className="sensor-setup-standard-maintenance-text">
-          If the sensor shuts down the AC at high water level, or a visual check through the manifold shows biofilm, algae, or water not draining normally, the condensate line needs cleaning—not just the sensor. Clearing the line prevents repeat trips and water damage.
+      <div className="sensor-setup-assignment-success">
+        <div className="sensor-setup-assignment-success-icon-wrapper">
+          <CheckCircleIcon className="sensor-setup-assignment-success-icon" />
+        </div>
+        <h3 className="sensor-setup-assignment-success-title">Installation and setup complete</h3>
+        <p className="sensor-setup-assignment-success-message">
+          Your Standard Sensor Switch is mounted on the Transparent T manifold and ready for overflow protection. This
+          model provides automatic AC shutdown at 95% water level—no Wi‑Fi connection or monitoring account required.
         </p>
       </div>
 
-      <div className="sensor-setup-mini-upsell">
-        <div className="sensor-setup-mini-upsell-header">
-          <WrenchScrewdriverIcon className="sensor-setup-mini-upsell-wrench" aria-hidden />
-          <span className="sensor-setup-mini-upsell-eyebrow">Add maintenance access</span>
-          <h3 className="sensor-setup-mini-upsell-title">{PRODUCT_NAMES.mini}</h3>
-        </div>
-        <p className="sensor-setup-mini-upsell-description">
-          The Mini adds a permanent service port on the 3/4&quot; drain line for flush, compressed air, and vacuum—so technicians can clear sludge without cutting PVC. For service, the Sensor can be removed and the Mini valve used in the same bayonet port, then the Sensor reinstalled.
-        </p>
-        <div className="sensor-setup-mini-upsell-actions">
-          <Link to="/products/mini" className="sensor-setup-mini-upsell-link sensor-setup-mini-upsell-link-primary">
-            View {PRODUCT_NAMES.mini}
-            <ArrowRightIcon className="sensor-setup-mini-upsell-link-icon" aria-hidden />
-          </Link>
-          <Link to="/mini-setup" className="sensor-setup-mini-upsell-link sensor-setup-mini-upsell-link-secondary">
-            Mini installation guide
-            <ArrowRightIcon className="sensor-setup-mini-upsell-link-icon" aria-hidden />
-          </Link>
-        </div>
-      </div>
+      <InstallationWorkflowHelpFooter
+        product="sensor-standard"
+        showPhone={false}
+        title="Troubleshooting"
+        intro="Most LED, mounting, and install questions are answered in these guides."
+        className="install-workflow-help-footer--troubleshooting-hero"
+      />
 
-      <div className="sensor-setup-standard-complete-actions">
+      <div className="sensor-setup-assignment-actions-wrapper sensor-setup-wifi-assignment-actions">
         <h3 className="sensor-setup-assignment-actions-heading">What&apos;s next?</h3>
         <div className="sensor-setup-assignment-actions">
           <button
@@ -160,18 +164,70 @@ export function Step2StandardSensorComplete({
           </button>
           <button
             type="button"
-            onClick={() => {
-              window.location.href = buildSensorSetupHref({ model: 'standard', step: 1 })
-            }}
+            onClick={runSetupAnotherSensor}
             className="sensor-setup-assignment-button sensor-setup-assignment-button-secondary"
           >
-            Run Standard guide again
+            Setup another sensor
           </button>
-          <button type="button" onClick={() => navigate('/')} className="sensor-setup-assignment-button sensor-setup-assignment-button-tertiary">
+          <button
+            type="button"
+            onClick={() => navigate('/')}
+            className="sensor-setup-assignment-button sensor-setup-assignment-button-tertiary"
+          >
             Back to Home
           </button>
         </div>
       </div>
+
+      <details className="sensor-setup-maintenance-details">
+        <summary className="sensor-setup-maintenance-details-summary list-none">
+          <div className="sensor-setup-maintenance-details-summary-row">
+            <div className="sensor-setup-maintenance-details-summary-text">
+              <span className="sensor-setup-maintenance-details-summary-eyebrow">Maintenance</span>
+              <span className="sensor-setup-maintenance-details-summary-headline">
+                Condensate line service &amp; adding the Mini
+              </span>
+              <span className="sensor-setup-maintenance-details-summary-sub">
+                When to service the drain line and how the Mini pairs with your sensor setup
+              </span>
+            </div>
+            <ChevronDownIcon className="sensor-setup-maintenance-details-summary-chevron" aria-hidden />
+          </div>
+        </summary>
+        <div className="sensor-setup-maintenance-details-body">
+          <div className="sensor-setup-standard-maintenance-callout sensor-setup-maintenance-details-callout">
+            <h3 className="sensor-setup-standard-maintenance-title">When to service the drain line</h3>
+            <p className="sensor-setup-standard-maintenance-text">
+              If the sensor shuts down the AC at high water level, or a visual check through the manifold shows
+              biofilm, algae, or water not draining normally, the condensate line needs cleaning—not just the sensor.
+              Clearing the line prevents repeat trips and water damage.
+            </p>
+          </div>
+
+          <div className="sensor-setup-mini-upsell sensor-setup-maintenance-details-mini">
+            <div className="sensor-setup-mini-upsell-header">
+              <WrenchScrewdriverIcon className="sensor-setup-mini-upsell-wrench" aria-hidden />
+              <span className="sensor-setup-mini-upsell-eyebrow">Add maintenance access</span>
+              <h3 className="sensor-setup-mini-upsell-title">{PRODUCT_NAMES.mini}</h3>
+            </div>
+            <p className="sensor-setup-mini-upsell-description">
+              The Mini adds a permanent service port on the 3/4&quot; drain line for flush, compressed air, and
+              vacuum—so technicians can clear sludge without cutting PVC. For service, the Sensor can be removed and the
+              Mini valve used in the same bayonet port, then the Sensor reinstalled.
+            </p>
+            <div className="sensor-setup-mini-upsell-actions">
+              <Link to="/products/mini" className="sensor-setup-mini-upsell-link sensor-setup-mini-upsell-link-primary">
+                View {PRODUCT_NAMES.mini}
+                <ArrowRightIcon className="sensor-setup-mini-upsell-link-icon" aria-hidden />
+              </Link>
+              <Link to="/mini-setup" className="sensor-setup-mini-upsell-link sensor-setup-mini-upsell-link-secondary">
+                Mini installation guide
+                <ArrowRightIcon className="sensor-setup-mini-upsell-link-icon" aria-hidden />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </details>
     </div>
   )
 }

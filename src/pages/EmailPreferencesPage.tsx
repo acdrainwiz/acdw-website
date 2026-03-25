@@ -3,6 +3,17 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { EnvelopeIcon, CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline'
 import { useRecaptcha } from '../hooks/useRecaptcha'
 import { validateEmail } from '../utils/emailValidation'
+import type { PageSearchMeta } from '../config/siteSearchTypes'
+
+export const PAGE_SEARCH_META: PageSearchMeta = {
+  id: 'page-email-preferences',
+  kind: 'site',
+  title: 'Email preferences',
+  body:
+    'Manage email preferences: product updates, promotions, newsletter, order updates, support emails. Opt in or out of AC Drain Wiz communications.',
+  tags: ['email', 'preferences', 'subscribe', 'unsubscribe', 'marketing'],
+  href: '/email-preferences',
+}
 
 export function EmailPreferencesPage() {
     const navigate = useNavigate()

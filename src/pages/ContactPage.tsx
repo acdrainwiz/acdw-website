@@ -17,6 +17,18 @@ import {
 import { validateEmail } from '../utils/emailValidation'
 import { useRecaptcha } from '../hooks/useRecaptcha'
 import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
+import type { PageSearchMeta } from '../config/siteSearchTypes'
+
+export const PAGE_SEARCH_META: PageSearchMeta = {
+  id: 'contact-support',
+  kind: 'product-info',
+  title: 'Contact AC Drain Wiz',
+  body:
+    'Contact forms for general inquiries, technical support, sales, certified installer requests, and product demos. Phone and email, leadership contacts, business hours Eastern Time, privacy consent.',
+  tags: ['contact', 'help', 'support', 'phone', 'email', 'sales', 'demo'],
+  searchTerms: ['installer', 'form', 'inquiry'],
+  href: '/contact',
+}
 
 type ContactFormType = 'general' | 'support' | 'sales' | 'installer' | 'demo'
 

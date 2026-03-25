@@ -1,6 +1,17 @@
 import { useNavigate } from 'react-router-dom'
 import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/24/outline'
 import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
+import type { PageSearchMeta } from '../config/siteSearchTypes'
+
+export const PAGE_SEARCH_META: PageSearchMeta = {
+  id: 'page-terms-of-use',
+  kind: 'site',
+  title: 'Site Terms of Use',
+  body:
+    'Terms of use for ACDrainWiz.com: user conduct, intellectual property, liability, agreement with Privacy Policy, company legal entity 50 50 Holdings Inc.',
+  tags: ['terms', 'legal', 'conditions', 'use'],
+  href: '/terms-of-use',
+}
 
 export function TermsOfUsePage() {
   const navigate = useNavigate()

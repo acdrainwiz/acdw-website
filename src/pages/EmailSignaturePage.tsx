@@ -3,15 +3,26 @@ import { IMaskInput } from 'react-imask'
 import { isValidEmail } from '../utils/emailValidation'
 import { InstructionModal } from '../components/email-signature/InstructionModal'
 import { PasswordProtection } from '../components/email-signature/PasswordProtection'
+import type { PageSearchMeta } from '../config/siteSearchTypes'
 
 // Password for email signature generator access
 // TODO: Move this to an environment variable for better security
 // Set VITE_EMAIL_SIGNATURE_PASSWORD in your .env file
 const EMAIL_SIGNATURE_PASSWORD = import.meta.env.VITE_EMAIL_SIGNATURE_PASSWORD || 'acdw2024'
 
-/** Miami Heat partnership images — live under public/images/miami-heat-sponsorship/ (lowercase, no spaces). */
+export const PAGE_SEARCH_META: PageSearchMeta = {
+  id: 'page-email-signature',
+  kind: 'site',
+  title: 'Contractor email signature generator',
+  body:
+    'Generate AC Drain Wiz branded email signature for Outlook desktop and Outlook on the web. Miami HEAT partnership badge option, copy to clipboard, step-by-step setup guides.',
+  tags: ['email signature', 'Outlook', 'contractor', 'branding'],
+  href: '/email-signature',
+}
+
+/** Miami HEAT partnership images — live under public/images/miami-heat-sponsorship/ (lowercase, no spaces). */
 const MIAMI_HEAT_SPONSORSHIP_BADGE_URL =
-  'https://acdrainwiz.com/images/miami-heat-sponsorship/signature-badge.png'
+  'https://acdrainwiz.com/images/miami-heat-sponsorship/signature-badge-color.png'
 
 function EmailSignatureContent() {
   const [name, setName] = useState('')
@@ -116,7 +127,7 @@ Follow these steps to add or update your email signature in the Outlook desktop 
 ### Logo Not Showing?
 - Make sure you're connected to the internet
 - The logo loads from https://acdrainwiz.com/images/ac-drain-wiz-logo-signature.png
-- Miami Heat mark: ${MIAMI_HEAT_SPONSORSHIP_BADGE_URL}
+- Miami HEAT mark: ${MIAMI_HEAT_SPONSORSHIP_BADGE_URL}
 - If it still doesn't show, try refreshing Outlook or restarting the application
 
 ### Signature Shows as Code Instead of Formatted?
@@ -145,7 +156,7 @@ If you encounter any issues:
 **Quick Reference:**
 - Signature Generator: https://acdrainwiz.com/email-signature
 - Logo URL: https://acdrainwiz.com/images/ac-drain-wiz-logo-signature.png
-- Miami Heat (signature): ${MIAMI_HEAT_SPONSORSHIP_BADGE_URL}`
+- Miami HEAT (signature): ${MIAMI_HEAT_SPONSORSHIP_BADGE_URL}`
 
   const office365GuideContent = `# How to Add/Update Your Email Signature in Outlook 365 (Web)
 
@@ -240,7 +251,7 @@ If the above methods don't work:
 ### Logo Not Showing?
 - Make sure you're connected to the internet
 - The logo loads from https://acdrainwiz.com/images/ac-drain-wiz-logo-signature.png
-- Miami Heat mark: ${MIAMI_HEAT_SPONSORSHIP_BADGE_URL}
+- Miami HEAT mark: ${MIAMI_HEAT_SPONSORSHIP_BADGE_URL}
 - Some email clients block external images - recipients may need to "Download images" or "Show images"
 - Try refreshing the page or clearing browser cache
 
@@ -294,7 +305,7 @@ If you encounter any issues:
 - Signature Generator: https://acdrainwiz.com/email-signature
 - Outlook 365: https://outlook.office.com
 - Logo URL: https://acdrainwiz.com/images/ac-drain-wiz-logo-signature.png
-- Miami Heat (signature): ${MIAMI_HEAT_SPONSORSHIP_BADGE_URL}`
+- Miami HEAT (signature): ${MIAMI_HEAT_SPONSORSHIP_BADGE_URL}`
 
   const departments = [
     'Sales & Marketing',
@@ -492,11 +503,11 @@ If you encounter any issues:
                   <table border="0" cellpadding="0" cellspacing="0" width="100%" style="font-family: 'Poppins', Arial, Helvetica, sans-serif;">
                     <tr>
                       <td style="vertical-align: middle; padding: 10px 6px 10px 10px; width: 56px;">
-                        <img src="${MIAMI_HEAT_SPONSORSHIP_BADGE_URL}" alt="Miami Heat" width="48" height="49" style="display: block; max-width: 48px; height: auto;" />
+                        <img src="${MIAMI_HEAT_SPONSORSHIP_BADGE_URL}" alt="Miami HEAT" width="48" height="49" style="display: block; max-width: 48px; height: auto;" />
                       </td>
                       <td style="width: 1px; min-width: 1px; background-color: #b8c5d6; padding: 0; font-size: 0; line-height: 0;">&nbsp;</td>
                       <td style="vertical-align: middle; padding: 10px 10px 10px 10px; text-align: left;">
-                        <span style="display: block; font-size: 9px; line-height: 1.4; color: #1e3a8a; font-weight: 600;">Proud partner of the Miami Heat</span>
+                        <span style="display: block; font-size: 9px; line-height: 1.4; color: #1e3a8a; font-weight: 600;">Proud partner of the Miami HEAT</span>
                       </td>
                     </tr>
                   </table>
