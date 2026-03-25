@@ -22,11 +22,12 @@ import {
   ShieldCheckIcon
 } from '@heroicons/react/24/outline'
 import { useAuth } from '../../contexts/AuthContext'
-import { MONITORING } from '../../config/acdwKnowledge'
+import { MONITORING, SENSOR_SETUP_MODEL_CHOICE_HREF } from '../../config/acdwKnowledge'
 
 const baseNavigation = [
   { name: 'Products', href: '/products' },
   { name: 'About', href: '/about' },
+  { name: 'Support', href: '/support' },
   { name: 'Contact', href: '/contact' },
   { name: 'Sensor Monitoring', href: MONITORING.portalUrl, external: true },
 ]
@@ -53,7 +54,7 @@ const mobileNavigationSections = {
     items: [
       { name: 'Support Center', href: '/support', icon: QuestionMarkCircleIcon },
       { name: 'Installation & Setup', href: '/support/installation-setup', icon: DocumentTextIcon },
-      { name: 'Sensor Setup', href: '/sensor-setup', icon: CpuChipIcon },
+      { name: 'Sensor Setup', href: SENSOR_SETUP_MODEL_CHOICE_HREF, icon: CpuChipIcon },
       { name: 'Product Support', href: '/support/product-support', icon: WrenchScrewdriverIcon },
       { name: 'Warranty & Returns', href: '/support/warranty-returns', icon: CreditCardIcon },
       { name: 'Contact Support', href: '/contact?type=support', icon: EnvelopeIcon },
@@ -427,7 +428,17 @@ export function Header() {
                     )}
                   </div>
 
-                  {/* Expandable Support Section */}
+                  {/* About — same relative order as desktop (Products → About → Support) */}
+                  <Link
+                    to="/about"
+                    className={`header-mobile-nav-item ${isActive('/about') ? 'active' : ''}`}
+                    onClick={handleMobileNavClick}
+                  >
+                    <UserGroupIcon className="header-mobile-nav-icon" aria-hidden="true" />
+                    <span>About</span>
+                  </Link>
+
+                  {/* Expandable Support Section (includes Support Center hub; no duplicate flat Support link) */}
                   <div className="header-mobile-nav-section">
                     <button
                       onClick={() => handleDrawerToggle('support')}
@@ -466,7 +477,42 @@ export function Header() {
                     )}
                   </div>
 
-                  {/* Expandable Legal Section */}
+                  {/* Contact Link */}
+                  <Link
+                    to="/contact"
+                    className={`header-mobile-nav-item ${isActive('/contact') ? 'active' : ''}`}
+                    onClick={handleMobileNavClick}
+                  >
+                    <EnvelopeIcon className="header-mobile-nav-icon" aria-hidden="true" />
+                    <span>Contact</span>
+                  </Link>
+
+                  {/* Sensor Monitoring - External Link */}
+                  <a
+                    href={MONITORING.portalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="header-mobile-nav-item header-mobile-nav-item-external"
+                    onClick={handleMobileNavClick}
+                  >
+                    <ChartBarSquareIcon className="header-mobile-nav-icon" aria-hidden="true" />
+                    <span>Sensor Monitoring</span>
+                    <svg className="header-mobile-nav-external-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+
+                  {/* Compliance — secondary; after primary destinations */}
+                  <Link
+                    to="/compliance"
+                    className={`header-mobile-nav-item ${isActive('/compliance') ? 'active' : ''}`}
+                    onClick={handleMobileNavClick}
+                  >
+                    <ShieldCheckIcon className="header-mobile-nav-icon" aria-hidden="true" />
+                    <span>Compliance</span>
+                  </Link>
+
+                  {/* Legal — typically last (footer-adjacent) */}
                   <div className="header-mobile-nav-section">
                     <button
                       onClick={() => handleDrawerToggle('legal')}
@@ -504,51 +550,6 @@ export function Header() {
                       </div>
                     )}
                   </div>
-
-                  {/* Compliance Link */}
-                  <Link
-                    to="/compliance"
-                    className={`header-mobile-nav-item ${isActive('/compliance') ? 'active' : ''}`}
-                    onClick={handleMobileNavClick}
-                  >
-                    <ShieldCheckIcon className="header-mobile-nav-icon" aria-hidden="true" />
-                    <span>Compliance</span>
-                  </Link>
-
-                  {/* About Link */}
-                  <Link
-                    to="/about"
-                    className={`header-mobile-nav-item ${isActive('/about') ? 'active' : ''}`}
-                    onClick={handleMobileNavClick}
-                  >
-                    <UserGroupIcon className="header-mobile-nav-icon" aria-hidden="true" />
-                    <span>About</span>
-                  </Link>
-
-                  {/* Contact Link */}
-                  <Link
-                    to="/contact"
-                    className={`header-mobile-nav-item ${isActive('/contact') ? 'active' : ''}`}
-                    onClick={handleMobileNavClick}
-                  >
-                    <EnvelopeIcon className="header-mobile-nav-icon" aria-hidden="true" />
-                    <span>Contact</span>
-                  </Link>
-
-                  {/* Sensor Monitoring - External Link */}
-                  <a
-                    href={MONITORING.portalUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="header-mobile-nav-item header-mobile-nav-item-external"
-                    onClick={handleMobileNavClick}
-                  >
-                    <ChartBarSquareIcon className="header-mobile-nav-icon" aria-hidden="true" />
-                    <span>Sensor Monitoring</span>
-                    <svg className="header-mobile-nav-external-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </a>
                 </nav>
                 
                 {/* Auth section at bottom - hidden when sign-in/sign-up disabled */}

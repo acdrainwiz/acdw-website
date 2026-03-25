@@ -12,6 +12,18 @@ import {
   ArrowRightIcon
 } from '@heroicons/react/24/outline'
 import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
+import type { PageSearchMeta } from '../config/siteSearchTypes'
+
+export const PAGE_SEARCH_META: PageSearchMeta = {
+  id: 'page-products',
+  kind: 'site',
+  title: 'Products — AC Drain Wiz lineup',
+  body:
+    'Products overview: AC Drain Wiz Mini compact maintenance manifold with bayonet port and bi-directional valve; flush, compressed air, vacuum on 3/4 inch PVC condensate lines. AC Drain Wiz Sensor capacitive water-level sensing, Wi-Fi monitoring and alerts, Mini plus Sensor bundle. Specifications, IMC references, contractor-focused catalog, FAQs.',
+  tags: ['products', 'mini', 'sensor', 'combo', 'catalog', 'specs', 'IMC'],
+  searchTerms: ['solutions', 'lineup', 'ACDW'],
+  href: '/products',
+}
 
 export function ProductsPage() {
   const navigate = useNavigate()

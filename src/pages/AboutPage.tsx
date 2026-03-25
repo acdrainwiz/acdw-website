@@ -1,6 +1,17 @@
 import { Link } from 'react-router-dom'
 import { EnvelopeIcon, PhoneIcon, BuildingOfficeIcon, CheckCircleIcon, WrenchScrewdriverIcon, HomeIcon, BuildingOffice2Icon } from '@heroicons/react/24/outline'
 import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
+import type { PageSearchMeta } from '../config/siteSearchTypes'
+
+export const PAGE_SEARCH_META: PageSearchMeta = {
+  id: 'page-about',
+  kind: 'site',
+  title: 'About AC Drain Wiz',
+  body:
+    'Company story: mission to make AC maintenance easier, faster, more profitable with one-time installed condensate drain solutions. Alan Riddle founder story, attic flooding and condensate line service. What we deliver—easier, faster, more profitable maintenance. Who we serve: HVAC contractors, property managers, homeowners. ICC code compliant, professional grade, made in USA. Contact and leadership information.',
+  tags: ['about', 'company', 'mission', 'founder', 'story'],
+  href: '/about',
+}
 
 export function AboutPage() {
 

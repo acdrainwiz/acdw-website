@@ -4,8 +4,21 @@ import { SetupWizard } from '../components/setup/SetupWizard'
 import { Step1MiniPreparation } from '../components/setup/steps/Step1MiniPreparation'
 import { Step2MiniInstallation } from '../components/setup/steps/Step2MiniInstallation'
 import { Step3MiniCompletion } from '../components/setup/steps/Step3MiniCompletion'
+import { PRODUCT_NAMES } from '../config/acdwKnowledge'
+import { MINI_SETUP_SEARCH_TERMS } from '../config/installationSearchTerms'
+import type { PageSearchMeta } from '../config/siteSearchTypes'
 
 const TOTAL_STEPS = 3
+
+export const PAGE_SEARCH_META: PageSearchMeta = {
+  id: 'guide-mini-setup',
+  kind: 'how-to',
+  title: 'Mini installation guide (step-by-step)',
+  body: `How to install the ${PRODUCT_NAMES.mini}. Permanent service port on a 3/4 inch PVC condensate drain line. PVC solvent weld horizontal installation, measure, cure, leak test. Flush, compressed air, vacuum cleaning without cutting pipe. Preparation, installation, completion.`,
+  tags: ['mini', 'install', 'installation', 'pvc', 'drain', 'how to', 'setup', 'guide', 'solvent weld'],
+  searchTerms: MINI_SETUP_SEARCH_TERMS,
+  href: '/mini-setup',
+}
 
 export function MiniSetupPage() {
   const [searchParams, setSearchParams] = useSearchParams()

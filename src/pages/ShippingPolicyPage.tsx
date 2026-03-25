@@ -1,5 +1,16 @@
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
+import type { PageSearchMeta } from '../config/siteSearchTypes'
+
+export const PAGE_SEARCH_META: PageSearchMeta = {
+  id: 'page-shipping-policy',
+  kind: 'site',
+  title: 'Shipping Policy',
+  body:
+    'Shipping and delivery: distributor sales model, contact sales for methods and timeframes, tracking, no direct end-customer online shipping from this site.',
+  tags: ['shipping', 'delivery', 'distributor', 'tracking'],
+  href: '/shipping-policy',
+}
 
 export function ShippingPolicyPage() {
 

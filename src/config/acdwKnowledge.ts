@@ -18,6 +18,8 @@ export const SUPPORT_CONTACT = {
   primaryContactName: 'Alan Riddle',
   title: 'Founder & CEO',
   email: 'ariddle@acdrainwiz.com',
+  /** Public support inbox for customer-facing contact links (e.g. Support Hub search). */
+  supportEmail: 'support@acdrainwiz.com',
   phoneDisplay: '(234) 23 DRAIN',
   phoneNumeric: '(234) 223-7246',
   phonePlain: '2342237246',
@@ -69,6 +71,9 @@ export const SENSOR_WIFI_SHORT = 'WiFi Sensor Switch' as const
 
 /** URL query value for `/sensor-setup?model=` (Standard vs WiFi install guides). */
 export type SensorSetupModelSlug = 'standard' | 'wifi'
+
+/** Choose Standard vs WiFi on Installation & Setup before opening the guided `/sensor-setup` wizard. */
+export const SENSOR_SETUP_MODEL_CHOICE_HREF = '/support/installation-setup#install-sensor-models' as const
 
 export function buildSensorSetupHref(options: { model: SensorSetupModelSlug; step?: number }): string {
   const step = options.step ?? 1

@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
 import { Step2SensorSetup, type Step2SensorSetupHandle } from './Step2SensorSetup'
+import { InstallationWorkflowHelpFooter } from '../InstallationWorkflowHelpFooter'
 
 export interface Step4WifiSensorUnifiedProps {
   onWifiInteraction?: () => void
@@ -45,6 +46,8 @@ export const Step4WifiSensorUnified = forwardRef<Step2SensorSetupHandle, Step4Wi
           onPhysicalOpened={onPhysicalOpened}
           onModelSelect={onModelSelect}
         />
+
+        <InstallationWorkflowHelpFooter product="sensor-wifi" />
       </>
     )
   }

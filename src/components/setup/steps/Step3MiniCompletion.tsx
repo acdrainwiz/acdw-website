@@ -1,6 +1,8 @@
 import { CheckCircleIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
+import { SENSOR_SETUP_MODEL_CHOICE_HREF } from '../../../config/acdwKnowledge'
+import { InstallationWorkflowHelpFooter } from '../InstallationWorkflowHelpFooter'
 
 const serviceSteps = [
   {
@@ -131,7 +133,7 @@ export function Step3MiniCompletion() {
               <ArrowRightIcon className="mini-setup-sensor-upsell-link-icon" />
             </Link>
             <Link
-              to="/sensor-setup"
+              to={SENSOR_SETUP_MODEL_CHOICE_HREF}
               className="mini-setup-sensor-upsell-link mini-setup-sensor-upsell-link-secondary"
             >
               View Sensor Installation Guide
@@ -165,6 +167,8 @@ export function Step3MiniCompletion() {
           </button>
         </div>
       </div>
+
+      <InstallationWorkflowHelpFooter product="mini" />
     </div>
   )
 }

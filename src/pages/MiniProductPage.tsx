@@ -28,7 +28,18 @@ import {
     PhoneIcon
 } from '@heroicons/react/24/outline'
 import { VideoModal } from '../components/home/VideoModal'
-import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
+import { PRODUCT_NAMES, SUPPORT_CONTACT } from '../config/acdwKnowledge'
+import type { PageSearchMeta } from '../config/siteSearchTypes'
+
+export const PAGE_SEARCH_META: PageSearchMeta = {
+  id: 'product-mini',
+  kind: 'product-info',
+  title: PRODUCT_NAMES.mini,
+  body:
+    'Drain line maintenance access device. Permanent service port on 3/4 inch condensate drain for flush, compressed air, and vacuum. Transparent body, one-time PVC install, horizontal installation. Product overview and specifications.',
+  tags: ['mini', 'product', 'drain', 'pvc', 'maintenance'],
+  href: '/products/mini',
+}
 
 export function MiniProductPage() {
   const navigate = useNavigate()

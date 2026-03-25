@@ -8,6 +8,17 @@ import {
   BookOpenIcon
 } from '@heroicons/react/24/outline'
 import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
+import type { PageSearchMeta } from '../config/siteSearchTypes'
+
+export const PAGE_SEARCH_META: PageSearchMeta = {
+  id: 'page-compliance',
+  kind: 'product-info',
+  title: 'Compliance resources',
+  body:
+    'Documentation and compliance resources for code officials and approvals. AC Drain Wiz regulatory and installation documentation.',
+  tags: ['compliance', 'code', 'official', 'documentation', 'approval'],
+  href: '/compliance',
+}
 
 export function CompliancePage() {
   return (

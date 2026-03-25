@@ -5,6 +5,18 @@ import {
   HomeIcon,
   BuildingOffice2Icon
 } from '@heroicons/react/24/outline'
+import { SENSOR_SETUP_MODEL_CHOICE_HREF } from '../config/acdwKnowledge'
+import type { PageSearchMeta } from '../config/siteSearchTypes'
+
+export const PAGE_SEARCH_META: PageSearchMeta = {
+  id: 'page-installation-scenarios',
+  kind: 'how-to',
+  title: 'Recommended installation scenarios',
+  body:
+    'Different installation configurations for AC Drain Wiz products, drain ports, standard setup, best practices, and when to use each approach for condensate and water damage prevention.',
+  tags: ['installation', 'scenarios', 'setup', 'drain', 'configure', 'how to'],
+  href: '/support/installation-scenarios',
+}
 
 export function RecommendedInstallationScenariosPage() {
   return (
@@ -206,7 +218,7 @@ export function RecommendedInstallationScenariosPage() {
           <h2 className="support-installation-scenarios-resources-title">Additional Resources</h2>
           <div className="support-installation-scenarios-resources-links">
             <Link 
-              to="/sensor-setup" 
+              to={SENSOR_SETUP_MODEL_CHOICE_HREF} 
               className="support-installation-scenarios-resource-link"
             >
               Sensor Setup Guide

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useMemo } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { 
   PhoneIcon,
   EnvelopeIcon,
@@ -7,7 +7,19 @@ import {
   BellAlertIcon,
   ChevronDownIcon
 } from '@heroicons/react/24/outline'
-import { SENSOR_LED_STANDARD, SENSOR_LED_WIFI, SENSOR_LED_ANSWER, SENSOR_STANDARD_DISPLAY, SENSOR_WIFI_SHORT, SUPPORT_CONTACT, MONITORING, FAQ, type ProductSupportTab, type SensorVariantFilter } from '../config/acdwKnowledge'
+import { SENSOR_LED_STANDARD, SENSOR_LED_WIFI, SENSOR_LED_ANSWER, SENSOR_STANDARD_DISPLAY, SENSOR_WIFI_SHORT, SENSOR_SETUP_MODEL_CHOICE_HREF, SUPPORT_CONTACT, MONITORING, FAQ, type ProductSupportTab, type SensorVariantFilter } from '../config/acdwKnowledge'
+import { parseProductSupportUrl } from '../utils/supportFaqSearch'
+import type { PageSearchMeta } from '../config/siteSearchTypes'
+
+export const PAGE_SEARCH_META: PageSearchMeta = {
+  id: 'page-product-support',
+  kind: 'product-info',
+  title: 'Product Support — FAQs and troubleshooting',
+  body:
+    'Product Support hub: common questions, troubleshooting, LED guides for Standard and WiFi Sensor, Mini FAQs, and technical help for AC Drain Wiz products.',
+  tags: ['faq', 'troubleshooting', 'help', 'sensor', 'mini', 'led'],
+  href: '/support/product-support',
+}
 
 // FAQPage schema for SEO (same source as visible FAQs)
 const faqPageSchema = {
@@ -40,9 +52,27 @@ const ACTIVE_TAB_LABEL: Record<ProductSupportTab, string> = {
 }
 
 export function ProductSupportPage() {
-  const [activeTab, setActiveTab] = useState<ProductSupportTab>('mini')
-  const [sensorVariant, setSensorVariant] = useState<SensorVariantFilter>('all')
+  const [searchParams] = useSearchParams()
+  const urlParsed = useMemo(() => parseProductSupportUrl(searchParams), [searchParams])
+
+  const [activeTab, setActiveTab] = useState<ProductSupportTab>(() => urlParsed.tab ?? 'mini')
+  const [sensorVariant, setSensorVariant] = useState<SensorVariantFilter>(() => urlParsed.variant ?? 'all')
   const [mobileSheetOpen, setMobileSheetOpen] = useState(false)
+
+  useEffect(() => {
+    const p = parseProductSupportUrl(searchParams)
+    if (p.tab) setActiveTab(p.tab)
+    if (p.variant !== null) setSensorVariant(p.variant)
+  }, [searchParams])
+
+  useEffect(() => {
+    const faqId = urlParsed.faqId
+    if (!faqId) return
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(`support-faq-${faqId}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [urlParsed.faqId])
 
   const faqsForTab = FAQ.filter((item) => {
     if (!(item.tabs as readonly ProductSupportTab[]).includes(activeTab)) return false
@@ -222,7 +252,11 @@ export function ProductSupportPage() {
             <h2 className="support-section-section-title">Common Questions{sectionContextLabel}</h2>
             <div className="support-section-faq-list">
               {faqsForTab.map((item) => (
-                <div key={item.id} className="support-section-faq-item">
+                <div
+                  key={item.id}
+                  id={`support-faq-${item.id}`}
+                  className="support-section-faq-item scroll-mt-28"
+                >
                   <h3 className="support-section-faq-question">{item.question}</h3>
                   {item.id === 'portal_login' ? (
                     <p className="support-section-faq-answer">
@@ -231,7 +265,7 @@ export function ProductSupportPage() {
                         monitor.acdrainwiz.com
                       </a>
                       . Log in with the credentials created during Sensor setup. If you haven&apos;t set up an account yet, start with the{' '}
-                      <Link to="/sensor-setup" className="support-section-link">Sensor Setup Guide</Link>.
+                      <Link to={SENSOR_SETUP_MODEL_CHOICE_HREF} className="support-section-link">Sensor Setup Guide</Link>.
                     </p>
                   ) : item.id === 'sensor_leds' ? (
                     <p className="support-section-faq-answer">{SENSOR_LED_ANSWER[sensorVariant]}</p>
@@ -334,7 +368,7 @@ export function ProductSupportPage() {
                         <a href={MONITORING.portalUrl} className="support-section-link" target="_blank" rel="noopener noreferrer">monitoring portal</a>
                       </li>
                       <li>Try resetting the Sensor and re-pairing via the{' '}
-                        <Link to="/sensor-setup" className="support-section-link">Sensor Setup Guide</Link>
+                        <Link to={SENSOR_SETUP_MODEL_CHOICE_HREF} className="support-section-link">Sensor Setup Guide</Link>
                       </li>
                     </ul>
                   </div>
@@ -408,7 +442,7 @@ export function ProductSupportPage() {
               <h2 className="support-section-section-title">Sensor Resources{sensorTypeLabel}</h2>
               <p className="support-section-section-description">Essential guides and tools for your AC Drain Wiz Sensor.</p>
               <div className="support-section-related-links">
-                <Link to="/sensor-setup" className="support-section-related-link">
+                <Link to={SENSOR_SETUP_MODEL_CHOICE_HREF} className="support-section-related-link">
                   Sensor Setup Guide →
                 </Link>
                 {sensorVariant !== 'standard' && (

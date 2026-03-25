@@ -7,6 +7,13 @@ import {
   buildSensorSetupHref,
 } from '../config/acdwKnowledge'
 import {
+  mergeSearchTermLists,
+  MINI_SETUP_SEARCH_TERMS,
+  SENSOR_STANDARD_SETUP_SEARCH_TERMS,
+  SENSOR_WIFI_SETUP_SEARCH_TERMS,
+} from '../config/installationSearchTerms'
+import type { PageSearchMeta } from '../config/siteSearchTypes'
+import {
   WrenchScrewdriverIcon,
   CheckCircleIcon,
   ClockIcon,
@@ -18,6 +25,22 @@ import {
   CheckIcon,
   ArrowRightIcon,
 } from '@heroicons/react/24/outline'
+
+export const PAGE_SEARCH_META: PageSearchMeta = {
+  id: 'hub-installation-setup',
+  kind: 'how-to',
+  title: 'Installation & Setup — choose your product',
+  body:
+    'Step-by-step guides, video tutorials, and installation scenarios for AC Drain Wiz products. How to install the Mini or Sensor on the condensate drain line. Pick guided installation, mini setup, sensor setup, and recommended installation scenarios.',
+  tags: ['installation', 'setup', 'guide', 'how to', 'install', 'drain line'],
+  searchTerms: mergeSearchTermLists(
+    MINI_SETUP_SEARCH_TERMS,
+    SENSOR_STANDARD_SETUP_SEARCH_TERMS,
+    SENSOR_WIFI_SETUP_SEARCH_TERMS,
+    ['video', 'tutorial', 'scenario', 'choose model', 'sensor model'],
+  ),
+  href: '/support/installation-setup',
+}
 
 export function InstallationSetupPage() {
   return (
@@ -129,7 +152,7 @@ export function InstallationSetupPage() {
         </div>
 
         {/* Sensor family — two models */}
-        <div className="install-sensor-family">
+        <div className="install-sensor-family" id="install-sensor-models">
           <h2 className="install-sensor-family-title">Choose your sensor model</h2>
           <p className="install-sensor-family-subtitle">
             The Standard and WiFi Sensor Switches use different setup steps. The Standard guide has three steps: manifold install, then sensor power and testing, then final mounting. The WiFi guide adds a monitoring account first, mirrors the same manifold steps (measure through cure), then on-site sensor install and Wi‑Fi pairing, and ends with assigning the sensor in the portal.
@@ -256,10 +279,7 @@ export function InstallationSetupPage() {
             <Link to="/products/sensor" className="install-sensor-family-cross-link">
               Compare models on the Sensor product page
             </Link>
-            {' · '}
-            <Link to="/sensor-setup" className="install-sensor-family-cross-link">
-              Open the model chooser
-            </Link>
+            .
           </p>
         </div>
 

@@ -1,6 +1,6 @@
 import { CheckCircleIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 import { useNavigate } from 'react-router-dom'
-import { MONITORING } from '../../../config/acdwKnowledge'
+import { MONITORING, SENSOR_SETUP_MODEL_CHOICE_HREF } from '../../../config/acdwKnowledge'
 
 interface Step6SuccessProps {
   deviceData: {
@@ -127,7 +127,7 @@ export function Step6Success({ deviceData }: Step6SuccessProps) {
         </button>
         
         <button
-          onClick={() => navigate('/sensor-setup')}
+          onClick={() => navigate(SENSOR_SETUP_MODEL_CHOICE_HREF)}
           className="flex-1 bg-white border-2 border-primary-600 text-primary-600 py-3 px-4 rounded-md font-medium hover:bg-primary-50 transition-colors"
         >
           Setup Another Sensor
