@@ -1678,10 +1678,13 @@ export function ContactPage() {
                         </a>
                         <a 
                           href={SUPPORT_CONTACT.telHref} 
-                          className="contact-leadership-link"
+                          className="contact-leadership-link !items-start"
                         >
-                          <PhoneIcon className="contact-leadership-link-icon" />
-                          <span>{SUPPORT_CONTACT.phoneDisplay}</span>
+                          <PhoneIcon className="contact-leadership-link-icon mt-0.5 shrink-0" />
+                          <span className="flex flex-col gap-0.5">
+                            <span>{SUPPORT_CONTACT.phoneDisplay}</span>
+                            <span className="text-xs opacity-80">{SUPPORT_CONTACT.phoneNumeric}</span>
+                          </span>
                         </a>
                       </div>
                     </div>
@@ -1693,7 +1696,12 @@ export function ContactPage() {
                   <h3 className="contact-quick-info-title">Quick Contact</h3>
                   <div className="contact-quick-info-list">
                     <p><strong>Email:</strong> info@acdrainwiz.com</p>
-                    <p><strong>Phone:</strong> {SUPPORT_CONTACT.phoneDisplay}</p>
+                    <p>
+                      <strong>Phone:</strong>{' '}
+                      <a href={SUPPORT_CONTACT.telHref} className="text-blue-600 hover:text-blue-700 underline">
+                        {SUPPORT_CONTACT.phoneDisplay} {SUPPORT_CONTACT.phoneNumeric}
+                      </a>
+                    </p>
                     <p><strong>Hours:</strong> 9:00 AM to 5:00 PM Eastern Standard Time, Monday through Friday</p>
                   </div>
                 </div>

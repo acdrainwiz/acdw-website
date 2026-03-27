@@ -167,7 +167,9 @@ export function SupportPage() {
                   <div className="support-info-box">
                     <p className="support-info-text">
                       <strong>Need professional installation?</strong> Contact us at{' '}
-                      <a href={SUPPORT_CONTACT.telHref} className="text-blue-600 hover:text-blue-700">{SUPPORT_CONTACT.phoneDisplay}</a>{' '}
+                      <a href={SUPPORT_CONTACT.telHref} className="text-blue-600 hover:text-blue-700">
+                        {SUPPORT_CONTACT.phoneDisplay} {SUPPORT_CONTACT.phoneNumeric}
+                      </a>{' '}
                       or{' '}
                       <Link to="/contact?type=installer" className="text-blue-600 hover:text-blue-700">
                         find a certified installer
@@ -267,10 +269,13 @@ export function SupportPage() {
                     <div className="support-action-buttons">
                       <a 
                         href={SUPPORT_CONTACT.telHref} 
-                        className="support-action-button-primary"
+                        className="support-action-button-primary flex-col gap-1 py-3 h-auto"
                       >
-                        <PhoneIcon className="support-action-icon" />
-                        Call {SUPPORT_CONTACT.phoneDisplay}
+                        <span className="inline-flex items-center">
+                          <PhoneIcon className="support-action-icon" />
+                          Call {SUPPORT_CONTACT.phoneDisplay}
+                        </span>
+                        <span className="text-xs font-normal opacity-90">{SUPPORT_CONTACT.phoneNumeric}</span>
                       </a>
                       <Link
                         to="/contact?type=support"
@@ -354,7 +359,9 @@ export function SupportPage() {
                   <div className="bg-blue-50 rounded-lg p-4">
                     <p className="text-sm text-gray-700">
                       <strong>Questions about warranty or returns?</strong> Contact us at{' '}
-                      <a href={SUPPORT_CONTACT.telHref} className="text-blue-600 hover:text-blue-700">{SUPPORT_CONTACT.phoneDisplay}</a>{' '}
+                      <a href={SUPPORT_CONTACT.telHref} className="text-blue-600 hover:text-blue-700">
+                        {SUPPORT_CONTACT.phoneDisplay} {SUPPORT_CONTACT.phoneNumeric}
+                      </a>{' '}
                       or{' '}
                       <Link to="/contact?type=support" className="text-blue-600 hover:text-blue-700">
                         submit a support request
@@ -465,8 +472,12 @@ export function SupportPage() {
                         <PhoneIcon className="support-contact-icon" />
                         <h4 className="support-contact-title">Phone Support</h4>
                         <p className="support-contact-details">9:00 AM to 5:00 PM Eastern Standard Time, Monday through Friday</p>
-                        <a href={SUPPORT_CONTACT.telHref} className="support-contact-link">
-                          {SUPPORT_CONTACT.phoneDisplay}
+                        <a
+                          href={SUPPORT_CONTACT.telHref}
+                          className="support-contact-link inline-flex flex-col items-start gap-0.5"
+                        >
+                          <span className="font-semibold leading-tight">{SUPPORT_CONTACT.phoneDisplay}</span>
+                          <span className="text-sm font-normal opacity-80">{SUPPORT_CONTACT.phoneNumeric}</span>
                         </a>
                       </div>
                       <div className="support-contact-card">
