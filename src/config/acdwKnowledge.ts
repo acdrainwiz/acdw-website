@@ -20,10 +20,12 @@ export const SUPPORT_CONTACT = {
   email: 'ariddle@acdrainwiz.com',
   /** Public support inbox for customer-facing contact links (e.g. Support Hub search). */
   supportEmail: 'support@acdrainwiz.com',
-  phoneDisplay: '(234) 23 DRAIN',
-  phoneNumeric: '(234) 223-7246',
-  phonePlain: '2342237246',
-  telHref: 'tel:+12342237246',
+  /** Vanity / marketing form (e.g. phone badges, “Call …” lines). */
+  phoneDisplay: '83-DRAINWIZ',
+  /** Numeric form for dialers and secondary line in two-line layouts. */
+  phoneNumeric: '(833) 724-6949',
+  phonePlain: '8337246949',
+  telHref: 'tel:+18337246949',
 } as const
 
 // ─── Monitoring portal (approved) ────────────────────────────────────────
