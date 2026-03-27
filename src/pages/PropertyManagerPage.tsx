@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
   ShieldCheckIcon, 
   BuildingOfficeIcon, 
@@ -383,13 +383,17 @@ export function PropertyManagerPage() {
             {/* Sensor System */}
             <div className="property-manager-product-card property-manager-product-card-featured">
               <div className="homeowner-product-badge">Recommended</div>
-              <div className="homeowner-product-image-wrapper">
+              <Link
+                to="/products/sensor"
+                className="homeowner-product-image-wrapper cursor-pointer transition-opacity hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                aria-label="Learn more — Sensor Monitoring System"
+              >
                 <img 
-                  src="/images/acdw-sensor-hero1-background.png" 
-                  alt="AC Drain Wiz Sensor"
+                  src="/images/acdw-sensor-hero2-background.png" 
+                  alt=""
                   className="homeowner-product-image"
                 />
-              </div>
+              </Link>
               <h3 className="homeowner-product-name">Sensor Monitoring System</h3>
               <p className="homeowner-product-price">Fleet pricing available</p>
               <ul className="homeowner-product-features">
@@ -408,13 +412,17 @@ export function PropertyManagerPage() {
 
             {/* Complete Protection */}
             <div className="property-manager-product-card">
-              <div className="homeowner-product-image-wrapper">
+              <Link
+                to="/products/combo"
+                className="homeowner-product-image-wrapper cursor-pointer transition-opacity hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                aria-label="View complete system — Complete Protection System"
+              >
                 <img 
-                  src="/images/hvac-tech-mini-sensor-product-hero.png" 
-                  alt="Complete Protection System"
+                  src="/images/hvac-combo-mini-sensor-product-hero.png" 
+                  alt=""
                   className="homeowner-product-image"
                 />
-              </div>
+              </Link>
               <h3 className="homeowner-product-name">Complete Protection System</h3>
               <p className="homeowner-product-price">Contact for portfolio pricing</p>
               <ul className="homeowner-product-features">

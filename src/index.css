@@ -1344,15 +1344,15 @@
 
 
   .product-showcase-card-ctas {
-    @apply flex space-x-4;
+    @apply flex flex-col sm:flex-row gap-4;
   }
 
   .product-showcase-card-cta-primary {
-    @apply btn bg-blue-600 text-white hover:bg-blue-700 px-6 py-3;
+    @apply btn bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 w-full sm:w-auto justify-center;
   }
 
   .product-showcase-card-cta-secondary {
-    @apply btn border-2 border-white text-white hover:bg-white hover:text-gray-900 px-6 py-3;
+    @apply btn border-2 border-white text-white hover:bg-white hover:text-gray-900 px-6 py-3 w-full sm:w-auto justify-center;
   }
 
   /* Customer Type Selector Classes */
@@ -3448,15 +3448,15 @@
   }
 
   .cta-band-buttons {
-    @apply flex flex-col sm:flex-row gap-4;
+    @apply flex flex-col sm:flex-row gap-4 items-stretch sm:items-center;
   }
 
   .cta-band-btn-primary {
-    @apply bg-white text-blue-600 font-semibold px-8 py-3 rounded-lg hover:bg-blue-50 transition-colors duration-200 inline-flex items-center justify-center;
+    @apply bg-white text-blue-600 font-semibold px-8 py-3 rounded-lg hover:bg-blue-50 transition-colors duration-200 inline-flex items-center justify-center w-full sm:w-auto;
   }
 
   .cta-band-btn-secondary {
-    @apply bg-transparent border-2 border-white text-white font-semibold px-8 py-3 rounded-lg hover:bg-white/10 transition-colors duration-200 inline-flex items-center justify-center;
+    @apply bg-transparent border-2 border-white text-white font-semibold px-8 py-3 rounded-lg hover:bg-white/10 transition-colors duration-200 inline-flex items-center justify-center w-full sm:w-auto;
   }
 
   .cta-band-contractor .cta-band-btn-secondary {
@@ -4663,15 +4663,15 @@
 }
 
 .homeowner-hero-ctas {
-  @apply flex flex-col sm:flex-row items-center justify-center gap-4 mt-8;
+  @apply flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 mt-8;
 }
 
 .homeowner-hero-cta-primary {
-  @apply btn btn-lg bg-white text-blue-700 hover:bg-blue-50 font-semibold px-8;
+  @apply btn btn-lg bg-white text-blue-700 hover:bg-blue-50 font-semibold px-8 w-full sm:w-auto justify-center;
 }
 
 .homeowner-hero-cta-secondary {
-  @apply btn btn-lg border-2 border-white text-white hover:bg-white hover:text-blue-700 font-semibold px-8;
+  @apply btn btn-lg border-2 border-white text-white hover:bg-white hover:text-blue-700 font-semibold px-8 w-full sm:w-auto justify-center;
 }
 
 /* Feature Cards Section - Moved Below Hero */
@@ -5196,9 +5196,10 @@
   min-height: 250px;
 }
 
+/* Imgs use this class directly; base .homeowner-product-image uses display:flex for showcase wrappers — block restores correct replaced-element sizing */
 .homeowner-product-image-wrapper .homeowner-product-image,
 .homeowner-products-grid .homeowner-product-image {
-  @apply max-w-full h-auto;
+  @apply block max-w-full h-auto;
   max-height: 300px;
 }
 
@@ -5248,6 +5249,14 @@
   margin-right: 1.5rem;
   margin-bottom: 1.5rem;
   width: calc(100% - 3rem);
+}
+
+.hvac-products-grid .homeowner-product-image {
+  @apply rounded-xl;
+}
+
+.property-manager-products-grid .homeowner-product-image {
+  @apply rounded-xl;
 }
 
 /* Testimonials Section */
@@ -5335,15 +5344,15 @@
 }
 
 .homeowner-final-cta-buttons {
-  @apply flex flex-col sm:flex-row gap-4 justify-center mb-8;
+  @apply flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center mb-8;
 }
 
 .homeowner-final-cta-primary {
-  @apply px-8 py-4 bg-orange-500 text-white font-bold text-lg rounded-lg hover:bg-orange-600 transition-colors shadow-lg;
+  @apply px-8 py-4 bg-orange-500 text-white font-bold text-lg rounded-lg hover:bg-orange-600 transition-colors shadow-lg w-full sm:w-auto inline-flex items-center justify-center;
 }
 
 .homeowner-final-cta-secondary {
-  @apply px-8 py-4 bg-white/10 text-white font-semibold text-lg rounded-lg hover:bg-white/20 transition-colors border-2 border-white backdrop-blur-sm;
+  @apply px-8 py-4 bg-white/10 text-white font-semibold text-lg rounded-lg hover:bg-white/20 transition-colors border-2 border-white backdrop-blur-sm w-full sm:w-auto inline-flex items-center justify-center;
 }
 
 .homeowner-final-trust-badges {
@@ -6355,15 +6364,15 @@
 }
 
 .support-action-buttons {
-  @apply flex flex-wrap gap-3;
+  @apply flex flex-col sm:flex-row flex-wrap gap-3 items-stretch sm:items-center;
 }
 
 .support-action-button-primary {
-  @apply inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors;
+  @apply inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors w-full sm:w-auto;
 }
 
 .support-action-button-secondary {
-  @apply inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors;
+  @apply inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors w-full sm:w-auto;
 }
 
 .support-action-icon {
@@ -7692,15 +7701,15 @@
 }
 
 .compliance-contact-buttons {
-  @apply flex flex-wrap gap-4;
+  @apply flex flex-col sm:flex-row flex-wrap gap-4 items-stretch sm:items-center;
 }
 
 .compliance-contact-button-primary {
-  @apply inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors;
+  @apply inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors w-full sm:w-auto;
 }
 
 .compliance-contact-button-secondary {
-  @apply inline-flex items-center px-6 py-3 border border-gray-300 bg-white text-gray-700 rounded-lg hover:bg-gray-50 transition-colors;
+  @apply inline-flex items-center justify-center px-6 py-3 border border-gray-300 bg-white text-gray-700 rounded-lg hover:bg-gray-50 transition-colors w-full sm:w-auto text-center;
 }
 
 .compliance-contact-icon {
@@ -8058,15 +8067,15 @@
 }
 
 .property-manager-hero-ctas {
-  @apply flex flex-col sm:flex-row items-center justify-center gap-4 mt-8;
+  @apply flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 mt-8;
 }
 
 .property-manager-hero-cta-primary {
-  @apply btn btn-lg bg-white text-blue-700 hover:bg-blue-50 font-semibold px-8;
+  @apply btn btn-lg bg-white text-blue-700 hover:bg-blue-50 font-semibold px-8 w-full sm:w-auto justify-center;
 }
 
 .property-manager-hero-cta-secondary {
-  @apply btn btn-lg border-2 border-white text-white hover:bg-white hover:text-blue-700 font-semibold px-8;
+  @apply btn btn-lg border-2 border-white text-white hover:bg-white hover:text-blue-700 font-semibold px-8 w-full sm:w-auto justify-center;
 }
 
 /* Problem Section */
@@ -8352,15 +8361,15 @@
 }
 
 .property-manager-cta-buttons {
-  @apply flex flex-col sm:flex-row items-center justify-center gap-4;
+  @apply flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4;
 }
 
 .property-manager-cta-button-primary {
-  @apply btn btn-lg bg-white text-blue-700 hover:bg-blue-50 font-semibold px-8;
+  @apply btn btn-lg bg-white text-blue-700 hover:bg-blue-50 font-semibold px-8 w-full sm:w-auto justify-center;
 }
 
 .property-manager-cta-button-secondary {
-  @apply btn btn-lg border-2 border-white text-white hover:bg-white hover:text-blue-700 font-semibold px-8;
+  @apply btn btn-lg border-2 border-white text-white hover:bg-white hover:text-blue-700 font-semibold px-8 w-full sm:w-auto justify-center;
 }
 
 /* ========================================
@@ -10858,7 +10867,27 @@
 
 .sensor-product-hero-overlay {
   @apply relative z-10 w-full pb-6;
-  margin-top: -20px;
+  margin-top: -140px;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .sensor-product-hero-overlay {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    padding-bottom: 1.5rem;
+    margin-top: -180px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sensor-product-hero-overlay {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    padding-bottom: 1.5rem;
+    margin-top: -200px;
+  }
 }
 
 .sensor-product-hero-content-wrapper {
@@ -10902,13 +10931,13 @@
 }
 
 .sensor-product-purchase-button-primary {
-  @apply w-full py-3 px-6 bg-primary-600 text-white font-semibold rounded-lg;
+  @apply inline-flex w-full items-center justify-center py-3 px-6 bg-primary-600 text-white font-semibold rounded-lg;
   @apply hover:bg-primary-700 transition-colors;
   @apply focus:outline-none focus:ring-2 focus:ring-primary-500;
 }
 
 .sensor-product-purchase-button-secondary {
-  @apply w-full py-3 px-6 bg-white border-2 border-primary-600 text-primary-600 font-semibold rounded-lg;
+  @apply inline-flex w-full items-center justify-center py-3 px-6 bg-white border-2 border-primary-600 text-primary-600 font-semibold rounded-lg;
   @apply hover:bg-primary-50 transition-colors;
   @apply focus:outline-none focus:ring-2 focus:ring-primary-500;
 }
@@ -13014,7 +13043,7 @@
 }
 
 .combo-product-hero-ctas {
-  @apply flex flex-col sm:flex-row gap-4 justify-center items-center;
+  @apply flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center;
 }
 
 /* Responsive adjustments for inline image */
@@ -13126,7 +13155,7 @@
 }
 
 .combo-product-section-cta {
-  @apply mt-12 flex flex-col items-center gap-4;
+  @apply mt-12 flex flex-col items-stretch sm:items-center gap-4;
   @apply max-w-md mx-auto; /* Constrain width for better centering */
 }
 
@@ -13518,7 +13547,7 @@
 }
 
 .combo-product-final-cta-buttons {
-  @apply flex flex-col sm:flex-row gap-4 justify-center items-center mb-12;
+  @apply flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center mb-12;
 }
 
 .combo-product-trust-indicators {
@@ -13540,11 +13569,11 @@
 
 /* CTA Buttons */
 .combo-product-cta-primary {
-  @apply w-full sm:w-auto px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
+  @apply inline-flex items-center justify-center text-center w-full sm:w-auto px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
 }
 
 .combo-product-cta-secondary {
-  @apply w-full sm:w-auto px-8 py-4 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-all border-2 border-white/20;
+  @apply inline-flex items-center justify-center text-center w-full sm:w-auto px-8 py-4 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-all border-2 border-white/20;
 }
 
 .combo-product-cta-tertiary {

@@ -273,21 +273,21 @@ export function ProductsPage() {
                 >
                   {product.id === 'mini' && (
                     <img 
-                      src="/images/acdw-mini-hero1-background.png" 
+                      src="/images/acdw-mini-hero2-background.png" 
                       alt="AC Drain Wiz Mini"
                       className="unified-product-card-image"
                     />
                   )}
                   {product.id === 'sensor' && (
                     <img 
-                      src="/images/acdw-sensor-hero1-background.png" 
+                      src="/images/acdw-sensor-hero2-background.png" 
                       alt="AC Drain Wiz Sensor"
                       className="unified-product-card-image"
                     />
                   )}
                   {product.id === 'mini-sensor' && (
                     <img 
-                      src="/images/hvac-tech-mini-sensor-product-hero.png" 
+                      src="/images/hvac-combo-mini-sensor-product-hero.png" 
                       alt="AC Drain Wiz Mini + Sensor Bundle"
                       className="unified-product-card-image"
                     />
