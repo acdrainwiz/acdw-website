@@ -315,7 +315,7 @@ export function SensorProductPage() {
       <section className="sensor-product-hero-fullwidth">
         <div className="sensor-product-hero-image-container">
           <img
-            src="/images/acdw-sensor-hero1-background.png"
+            src="/images/acdw-sensor-hero2-background.png"
             alt="AC Drain Wiz Sensor"
             className="sensor-product-hero-image"
           />

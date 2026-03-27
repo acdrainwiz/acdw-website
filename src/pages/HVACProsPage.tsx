@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
   CurrencyDollarIcon,
   ClockIcon,
@@ -159,13 +159,17 @@ export function HVACProsPage() {
           <div className="homeowner-products-grid hvac-products-grid">
             {/* AC Drain Wiz Mini */}
             <div className="hvac-product-card">
-              <div className="homeowner-product-image-wrapper">
+              <Link
+                to="/products/mini"
+                className="homeowner-product-image-wrapper cursor-pointer transition-opacity hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                aria-label="Learn more — AC Drain Wiz Mini"
+              >
                 <img 
-                  src="/images/acdw-mini-hero1-background.png" 
-                  alt="AC Drain Wiz Mini"
+                  src="/images/acdw-mini-hero2-background.png" 
+                  alt=""
                   className="homeowner-product-image"
                 />
-              </div>
+              </Link>
               <h3 className="homeowner-product-name">AC Drain Wiz Mini</h3>
               <p className="homeowner-product-price">Bulk pricing available</p>
               <ul className="homeowner-product-features">
@@ -185,13 +189,17 @@ export function HVACProsPage() {
             {/* Mini + Sensor Combo */}
             <div className="hvac-product-card hvac-product-card-featured">
               <div className="homeowner-product-badge">Most Popular</div>
-              <div className="homeowner-product-image-wrapper">
+              <Link
+                to="/products/combo"
+                className="homeowner-product-image-wrapper cursor-pointer transition-opacity hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                aria-label="View complete system — Mini + Sensor Combo"
+              >
                 <img 
-                  src="/images/hvac-tech-mini-sensor-product-hero.png" 
-                  alt="Mini + Sensor Combo"
+                  src="/images/hvac-combo-mini-sensor-product-hero.png" 
+                  alt=""
                   className="homeowner-product-image"
                 />
-              </div>
+              </Link>
               <h3 className="homeowner-product-name">Mini + Sensor Combo</h3>
               <p className="homeowner-product-price">Contact for fleet pricing</p>
               <ul className="homeowner-product-features">

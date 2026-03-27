@@ -230,7 +230,7 @@ export function MiniProductPage() {
         {/* Inline Hero Image */}
         <div className="mini-product-hero-image-container">
           <img
-            src="/images/acdw-mini-hero1-background.png"
+            src="/images/acdw-mini-hero2-background.png"
             alt="AC Drain Wiz Mini"
             className="mini-product-hero-image"
           />

@@ -246,7 +246,7 @@ export function ComboProductPage() {
         {/* Inline Hero Image */}
         <div className="combo-product-hero-image-container">
           <img
-            src="/images/hvac-tech-mini-sensor-product-hero.png"
+            src="/images/hvac-combo-mini-sensor-product-hero.png"
             alt="AC Drain Wiz Mini + Sensor Complete System"
             className="combo-product-hero-image"
           />
