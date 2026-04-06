@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { IMaskInput } from 'react-imask'
 import { isValidEmail } from '../utils/emailValidation'
 import { InstructionModal } from '../components/email-signature/InstructionModal'
@@ -31,6 +31,7 @@ function EmailSignatureContent() {
   const [customRole, setCustomRole] = useState('')
   const [isCustomRole, setIsCustomRole] = useState(false)
   const [mobile, setMobile] = useState('')
+  const [includeMobileInSignature, setIncludeMobileInSignature] = useState(true)
   const [email, setEmail] = useState('')
   
   // Validation state
@@ -54,6 +55,7 @@ Follow these steps to add or update your email signature in the Outlook desktop 
    - **Job Title** (required)
    - **Role/Department** (required) - Select from dropdown or choose "Custom"
    - **Mobile Phone** (optional) - Will auto-format as you type
+   - **Include mobile number in signature** (optional) - Uncheck if you prefer not to show your cell number on your corporate signature
    - **Email Address** (required)
 3. Review the preview to make sure everything looks correct
 4. Click **"Copy Signature to Clipboard"**
@@ -170,6 +172,7 @@ Follow these steps to add or update your email signature in Outlook 365 (the web
    - **Job Title** (required)
    - **Role/Department** (required) - Select from dropdown or choose "Custom"
    - **Mobile Phone** (optional) - Will auto-format as you type
+   - **Include mobile number in signature** (optional) - Uncheck if you prefer not to show your cell number on your corporate signature
    - **Email Address** (required)
 3. Review the preview to make sure everything looks correct
 4. Click **"Copy Signature to Clipboard"**
@@ -399,8 +402,10 @@ If you encounter any issues:
     const roleError = validateRole()
     if (roleError) newErrors.role = roleError
     
-    const phoneError = validatePhone(mobile)
-    if (phoneError) newErrors.mobile = phoneError
+    if (includeMobileInSignature) {
+      const phoneError = validatePhone(mobile)
+      if (phoneError) newErrors.mobile = phoneError
+    }
     
     const emailError = validateEmailField(email)
     if (emailError) newErrors.email = emailError
@@ -425,7 +430,7 @@ If you encounter any issues:
         error = validateRole()
         break
       case 'mobile':
-        error = validatePhone(mobile)
+        error = includeMobileInSignature ? validatePhone(mobile) : null
         break
       case 'email':
         error = validateEmailField(email)
@@ -441,7 +446,18 @@ If you encounter any issues:
     }
   }
 
-  const signatureHTML = `
+  const signatureHTML = useMemo(() => {
+    const mobileRow = includeMobileInSignature
+      ? `
+              <tr>
+                <td style="padding-bottom: 4px; text-align: left;">
+                  <span style="color: #1e3a8a; font-size: 14px; font-weight: bold;">Mobile: </span>
+                  <span style="color: #1e3a8a; font-size: 14px;">${mobile}</span>
+                </td>
+              </tr>`
+      : ''
+
+    return `
 <table border="0" cellpadding="0" cellspacing="0" class="sig-main-table" style="font-family: 'Poppins', Arial, Helvetica, sans-serif; font-size: 12px; color: #1e3a8a; line-height: 1.5; max-width: 600px;">
   <tr>
     <td style="padding: 0;">
@@ -518,12 +534,7 @@ If you encounter any issues:
           <!-- Contact Information Column (aligned with name/title) -->
           <td class="sig-contact-column" style="vertical-align: top; padding-left: 0; text-align: left;">
             <table border="0" cellpadding="0" cellspacing="0" class="sig-contact-inner-table" style="font-family: 'Poppins', Arial, Helvetica, sans-serif;">
-              <tr>
-                <td style="padding-bottom: 4px; text-align: left;">
-                  <span style="color: #1e3a8a; font-size: 14px; font-weight: bold;">Mobile: </span>
-                  <span style="color: #1e3a8a; font-size: 14px;">${mobile}</span>
-                </td>
-              </tr>
+              ${mobileRow}
               <tr>
                 <td style="padding-bottom: 4px; text-align: left;">
                   <span style="color: #1e3a8a; font-size: 14px; font-weight: bold;">Email: </span>
@@ -544,6 +555,7 @@ If you encounter any issues:
   </tr>
 </table>
   `.trim()
+  }, [name, title, displayRole, mobile, email, includeMobileInSignature])
 
   /** In dev, load signature images from the current origin so preview works before deploy. */
   const previewSignatureHTML =
@@ -559,8 +571,8 @@ If you encounter any issues:
         name: true,
         title: true,
         role: true,
-        mobile: true,
-        email: true
+        ...(includeMobileInSignature ? { mobile: true } : {}),
+        email: true,
       })
       alert('Please fix the errors in the form before copying your signature.')
       return
@@ -620,7 +632,8 @@ If you encounter any issues:
         <div className="bg-white rounded-lg shadow-lg p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Email Signature Generator</h1>
           <p className="text-gray-600 mb-8">
-            Customize your signature below, then copy and paste it into Outlook.
+            Customize your signature below, then copy and paste it into Outlook. You can leave your mobile number off
+            the signature entirely—use the checkbox under Mobile Phone if you prefer email and web only.
           </p>
 
           {/* Form Fields */}
@@ -757,37 +770,65 @@ If you encounter any issues:
               )}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="email-sig-mobile">
                 Mobile Phone
               </label>
-              <IMaskInput
-                mask="(000) 000-0000"
-                type="tel"
-                value={mobile}
-                onAccept={(value) => {
-                  setMobile(value)
-                  if (touched.mobile) {
-                    const error = validatePhone(value)
-                    if (error) {
-                      setErrors({ ...errors, mobile: error })
-                    } else {
-                      const newErrors = { ...errors }
-                      delete newErrors.mobile
-                      setErrors(newErrors)
+              <div className={includeMobileInSignature ? '' : 'opacity-60'}>
+                <IMaskInput
+                  id="email-sig-mobile"
+                  mask="(000) 000-0000"
+                  type="tel"
+                  value={mobile}
+                  onAccept={(value) => {
+                    setMobile(value)
+                    if (touched.mobile && includeMobileInSignature) {
+                      const error = validatePhone(value)
+                      if (error) {
+                        setErrors({ ...errors, mobile: error })
+                      } else {
+                        const newErrors = { ...errors }
+                        delete newErrors.mobile
+                        setErrors(newErrors)
+                      }
                     }
-                  }
-                }}
-                onBlur={() => handleBlur('mobile')}
-                placeholder="e.g., (305) 318-5611"
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                  touched.mobile && errors.mobile
-                    ? 'border-red-500 focus:ring-red-500'
-                    : 'border-gray-300 focus:ring-blue-500'
-                }`}
-              />
+                  }}
+                  onBlur={() => handleBlur('mobile')}
+                  placeholder="e.g., (305) 318-5611"
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                    touched.mobile && errors.mobile
+                      ? 'border-red-500 focus:ring-red-500'
+                      : 'border-gray-300 focus:ring-blue-500'
+                  }`}
+                />
+              </div>
               {touched.mobile && errors.mobile && (
                 <p className="mt-1 text-sm text-red-600">{errors.mobile}</p>
               )}
+              <div className="mt-3 flex items-start gap-2">
+                <input
+                  id="email-sig-include-mobile"
+                  type="checkbox"
+                  checked={includeMobileInSignature}
+                  onChange={(e) => {
+                    const checked = e.target.checked
+                    setIncludeMobileInSignature(checked)
+                    if (!checked) {
+                      setErrors((prev) => {
+                        const next = { ...prev }
+                        delete next.mobile
+                        return next
+                      })
+                    }
+                  }}
+                  className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                />
+                <label htmlFor="email-sig-include-mobile" className="text-sm text-gray-700 cursor-pointer leading-snug">
+                  <span className="font-medium text-gray-800">Include mobile number in signature</span>
+                  <span className="block text-gray-500 mt-0.5">
+                    Uncheck to omit your cell number from the copied signature (email and website still appear).
+                  </span>
+                </label>
+              </div>
             </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
