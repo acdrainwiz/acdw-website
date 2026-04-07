@@ -4,8 +4,8 @@
  */
 
 export const PACKAGE_META = {
-  version: '1.0.0',
-  generatedOn: '2026-03-13',
+  version: '1.1.0',
+  generatedOn: '2026-04-02',
   usageRules: [
     'Do not invent missing specs, URLs, warranty language, or compatibility claims.',
     'Treat Mini and Sensor as complementary but distinct; Sensor does not require Mini for initial install.',
@@ -34,6 +34,24 @@ export const MONITORING = {
   portalUrl: 'https://monitor.acdrainwiz.com/login',
   signUpUrl: 'https://monitor.acdrainwiz.com/sign-up',
   portalUrlStatus: 'approved' as const,
+} as const
+
+// ─── Miami HEAT partnership (approved marks; files under public/images/miami-heat-sponsorship/) ─
+export const MIAMI_HEAT_PARTNERSHIP = {
+  /** Full URL for email HTML and external references */
+  signatureBadgeUrl:
+    'https://acdrainwiz.com/images/miami-heat-sponsorship/signature-badge-color.png',
+  /** Site-relative path for in-app UI (Vite `public/`) — full color */
+  signatureBadgePath: '/images/miami-heat-sponsorship/signature-badge-color.png',
+  /** Full URL for grayscale badge (e.g. footer on dark background) */
+  signatureBadgeBwUrl:
+    'https://acdrainwiz.com/images/miami-heat-sponsorship/signature-badge-bw.png',
+  /** Site-relative path — grayscale / B&W variant */
+  signatureBadgeBwPath: '/images/miami-heat-sponsorship/signature-badge-bw.png',
+  /** Official Miami HEAT red for “HEAT” wordmark accents in UI */
+  officialRed: '#98002E',
+  /** About page anchor for partnership context (header/footer lockups link here) */
+  aboutPartnershipHref: '/about#miami-heat-partnership',
 } as const
 
 // ─── Warranty & returns ───────────────────────────────────────────────────
@@ -88,33 +106,79 @@ export function parseSensorSetupModelParam(value: string | null): SensorSetupMod
   return null
 }
 
-// ─── LED status indicators (from knowledge package) ───────────────────────
+/** WiFi model: use 24V when possible; battery-only is supported with different LED behavior. */
+export const SENSOR_WIFI_POWER_RECOMMENDATION =
+  '24V HVAC power is strongly recommended for the WiFi Sensor Switch for consistent LED feedback and reliable operation. Battery-only operation is supported; LED visibility is limited, and a fully depleted battery may trigger protective HVAC shutdown.' as const
+
+/**
+ * Sensor install: if the line was cleared with air via the Mini bi-directional valve before final sensor bayonet mount.
+ * Wording aligned with Mini setup completion (`Step3MiniCompletion` service step 1 — air / P-trap / water seal).
+ */
+export const SENSOR_INSTALL_P_TRAP_AFTER_MINI_AIR_FLUSH =
+  'If you used the AC Drain Wiz Mini bi-directional valve to clear the line with compressed air before finishing this install, check for the presence of a P-trap in the condensate line; after the air flush is complete, refill the P-trap with water to reestablish the required water seal—then complete the sensor bayonet mount.' as const
+
+// ─── LED status indicators (aligned with ACDW KB Sensor LED Indicator Guide v1.1) ─
 export const SENSOR_LED_STANDARD = {
-  noLight: { label: 'No light', description: 'No power' },
-  green: { label: 'Green', description: 'Monitoring active' },
-  flashingRed: { label: 'Flashing red', description: 'Testing mode' },
-  solidRed: {
+  noLight: { label: 'No light', description: 'No power — check wiring and system power' },
+  green: {
+    label: 'Green',
+    description: 'Normal operation — water level is below the shutoff threshold',
+  },
+  solidRedTest: {
     label: 'Solid red',
-    description: '95% water level detected, AC shutdown triggered',
+    description:
+      'Installation test: pressing the green PCB simulates high water → AC shutdown (expected)',
+  },
+  solidRedShutdown: {
+    label: 'Solid red',
+    description: 'High water detected (~95%) — HVAC shuts down to help prevent overflow',
   },
 } as const
 
+/** WiFi on 24V (recommended). */
 export const SENSOR_LED_WIFI = {
-  noLight: { label: 'No light', description: 'No power' },
-  flashingRed: { label: 'Flashing red', description: 'Awaiting WiFi connection' },
-  green: { label: 'Green', description: 'Connected to monitoring platform' },
+  noLight: { label: 'No light', description: 'No power — verify 24V connection' },
+  flashingRed: {
+    label: 'Flashing red',
+    description: 'Waiting for WiFi setup',
+  },
+  flashingGreen: {
+    label: 'Flashing green',
+    description: 'Setup in progress — mobile device connected to the sensor',
+  },
+  solidGreen: {
+    label: 'Solid green',
+    description: 'Connected and operating normally',
+  },
   solidRed: {
     label: 'Solid red',
-    description: '95% water level detected, AC shutdown triggered',
+    description: 'High water detected (~95%) — HVAC shuts down to help prevent overflow',
+  },
+} as const
+
+/** WiFi on battery-only — LED visibility is limited; solid red for high water matches 24V when the LED is active. */
+export const SENSOR_LED_WIFI_BATTERY_ONLY = {
+  startupGreen: {
+    label: 'Solid green (brief)',
+    description: 'May appear briefly after setup, then the light turns off — normal; conserves battery',
+  },
+  noLight: {
+    label: 'No light',
+    description: 'After startup: monitoring can continue — no light does not indicate failure in battery-only mode',
+  },
+  solidRed: {
+    label: 'Solid red',
+    description: 'High water detected (~95%) — HVAC shuts down to help prevent overflow',
   },
 } as const
 
 /** Model-specific intro copy for the "What do the sensor lights mean?" FAQ. Use the variant that matches the user's selected sensor view. */
 export const SENSOR_LED_ANSWER: Record<SensorVariantFilter, string> = {
-  all: 'Sensor LED meanings depend on your model. Use the guides below for the Standard Sensor Switch (Non-WiFi) and the WiFi Sensor Switch.',
+  all: 'Sensor LED meanings depend on your model and power source. Use the guides below: Standard (Non-WiFi), WiFi on 24V (recommended), and WiFi on battery-only (limited LED visibility).',
   standard:
-    'For the Standard Sensor Switch: no light means no power, green means monitoring active, flashing red means testing mode, and solid red means 95% water level detected and AC shutdown triggered.',
-  wifi: 'For the WiFi Sensor Switch: no light means no power, flashing red means awaiting WiFi connection, green means connected to the monitoring platform, and solid red means 95% water level detected and AC shutdown triggered.',
+    'Standard Sensor Switch: no light means no power (check wiring). Green means normal operation with water below the shutoff threshold. Solid red means high water (~95%) and protective AC shutdown. During installation, solid red can also appear during the PCB touch test—that simulates high water and is expected.',
+  wifi:
+    'WiFi Sensor Switch: when powered by 24V, use the first WiFi table below. Battery-only mode limits LED visibility—use the battery-only section; after startup, no light may be normal while monitoring continues.',
 } as const
 
 // ─── FAQ (approved answers; use for support pages and structured data) ─────
@@ -169,7 +233,7 @@ export const FAQ = [
     id: 'sensor_what_and_mini',
     question: 'What does the Sensor do, and do I need the Mini?',
     answer:
-      'The Sensor monitors water level in the drain line and automatically shuts down the AC at 95% to prevent overflow. The Standard Sensor Switch (Non-WiFi) provides that protection with no connectivity. The WiFi Sensor Switch adds remote monitoring, email and SMS alerts, and configurable service alerts. You do not need the Mini to install a Sensor—both sensor models include their own Transparent T Manifold. If you already have a Mini, the Sensor installs in the same bayonet port; for service, you can remove the Sensor, use the Mini valve for cleaning, then reinstall the Sensor.',
+      'The Sensor monitors water level in the drain line and automatically shuts down the AC at 95% to help prevent overflow. It is a monitoring and safety device—not a drain-cleaning substitute; regular HVAC maintenance is still required. The Standard Sensor Switch (Non-WiFi) provides that protection with no connectivity. The WiFi Sensor Switch adds remote monitoring, email and SMS alerts, and configurable service alerts. You do not need the Mini to install a Sensor—both sensor models include their own Transparent T Manifold. If you already have a Mini, the Sensor installs in the same bayonet port; for service, you can remove the Sensor, use the Mini valve for cleaning, then reinstall the Sensor.',
     tags: ['sensor', 'products', 'support'],
     tabs: ['sensor'] as const,
   },
@@ -182,12 +246,61 @@ export const FAQ = [
     tabs: ['sensor'] as const,
   },
   {
+    id: 'sensor_ac_shut_off',
+    question: 'Why did my AC shut off?',
+    answer:
+      'The sensor detected high water in the condensate drain line and shut down the HVAC system to help prevent overflow. This is protective operation.',
+    tags: ['sensor', 'support', 'shutdown'],
+    tabs: ['sensor'] as const,
+  },
+  {
+    id: 'sensor_solid_red',
+    question: 'The sensor shows red—is something wrong?',
+    answer:
+      'A solid red light means high water in the drain line. This is normal protective operation: the system shuts down to reduce the risk of overflow.',
+    tags: ['sensor', 'support', 'leds'],
+    tabs: ['sensor'] as const,
+  },
+  {
+    id: 'sensor_no_light',
+    question: 'There is no light—is the sensor broken?',
+    answer:
+      'It depends on configuration. With 24V power (Standard or WiFi), no light usually means no power—check wiring and connections. On a WiFi model running on battery only, no light after startup can be normal while the sensor is still monitoring. See the LED guides on this page for the WiFi battery-only note.',
+    tags: ['sensor', 'support', 'leds'],
+    tabs: ['sensor'] as const,
+  },
+  {
+    id: 'sensor_prevents_all_backups',
+    question: 'Does the sensor prevent all drain backups?',
+    answer:
+      'No. The sensor helps monitor high water in the drain line and can shut down the HVAC at high levels, but it does not replace routine HVAC maintenance or guarantee prevention of all drain line issues.',
+    tags: ['sensor', 'support'],
+    tabs: ['sensor'] as const,
+  },
+  {
+    id: 'sensor_role_maintenance',
+    question: 'Is the sensor a drain-cleaning solution?',
+    answer:
+      'No. The sensor is a monitoring and safety device for the condensate line, not a substitute for drain cleaning. Regular HVAC maintenance is still required. For the WiFi Sensor Switch, 24V HVAC power is strongly recommended for consistent LED feedback and reliable operation; battery-only operation is supported but LED visibility is limited.',
+    tags: ['sensor', 'support', 'maintenance'],
+    tabs: ['sensor'] as const,
+  },
+  {
     id: 'sensor_leds',
     question: 'How do I know what the sensor light means?',
     answer:
-      'For the Standard Sensor Switch: no light means no power, green means monitoring active, flashing red means testing mode, and solid red means 95% water level detected and AC shutdown triggered. For the WiFi Sensor Switch: no light means no power, flashing red means awaiting WiFi connection, green means connected to the monitoring platform, and solid red means 95% water level detected and AC shutdown triggered.',
+      'Standard Sensor Switch (Non-WiFi): No light means no power (check wiring). Green means normal operation with water below the shutoff threshold. Solid red means high water (~95%) and protective AC shutdown, or during installation the PCB touch test can trigger the same shutdown (expected). WiFi Sensor Switch on 24V: No light means no power—verify 24V. Flashing red means waiting for WiFi; flashing green means setup in progress; solid green means connected and operating normally; solid red means high water (~95%) and protective shutdown. WiFi on battery-only: LED visibility is limited—a brief green at startup then no light may be normal while monitoring continues; when the LED is visible, solid red still means high water (~95%) and protective shutdown. A fully depleted battery means no power to the LED (no separate “battery depleted” light). See the LED tables on this page for details.',
     tags: ['sensor', 'support', 'leds'],
     tabs: ['sensor'] as const,
+  },
+  {
+    id: 'sensor_no_alert_before',
+    question: 'The sensor didn’t alert me before a problem.',
+    answer:
+      'The sensor responds to high water in the drain line. Remote monitoring and service alerts (WiFi model) depend on proper installation, power configuration, and connectivity. If the WiFi sensor is offline or misconfigured, alerts may not arrive. Regular HVAC maintenance is still required—the sensor does not replace routine line cleaning.',
+    tags: ['sensor', 'support', 'wifi', 'alerts'],
+    tabs: ['sensor'] as const,
+    sensorVariant: 'wifi' as const,
   },
   {
     id: 'portal_login',
@@ -202,7 +315,7 @@ export const FAQ = [
     id: 'drain_cleaning_frequency',
     question: 'How often do I need to clean my drain line?',
     answer:
-      'We recommend checking your drain line every 3–6 months. If you have the Sensor, it monitors the line continuously and will send an alert when maintenance is needed — so you don\'t have to guess or schedule blind.',
+      'We recommend checking your drain line every 3–6 months. If you have the WiFi Sensor Switch, remote alerts and dashboard status can help flag issues—regular HVAC maintenance is still required. The Standard Sensor Switch (Non-WiFi) does not send remote alerts; it provides local overflow protection and shutdown at high water.',
     tags: ['maintenance', 'support', 'sensor'],
     tabs: ['mini'] as const,
   },
@@ -210,7 +323,7 @@ export const FAQ = [
     id: 'alert_notifications',
     question: 'Why am I not receiving Sensor alert notifications?',
     answer:
-      'First, verify that notifications are enabled in your device\'s settings for the monitoring app or browser. Then confirm your alert preferences (SMS, email, push) are configured in the dashboard under account settings. If your Sensor shows as offline, alerts cannot be delivered — resolve connectivity first.',
+      'Sensor alerts are delivered by email and SMS only—there is no dedicated mobile app. Use the AC Drain Wiz monitoring web application in your browser and sign in to the dashboard. Under account settings, confirm that SMS and email alerts are enabled and that your phone number and email address on file are correct. If the WiFi sensor shows as offline on the monitoring site, alerts cannot be sent until it is online—verify connectivity on site (sensor power, 2.4 GHz Wi‑Fi, signal strength at the unit, and router or network issues). Check spam or junk folders for email alerts.',
     tags: ['sensor', 'support', 'wifi'],
     tabs: ['sensor'] as const,
     sensorVariant: 'wifi' as const,

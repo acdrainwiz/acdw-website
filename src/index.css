@@ -606,6 +606,11 @@
     @apply text-2xl text-white font-semibold mb-6 leading-relaxed;
   }
 
+  /* Bright accent for "HEAT" — same vivid red as the pre–sponsorship hero (CSS keyword `red`) */
+  .hero-subtitle-heat-accent {
+    color: #ff0000;
+  }
+
   .hero-subtitle-mobile-break {
     @apply block md:hidden;
   }
@@ -1465,15 +1470,64 @@
   }
 
   .header-logo-section {
-    @apply flex items-center;
+    @apply flex flex-1 min-w-0 items-center gap-2 sm:gap-3;
   }
 
   .header-logo-link {
-    @apply flex items-center space-x-2;
+    @apply flex shrink-0 items-center space-x-2;
   }
 
   .header-logo-image {
-    @apply h-9 w-auto max-w-none;
+    @apply h-8 w-auto max-w-none sm:h-9;
+  }
+
+  /*
+   * Miami HEAT partnership (badge + two-line tagline) — visible on all breakpoints.
+   * ACDW logo stays shrink-0; partnership uses min-w-0 + compact type on narrow screens
+   * so both fit without hiding the sponsorship strip.
+   */
+  .header-miami-heat-partnership {
+    @apply ml-5 flex min-w-0 shrink items-center gap-1.5 rounded-md
+      hover:opacity-90 transition-opacity duration-150
+      [transition-timing-function:cubic-bezier(0.4,0,0.2,1)]
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2;
+  }
+
+  .header-miami-heat-partnership-badge-image {
+    @apply h-7 w-auto object-contain shrink-0 sm:h-9;
+    transform: translateY(1px);
+  }
+
+  .header-miami-heat-partnership-tagline {
+    @apply text-[9px] leading-snug font-medium text-black max-w-[6.75rem] sm:max-w-[9rem] sm:text-[10px] md:text-[11px] md:max-w-none;
+  }
+
+  .miami-heat-partnership-tagline-line {
+    @apply block;
+  }
+
+  .miami-heat-partnership-heat-word {
+    font-weight: 600;
+  }
+
+  /* Footer: partnership lockup to the right of the ACDW logo (same row; may wrap on narrow widths) */
+  .footer-miami-heat-partnership {
+    @apply flex items-center gap-2 shrink-0 rounded-md
+      hover:opacity-90 transition-opacity
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900;
+  }
+
+  .footer-miami-heat-partnership-badge-image {
+    @apply h-7 w-auto object-contain shrink-0;
+    transform: translateY(1px);
+  }
+
+  .footer-miami-heat-partnership-tagline {
+    @apply text-[9px] sm:text-[10px] leading-snug font-medium text-gray-200 max-w-[8.5rem] sm:max-w-none;
+  }
+
+  .footer-miami-heat-partnership .miami-heat-partnership-tagline-line {
+    @apply text-gray-200;
   }
 
   .header-brand-name {
@@ -1737,6 +1791,30 @@
     .header-mobile-menu-close-icon {
       width: 1.5rem;
       height: 1.5rem;
+  }
+
+  /* Miami HEAT partnership — bottom of drawer (after nav + optional auth); top border separates from links */
+  .header-mobile-drawer-partnership-wrap {
+    @apply flex justify-center px-4 pt-4 pb-3 shrink-0 border-t border-gray-200/80;
+  }
+
+  .header-mobile-drawer-partnership {
+    @apply flex items-center gap-2.5 shrink-0 rounded-md
+      hover:opacity-90 transition-opacity
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2;
+  }
+
+  .header-mobile-drawer-partnership-badge-image {
+    @apply h-8 w-auto object-contain shrink-0;
+    transform: translateY(1px);
+  }
+
+  .header-mobile-drawer-partnership-tagline {
+    @apply text-[9px] sm:text-[10px] leading-snug font-medium text-black text-left max-w-[9rem];
+  }
+
+  .header-mobile-drawer-partnership .miami-heat-partnership-tagline-line {
+    @apply text-black;
   }
 
   .header-mobile-menu-content {
@@ -4226,8 +4304,12 @@
     @apply mb-4;
   }
 
+  .footer-brand-lockup {
+    @apply flex flex-wrap items-center gap-4 sm:gap-5;
+  }
+
   .footer-logo-link {
-    @apply inline-block;
+    @apply inline-block shrink-0;
   }
 
   .footer-logo-image {
@@ -4332,291 +4414,978 @@
     @apply w-full h-full;
   }
 
-  /* About Page */
+  /* About Page ─────────────────────────────────────────────────────────────── */
+
+  /* ── Shared layout ─────────────────────────────────────────────────────── */
   .about-page-container {
-    @apply min-h-screen bg-gray-50;
+    @apply min-h-screen;
   }
 
-  .about-page-content {
-    @apply container mx-auto px-4 py-16;
+  .about-section-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
   }
 
-  .about-page-header {
-    @apply text-center mb-16;
+  .about-section-flush {
+    @apply bg-white;
+    padding: 5rem 0;
   }
 
-  .about-page-title {
-    @apply heading-1 mb-6;
+  .about-section-heading {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 3rem;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
   }
 
-  .about-page-subtitle {
-    @apply text-large text-gray-600 max-w-3xl mx-auto;
+  /* ── 1. Hero ────────────────────────────────────────────────────────────── */
+  .about-hero {
+    position: relative;
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 45%, #1d4ed8 100%);
+    padding: 5rem 0;
+    overflow: hidden;
   }
 
-  .about-page-section {
-    @apply bg-white rounded-lg shadow-lg p-8 mb-16;
+  .about-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 35%, rgba(96, 165, 250, 0.3) 0%, transparent 70%);
+    pointer-events: none;
   }
 
-  .about-page-section-title {
-    @apply heading-2 mb-6 text-center;
+  .about-hero-text {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 52rem;
+    margin: 0 auto;
   }
 
-  .about-page-mission-content {
-    @apply max-w-4xl mx-auto text-center;
+  .about-hero-title {
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    font-weight: 700;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.025em;
   }
 
-  .about-page-mission-text {
-    @apply text-xl text-gray-700 mb-6;
+  .about-hero-subtitle {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 42rem;
+    margin: 0 auto 1.75rem;
+    line-height: 1.7;
   }
 
-  .about-page-mission-grid {
-    @apply grid grid-cols-1 md:grid-cols-3 gap-8 mt-8;
+  .about-hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
   }
 
-  .about-page-mission-item {
-    @apply text-center;
+  .about-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 1rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: white;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    backdrop-filter: blur(8px);
   }
 
-  .about-page-mission-icon {
-    @apply w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4;
+  /* ── 2. Stats Section ───────────────────────────────────────────────────── */
+  .about-stats-section {
+    @apply bg-white;
+    padding: 5rem 0;
+    border-bottom: 1px solid #e5e7eb;
   }
 
-  .about-page-mission-icon-easier {
-    @apply bg-blue-100;
+  .about-stats-header {
+    text-align: center;
+    max-width: 44rem;
+    margin: 0 auto 3rem;
   }
 
-  .about-page-mission-icon-faster {
-    @apply bg-green-100;
+  .about-stats-heading {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 700;
+    color: #111827;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 0 0 1rem;
   }
 
-  .about-page-mission-icon-profitable {
-    @apply bg-purple-100;
-  }
-
-  .about-page-mission-icon-svg {
-    @apply h-8 w-8;
-  }
-
-  .about-page-mission-icon-easier .about-page-mission-icon-svg {
-    @apply text-blue-600;
-  }
-
-  .about-page-mission-icon-faster .about-page-mission-icon-svg {
-    @apply text-green-600;
-  }
-
-  .about-page-mission-icon-profitable .about-page-mission-icon-svg {
-    @apply text-purple-600;
-  }
-
-  .about-page-mission-item-title {
-    @apply font-semibold text-gray-900 mb-2;
-  }
-
-  .about-page-mission-item-description {
-    @apply text-sm text-gray-600;
-  }
-
-  .about-page-info-grid {
-    @apply grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16;
-  }
-
-  .about-page-info-card {
-    @apply bg-white rounded-lg shadow-lg p-8;
-  }
-
-  .about-page-info-card-title {
-    @apply heading-2 mb-6;
-  }
-
-  .about-page-info-list {
-    @apply space-y-3;
-    list-style: none;
-    padding: 0;
+  .about-stats-subhead {
+    font-size: 1.0625rem;
+    color: #4b5563;
+    line-height: 1.65;
     margin: 0;
   }
 
-  .about-page-info-item {
-    @apply flex items-center;
+  @media (min-width: 768px) {
+    .about-stats-subhead {
+      font-size: 1.125rem;
+    }
   }
 
-  .about-page-info-icon {
-    @apply h-5 w-5 mr-3 flex-shrink-0;
+  .about-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
-  .about-page-info-icon-green {
-    @apply text-green-500;
+  @media (min-width: 768px) {
+    .about-stats-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
-  .about-page-info-icon-blue {
-    @apply text-blue-500;
+  .about-stat-card {
+    position: relative;
+    border-radius: 1rem;
+    /* bottom padding = 88px wave area so content never overlaps wave */
+    padding: 2rem 2rem 5.5rem;
+    overflow: hidden;
+    border: 1.5px solid var(--stat-accent);
+    background: white;
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    /* Gradient stops for fill + wave (SVG stops inherit via var) */
+    --fill-stop-0: color-mix(in srgb, var(--stat-accent) 72%, white);
+    --fill-stop-1: var(--stat-accent);
+    --fill-stop-2: color-mix(in srgb, var(--stat-accent) 82%, #0f172a);
+    --wave-stop-0: color-mix(in srgb, var(--stat-accent) 62%, white);
+    --wave-stop-1: var(--stat-accent);
+    --wave-stop-2: color-mix(in srgb, var(--stat-accent) 48%, #0f172a);
+    transition: box-shadow 0.2s ease;
   }
 
-  .about-page-info-text {
-    @apply text-gray-700;
+  .about-stat-card:hover {
+    --fill-stop-0: color-mix(in srgb, var(--stat-accent) 48%, white);
+    --fill-stop-1: color-mix(in srgb, var(--stat-accent) 78%, white);
+    --fill-stop-2: color-mix(in srgb, var(--stat-accent) 88%, #020617);
+    --wave-stop-0: color-mix(in srgb, var(--stat-accent) 38%, white);
+    --wave-stop-1: color-mix(in srgb, var(--stat-accent) 65%, white);
+    --wave-stop-2: color-mix(in srgb, var(--stat-accent) 62%, #020617);
   }
 
-  .about-page-leadership {
-    @apply mb-16;
+  .about-stat-content {
+    position: relative;
+    z-index: 3; /* above fill (1) and wave (2) */
+    flex: 1;
   }
 
-  .about-page-leadership-content {
-    @apply max-w-2xl mx-auto;
+  /* ── Number, label, sub — transition to white on hover ─────────────────── */
+  .about-stat-number {
+    font-size: clamp(2.75rem, 5.5vw, 4rem);
+    font-weight: 800;
+    color: var(--stat-accent);
+    line-height: 1;
+    margin-bottom: 0.625rem;
+    letter-spacing: -0.04em;
+    transition: color 0.35s ease;
+    /* Ensures suffix letters (e.g. 2X) render uppercase even if data uses lowercase */
+    text-transform: uppercase;
   }
 
-  .about-page-leadership-profile {
-    @apply flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6;
+  .about-stat-label {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.5rem;
+    transition: color 0.35s ease;
   }
 
-  .about-page-leadership-avatar {
-    @apply w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0;
+  .about-stat-sub {
+    font-size: 0.875rem;
+    color: #6b7280;
+    line-height: 1.55;
+    transition: color 0.35s ease;
   }
 
-  .about-page-leadership-avatar-icon {
-    @apply h-12 w-12 text-blue-600;
+  .about-stat-card:hover .about-stat-number { color: white; }
+  .about-stat-card:hover .about-stat-label  { color: white; }
+  .about-stat-card:hover .about-stat-sub    { color: rgba(255, 255, 255, 0.85); }
+
+  /* ── Link — accent on white bg; transitions to white when card fills ─────── */
+  .about-stat-link {
+    position: absolute;
+    bottom: calc(1.375rem + 15px);
+    left: 2rem;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--stat-accent);
+    text-decoration: none;
+    transition: gap 0.2s ease, color 0.35s ease;
   }
 
-  .about-page-leadership-details {
-    @apply flex-1 w-full text-center md:text-left;
+  .about-stat-card:hover .about-stat-link {
+    color: white;
+    gap: 0.625rem;
   }
 
-  .about-page-leadership-name {
-    @apply text-2xl font-bold text-gray-900;
+  .about-stat-link-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
   }
 
-  .about-page-leadership-role {
-    @apply text-lg text-blue-600 mb-4;
+  .about-stat-link:hover .about-stat-link-icon {
+    transform: translateX(3px);
   }
 
-  .about-page-leadership-bio {
-    @apply text-gray-600 mb-4;
+  /* ── Gradient fill — rises from below the card to full height on hover ─────── */
+  .about-stat-fill {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      168deg,
+      var(--fill-stop-0) 0%,
+      var(--fill-stop-1) 46%,
+      var(--fill-stop-2) 100%
+    );
+    transform: translateY(100%);
+    transition:
+      transform 0.52s cubic-bezier(0.4, 0, 0.2, 1),
+      filter 0.52s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+    pointer-events: none;
   }
 
-  .about-page-leadership-contact {
-    @apply flex flex-col sm:flex-row items-center sm:items-start sm:justify-start gap-3 sm:gap-4;
+  .about-stat-card:hover .about-stat-fill {
+    transform: translateY(0);
+    filter: brightness(1.07) saturate(1.1);
   }
 
-  .about-page-leadership-contact-link {
-    @apply flex items-center text-blue-600 hover:text-blue-700;
-    @apply justify-center sm:justify-start;
+  /* ── Wave SVG — gradient waterline; z-index 2 so it rides above the fill ─── */
+  .about-stat-wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 88px;
+    z-index: 2;
+    pointer-events: none;
+    transition: bottom 0.52s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .about-page-leadership-contact-icon {
-    @apply h-5 w-5 mr-2 flex-shrink-0;
+  .about-stat-wave path {
+    transition: filter 0.52s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .about-page-leadership-contact-text {
-    @apply text-sm;
-    @apply break-all sm:break-normal;
+  .about-stat-card:hover .about-stat-wave path {
+    filter: brightness(1.1) saturate(1.15) drop-shadow(0 -2px 14px rgba(255, 255, 255, 0.22));
   }
 
-  .about-page-company-content {
-    @apply max-w-4xl mx-auto;
+  /* Wave travels upward in sync with the fill — wave exits above the card */
+  .about-stat-card:hover .about-stat-wave {
+    bottom: 100%;
   }
 
-  .about-page-company-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 gap-8;
+  /* ── 4. Our Story ───────────────────────────────────────────────────────── */
+  .about-story-band {
+    background: #eff6ff;
+    padding: 5rem 0;
   }
 
-  .about-page-company-item {
-    /* No additional base styles */
+  .about-story-prose {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
-  .about-page-company-item-title {
-    @apply font-semibold text-gray-900 mb-3;
+  .about-prose-p {
+    font-size: 1rem;
+    color: #374151;
+    line-height: 1.75;
+    margin: 0;
   }
 
-  .about-page-company-item-text {
-    @apply text-gray-600;
+  /* Full-bleed black band: quote + product shot float on one continuous surface */
+  .about-story-quote-bleed {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    background: #0a0a0a;
+    padding: 2.75rem 0;
+    position: relative;
   }
 
-  .about-page-company-item-list {
-    @apply space-y-1;
+  @media (min-width: 768px) {
+    .about-story-quote-bleed {
+      padding: 3.25rem 0;
+    }
   }
 
-  .about-page-company-item-text-deprecated {
-    @apply text-gray-500 italic;
+  .about-story-quote-bleed-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
   }
 
-  /* About page: story, audience, values, UVP, social proof, CTA */
-  .about-page-prose {
-    @apply max-w-3xl mx-auto text-left space-y-4;
+  .about-story-quote-bleed .about-pull-quote-eyebrow {
+    color: #93c5fd;
   }
 
-  .about-page-prose-p {
-    @apply text-gray-600 leading-relaxed m-0;
+  .about-story-quote-bleed .about-pull-quote {
+    color: #f1f5f9;
   }
 
-  .about-page-audience-grid {
-    @apply grid grid-cols-1 md:grid-cols-3 gap-8;
+  .about-story-quote-bleed .about-pull-quote-wrap::before {
+    color: rgba(147, 197, 253, 0.28);
   }
 
-  .about-page-audience-item {
-    @apply text-center p-4;
+  .about-story-quote-bleed .about-pull-quote-wrap::after {
+    color: rgba(147, 197, 253, 0.24);
   }
 
-  .about-page-audience-icon {
-    @apply h-10 w-10 mx-auto mb-3 text-blue-600;
+  .about-pull-quote-split {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: stretch;
+    margin: 0.25rem 0;
+    width: 100%;
   }
 
-  .about-page-audience-title {
-    @apply font-semibold text-gray-900 mb-2;
+  /* DOM: eyebrow + quote, then image. Stacked on small screens; quote left / image right on md+ */
+  .about-pull-quote-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-width: 0;
   }
 
-  .about-page-audience-text {
-    @apply text-sm text-gray-600;
+  .about-pull-quote-visual {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    max-height: 280px;
   }
 
-  .about-page-values-list {
-    @apply max-w-3xl mx-auto space-y-4 text-left;
+  @media (min-width: 768px) {
+    .about-pull-quote-split {
+      display: grid;
+      grid-template-columns: minmax(12rem, 1.25fr) minmax(200px, 0.9fr);
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .about-pull-quote-visual {
+      max-height: none;
+      min-height: 200px;
+      aspect-ratio: 4 / 3;
+    }
   }
 
-  .about-page-value-item {
-    @apply text-gray-700;
+  .about-pull-quote-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    border: none;
+    outline: none;
   }
 
-  .about-page-value-name {
-    @apply text-gray-900;
+  .about-pull-quote-eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: #2563eb;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0;
+    line-height: 1.3;
   }
 
-  .about-page-value-desc {
-    @apply font-normal text-gray-600;
+  .about-pull-quote-wrap {
+    position: relative;
+    flex: 1;
+    padding: 0.25rem 0.5rem 1.25rem 0;
+    overflow: visible;
   }
 
-  .about-page-social-proof {
-    @apply text-center;
+  .about-pull-quote-wrap::before {
+    content: '"';
+    position: absolute;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(4.75rem, 13vw, 7.25rem);
+    line-height: 0.85;
+    color: rgba(37, 99, 235, 0.22);
+    top: -0.15rem;
+    left: -0.15rem;
+    pointer-events: none;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    z-index: 0;
   }
 
-  .about-page-social-proof-text {
-    @apply text-gray-600 mb-6 max-w-2xl mx-auto;
+  .about-pull-quote-wrap::after {
+    content: '\201d';
+    position: absolute;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(3.25rem, 9vw, 5rem);
+    line-height: 1;
+    color: rgba(37, 99, 235, 0.18);
+    bottom: -0.35rem;
+    right: 0;
+    pointer-events: none;
+    font-style: normal;
+    font-weight: 700;
+    z-index: 0;
   }
 
-  .about-page-social-proof-badges {
-    @apply flex flex-wrap justify-center gap-3;
+  .about-pull-quote {
+    position: relative;
+    z-index: 1;
+    font-size: clamp(1.5rem, 2.8vw + 0.5rem, 2.25rem);
+    font-weight: 600;
+    color: #1d4ed8;
+    line-height: 1.38;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-style: italic;
+    letter-spacing: -0.02em;
   }
 
-  .about-page-social-proof-badge {
-    @apply inline-flex px-4 py-2 rounded-full bg-gray-100 text-gray-800 text-sm font-medium;
+  /* ── 5. Leadership ──────────────────────────────────────────────────────── */
+  .about-leader-split {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: center;
   }
 
-  .about-page-cta-section {
-    @apply text-center;
+  @media (min-width: 768px) {
+    .about-leader-split {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+      gap: 3rem 3.5rem;
+      align-items: center;
+    }
   }
 
-  .about-page-cta-text {
-    @apply text-lg text-gray-700 mb-6;
+  .about-leader-eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: #2563eb;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 0.75rem;
   }
 
-  .about-page-cta-buttons {
-    @apply flex flex-wrap justify-center gap-4;
+  .about-leader-heading {
+    font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.25;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
   }
 
-  .about-page-cta-primary {
-    @apply inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium;
+  .about-leader-blurb {
+    font-size: 1rem;
+    color: #4b5563;
+    line-height: 1.7;
+    margin: 0;
   }
 
-  .about-page-cta-secondary {
-    @apply inline-flex items-center px-6 py-3 border border-gray-300 bg-white text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium;
+  .about-leader-figure {
+    margin: 0;
+    max-width: 28rem;
+    width: 100%;
+    justify-self: center;
+  }
+
+  @media (min-width: 768px) {
+    .about-leader-figure {
+      max-width: none;
+      justify-self: end;
+    }
+  }
+
+  .about-leader-photo-frame {
+    border-radius: 1rem;
+    overflow: hidden;
+    aspect-ratio: 1;
+    background: #f1f5f9;
+    box-shadow:
+      0 4px 6px -1px rgba(15, 23, 42, 0.08),
+      0 24px 48px -12px rgba(15, 23, 42, 0.18);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+  }
+
+  .about-leader-photo {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .about-leader-caption {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    text-align: center;
+    padding-top: 1.125rem;
+  }
+
+  .about-leader-name {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.3;
+  }
+
+  .about-leader-role {
+    font-size: 0.875rem;
+    color: #2563eb;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .about-leader-support {
+    margin-top: 2.5rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .about-leader-support {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+  }
+
+  .about-leader-support-label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .about-leader-contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .about-leader-contacts {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 0.75rem 2rem;
+    }
+  }
+
+  .about-leader-contact-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    color: #64748b;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: color 0.15s;
+    word-break: break-word;
+  }
+
+  @media (min-width: 640px) {
+    .about-leader-contact-link {
+      justify-content: flex-end;
+    }
+  }
+
+  .about-leader-contact-link:hover {
+    color: #2563eb;
+  }
+
+  .about-leader-contact-icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+
+  /* ── 6. Who We Serve ────────────────────────────────────────────────────── */
+  .about-serve-band {
+    @apply bg-gray-50;
+    padding: 5rem 0;
+  }
+
+  .about-serve-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .about-serve-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.5rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+    cursor: default;
+  }
+
+  .about-serve-item:last-child {
+    border-bottom: none;
+  }
+
+  .about-serve-item:hover {
+    background: #eff6ff;
+  }
+
+  .about-serve-icon-wrap {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.75rem;
+    background: #eff6ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background-color 0.2s;
+  }
+
+  .about-serve-item:hover .about-serve-icon-wrap {
+    background: #2563eb;
+  }
+
+  .about-serve-icon {
+    width: 1.375rem;
+    height: 1.375rem;
+    color: #2563eb;
+    transition: color 0.2s;
+  }
+
+  .about-serve-item:hover .about-serve-icon {
+    color: white;
+  }
+
+  .about-serve-content {
+    flex: 1;
+  }
+
+  .about-serve-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.375rem;
+  }
+
+  .about-serve-text {
+    font-size: 0.9375rem;
+    color: #4b5563;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ── 7. Miami HEAT Partnership ──────────────────────────────────────────── */
+  .about-partnership-band {
+    background: #0f172a;
+    padding: 5rem 0;
+  }
+
+  /* MiamiHeatPartnershipLockup "about" layout — kept for component compatibility */
+  .about-page-partnership-lockup {
+    @apply flex items-center gap-3 shrink-0 self-center md:self-auto;
+  }
+
+  .about-page-partnership-badge-image {
+    @apply h-16 w-auto object-contain;
+    transform: translateY(1px);
+  }
+
+  .about-miami-heat-partnership-tagline {
+    @apply text-sm sm:text-base font-medium;
+    color: white;
+  }
+
+  .about-partnership-lockup-wrap {
+    flex-shrink: 0;
+  }
+
+  .about-partnership-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .about-partnership-content {
+      flex-direction: row;
+      text-align: left;
+      gap: 4rem;
+      align-items: center;
+    }
+  }
+
+  .about-partnership-text {
+    flex: 1;
+  }
+
+  .about-partnership-heading {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.875rem;
+    letter-spacing: -0.02em;
+  }
+
+  .about-partnership-prose {
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.7;
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  /* ── 8. Our Values (hybrid: Value + In practice cards) ─────────────────── */
+  .about-values-section .about-section-heading {
+    margin-bottom: 0.75rem;
+  }
+
+  .about-values-subhead {
+    font-size: 1.0625rem;
+    color: #4b5563;
+    line-height: 1.65;
+    max-width: 42rem;
+    margin: 0 0 2.5rem;
+  }
+
+  .about-values-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 600px) {
+    .about-values-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .about-value-card {
+    position: relative;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 1.75rem;
+    overflow: hidden;
+    cursor: default;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+
+  .about-value-card:hover {
+    box-shadow: 0 4px 24px rgba(37, 99, 235, 0.09);
+    border-color: #bfdbfe;
+  }
+
+  .about-value-card--practice:hover {
+    box-shadow: 0 4px 24px rgba(234, 88, 12, 0.08);
+    border-color: #fed7aa;
+  }
+
+  .about-value-accent-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #2563eb;
+    border-radius: 2px 0 0 2px;
+    transform-origin: top;
+    transform: scaleY(0);
+    transition: transform 0.25s ease;
+  }
+
+  .about-value-card--practice .about-value-accent-bar {
+    background: #ea580c;
+  }
+
+  .about-value-card:hover .about-value-accent-bar {
+    transform: scaleY(1);
+  }
+
+  .about-value-card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .about-value-icon-wrap {
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    background: #eff6ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .about-value-card--practice .about-value-icon-wrap {
+    background: #fff7ed;
+  }
+
+  .about-value-icon {
+    width: 1.375rem;
+    height: 1.375rem;
+    color: #2563eb;
+  }
+
+  .about-value-card--practice .about-value-icon {
+    color: #ea580c;
+  }
+
+  .about-value-card-heading {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .about-value-eyebrow {
+    display: block;
+    font-size: 0.625rem;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.35rem;
+  }
+
+  .about-value-name {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.3;
+  }
+
+  .about-value-desc {
+    font-size: 0.9375rem;
+    color: #4b5563;
+    line-height: 1.65;
+    margin: 0;
+    padding-left: calc(2.5rem + 1rem);
+  }
+
+  @media (max-width: 599px) {
+    .about-value-desc {
+      padding-left: 0;
+    }
+  }
+
+  /* ── 9. CTA Band ────────────────────────────────────────────────────────── */
+  .about-cta-band {
+    position: relative;
+    padding: 5rem 0;
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 55%, #2563eb 100%);
+    overflow: hidden;
+  }
+
+  .about-cta-band::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(96, 165, 250, 0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .about-cta-inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .about-cta-text {
+    font-size: 1.375rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 2rem;
+    max-width: 36rem;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.45;
+  }
+
+  .about-cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .about-cta-primary {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.875rem 2rem;
+    background: white;
+    color: #1e40af;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    border-radius: 0.625rem;
+    text-decoration: none;
+    transition: background-color 0.15s, color 0.15s;
+  }
+
+  .about-cta-primary:hover {
+    background: #f0f9ff;
+  }
+
+  .about-cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.875rem 2rem;
+    background: transparent;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    border-radius: 0.625rem;
+    text-decoration: none;
+    border: 2px solid rgba(255, 255, 255, 0.42);
+    transition: border-color 0.15s, background-color 0.15s;
+  }
+
+  .about-cta-secondary:hover {
+    border-color: white;
+    background: rgba(255, 255, 255, 0.08);
   }
 
 }
@@ -7241,6 +8010,21 @@
 
 .support-led-off {
   @apply bg-gray-300 border border-gray-400;
+}
+
+/* Pulse for flashing red / flashing green rows on Product Support LED tables */
+.support-led-flash {
+  animation: support-led-pulse 0.95s ease-in-out infinite;
+}
+
+@keyframes support-led-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
 }
 
 .support-led-label {

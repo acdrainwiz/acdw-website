@@ -11,7 +11,7 @@ Use this rule plus `src/config/acdwKnowledge.ts` as the source of truth for prod
 
 - **AC Drain Wiz Mini** (ACDW Mini): Drain line **maintenance access** device. Permanent service port on the 3/4" condensate drain line for flush (water), air (compressed air), and vacuum—no cutting PVC. One-time install, horizontal only; PVC solvent weld (e.g. Oatey All-Purpose Cement).
 - **AC Drain Wiz Standard Sensor Switch**: **Non-WiFi** overflow protection. Capacitive sensing, automatic AC shutdown at 95% water level, no moving parts, fail-safe on power loss. **Does not require the Mini to install**—sensors include their own Transparent T Manifold.
-- **AC Drain Wiz WiFi Sensor Switch**: **WiFi** variant. Adds remote monitoring, email/SMS alerts, contractor app, service alerts between 50–90% (shutdown still at 95%). Lithium-ion backup battery ~2 years; low-battery warning in platform.
+- **AC Drain Wiz WiFi Sensor Switch**: **WiFi** variant. Adds remote monitoring, email/SMS alerts, contractor app, service alerts between 50–90% (shutdown still at 95%). **24V HVAC power is strongly recommended** for consistent LED feedback and reliable operation; battery-only operation is supported with limited LED visibility. Lithium-ion backup battery ~2 years; low-battery warning in platform. A fully depleted battery (battery-only path) may trigger protective HVAC shutdown.
 
 **Relationship**: Sensor Switch installs in the same bayonet port as the Mini valve/cap. For service: remove Sensor → install Mini valve → clean → reinstall Sensor. Contractors can install Sensor-only (with its own manifold) without buying Mini first.
 
@@ -42,9 +42,10 @@ Use this rule plus `src/config/acdwKnowledge.ts` as the source of truth for prod
 
 ## LED status (sensors)
 
-- **Only red (blinking or solid) and green are used.** There is no blue LED.
-- **Standard Sensor Switch**: No light = no power. Green = monitoring active. Flashing red = testing mode. Solid red = 95% water level, AC shutdown triggered.
-- **WiFi Sensor Switch**: No light = no power. Flashing red = awaiting WiFi connection (pairing mode). Green = connected to monitoring platform. Solid red = 95% water level, AC shutdown triggered.
+- **Red and green LEDs only** (solid and/or flashing as documented). There is no blue LED.
+- **Standard Sensor Switch** (KB v1.1): No light = no power. Green = normal monitoring (water below shutoff threshold in the T-manifold). Solid red = installation PCB touch test (simulates high water → AC shutdown, expected) **or** normal operation at ~95% water (protective shutdown). There is no separate “flashing red testing mode” in the KB for Standard.
+- **WiFi Sensor Switch — 24V powered (recommended)** (KB v1.1): No light = no power (verify 24V). Flashing red = awaiting WiFi connection. Flashing green = setup in progress (mobile device connected). Solid green = connected to monitoring platform. Solid red = ~95% water, protective AC shutdown.
+- **WiFi Sensor Switch — battery-only mode**: LED visibility is limited. Brief solid green at startup then light off can be normal (power-saving). **No light after startup does not mean failure**—monitoring may continue. **When the LED is visible, solid red still means ~95% water and protective shutdown** (same as 24V). A fully depleted battery means **no power to the LED**—there is no distinct “battery depleted” LED indication. Prefer 24V to avoid battery-depletion behavior.
 - Do not add LED states (e.g. yellow, blue) that are not in the package or config.
 
 ## Brand voice and guardrails

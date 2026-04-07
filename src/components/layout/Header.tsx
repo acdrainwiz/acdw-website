@@ -23,6 +23,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { useAuth } from '../../contexts/AuthContext'
 import { MONITORING, SENSOR_SETUP_MODEL_CHOICE_HREF } from '../../config/acdwKnowledge'
+import { MiamiHeatPartnershipLockup } from './MiamiHeatPartnershipLockup'
 
 const baseNavigation = [
   { name: 'Products', href: '/products' },
@@ -129,7 +130,7 @@ export function Header() {
     <header className="header-main-container">
       <nav className="header-navigation-wrapper" aria-label="Top">
         <div className="header-content-layout">
-          {/* Logo */}
+          {/* Logo + Miami HEAT partnership */}
           <div className="header-logo-section">
             <Link 
               to={isAuthenticated ? "/dashboard" : "/"} 
@@ -141,6 +142,7 @@ export function Header() {
                 className="header-logo-image"
               />
             </Link>
+            <MiamiHeatPartnershipLockup layout="header" />
           </div>
 
           {/* Desktop Navigation */}
@@ -574,6 +576,14 @@ export function Header() {
                     </button>
                   </div>
                 )}
+
+                {/* Miami HEAT partnership — bottom of drawer (after nav + auth) so logo→links stay tight */}
+                <div className="header-mobile-drawer-partnership-wrap">
+                  <MiamiHeatPartnershipLockup
+                    layout="drawer"
+                    onLinkClick={handleMobileNavClick}
+                  />
+                </div>
               </div>
             </div>
           </>

@@ -214,7 +214,7 @@ export function Hero() {
             </h1>
 
             <h2 className="hero-subtitle">
-              STAY COOL WHEN <br className="hero-subtitle-mobile-break" /><em>THE <strong style={{ color: 'red' }}>HEAT</strong> IS ON!</em>
+              STAY COOL WHEN <br className="hero-subtitle-mobile-break" /><em>THE <strong className="hero-subtitle-heat-accent">HEAT</strong> IS ON!</em>
             </h2>
             
             <div className="hero-cta-buttons">
@@ -515,7 +515,7 @@ export function Hero() {
                   <th className="product-comparison-th">
                     <div className="product-comparison-product-header">
                       <div className="font-bold text-lg">Mini + Sensor</div>
-                      <div className="text-sm text-purple-600 font-semibold">Complete System</div>
+                      <div className="text-sm text-orange-600 font-semibold">Complete System</div>
                     </div>
                   </th>
                 </tr>
@@ -645,7 +645,7 @@ export function Hero() {
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900">Mini + Sensor</h3>
-                  <span className="text-sm text-purple-600 font-semibold">Complete System</span>
+                  <span className="text-sm text-orange-600 font-semibold">Complete System</span>
                 </div>
                 <button onClick={() => navigate('/products/combo')} className="product-comparison-btn-primary">
                   Learn More

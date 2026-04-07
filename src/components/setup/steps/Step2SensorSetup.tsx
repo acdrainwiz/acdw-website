@@ -17,6 +17,8 @@ import {
   SENSOR_STANDARD_SHORT,
   SENSOR_WIFI_DISPLAY,
   SENSOR_WIFI_SHORT,
+  SENSOR_WIFI_POWER_RECOMMENDATION,
+  SENSOR_INSTALL_P_TRAP_AFTER_MINI_AIR_FLUSH,
 } from '../../../config/acdwKnowledge'
 
 interface Step2SensorSetupProps {
@@ -211,7 +213,7 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
     {
       number: 2,
       title: 'Verify LED Status & Test the Sensor',
-      description: 'With the LED solid green, the sensor is powered and ready. To verify it is working correctly: place your index finger and thumb on the green PCB board that extends out of the sensor. If the sensor is working correctly, this will trigger the LED to flash red and the AC to shut off—mimicking the behavior of the sensor detecting 95% water levels in the drain line.',
+      description: 'With the LED solid green, the sensor is powered and ready. To verify it is working correctly: place your index finger and thumb on the green PCB board that extends out of the sensor. If the sensor is working correctly, this will turn the LED solid red and the AC will shut off—mimicking the behavior of the sensor detecting ~95% water levels in the drain line.',
       image: '/images/setup/step2-4-led.png',
       alt: 'LED solid green; testing sensor with touch on PCB'
     }
@@ -223,7 +225,7 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
       number: 1,
       title: 'Power Up the Sensor',
       description:
-        'Connect the included 24V cable to the air handler (same style connection as a float switch). This is the primary power path when using 24V—confirm a solid connection at the terminals before continuing. You may also insert the included backup battery for backup power or use it alongside 24V per your install. When there is power, the LED status light will begin to blink red. This means the unit is powered up but has not yet connected to a valid Wi‑Fi network. Complete the WiFi Connection steps below.',
+        '24V HVAC power is strongly recommended for reliable operation and consistent LED feedback. Connect the included 24V cable to the air handler (same style connection as a float switch). Confirm a solid connection at the terminals before continuing. You may use the included battery for backup alongside 24V, or run battery-only if the site requires it—battery-only limits LED visibility (the light may go off after startup while monitoring continues), and a fully depleted battery may trigger protective HVAC shutdown. When there is power, the LED will typically begin to blink red: powered up but not yet connected to a valid Wi‑Fi network. Complete the WiFi Connection steps below.',
       image: '/images/setup/step2-3-power.png',
       alt: 'Connecting 24V power cable at the air handler'
     },
@@ -231,7 +233,7 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
       number: 2,
       title: 'Verify LED Status',
       description:
-        'While the LED is blinking red, the sensor is ready for WiFi setup. Once you complete the following steps and the sensor connects to the ACDW Sensor Servers over the network, the LED status light will switch to a constant green.',
+        'While the LED is flashing red, the sensor is ready for WiFi setup. During setup you may see flashing green when a mobile device is connected; when the sensor connects to the ACDW Sensor Servers over the network, the LED turns solid green. On battery-only power after setup, you may see little or no LED while the sensor remains online—see Product Support for the WiFi battery-only LED guide.',
       image: '/images/setup/step2-4-led.png',
       alt: 'LED blinking red (awaiting WiFi); solid green when connected'
     }
@@ -466,6 +468,13 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
       </div>
       )}
 
+      {selectedModel === 'wifi' && (
+        <div className="sensor-setup-wps-callout">
+          <h4 className="sensor-setup-wps-callout-title">Power options (WiFi)</h4>
+          <p className="sensor-setup-wps-callout-intro">{SENSOR_WIFI_POWER_RECOMMENDATION}</p>
+        </div>
+      )}
+
       {/* Notification Message */}
       {showNotification && (
         <div ref={notificationRef} className="sensor-setup-notification">
@@ -539,6 +548,12 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
                   </div>
                 </div>
               ))}
+              {selectedModel === 'wifi' && (
+                <div className="sensor-setup-wps-callout mt-4">
+                  <h4 className="sensor-setup-wps-callout-title">If you cleared the line with compressed air</h4>
+                  <p className="sensor-setup-wps-callout-intro">{SENSOR_INSTALL_P_TRAP_AFTER_MINI_AIR_FLUSH}</p>
+                </div>
+              )}
             </div>
           </div>
         )}

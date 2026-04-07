@@ -7,7 +7,11 @@ import {
   ChevronUpIcon,
   WrenchScrewdriverIcon,
 } from '@heroicons/react/24/outline'
-import { PRODUCT_NAMES, SENSOR_SETUP_MODEL_CHOICE_HREF } from '../../../config/acdwKnowledge'
+import {
+  PRODUCT_NAMES,
+  SENSOR_INSTALL_P_TRAP_AFTER_MINI_AIR_FLUSH,
+  SENSOR_SETUP_MODEL_CHOICE_HREF,
+} from '../../../config/acdwKnowledge'
 import { InstallationWorkflowHelpFooter } from '../InstallationWorkflowHelpFooter'
 
 const FINAL_MOUNT_STEPS = [
@@ -72,12 +76,17 @@ export function Step2StandardSensorComplete({
           <div className="sensor-setup-step-title-section">
             <h2 className="sensor-setup-step-title">Mount &amp; lock the sensor</h2>
             <p className="sensor-setup-step-subtitle">
-              After power-up and the touch test pass (LED flashes red and the AC shuts off as expected), install the
+              After power-up and the touch test pass (LED turns solid red and the AC shuts off as expected), install the
               sensor in its final position on the Transparent T manifold.
             </p>
           </div>
         </>
       )}
+
+      <div className="sensor-setup-wps-callout">
+        <h4 className="sensor-setup-wps-callout-title">If you cleared the line with compressed air</h4>
+        <p className="sensor-setup-wps-callout-intro">{SENSOR_INSTALL_P_TRAP_AFTER_MINI_AIR_FLUSH}</p>
+      </div>
 
       <div
         className={`mini-setup-accordion-section ${

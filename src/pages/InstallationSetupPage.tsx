@@ -155,7 +155,7 @@ export function InstallationSetupPage() {
         <div className="install-sensor-family" id="install-sensor-models">
           <h2 className="install-sensor-family-title">Choose your sensor model</h2>
           <p className="install-sensor-family-subtitle">
-            The Standard and WiFi Sensor Switches use different setup steps. The Standard guide has three steps: manifold install, then sensor power and testing, then final mounting. The WiFi guide adds a monitoring account first, mirrors the same manifold steps (measure through cure), then on-site sensor install and Wi‑Fi pairing, and ends with assigning the sensor in the portal.
+            The Standard and WiFi Sensor Switches use different setup steps. The Standard guide has three steps: manifold install, then sensor power and testing, then final mounting. The WiFi guide adds a monitoring account first, mirrors the same manifold steps (measure through cure), then on-site sensor install and Wi‑Fi pairing, and ends with assigning the sensor in the portal. For the WiFi model, 24V HVAC power is strongly recommended for reliable operation and clear LED feedback at the unit; battery-only is supported where the site requires it.
           </p>
           <div className="install-sensor-model-grid">
             <div className="install-product-card install-product-card-sensor-standard">
