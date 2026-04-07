@@ -1729,8 +1729,8 @@ export function ContactPage() {
               <p className="text-sm text-gray-600">Deep understanding of HVAC maintenance challenges and solutions</p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <PhoneIcon className="h-8 w-8 text-purple-600" />
+              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <PhoneIcon className="h-8 w-8 text-orange-600" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Quick Response</h3>
               <p className="text-sm text-gray-600">Fast response times to help you get back to work quickly</p>

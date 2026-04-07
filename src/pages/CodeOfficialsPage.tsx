@@ -29,7 +29,7 @@ export function CodeOfficialsPage() {
   return (
     <div className="homeowner-page">
       {/* Hero Section */}
-      <div className="homeowner-hero-container" style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%)' }}>
+      <div className="homeowner-hero-container" style={{ background: 'linear-gradient(135deg, #ea580c 0%, #fb923c 100%)' }}>
         <div className="homeowner-hero-content">
           <div className="homeowner-hero-header">
             <h1 className="homeowner-hero-headline">
@@ -109,8 +109,8 @@ export function CodeOfficialsPage() {
         <h2 className="homeowner-benefits-title">Why AC Drain Wiz Meets the Standard</h2>
         <div className="homeowner-benefits-grid">
           <div className="homeowner-benefit-card">
-            <div className="homeowner-benefit-icon-wrapper" style={{ background: '#ede9fe' }}>
-              <DocumentCheckIcon className="homeowner-benefit-icon" style={{ color: '#7c3aed' }} />
+            <div className="homeowner-benefit-icon-wrapper" style={{ background: '#ffedd5' }}>
+              <DocumentCheckIcon className="homeowner-benefit-icon" style={{ color: '#ea580c' }} />
             </div>
             <h3 className="homeowner-benefit-title">Code Compliant</h3>
             <p className="homeowner-benefit-description">
@@ -161,7 +161,7 @@ export function CodeOfficialsPage() {
           <div style={{ maxWidth: '900px', margin: '0 auto' }}>
             <div className="homeowner-benefit-card" style={{ textAlign: 'left', padding: '2.5rem' }}>
               <h3 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '1.5rem', color: '#1e293b' }}>
-                <ClipboardDocumentCheckIcon style={{ width: '32px', height: '32px', display: 'inline', marginRight: '12px', color: '#7c3aed' }} />
+                <ClipboardDocumentCheckIcon style={{ width: '32px', height: '32px', display: 'inline', marginRight: '12px', color: '#ea580c' }} />
                 IMC Section 307.2.3
               </h3>
               <p style={{ fontSize: '1.125rem', lineHeight: '1.75', color: '#475569', marginBottom: '1.5rem' }}>
@@ -202,7 +202,7 @@ export function CodeOfficialsPage() {
                   style={{
                     flex: 1,
                     padding: '0.75rem 1.5rem',
-                    background: '#7c3aed',
+                    background: '#ea580c',
                     color: 'white',
                     border: 'none',
                     borderRadius: '8px',
@@ -219,8 +219,8 @@ export function CodeOfficialsPage() {
                     flex: 1,
                     padding: '0.75rem 1.5rem',
                     background: 'white',
-                    color: '#7c3aed',
-                    border: '2px solid #7c3aed',
+                    color: '#ea580c',
+                    border: '2px solid #ea580c',
                     borderRadius: '8px',
                     fontSize: '1rem',
                     fontWeight: '600',
@@ -270,7 +270,7 @@ export function CodeOfficialsPage() {
       </div>
 
       {/* Final CTA */}
-      <div className="homeowner-final-cta-container" style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%)' }}>
+      <div className="homeowner-final-cta-container" style={{ background: 'linear-gradient(135deg, #ea580c 0%, #fb923c 100%)' }}>
         <div className="homeowner-final-cta-content">
           <h2 className="homeowner-final-cta-title">Ready to Learn More?</h2>
           <p className="homeowner-final-cta-subtitle">

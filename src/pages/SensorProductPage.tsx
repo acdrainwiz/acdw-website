@@ -241,6 +241,21 @@ export function SensorProductPage() {
         'The AC Drain Wiz Standard Sensor Switch (Non-WiFi) provides capacitive water sensing, automatic AC shutdown at 95% water level, no moving parts, and fail-safe shutdown if power is lost. The AC Drain Wiz WiFi Sensor Switch adds remote water-level monitoring, contractor account monitoring, email notifications, SMS notifications, and configurable service alerts from 50% to 90% water level so contractors can schedule preventative maintenance before shutdown occurs.'
     },
     {
+      question: 'Why did my AC shut off?',
+      answer:
+        'The sensor detected high water in the condensate drain line and shut down the HVAC system to help prevent overflow. This is protective operation. For LED meanings and troubleshooting, use Product Support (Sensor tab).'
+    },
+    {
+      question: 'There is no light—is the sensor broken?',
+      answer:
+        'With 24V power, no light usually means no power—check wiring. On a WiFi model running on battery only, no light after startup can be normal while the sensor is still monitoring. Full LED tables for Standard, WiFi 24V, and WiFi battery-only are on Product Support.'
+    },
+    {
+      question: 'Does the sensor prevent all drain backups?',
+      answer:
+        'No. The sensor helps monitor high water and can shut down the HVAC at high levels, but it does not replace routine HVAC maintenance or guarantee prevention of all drain line issues.'
+    },
+    {
       question: 'Can I purchase the Sensor directly?',
       answer: 'The Sensor requires professional installation and is available through authorized HVAC contractors. Homeowners should contact a local HVAC professional for installation. Contractors can create an account to access pricing and purchase directly.'
     },
@@ -284,7 +299,7 @@ export function SensorProductPage() {
 
   const specificationCompareRows = [
     { label: 'Dimensions', standard: '2" × 3" × 1.5"', wifi: '2" × 3" × 1.5"' },
-    { label: 'Power', standard: '24V from air handler', wifi: '24V and/or Li-ion backup (~2 years)' },
+    { label: 'Power', standard: '24V from air handler', wifi: '24V recommended; Li-ion backup (~2 years) or battery-only supported' },
     { label: 'Connectivity', standard: 'None (local shutdown only)', wifi: `Wi‑Fi (${WIFI_REQUIREMENT} only)` },
     {
       label: 'Integration',
@@ -495,19 +510,24 @@ export function SensorProductPage() {
                 </li>
                 <li>
                   <CheckIcon className="sensor-product-variant-card-check" />
-                  LED: green = active; flashing red = test; solid red = shutdown
+                  LED: green = active; solid red = touch test or ~95% shutdown
                 </li>
               </ul>
             </div>
             <div className="sensor-product-variant-card sensor-product-variant-card-wifi">
               <h3 className="sensor-product-variant-card-title">{SENSOR_WIFI_SHORT}</h3>
               <p className="sensor-product-variant-card-desc">
-                Everything the Standard model does on site, plus remote water-level monitoring, email/SMS alerts, contractor app, and service alerts between 50–90% (shutdown still at 95%). Lithium backup battery (~2 years) on the WiFi model.
+                Everything the Standard model does on site, plus remote water-level monitoring, email/SMS alerts, contractor app, and service alerts between 50–90% (shutdown still at 95%). 24V HVAC power is strongly recommended; Li-ion backup (~2 years) or battery-only operation is supported with different LED behavior.
               </p>
               <ul className="sensor-product-variant-card-list">
                 <li>
                   <CheckIcon className="sensor-product-variant-card-check" />
                   Requires {WIFI_REQUIREMENT} Wi‑Fi for the monitoring dashboard (5 GHz not supported)
+                </li>
+                <li>
+                  <CheckIcon className="sensor-product-variant-card-check" />
+                  LED (24V): flashing red = pairing; flashing green = setup; solid green = connected; solid red = high water shutdown —
+                  battery-only mode limits LED visibility (see Product Support)
                 </li>
                 <li>
                   <CheckIcon className="sensor-product-variant-card-check" />
@@ -639,7 +659,7 @@ export function SensorProductPage() {
                 <li>Route alerts to appropriate technicians</li>
                 <li>Track all alerts and responses</li>
                 <li>Custom thresholds per customer</li>
-                <li>Configure SMS, email, push notifications</li>
+                <li>Configure SMS and email notifications</li>
               </ul>
             </div>
           </div>

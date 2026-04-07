@@ -231,8 +231,8 @@ export function SolutionsPage() {
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <ClockIcon className="h-8 w-8 text-purple-600" />
+              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <ClockIcon className="h-8 w-8 text-orange-600" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Time Saving</h3>
               <p className="text-sm text-gray-600">

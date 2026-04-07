@@ -7,7 +7,21 @@ import {
   BellAlertIcon,
   ChevronDownIcon
 } from '@heroicons/react/24/outline'
-import { SENSOR_LED_STANDARD, SENSOR_LED_WIFI, SENSOR_LED_ANSWER, SENSOR_STANDARD_DISPLAY, SENSOR_WIFI_SHORT, SENSOR_SETUP_MODEL_CHOICE_HREF, SUPPORT_CONTACT, MONITORING, FAQ, type ProductSupportTab, type SensorVariantFilter } from '../config/acdwKnowledge'
+import {
+  SENSOR_LED_STANDARD,
+  SENSOR_LED_WIFI,
+  SENSOR_LED_WIFI_BATTERY_ONLY,
+  SENSOR_LED_ANSWER,
+  SENSOR_STANDARD_DISPLAY,
+  SENSOR_WIFI_SHORT,
+  SENSOR_WIFI_POWER_RECOMMENDATION,
+  SENSOR_SETUP_MODEL_CHOICE_HREF,
+  SUPPORT_CONTACT,
+  MONITORING,
+  FAQ,
+  type ProductSupportTab,
+  type SensorVariantFilter,
+} from '../config/acdwKnowledge'
 import { parseProductSupportUrl } from '../utils/supportFaqSearch'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
 
@@ -19,6 +33,30 @@ export const PAGE_SEARCH_META: PageSearchMeta = {
     'Product Support hub: common questions, troubleshooting, LED guides for Standard and WiFi Sensor, Mini FAQs, and technical help for AC Drain Wiz products.',
   tags: ['faq', 'troubleshooting', 'help', 'sensor', 'mini', 'led'],
   href: '/support/product-support',
+}
+
+/** Maps `SENSOR_LED_STANDARD` / `SENSOR_LED_WIFI` entry keys to indicator styles (solid vs flashing). */
+function supportLedIndicatorClassName(key: string): string {
+  const base = 'support-led-indicator'
+  switch (key) {
+    case 'noLight':
+      return `${base} support-led-off`
+    case 'green':
+    case 'solidGreen':
+      return `${base} support-led-green`
+    case 'solidRed':
+    case 'solidRedTest':
+    case 'solidRedShutdown':
+      return `${base} support-led-red`
+    case 'flashingRed':
+      return `${base} support-led-red support-led-flash`
+    case 'flashingGreen':
+      return `${base} support-led-green support-led-flash`
+    case 'startupGreen':
+      return `${base} support-led-green`
+    default:
+      return `${base} support-led-off`
+  }
 }
 
 // FAQPage schema for SEO (same source as visible FAQs)
@@ -281,7 +319,7 @@ export function ProductSupportPage() {
                           <div className="support-led-table">
                             {Object.entries(SENSOR_LED_STANDARD).map(([key, { label, description }]) => (
                               <div key={key} className="support-led-row">
-                                <span className={`support-led-indicator support-led-${key === 'noLight' ? 'off' : key === 'green' ? 'green' : key === 'flashingRed' || key === 'solidRed' ? 'red' : 'off'}`} />
+                                <span className={supportLedIndicatorClassName(key)} aria-hidden />
                                 <div>
                                   <span className="support-led-label">{label} — </span>
                                   <span className="support-led-desc">{description}</span>
@@ -293,11 +331,35 @@ export function ProductSupportPage() {
                       )}
                       {(sensorVariant === 'all' || sensorVariant === 'wifi') && (
                         <>
-                          <p className="support-section-faq-answer font-medium mt-4">{SENSOR_WIFI_SHORT}</p>
+                          <p className="support-section-faq-answer font-medium mt-4">
+                            {SENSOR_WIFI_SHORT} — 24V powered (recommended)
+                          </p>
+                          <p className="support-section-faq-answer text-sm text-gray-600 mt-1">
+                            {SENSOR_WIFI_POWER_RECOMMENDATION}
+                          </p>
                           <div className="support-led-table">
                             {Object.entries(SENSOR_LED_WIFI).map(([key, { label, description }]) => (
                               <div key={key} className="support-led-row">
-                                <span className={`support-led-indicator support-led-${key === 'noLight' ? 'off' : key === 'green' ? 'green' : key === 'flashingRed' || key === 'solidRed' ? 'red' : 'off'}`} />
+                                <span className={supportLedIndicatorClassName(key)} aria-hidden />
+                                <div>
+                                  <span className="support-led-label">{label} — </span>
+                                  <span className="support-led-desc">{description}</span>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          <p className="support-section-faq-answer font-medium mt-4">
+                            {SENSOR_WIFI_SHORT} — battery-only mode
+                          </p>
+                          <p className="support-section-faq-answer text-sm text-gray-600 mt-1">
+                            Monitoring can remain active with limited or no LED. When the LED is on, solid red still indicates high
+                            water and protective shutdown—the same meaning as the 24V table above. Use 24V power when possible for
+                            clearer status at the unit.
+                          </p>
+                          <div className="support-led-table">
+                            {Object.entries(SENSOR_LED_WIFI_BATTERY_ONLY).map(([key, { label, description }]) => (
+                              <div key={key} className="support-led-row">
+                                <span className={supportLedIndicatorClassName(key)} aria-hidden />
                                 <div>
                                   <span className="support-led-label">{label} — </span>
                                   <span className="support-led-desc">{description}</span>
@@ -359,17 +421,38 @@ export function ProductSupportPage() {
                 <div className="support-section-troubleshooting-list">
 
                   <div className="support-troubleshooting-item support-troubleshooting-item-info">
-                    <h4 className="support-troubleshooting-title">Sensor offline or not appearing on dashboard</h4>
+                    <h4 className="support-troubleshooting-title">
+                      {sensorVariant === 'standard'
+                        ? 'No LED or sensor not responding'
+                        : 'Sensor offline or not appearing on dashboard'}
+                    </h4>
                     <ul className="support-troubleshooting-list">
-                      <li>Check the LED — no light may indicate a power issue; see the LED guide in Common Questions above</li>
+                      <li>
+                        Check the LED — on 24V, no light usually means a power issue (see the LED guide above).
+                        {sensorVariant !== 'standard' && (
+                          <> On battery-only WiFi installs, no light after startup can be normal while the sensor is still monitoring.</>
+                        )}
+                      </li>
                       <li>Confirm the Sensor is physically seated on the manifold's bayonet mount</li>
-                      <li>Verify the Sensor is within range of your Wi-Fi router</li>
+                      {sensorVariant !== 'standard' && (
+                        <li>Verify the Sensor is within range of your Wi-Fi router</li>
+                      )}
+                      {sensorVariant !== 'standard' && (
                       <li>Confirm you're logged into the correct account at the{' '}
                         <a href={MONITORING.portalUrl} className="support-section-link" target="_blank" rel="noopener noreferrer">monitoring portal</a>
                       </li>
-                      <li>Try resetting the Sensor and re-pairing via the{' '}
-                        <Link to={SENSOR_SETUP_MODEL_CHOICE_HREF} className="support-section-link">Sensor Setup Guide</Link>
-                      </li>
+                      )}
+                      {sensorVariant !== 'standard' ? (
+                        <li>
+                          Try resetting the Sensor and re-pairing via the{' '}
+                          <Link to={SENSOR_SETUP_MODEL_CHOICE_HREF} className="support-section-link">Sensor Setup Guide</Link>
+                        </li>
+                      ) : (
+                        <li>
+                          Walk through power and LED checks in the{' '}
+                          <Link to={SENSOR_SETUP_MODEL_CHOICE_HREF} className="support-section-link">Sensor Setup Guide</Link>
+                        </li>
+                      )}
                     </ul>
                   </div>
 
@@ -405,30 +488,47 @@ export function ProductSupportPage() {
                   )}
 
                   {sensorVariant !== 'standard' && (
+                  <>
                   <div className="support-troubleshooting-item support-troubleshooting-item-warning">
                     <h4 className="support-troubleshooting-title">
                       Not receiving alert notifications
                       {sensorVariant === 'all' && <span className="text-gray-500 font-normal text-sm ml-1">(WiFi only)</span>}
                     </h4>
                     <ul className="support-troubleshooting-list">
-                      <li>Confirm alert channels (SMS, email, push) are enabled in your dashboard account settings</li>
-                      <li>Check your phone's notification permissions for the monitoring app or browser</li>
-                      <li>Verify the Sensor is online — alerts cannot be delivered from an offline device</li>
+                      <li>
+                        In the monitoring web application (browser—there is no separate mobile app), open account settings and confirm
+                        SMS and email alerts are enabled and your phone number and email address are correct
+                      </li>
+                      <li>
+                        If the sensor appears offline on the monitoring site, alerts cannot be delivered—verify the Wi‑Fi sensor on
+                        site: power, 2.4 GHz network, signal at the unit, and Wi‑Fi pairing or connectivity
+                      </li>
                       <li>Check spam or junk folders for email alerts</li>
-                      <li>Confirm the correct phone number and email address are saved in your profile</li>
                     </ul>
                   </div>
-                  )}
 
                   <div className="support-troubleshooting-item support-troubleshooting-item-warning">
-                    <h4 className="support-troubleshooting-title">Low battery or battery replacement</h4>
+                    <h4 className="support-troubleshooting-title">Power and battery</h4>
                     <ul className="support-troubleshooting-list">
-                      <li>The Sensor battery is rated for approximately 2 years under normal use</li>
-                      <li>A low battery warning will appear on the dashboard and trigger a notification to the AC technician to schedule a service call to replace the battery. A dead backup battery does not mean the AC system will automatically shut off once it is completely dead as long as the Sensor is wired into the AC 24V electrical.</li>
-                      <li>To replace: remove the Sensor from the bayonet mount, open the battery compartment, and swap in the specified battery type</li>
-                      <li>DC-powered models with a backup battery do not require routine replacement — check the DC connection if the unit loses power</li>
+                      <li>
+                        <strong>24V HVAC power (recommended):</strong> continuous operation, consistent LED visibility, and no reliance
+                        on battery life for primary power
+                      </li>
+                      <li>
+                        <strong>Battery-only:</strong> supported; LED visibility is limited and power-saving behavior may turn the
+                        light off after startup while monitoring continues. A fully depleted battery may trigger HVAC shutdown as a
+                        safety measure—use 24V to avoid interruptions from battery depletion
+                      </li>
+                      <li>The backup battery is rated for approximately 2 years under normal use when used as backup alongside 24V</li>
+                      <li>
+                        A low battery warning can appear on the dashboard for the WiFi model. If the sensor is wired to 24V with a
+                        backup battery, a dead backup alone does not necessarily mean the HVAC will shut off—verify 24V is connected
+                      </li>
+                      <li>To replace the battery: remove the Sensor from the bayonet mount, open the battery compartment, and swap in the specified battery type</li>
                     </ul>
                   </div>
+                  </>
+                  )}
 
                 </div>
               </div>

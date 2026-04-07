@@ -5,6 +5,7 @@ import {
   MapPinIcon
 } from '@heroicons/react/24/outline'
 import { SUPPORT_CONTACT } from '../../config/acdwKnowledge'
+import { MiamiHeatPartnershipLockup } from './MiamiHeatPartnershipLockup'
 
 export function Footer() {
   return (
@@ -18,13 +19,16 @@ export function Footer() {
           {/* Company Info - Left Column */}
           <div className="footer-company-section">
             <div className="footer-brand">
-              <Link to="/" className="footer-logo-link">
-                <img 
-                  src="/images/ac-drain-wiz-logo.png" 
-                  alt="AC Drain Wiz Logo" 
-                  className="footer-logo-image"
-                />
-              </Link>
+              <div className="footer-brand-lockup">
+                <Link to="/" className="footer-logo-link">
+                  <img 
+                    src="/images/ac-drain-wiz-logo.png" 
+                    alt="AC Drain Wiz Logo" 
+                    className="footer-logo-image"
+                  />
+                </Link>
+                <MiamiHeatPartnershipLockup layout="footer" />
+              </div>
             </div>
             <p className="footer-description">
               Professional-grade AC drain line maintenance solutions that prevent costly water damage 
