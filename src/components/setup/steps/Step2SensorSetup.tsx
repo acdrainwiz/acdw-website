@@ -408,7 +408,9 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
                   </div>
                   <div className="sensor-setup-what-you-need-item-content">
                     <p className="sensor-setup-what-you-need-item-title">PVC primer &amp; cement</p>
-                    <p className="sensor-setup-what-you-need-item-description">e.g. Oatey all-purpose cement; solvent-weld manifold to line</p>
+                    <p className="sensor-setup-what-you-need-item-description">
+                      e.g. Oatey all-purpose—apply only to cut pipe ends and horizontal socket walls, not the bayonet port
+                    </p>
                   </div>
                 </div>
               </>

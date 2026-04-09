@@ -5,6 +5,7 @@ import {
   SENSOR_STANDARD_SHORT,
   SENSOR_WIFI_SHORT,
   buildSensorSetupHref,
+  PVC_SOLVENT_WELD_PLACEMENT,
 } from '../config/acdwKnowledge'
 import {
   mergeSearchTermLists,
@@ -75,7 +76,7 @@ export function InstallationSetupPage() {
         <div className="install-mini-family">
           <h2 className="install-sensor-family-title">Drain line maintenance access</h2>
           <p className="install-sensor-family-subtitle">
-            {PRODUCT_NAMES.mini} adds a permanent service port on the 3/4&quot; PVC condensate drain line for flush, compressed air, and vacuum—no app, Wi‑Fi, or monitoring account. Use the guided steps for measure, solvent weld, cure, and leak check before moving on to sensor setup below.
+            {PRODUCT_NAMES.mini} adds a permanent service port on the 3/4&quot; PVC condensate drain line for flush, compressed air, and vacuum—no app, Wi‑Fi, or monitoring account. Use the guided steps for measure, solvent weld, cure, and leak check before moving on to sensor setup below. {PVC_SOLVENT_WELD_PLACEMENT}
           </p>
           <div className="install-picker-grid install-picker-grid-mini-only">
 
@@ -179,7 +180,7 @@ export function InstallationSetupPage() {
                 <ul className="install-product-checklist">
                   <li className="install-product-checklist-item">
                     <CheckIcon className="install-checklist-icon" />
-                    Step 1: install the Transparent T manifold on the 3/4&quot; line (primer, cement, cure, leak test)—no contractor account step in this guide
+                    Step 1: install the Transparent T manifold on the 3/4&quot; line (primer and cement only on cut pipe ends and horizontal sockets—not the bayonet port; cure; leak test)—no contractor account step in this guide
                   </li>
                   <li className="install-product-checklist-item">
                     <CheckIcon className="install-checklist-icon" />
@@ -237,7 +238,7 @@ export function InstallationSetupPage() {
                   </li>
                   <li className="install-product-checklist-item">
                     <CheckIcon className="install-checklist-icon" />
-                    Steps 2–3: Transparent T manifold on the 3/4&quot; line (unbox after the tools list, then measure, cement, cure, leak test)—same as the Standard guide
+                    Steps 2–3: Transparent T manifold on the 3/4&quot; line (unbox after the tools list, then measure; primer and cement only on cut pipe ends and horizontal sockets; cure; leak test)—same as the Standard guide
                   </li>
                   <li className="install-product-checklist-item">
                     <CheckIcon className="install-checklist-icon" />

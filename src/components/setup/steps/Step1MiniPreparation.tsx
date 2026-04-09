@@ -29,7 +29,8 @@ const tools = [
   {
     icon: BeakerIcon,
     title: 'Oatey All-Purpose PVC Cement & Primer',
-    description: 'Primer softens the PVC surface for a true chemical weld. Cement fuses pipe and fitting into a single watertight bond.',
+    description:
+      'Primer softens PVC bonding surfaces for a true chemical weld. Apply only to the two cut drain pipe ends and the inner walls of the horizontal sockets—do not apply to the vertical bayonet port or inside the manifold beyond those joints.',
   },
   {
     icon: CubeIcon,
@@ -282,8 +283,8 @@ export function Step1MiniPreparation({
                 <p className="mini-setup-tip-callout-text">
                   <strong>Accuracy matters here.</strong>{' '}
                   {isSensor
-                    ? 'Dry-fit the T manifold against the cut section before applying any cement. The bayonet port should point straight upward at a clean 90° angle for the sensor and drainage.'
-                    : 'Take a moment to dry-fit the Mini against the cut section before applying any cement. The T-Manifold cap opening should point straight upward at a clean 90° angle to allow for proper drainage and future servicing.'}
+                    ? 'Dry-fit the T manifold against the cut section before applying any cement. Primer and cement go only on the two cut pipe ends and horizontal socket walls—not the vertical bayonet port. The bayonet port should point straight upward at a clean 90° angle for the sensor and drainage.'
+                    : 'Dry-fit the Mini against the cut section before applying any cement. Primer and cement go only on the two cut pipe ends and horizontal socket walls—not the vertical port (cap or valve area). The T-Manifold cap opening should point straight upward at a clean 90° angle for drainage and future servicing.'}
                 </p>
               </div>
             </div>

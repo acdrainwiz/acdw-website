@@ -4,7 +4,9 @@ import {
   ChevronUpIcon,
   ExclamationTriangleIcon,
   ClockIcon,
+  InformationCircleIcon,
 } from '@heroicons/react/24/outline'
+import { PVC_SOLVENT_WELD_PLACEMENT } from '../../../config/acdwKnowledge'
 
 const prepSteps = [
   {
@@ -17,42 +19,42 @@ const prepSteps = [
   {
     number: 2,
     title: 'Chamfer the Outside Edge',
-    description: 'Apply a 10–15° bevel to the outside edge of each pipe end using a chamfering tool or file. This prevents the sharp edge from scraping cement off the fitting socket walls during insertion, which is a leading cause of weak joints and leaks.',
+    description: 'Apply a 10–15° bevel to the outside edge of each pipe end using a chamfering tool or file. This prevents the sharp edge from scraping cement off the horizontal socket walls during insertion, which is a leading cause of weak joints and leaks.',
     image: '/images/mini-setup/step2-chamfer.jpg',
     alt: 'Chamfering the outside edge of the PVC pipe',
   },
   {
     number: 3,
     title: 'Dry-Fit First',
-    description: 'Before applying any chemicals, slide each pipe end into the corresponding socket of the Mini T-Manifold. The pipe should insert approximately one-third to two-thirds of the way into the socket — this is the correct interference fit. Confirm the T-Manifold cap opening points straight upward at a 90° angle. Address any alignment issues now — repositioning after cementing is not possible.',
+    description: 'Before applying any chemicals, slide each cut drain pipe end into the corresponding horizontal socket of the Mini T-Manifold (the ports on the run of the T that receive the 3/4" line). The pipe should insert approximately one-third to two-thirds of the way into the socket — this is the correct interference fit. Confirm the T-Manifold cap opening points straight upward at a 90° angle. Address any alignment issues now — repositioning after cementing is not possible. Do not apply primer or cement to the vertical port—only the two horizontal drain connections use solvent weld.',
     image: '/images/mini-setup/step2-dry-fit.jpg',
-    alt: 'Dry-fitting the PVC pipe into the Mini T-Manifold sockets',
+    alt: 'Dry-fitting the PVC pipe into the Mini T-Manifold horizontal sockets',
   },
   {
     number: 4,
-    title: 'Clean Pipe Ends & Fitting Sockets',
-    description: 'Wipe both pipe ends and the inside of both fitting sockets with a clean rag to remove any dirt, dust, oil, or moisture. Contamination on the bonding surface weakens the chemical weld.',
+    title: 'Clean Pipe Ends & Horizontal Sockets',
+    description: 'Wipe both cut pipe ends and the inside of both horizontal sockets (only the cylindrical walls where the pipe will bond) with a clean rag to remove dirt, dust, oil, or moisture. Do not wipe solvent into the vertical bayonet port or pour liquids into the manifold body. Contamination on the bonding surfaces weakens the chemical weld.',
     image: '/images/mini-setup/step2-clean.jpg',
-    alt: 'Cleaning the pipe ends and fitting sockets',
+    alt: 'Cleaning the pipe ends and horizontal socket bonding surfaces',
   },
   {
     number: 5,
     title: 'Apply Primer',
-    description: 'Apply PVC primer to the inside of each fitting socket first, then to each pipe end, then back to each fitting socket once more. Primer is not optional — it chemically softens the PVC surface so the cement can create a true molecular weld rather than a surface bond. Work both sides in sequence and move to cementing while the primer is still wet (within 5 minutes).',
+    description: 'Apply PVC primer only to the bonding surfaces: the inside wall of each horizontal socket first, then the outside of each matching pipe end, then each socket once more. Do not apply primer to the vertical bayonet port, threads, exterior of the clear body, or any surface that is not part of these two drain-line joints. Primer is not optional — it chemically softens the PVC so the cement can form a true weld. Work both pipe sides in sequence and move to cementing while the primer is still wet (within 5 minutes).',
     image: '/images/mini-setup/step2-primer.jpg',
-    alt: 'Applying PVC primer to fitting sockets and pipe ends',
+    alt: 'Applying PVC primer to pipe ends and horizontal socket walls only',
   },
   {
     number: 6,
     title: 'Apply Oatey All-Purpose Cement',
-    description: 'While primer is still wet, apply a liberal, even coat of Oatey All-Purpose Cement to each pipe end first, then to each fitting socket, then one final coat back onto each pipe end. Avoid puddling — excess cement pooled inside the socket can weaken the joint.',
+    description: 'While primer is still wet, apply a liberal, even coat of Oatey All-Purpose Cement to the same surfaces only — each pipe end first, then the inner wall of each horizontal socket, then one final coat on each pipe end. Do not apply cement inside the vertical bayonet port or allow it to run into the manifold interior beyond the socket. Avoid puddling at the back of the socket — excess pooled cement can weaken the joint.',
     image: '/images/mini-setup/step2-cement.jpg',
-    alt: 'Applying Oatey cement to the pipe ends and sockets',
+    alt: 'Applying Oatey cement to pipe ends and horizontal socket walls only',
   },
   {
     number: 7,
     title: 'Join & Hold',
-    description: 'Working quickly and with confidence, slide both pipe ends simultaneously into their respective T-Manifold sockets, giving each a firm quarter-turn as it seats. Hold each joint under steady pressure for 30 seconds. Do not twist or adjust after that point — the bond has begun forming. Immediately wipe away any excess cement that squeezes out at the joint.',
+    description: 'Working quickly and with confidence, slide both pipe ends simultaneously into their respective horizontal sockets, giving each a firm quarter-turn as it seats. Hold each joint under steady pressure for 30 seconds. Do not twist or adjust after that point — the bond has begun forming. Immediately wipe away any excess cement that squeezes out at the joint.',
     image: '/images/mini-setup/step2-join-hold.jpg',
     alt: 'Joining the PVC pipe to the Mini T-Manifold with a quarter-turn',
   },
@@ -203,7 +205,7 @@ export function Step2MiniInstallation({
           <div className="mini-setup-step-title-section">
             <h2 className="mini-setup-step-title">Cement & Install</h2>
             <p className="mini-setup-step-subtitle">
-              Prep the pipe ends, bond the T-Manifold permanently, allow the cement to cure, and verify a leak-free installation
+              Prep the pipe ends, solvent-weld only the two horizontal drain joints on the T-Manifold, allow the cement to cure, and verify a leak-free installation
             </p>
           </div>
         </>
@@ -213,7 +215,7 @@ export function Step2MiniInstallation({
         <div className="mini-setup-step-title-section mini-setup-step-title-section-sensor-part">
           <h3 className="text-lg font-semibold text-gray-900">Part B — Cement &amp; install</h3>
           <p className="mini-setup-step-subtitle mt-1">
-            Prep pipe ends, solvent-weld the T manifold, cure, and leak-test—same procedure as the AC Drain Wiz Mini.
+            Prep pipe ends, solvent-weld only the horizontal drain joints on the T manifold, cure, and leak-test—same procedure as the AC Drain Wiz Mini.
           </p>
         </div>
       )}
@@ -228,6 +230,15 @@ export function Step2MiniInstallation({
               Solvent cement and primer contain strong chemicals. Wear safety glasses and gloves, and ensure adequate airflow before opening either product. Keep lids sealed when not actively applying.
             </p>
           </div>
+        </div>
+      </div>
+
+      <div className="mini-setup-tip-callout mb-4">
+        <div className="mini-setup-tip-callout-content gap-3">
+          <InformationCircleIcon className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" aria-hidden />
+          <p className="mini-setup-tip-callout-text">
+            <strong>Primer and cement placement.</strong> {PVC_SOLVENT_WELD_PLACEMENT}
+          </p>
         </div>
       </div>
 

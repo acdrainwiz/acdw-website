@@ -1,3 +1,6 @@
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -23,22 +26,96 @@
     scroll-behavior: smooth;
     overflow-x: hidden;
     width: 100%;
+    @apply font-sans;
   }
 
-  
   body {
-    @apply text-gray-900 antialiased;
+    @apply antialiased bg-background text-foreground;
     font-family: 'Poppins', system-ui, -apple-system, sans-serif;
     overflow-x: hidden;
     width: 100%;
     margin: 0;
     padding: 0;
   }
-  
+
   /* Ensure main element doesn't constrain full-width cards */
   main {
     overflow-x: hidden;
     width: 100%;
+  }
+  .theme {
+    --font-heading: var(--font-sans);
+    --font-sans: 'Geist Variable', sans-serif;
+  }
+  :root {
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: oklch(0.205 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.708 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --radius: 0.625rem;
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
+  }
+  .dark {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.205 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.922 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.556 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+  }
+  * {
+    @apply border-border outline-ring/50;
   }
 }
 
@@ -46,31 +123,31 @@
   .btn {
     @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
   }
-  
+
   .btn-primary {
     @apply btn bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800;
   }
-  
+
   .btn-secondary {
     @apply btn bg-secondary-100 text-secondary-900 hover:bg-secondary-200 active:bg-secondary-300;
   }
-  
+
   .btn-outline {
     @apply btn border border-primary-600 text-primary-600 hover:bg-primary-50 active:bg-primary-100;
   }
-  
+
   .btn-lg {
     @apply h-12 px-8 text-base;
   }
-  
+
   .btn-md {
     @apply h-10 px-6 text-sm;
   }
-  
+
   .btn-sm {
     @apply h-8 px-4 text-xs;
   }
-  
+
   .input {
     @apply flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50;
   }
@@ -80,12 +157,12 @@
     @apply min-h-[4.5rem] resize-y;
     height: auto;
   }
-  
+
   /* Input error state - red border matching the image style */
   .input-error {
     @apply border-red-500 focus:border-red-500 focus:ring-red-500;
   }
-  
+
   /* Field error message - red italicized text below input */
   .field-error-message {
     @apply mt-1 text-sm text-red-600 italic;
@@ -106,7 +183,7 @@
   select:invalid:not(:focus):not(:placeholder-shown) {
     box-shadow: none;
   }
-  
+
   /* React Day Picker Custom Styling - Clean Minimalist Design */
   .calendar-popup {
     @apply absolute top-full left-0 mt-2 z-50;
@@ -114,7 +191,7 @@
     min-width: 320px !important;
     max-width: none !important;
   }
-  
+
   .rdp-custom {
     @apply bg-white border border-gray-200 rounded-2xl shadow-2xl;
     padding: 1.25rem !important;
@@ -123,35 +200,35 @@
     min-width: 100% !important;
     max-width: none !important;
   }
-  
+
   /* Force root container to full width */
   .rdp-root {
     width: 100% !important;
     min-width: 100% !important;
     max-width: none !important;
   }
-  
+
   /* Force months container to full width */
   .rdp-months {
     width: 100% !important;
     min-width: 100% !important;
     max-width: none !important;
   }
-  
+
   .rdp-month {
     width: 100% !important;
     min-width: 100% !important;
     max-width: none !important;
     margin: 0 !important;
   }
-  
+
   /* Target the month grid - this is what constrains the width */
   .rdp-month_grid {
     width: 100% !important;
     min-width: 100% !important;
     max-width: 100% !important;
   }
-  
+
   /* Target the specific class combination */
   .calendar-popup .rdp-root,
   .calendar-popup .rdp-custom,
@@ -162,63 +239,63 @@
     min-width: 100% !important;
     max-width: 100% !important;
   }
-  
+
   /* Month Caption */
   .rdp-caption {
     @apply flex items-center justify-between mb-4;
     width: 100% !important;
   }
-  
+
   .rdp-head,
   .rdp-thead {
     width: 100% !important;
   }
-  
+
   .rdp-head_row {
     width: 100% !important;
     display: table-row !important;
   }
-  
+
   .rdp-caption_label {
     @apply text-base font-semibold text-gray-900;
   }
-  
+
   /* Navigation Buttons */
   .rdp-nav {
     @apply flex gap-1;
   }
-  
+
   .rdp-nav_button {
     @apply w-10 h-10 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100;
     transition: all 0.15s ease;
   }
-  
+
   /* Table */
   .rdp-table {
     width: 100% !important;
     table-layout: fixed !important;
     border-collapse: collapse !important;
   }
-  
+
   .rdp-tbody,
   .rdp-row {
     width: 100% !important;
   }
-  
+
   /* Head (Day Names) */
   .rdp-head_cell {
     @apply text-center text-xs font-medium text-gray-500;
     padding: 0.625rem 0.25rem !important;
     width: 14.285% !important; /* 100% / 7 days */
   }
-  
+
   /* Day Cells */
   .rdp-cell {
     @apply text-center;
     padding: 0.25rem !important;
     width: 14.285% !important; /* 100% / 7 days */
   }
-  
+
   .rdp-day {
     @apply rounded-full text-sm font-normal text-gray-900 hover:bg-gray-100;
     transition: all 0.15s ease;
@@ -229,7 +306,7 @@
     justify-content: center !important;
     max-width: none !important;
   }
-  
+
   /* Custom Today styling - Light Gray Background */
   .my-today:not(.my-selected) {
     color: #111827 !important;
@@ -241,7 +318,7 @@
     align-items: center !important;
     justify-content: center !important;
   }
-  
+
   /* Custom Selected Date styling - Solid Blue Circle with White Text */
   .my-selected,
   .rdp-day_outside.my-selected {
@@ -256,13 +333,13 @@
     justify-content: center !important;
     opacity: 1 !important;
   }
-  
+
   .my-selected:hover,
   .rdp-day_outside.my-selected:hover {
     background-color: #1d4ed8 !important;
     color: #ffffff !important;
   }
-  
+
   /* Fallback for default library classes */
   .rdp-day_today:not(.rdp-day_selected),
   button.rdp-day_today:not(.rdp-day_selected) {
@@ -271,7 +348,7 @@
     background-color: #f3f4f6 !important;
     border: none !important;
   }
-  
+
   .rdp-day_selected,
   button.rdp-day_selected,
   .rdp-day.rdp-day_selected {
@@ -281,70 +358,70 @@
     border: none !important;
     outline: none !important;
   }
-  
+
   .rdp-day_selected:hover,
   button.rdp-day_selected:hover,
   .rdp-day.rdp-day_selected:hover {
     background-color: #1d4ed8 !important;
     color: #ffffff !important;
   }
-  
+
   /* Current Month Dates - Black Text */
   .rdp-day:not(.rdp-day_outside):not(.rdp-day_selected):not(.rdp-day_today) {
     color: #111827 !important;
   }
-  
+
   /* Hover Effect - Light Gray Background (same as today) */
   .rdp-day:not(.rdp-day_selected):not(.rdp-day_disabled):hover {
     background-color: #f3f4f6 !important;
     border-radius: 50% !important;
   }
-  
+
   /* Outside Month (Neighbor Dates) - Very Light Gray */
   .rdp-day_outside {
     color: #d1d5db !important;
     opacity: 0.5 !important;
   }
-  
+
   /* Disabled Dates */
   .rdp-day_disabled {
     color: #d1d5db !important;
     cursor: not-allowed !important;
     opacity: 0.4 !important;
   }
-  
+
   .rdp-day_disabled:hover {
     background: transparent !important;
   }
-  
+
   .card {
     @apply rounded-lg border border-gray-200 bg-white p-6 shadow-sm;
   }
-  
+
   .container {
     @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
   }
-  
+
   .section {
     @apply py-16 lg:py-24;
   }
-  
+
   .heading-1 {
     @apply text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl;
   }
-  
+
   .heading-2 {
     @apply text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl;
   }
-  
+
   .heading-3 {
     @apply text-2xl font-semibold tracking-tight text-gray-900;
   }
-  
+
   .text-large {
     @apply text-lg text-gray-600;
   }
-  
+
   .text-muted {
     @apply text-sm text-gray-500;
   }
@@ -835,7 +912,7 @@
     padding: 0;
     margin: 0;
   }
-  
+
   /* Product Showcase does not change color on section-active */
 
   .product-showcase-header {
@@ -951,7 +1028,7 @@
       display: none !important;
     }
   }
-  
+
   /* ACDW Mini card - full width */
   .product-showcase-card-mini.product-showcase-card-full-width {
     @apply relative overflow-hidden;
@@ -1030,8 +1107,6 @@
       min-height: 150vh;
     }
   }
-
-
 
   .product-showcase-card-background {
     @apply absolute inset-0;
@@ -1150,8 +1225,6 @@
       min-height: 90vh !important;
     }
   }
-
-
 
   .product-showcase-card-content {
     @apply relative z-10 p-8 h-full flex flex-col justify-center items-center text-center;
@@ -1297,7 +1370,6 @@
     }
   }
 
-
   .product-showcase-card-header {
     @apply hidden;
   }
@@ -1317,7 +1389,6 @@
   .product-showcase-card-description {
     @apply text-white/90 text-lg leading-relaxed mb-8;
   }
-
 
   .product-showcase-card-sensor.product-showcase-card-full-width .product-showcase-card-headline {
     @apply text-5xl font-bold text-white mb-6;
@@ -1346,7 +1417,6 @@
     margin-left: auto;
     margin-right: auto;
   }
-
 
   .product-showcase-card-ctas {
     @apply flex flex-col sm:flex-row gap-4;
@@ -2361,7 +2431,6 @@
     @apply appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm;
   }
 
-
   .signin-form-submit-button {
     @apply relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed;
   }
@@ -2905,7 +2974,7 @@
     transition: background-color 0.7s ease-in-out;
     will-change: background-color;
   }
-  
+
   .benefits-section-container.section-active {
     @apply bg-black;
   }
@@ -2956,7 +3025,7 @@
     transition: background-color 0.7s ease-in-out;
     will-change: background-color;
   }
-  
+
   /* Product Comparison stays gray-50 (even section - no change) */
 
   .product-comparison-content {
@@ -3021,7 +3090,7 @@
     transition: background-color 0.7s ease-in-out;
     will-change: background-color;
   }
-  
+
   .proof-stack-container.section-active {
     @apply bg-black;
   }
@@ -3213,14 +3282,13 @@
     @apply bg-primary-500;
   }
 
-
   /* Tech Specs / Compatibility Strip Styles */
   .tech-specs-container {
     @apply py-24 md:py-32 px-4 sm:px-6 lg:px-8 bg-white;
     transition: background-color 0.7s ease-in-out;
     will-change: background-color;
   }
-  
+
   /* Tech Specs stays white (even section - no change) */
 
   .tech-specs-content {
@@ -3269,7 +3337,7 @@
     transition: background-color 0.7s ease-in-out;
     will-change: background-color;
   }
-  
+
   .risk-reversal-container.section-active {
     @apply bg-black;
   }
@@ -3346,7 +3414,7 @@
     transition: background-color 0.7s ease-in-out;
     will-change: background-color;
   }
-  
+
   /* Social Proof stays white (even section - no change) */
 
   .social-proof-content {
@@ -3395,7 +3463,7 @@
     transition: background-color 0.7s ease-in-out;
     will-change: background-color;
   }
-  
+
   .faq-container.section-active {
     @apply bg-black;
   }
@@ -3736,7 +3804,6 @@
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.8);
   }
-
 
   /* Upgrade Modal */
   .upgrade-modal-overlay {
@@ -4289,7 +4356,7 @@
     .footer-content {
         @apply container mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8 lg:pt-16 lg:pb-4;
     }
-    
+
     /* Top Section: Brand + Links Grid */
   .footer-top {
     @apply grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-12;
@@ -5581,12 +5648,12 @@
     grid-column: 1;
     grid-row: 1;
   }
-  
+
   .homeowner-feature-card-2 {
     grid-column: 2;
     grid-row: 1 / 3;
   }
-  
+
   .homeowner-feature-card-3 {
     grid-column: 1;
     grid-row: 2;
@@ -6132,8 +6199,6 @@
   @apply text-white/90 text-sm font-medium;
 }
 
-
-
 /* Homeowner Banner at top of contractor page */
 .homeowner-banner {
   @apply bg-gradient-to-r from-orange-500 to-orange-600 text-white py-3 shadow-md;
@@ -6635,27 +6700,27 @@
     height: 15rem; /* 240px - smaller on mobile */
     padding: 25px 25px 0 25px; /* Ensure no bottom padding on mobile */
   }
-  
+
   .unified-product-card-content {
     @apply p-6;
   }
-  
+
   .unified-product-card-title {
     @apply text-2xl;
   }
-  
+
   .unified-product-card-description {
     @apply text-sm;
   }
-  
+
   .unified-product-card-benefit-item {
     @apply text-sm;
   }
-  
+
   .unified-product-card-benefits-list {
     @apply grid-cols-1;
   }
-  
+
   .unified-product-card-cta-button {
     @apply text-sm py-3;
     width: 100%;
@@ -10915,11 +10980,11 @@
   .mini-product-hero-image-container {
     @apply pt-6 pb-0;
   }
-  
+
   .mini-product-hero-overlay {
     margin-top: -20px;
   }
-  
+
   .mini-product-hero-content-wrapper {
     @apply pt-0;
   }
@@ -10929,11 +10994,11 @@
   .mini-product-hero-image-container {
     @apply pt-8 pb-0;
   }
-  
+
   .mini-product-hero-overlay {
     margin-top: -20px;
   }
-  
+
   .mini-product-hero-content-wrapper {
     @apply pt-0;
   }
@@ -10943,11 +11008,11 @@
   .mini-product-hero-image-container {
     @apply pt-10 pb-0;
   }
-  
+
   .mini-product-hero-overlay {
     margin-top: -20px;
   }
-  
+
   .mini-product-hero-content-wrapper {
     @apply pt-0;
   }
@@ -10957,11 +11022,11 @@
   .mini-product-hero-image-container {
     @apply pt-12 pb-0;
   }
-  
+
   .mini-product-hero-overlay {
     margin-top: -20px;
   }
-  
+
   .mini-product-hero-content-wrapper {
     @apply pt-0;
   }
@@ -10971,11 +11036,11 @@
   .mini-product-hero-image-container {
     @apply pt-12 pb-0;
   }
-  
+
   .mini-product-hero-overlay {
     margin-top: -20px;
   }
-  
+
   .mini-product-hero-content-wrapper {
     @apply pt-0;
   }
@@ -10985,11 +11050,11 @@
   .mini-product-hero-image-container {
     @apply pt-12 pb-0;
   }
-  
+
   .mini-product-hero-overlay {
     margin-top: -20px;
   }
-  
+
   .mini-product-hero-content-wrapper {
     @apply pt-0;
   }
@@ -10999,11 +11064,11 @@
   .mini-product-hero-image-container {
     @apply pt-12 pb-0;
   }
-  
+
   .mini-product-hero-overlay {
     margin-top: -20px;
   }
-  
+
   .mini-product-hero-content-wrapper {
     @apply pt-0;
   }
@@ -11060,11 +11125,11 @@
   .mini-product-hero-content-wrapper {
     @apply grid-cols-1 gap-8;
   }
-  
+
   .mini-product-hero-info {
     @apply text-center;
   }
-  
+
   .mini-product-purchase-card-hero {
     @apply max-w-md mx-auto;
   }
@@ -11110,8 +11175,6 @@
 .mini-product-features-content {
   @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
 }
-
-
 
 .mini-product-features-grid {
   @apply grid md:grid-cols-2 lg:grid-cols-4 gap-8;
@@ -11209,7 +11272,7 @@
     text-indent: -9999px !important; /* Additional hiding method */
     overflow: hidden !important;
   }
-  
+
   .mini-product-buy-button-guest::before {
     content: "Buy Now" !important;
     position: absolute !important;
@@ -11232,7 +11295,7 @@
     position: relative;
     font-size: 0 !important; /* Hide original text */
   }
-  
+
   .mini-product-buy-button-guest::before {
     content: "Buy Now";
     position: absolute;
@@ -11414,7 +11477,6 @@
   @apply h-4 w-4 text-primary-600;
 }
 
-
 /* Image Gallery */
 .mini-product-gallery {
   @apply py-16 md:py-24 bg-gray-50;
@@ -11447,7 +11509,6 @@
   @apply text-sm md:text-base text-white/80;
   @apply font-medium;
 }
-
 
 /* Testimonials Section */
 .mini-product-testimonials {
@@ -11586,7 +11647,6 @@
   @apply rounded-full;
 }
 
-
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
   .mini-product-purchase-section {
@@ -11598,11 +11658,11 @@
   .mini-product-hero-title {
     @apply text-4xl;
   }
-  
+
   .mini-product-hero-subtitle {
     @apply text-lg;
   }
-  
+
   .mini-product-features-grid {
     @apply grid-cols-1;
   }
@@ -11848,7 +11908,6 @@
   @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
 }
 
-
 .sensor-product-section-subtitle {
   @apply text-center text-gray-600 mb-12 text-lg max-w-3xl mx-auto;
 }
@@ -12042,22 +12101,20 @@
   @apply h-6 w-6 text-green-600 flex-shrink-0 mt-0.5;
 }
 
-
-
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .sensor-product-hero-title {
     @apply text-3xl;
   }
-  
+
   .sensor-product-hero-subtitle {
     @apply text-base;
   }
-  
+
   .sensor-product-value-props-grid {
     @apply grid-cols-1;
   }
-  
+
   .sensor-product-how-it-works-steps {
     @apply grid-cols-1;
   }
@@ -12346,15 +12403,15 @@
   .stripe-checkout-layout {
     @apply grid-cols-1;
   }
-  
+
   .stripe-checkout-left {
     @apply pr-0 border-r-0 border-b border-gray-200 pb-8;
   }
-  
+
   .stripe-checkout-right {
     @apply pl-0 pt-8;
   }
-  
+
   .stripe-form-container {
     @apply max-w-full;
   }
@@ -13835,11 +13892,11 @@
   .combo-product-hero-image-container {
     @apply pt-6 pb-0;
   }
-  
+
   .combo-product-hero-overlay {
     margin-top: -20px;
   }
-  
+
   .combo-product-hero-content-wrapper {
     @apply pt-0;
   }
@@ -13849,11 +13906,11 @@
   .combo-product-hero-image-container {
     @apply pt-8 pb-0;
   }
-  
+
   .combo-product-hero-overlay {
     margin-top: -20px;
   }
-  
+
   .combo-product-hero-content-wrapper {
     @apply pt-0;
   }
@@ -13863,11 +13920,11 @@
   .combo-product-hero-image-container {
     @apply pt-10 pb-0;
   }
-  
+
   .combo-product-hero-overlay {
     margin-top: -20px;
   }
-  
+
   .combo-product-hero-content-wrapper {
     @apply pt-0;
   }
@@ -13877,11 +13934,11 @@
   .combo-product-hero-image-container {
     @apply pt-12 pb-0;
   }
-  
+
   .combo-product-hero-overlay {
     margin-top: -20px;
   }
-  
+
   .combo-product-hero-content-wrapper {
     @apply pt-0;
   }
@@ -13891,11 +13948,11 @@
   .combo-product-hero-image-container {
     @apply pt-12 pb-0;
   }
-  
+
   .combo-product-hero-overlay {
     margin-top: -20px;
   }
-  
+
   .combo-product-hero-content-wrapper {
     @apply pt-0;
   }
@@ -13905,11 +13962,11 @@
   .combo-product-hero-image-container {
     @apply pt-12 pb-0;
   }
-  
+
   .combo-product-hero-overlay {
     margin-top: -20px;
   }
-  
+
   .combo-product-hero-content-wrapper {
     @apply pt-0;
   }
@@ -13919,11 +13976,11 @@
   .combo-product-hero-image-container {
     @apply pt-12 pb-0;
   }
-  
+
   .combo-product-hero-overlay {
     margin-top: -20px;
   }
-  
+
   .combo-product-hero-content-wrapper {
     @apply pt-0;
   }
@@ -14098,7 +14155,7 @@
   .combo-product-comparison-table-wrapper {
     display: none;
   }
-  
+
   .combo-product-comparison-cards {
     display: grid;
   }
@@ -14108,7 +14165,7 @@
   .combo-product-comparison-table-wrapper {
     display: block;
   }
-  
+
   .combo-product-comparison-cards {
     display: none;
   }
@@ -14312,7 +14369,6 @@
   @apply text-2xl font-bold;
 }
 
-
 /* Final CTA Section */
 .combo-product-final-cta {
   @apply py-16 md:py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 text-white;
@@ -14378,8 +14434,6 @@
     @apply rotate-90 block my-2;
   }
 }
-
-
 
 /* ===================================
    CART PAGE STYLES

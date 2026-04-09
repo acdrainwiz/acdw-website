@@ -174,7 +174,7 @@ export function MiniProductPage() {
     },
     {
       question: 'What tools do I need for installation?',
-      answer: 'You\'ll need a PVC pipe cutter (or hacksaw) to cut your existing drain line, and Oatey PVC pipe cement to secure the connections. These are standard tools available at any hardware store. Once installed, you\'ll never need to cut the line again for future maintenance.'
+      answer: 'You\'ll need a PVC pipe cutter (or hacksaw) to cut your existing drain line, and Oatey PVC pipe cement to solvent-weld the cut pipe ends into the horizontal sockets on the T manifold—do not apply primer or cement to the vertical port. These are standard tools available at any hardware store. Once installed, you\'ll never need to cut the line again for future maintenance.'
     },
     {
       question: 'Will this work with my AC system?',
