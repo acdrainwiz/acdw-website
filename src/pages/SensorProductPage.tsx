@@ -265,7 +265,7 @@ export function SensorProductPage() {
     },
     {
       question: 'What does professional installation involve?',
-      answer: `${SENSOR_STANDARD_DISPLAY}: the guide starts with solvent-weld install of the Transparent T manifold on the 3/4" drain line, then power and touch testing, then final bayonet mounting and maintenance tips—no portal assignment step. ${SENSOR_WIFI_DISPLAY}: create your monitoring account first, then physical install and ${WIFI_REQUIREMENT} Wi‑Fi pairing, then assign the sensor in the portal. Typical on-site time is about 25–40 minutes for the Standard model and about 15–20 minutes for the WiFi model depending on site conditions.`
+      answer: `${SENSOR_STANDARD_DISPLAY}: the guide starts with solvent-weld install of the Transparent T manifold on the 3/4" drain line (primer and cement only on the condensate line, then into the horizontal openings—not on the manifold or bayonet port), then power and touch testing, then final bayonet mounting and maintenance tips—no portal assignment step. ${SENSOR_WIFI_DISPLAY}: create your monitoring account first, then physical install and ${WIFI_REQUIREMENT} Wi‑Fi pairing, then assign the sensor in the portal. Typical on-site time is about 25–40 minutes for the Standard model and about 15–20 minutes for the WiFi model depending on site conditions.`
     },
     {
       question: 'How do I get pricing as a contractor?',

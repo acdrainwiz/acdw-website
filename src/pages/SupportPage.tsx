@@ -14,7 +14,7 @@ import {
   VideoCameraIcon,
   ArrowRightIcon
 } from '@heroicons/react/24/outline'
-import { SUPPORT_CONTACT, MONITORING } from '../config/acdwKnowledge'
+import { SUPPORT_CONTACT, MONITORING, PVC_SOLVENT_WELD_PLACEMENT } from '../config/acdwKnowledge'
 
 export function SupportPage() {
   const location = useLocation()
@@ -151,7 +151,7 @@ export function SupportPage() {
                         <span className="support-step-number">2</span>
                         <div>
                           <strong className="text-gray-900">Solvent-weld in place with Oatey PVC cement</strong>
-                          <p className="text-sm text-gray-600">Use PVC primer and cement to securely attach AC Drain Wiz to your drain line.</p>
+                          <p className="text-sm text-gray-600">{PVC_SOLVENT_WELD_PLACEMENT}</p>
                         </div>
                       </li>
                       <li className="support-step-item">

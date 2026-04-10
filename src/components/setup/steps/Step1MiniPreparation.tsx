@@ -24,12 +24,13 @@ const tools = [
   {
     icon: WrenchScrewdriverIcon,
     title: 'Chamfering Tool or File',
-    description: 'Bevels the outside edge of the pipe at 10–15° to prevent cement from being scraped off during insertion.',
+    description: 'Bevels the outside edge of the pipe at 10–15° so fresh cement on the pipe end is not scraped off during insertion into the T manifold.',
   },
   {
     icon: BeakerIcon,
     title: 'Oatey All-Purpose PVC Cement & Primer',
-    description: 'Primer softens the PVC surface for a true chemical weld. Cement fuses pipe and fitting into a single watertight bond.',
+    description:
+      'Primer softens PVC bonding surfaces for a true chemical weld. Apply only to the two cut condensate drain pipe ends—then insert those ends into the T manifold horizontal openings. Do not apply primer or cement to the T manifold openings or the vertical bayonet port.',
   },
   {
     icon: CubeIcon,
@@ -282,8 +283,8 @@ export function Step1MiniPreparation({
                 <p className="mini-setup-tip-callout-text">
                   <strong>Accuracy matters here.</strong>{' '}
                   {isSensor
-                    ? 'Dry-fit the T manifold against the cut section before applying any cement. The bayonet port should point straight upward at a clean 90° angle for the sensor and drainage.'
-                    : 'Take a moment to dry-fit the Mini against the cut section before applying any cement. The T-Manifold cap opening should point straight upward at a clean 90° angle to allow for proper drainage and future servicing.'}
+                    ? 'Dry-fit the T manifold against the cut section before applying any cement. Primer and cement go only on the two cut condensate pipe ends; then slide those ends into the horizontal openings—not on the manifold openings or the vertical bayonet port. The bayonet port should point straight upward at a clean 90° angle for the sensor and drainage.'
+                    : 'Dry-fit the Mini against the cut section before applying any cement. Primer and cement go only on the two cut condensate pipe ends; then slide those ends into the horizontal openings—not on the manifold openings or the vertical port (cap or valve area). The T-Manifold cap opening should point straight upward at a clean 90° angle for drainage and future servicing.'}
                 </p>
               </div>
             </div>

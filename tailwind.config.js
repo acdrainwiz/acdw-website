@@ -7,7 +7,30 @@ export default {
   theme: {
     extend: {
       colors: {
+        /* shadcn semantic tokens — CSS variables in src/index.css (:root); numeric scales kept for legacy utilities */
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+        border: 'var(--border)',
+        input: 'var(--input)',
+        ring: 'var(--ring)',
+        card: {
+          DEFAULT: 'var(--card)',
+          foreground: 'var(--card-foreground)',
+        },
+        popover: {
+          DEFAULT: 'var(--popover)',
+          foreground: 'var(--popover-foreground)',
+        },
+        muted: {
+          DEFAULT: 'var(--muted)',
+          foreground: 'var(--muted-foreground)',
+        },
+        destructive: {
+          DEFAULT: 'var(--destructive)',
+        },
         primary: {
+          DEFAULT: 'var(--primary)',
+          foreground: 'var(--primary-foreground)',
           50: '#eff6ff',
           100: '#dbeafe',
           200: '#bfdbfe',
@@ -20,6 +43,8 @@ export default {
           900: '#1e3a8a',
         },
         secondary: {
+          DEFAULT: 'var(--secondary)',
+          foreground: 'var(--secondary-foreground)',
           50: '#f8fafc',
           100: '#f1f5f9',
           200: '#e2e8f0',
@@ -32,6 +57,8 @@ export default {
           900: '#0f172a',
         },
         accent: {
+          DEFAULT: 'var(--accent)',
+          foreground: 'var(--accent-foreground)',
           50: '#f0fdf4',
           100: '#dcfce7',
           200: '#bbf7d0',
@@ -42,7 +69,7 @@ export default {
           700: '#15803d',
           800: '#166534',
           900: '#14532d',
-        }
+        },
       },
       fontFamily: {
         sans: ['Poppins', 'system-ui', 'sans-serif'],

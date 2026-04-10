@@ -340,7 +340,7 @@ export const FAQ = [
     id: 'installation_process',
     question: 'What is the installation process like?',
     answer:
-      'Installation is a simple, one-time setup in under 30 minutes with no specialized tools required. The Mini uses PVC solvent weld installation with Oatey All-Purpose Cement and must be installed horizontally.',
+      'Installation is a simple, one-time setup in under 30 minutes with no specialized tools required. The Mini uses PVC solvent weld installation with Oatey All-Purpose Cement and must be installed horizontally. Apply primer and all-purpose cement only to the AC condensate drain line—the two cut pipe ends—then fit and slide those ends into the T manifold horizontal openings. Do not apply primer or cement to the T manifold openings or the vertical bayonet port.',
     tags: ['installation', 'contractor'],
     tabs: ['mini'] as const,
   },
@@ -349,6 +349,13 @@ export const FAQ = [
 // ─── WiFi requirement (approved) ───────────────────────────────────────────
 /** WiFi Sensor requires 2.4 GHz; 5 GHz is not supported. */
 export const WIFI_REQUIREMENT = '2.4 GHz' as const
+
+/**
+ * PVC solvent weld: primer and cement on condensate line only—then into T manifold horizontal openings.
+ * Not on manifold openings or bayonet (Mini and Sensor Transparent T manifolds).
+ */
+export const PVC_SOLVENT_WELD_PLACEMENT =
+  'Apply PVC primer and all-purpose cement only to the AC condensate drain line—the two cut pipe ends. Then fit and slide those pipe ends into the T manifold horizontal openings. Do not apply primer or cement to the T manifold horizontal openings, the vertical bayonet port, threads, or other manifold surfaces.' as const
 
 // ─── Connectivity (no Bluetooth) ────────────────────────────────────────────
 /** Sensor connectivity is Wi-Fi only. Do not claim Bluetooth or pairing via Bluetooth. */

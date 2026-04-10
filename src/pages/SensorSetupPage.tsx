@@ -299,7 +299,7 @@ export const SENSOR_SETUP_SEARCH_ENTRIES: PageSearchMeta[] = [
     id: 'guide-standard-sensor-setup',
     kind: 'how-to',
     title: `${SENSOR_STANDARD_SHORT} — setup guide`,
-    body: `${SENSOR_STANDARD_SHORT} wizard: Transparent T manifold measure, cement and cure, leak test, sensor power and LED check, mount and lock sensor—no home Wi‑Fi step in this guide.`,
+    body: `${SENSOR_STANDARD_SHORT} wizard: Transparent T manifold measure, primer and cement on the condensate line only then into the horizontal openings, cure, leak test, sensor power and LED check, mount and lock sensor—no home Wi‑Fi step in this guide.`,
     tags: ['sensor', 'standard', 'non-wifi', 'install', 'manifold'],
     searchTerms: SENSOR_STANDARD_SETUP_SEARCH_TERMS,
     href: buildSensorSetupHref({ model: 'standard', step: 1 }),
