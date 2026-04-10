@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type CSSProperties } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, useReducedMotion } from 'framer-motion'
 import { 
@@ -306,6 +306,7 @@ export function ProductsPage() {
   const solutions = [
     {
       id: 'residential',
+      accent: '#2563eb',
       title: 'Residential HVAC',
       description: 'Perfect for single-family homes, condominiums, and apartments with 3/4" condensate lines.',
       icon: HomeIcon,
@@ -327,6 +328,7 @@ export function ProductsPage() {
     },
     {
       id: 'commercial',
+      accent: '#0d9488',
       title: 'Light Commercial',
       description: 'Scalable solutions for select commercial installations including small offices and retail spaces.',
       icon: BuildingOfficeIcon,
@@ -348,6 +350,7 @@ export function ProductsPage() {
     },
     {
       id: 'municipal',
+      accent: '#4f46e5',
       title: 'Municipal & Code Compliance',
       description: 'Comprehensive solutions for city officials and code compliance with proper documentation and approvals.',
       icon: ShieldCheckIcon,
@@ -749,7 +752,7 @@ export function ProductsPage() {
         ? renderProductShowcase(comboProduct, {
             titleId: 'product-combo-showcase-title',
             eyebrow: 'Complete workflow',
-            heading: PRODUCT_NAMES.bundle,
+            heading: 'AC Drain Wiz Mini + Sensor Combo',
             imageSrc: '/images/hvac-combo-mini-sensor-product-hero.png',
             imageAlt: 'AC Drain Wiz Mini and Sensor bundle',
             mediaRight: false,
@@ -779,57 +782,89 @@ export function ProductsPage() {
             whileInView="visible"
             viewport={lowerPageViewport}
           >
-            {solutions.map((solution) => (
-              <motion.div
-                key={solution.id}
-                className="unified-solution-card"
-                variants={lowerCardReveal}
-              >
-                <div className="unified-solution-card-icon-wrapper">
-                  <solution.icon className="unified-solution-card-icon" />
-                </div>
-                <h3 className="unified-solution-card-title">{solution.title}</h3>
-                <p className="unified-solution-card-description">{solution.description}</p>
+            {solutions.map((solution) => {
+              const waveGradId = `unified-solution-wave-grad-${solution.id}`
+              return (
+                <motion.div
+                  key={solution.id}
+                  className="unified-solution-card"
+                  style={{ '--solution-accent': solution.accent } as CSSProperties}
+                  variants={lowerCardReveal}
+                >
+                  <div className="unified-solution-card-body">
+                    <div className="unified-solution-card-icon-wrapper">
+                      <solution.icon className="unified-solution-card-icon" />
+                    </div>
+                    <h3 className="unified-solution-card-title">{solution.title}</h3>
+                    <p className="unified-solution-card-description">{solution.description}</p>
 
-                <div className="unified-solution-card-features">
-                  <h4 className="unified-solution-card-features-title">Key Features</h4>
-                  <ul className="unified-solution-card-features-list">
-                    {solution.features.map((feature, index) => (
-                      <li key={index} className="unified-solution-card-feature-item">
-                        <CheckIcon className="unified-solution-card-feature-icon" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                    <div className="unified-solution-card-features">
+                      <h4 className="unified-solution-card-features-title">Key Features</h4>
+                      <ul className="unified-solution-card-features-list">
+                        {solution.features.map((feature, index) => (
+                          <li key={index} className="unified-solution-card-feature-item">
+                            <CheckIcon className="unified-solution-card-feature-icon" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
 
-                <div className="unified-solution-card-benefits">
-                  <h4 className="unified-solution-card-benefits-title">Benefits</h4>
-                  <ul className="unified-solution-card-benefits-list">
-                    {solution.benefits.map((benefit, index) => (
-                      <li key={index} className="unified-solution-card-benefit-item">
-                        <CheckIcon className="unified-solution-card-benefit-icon" />
-                        <span>{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                    <div className="unified-solution-card-benefits">
+                      <h4 className="unified-solution-card-benefits-title">Benefits</h4>
+                      <ul className="unified-solution-card-benefits-list">
+                        {solution.benefits.map((benefit, index) => (
+                          <li key={index} className="unified-solution-card-benefit-item">
+                            <CheckIcon className="unified-solution-card-benefit-icon" />
+                            <span>{benefit}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
 
-                <div className="unified-solution-card-footer">
-                  <div className="unified-solution-card-pricing">
-                    <strong>Pricing:</strong> {solution.pricing}
+                    <div className="unified-solution-card-footer">
+                      <div className="unified-solution-card-pricing">
+                        <strong>Pricing:</strong> {solution.pricing}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => navigate(`/contact?type=${solution.id}`)}
+                        className="unified-solution-card-cta"
+                      >
+                        Learn More
+                        <ArrowRightIcon className="unified-solution-card-cta-icon" />
+                      </button>
+                    </div>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => navigate(`/contact?type=${solution.id}`)}
-                    className="unified-solution-card-cta"
+                  <div className="unified-solution-card-fill" aria-hidden="true" />
+                  <svg
+                    className="unified-solution-card-wave"
+                    viewBox="0 0 400 88"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
                   >
-                    Learn More
-                    <ArrowRightIcon className="unified-solution-card-cta-icon" />
-                  </button>
-                </div>
-              </motion.div>
-            ))}
+                    <defs>
+                      <linearGradient
+                        id={waveGradId}
+                        x1="0%"
+                        y1="100%"
+                        x2="100%"
+                        y2="0%"
+                        gradientUnits="objectBoundingBox"
+                      >
+                        <stop offset="0%" style={{ stopColor: 'var(--wave-stop-0)' }} />
+                        <stop offset="48%" style={{ stopColor: 'var(--wave-stop-1)' }} />
+                        <stop offset="100%" style={{ stopColor: 'var(--wave-stop-2)' }} />
+                      </linearGradient>
+                    </defs>
+                    <path
+                      d="M0,72 C60,56 130,80 200,60 C270,40 330,22 400,14 L400,88 L0,88 Z"
+                      fill={`url(#${waveGradId})`}
+                    />
+                  </svg>
+                </motion.div>
+              )
+            })}
           </motion.div>
         </div>
       </div>
