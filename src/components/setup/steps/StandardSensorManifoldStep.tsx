@@ -152,11 +152,11 @@ function StandardSensorManifoldPrepCurePhase({
           <p className="sensor-setup-step-subtitle">
             {isWifi ? (
               <>
-                Step 3 of 5: prep pipe ends, solvent-weld only the horizontal drain joints on the Transparent T manifold, allow the cement to cure, and leak-test—same procedure as the AC Drain Wiz Mini setup guide (step 2).
+                Step 3 of 5: prep condensate pipe ends (primer and cement on the drain line only), join into the Transparent T manifold horizontal openings, allow the cement to cure, and leak-test—same procedure as the AC Drain Wiz Mini setup guide (step 2).
               </>
             ) : (
               <>
-                Step 2 of 2: prep pipe ends, solvent-weld only the horizontal drain joints on the Transparent T manifold, allow the cement to cure, and leak-test—same procedure as the AC Drain Wiz Mini setup guide (step 2).
+                Step 2 of 2: prep condensate pipe ends (primer and cement on the drain line only), join into the Transparent T manifold horizontal openings, allow the cement to cure, and leak-test—same procedure as the AC Drain Wiz Mini setup guide (step 2).
               </>
             )}
           </p>

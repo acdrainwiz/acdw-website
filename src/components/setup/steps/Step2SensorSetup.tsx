@@ -409,7 +409,7 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
                   <div className="sensor-setup-what-you-need-item-content">
                     <p className="sensor-setup-what-you-need-item-title">PVC primer &amp; cement</p>
                     <p className="sensor-setup-what-you-need-item-description">
-                      e.g. Oatey all-purpose—apply only to cut pipe ends and horizontal socket walls, not the bayonet port
+                      e.g. Oatey all-purpose—primer and cement only on the condensate line, then fit into the T manifold horizontal openings
                     </p>
                   </div>
                 </div>

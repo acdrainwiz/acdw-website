@@ -115,7 +115,7 @@
     --sidebar-ring: oklch(0.556 0 0);
   }
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
 }
 
@@ -6455,21 +6455,44 @@
   @apply min-h-screen bg-gray-50;
 }
 
-/* Hero Section */
+/* Hero Section — aligned with .about-hero treatment; indigo depth + soft radial highlight */
 .unified-products-hero {
-  @apply bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white py-16 md:py-20;
+  position: relative;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 42%, #1d4ed8 100%);
+  padding: 5rem 0;
+  overflow: hidden;
+  color: white;
+}
+
+.unified-products-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 35%, rgba(96, 165, 250, 0.3) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .unified-products-hero-content {
+  position: relative;
+  z-index: 1;
   @apply container mx-auto px-6 text-center max-w-4xl;
 }
 
 .unified-products-hero-title {
-  @apply text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight;
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  font-weight: 700;
+  color: white;
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.025em;
 }
 
 .unified-products-hero-subtitle {
-  @apply text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed;
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 42rem;
+  margin: 0 auto 1.75rem;
+  line-height: 1.7;
 }
 
 /* Section Styles */
@@ -6484,6 +6507,29 @@
 
 .unified-products-section {
   @apply bg-white;
+}
+
+/* Intro-only band: default py-16/24 + section-header mb-12/16 stacks too much space above first black showcase */
+.unified-products-section.unified-products-section--products-intro {
+  padding-top: 4rem;
+  padding-bottom: 1.75rem;
+}
+
+@media (min-width: 768px) {
+  .unified-products-section.unified-products-section--products-intro {
+    padding-top: 5rem;
+    padding-bottom: 2rem;
+  }
+}
+
+.unified-products-section--products-intro .unified-section-header {
+  margin-bottom: 0;
+}
+
+/* Products “Our Products” intro — cool paper so black showcases + gradients read stronger */
+.unified-products-section.unified-products-section--products-intro {
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .unified-solutions-section {
@@ -6506,6 +6552,89 @@
   background-color: #f5f5f5;
 }
 
+/* ── Products page only: band rhythm (top → bottom)
+   Goal: alternate “paper” tones + one saturated blue band so gradients feel intentional, not muddy.
+   Order: intro #f8fafc → black showcases → solutions indigo/slate paper → blue workflow → white compat → slate why → cyan-wash FAQ */
+.unified-solutions-section.products-lower-band--solutions {
+  background:
+    radial-gradient(ellipse 120% 55% at 50% 0%, rgba(129, 140, 248, 0.09) 0%, transparent 55%),
+    linear-gradient(180deg, #f1f5f9 0%, #f8fafc 45%, #ffffff 100%);
+  border-top: 1px solid rgba(148, 163, 184, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* How it works — same blue treatment as .about-cta-band */
+.unified-how-it-works-section.products-lower-band--workflow {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 55%, #2563eb 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Radial glow: brand cyan #00b8F5 (clear of CTA navy / blue-600); base gradient unchanged */
+.unified-how-it-works-section.products-lower-band--workflow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 78% 65% at 50% 38%,
+    rgba(0, 184, 245, 0.45) 0%,
+    rgba(0, 184, 245, 0.12) 48%,
+    transparent 72%
+  );
+  pointer-events: none;
+}
+
+.unified-how-it-works-section.products-lower-band--workflow .unified-products-content {
+  position: relative;
+  z-index: 1;
+}
+
+.unified-how-it-works-section.products-lower-band--workflow .unified-section-title {
+  color: #ffffff;
+}
+
+.unified-how-it-works-section.products-lower-band--workflow .unified-section-subtitle {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.unified-how-it-works-section.products-lower-band--workflow .unified-how-it-works-step-icon {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.unified-how-it-works-section.products-lower-band--workflow .unified-how-it-works-icon {
+  color: #ffffff;
+}
+
+.unified-how-it-works-section.products-lower-band--workflow .unified-how-it-works-step-title {
+  color: #ffffff;
+}
+
+.unified-how-it-works-section.products-lower-band--workflow .unified-how-it-works-step-description {
+  color: rgba(226, 232, 240, 0.96);
+}
+
+/* Compatibility — brightest band (contrast after blue workflow) */
+.unified-compatibility-section.products-lower-band--compat {
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* Why choose — deeper slate wash (reads as a distinct “card deck” vs white compat) */
+.unified-why-choose-section.products-lower-band--why {
+  background: linear-gradient(180deg, #e2e8f0 0%, #f1f5f9 52%, #f8fafc 100%);
+  border-top: 1px solid #94a3b8;
+}
+
+/* FAQ — whisper cyan wash (brand #00b8F5); eases into site footer */
+.unified-faq-section.products-lower-band--faq {
+  background:
+    radial-gradient(ellipse 100% 70% at 50% 0%, rgba(0, 184, 245, 0.08) 0%, transparent 55%),
+    linear-gradient(180deg, #f0fdff 0%, #f8fafc 42%, #f8fafc 100%);
+  border-top: 1px solid rgba(0, 184, 245, 0.22);
+}
+
 .unified-products-content {
   @apply container mx-auto px-6 max-w-7xl;
 }
@@ -6520,6 +6649,315 @@
 
 .unified-section-subtitle {
   @apply text-lg md:text-xl text-gray-600 max-w-3xl mx-auto;
+}
+
+/* Products page — section titles/subtitles left-aligned like About (intro “Our Products” band stays centered) */
+.unified-products-page .unified-section-header {
+  @apply text-left;
+}
+
+.unified-products-page .unified-section-header .unified-section-subtitle {
+  @apply mx-0 max-w-3xl;
+}
+
+.unified-products-page .unified-products-section--products-intro .unified-section-header {
+  @apply text-center;
+}
+
+.unified-products-page .unified-products-section--products-intro .unified-section-header .unified-section-subtitle {
+  @apply mx-auto;
+}
+
+/* Lower Products bands — centered section headers (solutions → FAQ) */
+.unified-products-page .unified-solutions-section.products-lower-band--solutions .unified-section-header,
+.unified-products-page .unified-how-it-works-section.products-lower-band--workflow .unified-section-header,
+.unified-products-page .unified-compatibility-section.products-lower-band--compat .unified-section-header,
+.unified-products-page .unified-why-choose-section.products-lower-band--why .unified-section-header,
+.unified-products-page .unified-faq-section .unified-section-header {
+  @apply text-center;
+}
+
+.unified-products-page .unified-solutions-section.products-lower-band--solutions .unified-section-header .unified-section-subtitle,
+.unified-products-page .unified-how-it-works-section.products-lower-band--workflow .unified-section-header .unified-section-subtitle,
+.unified-products-page .unified-compatibility-section.products-lower-band--compat .unified-section-header .unified-section-subtitle,
+.unified-products-page .unified-why-choose-section.products-lower-band--why .unified-section-header .unified-section-subtitle,
+.unified-products-page .unified-faq-section .unified-section-header .unified-section-subtitle {
+  @apply mx-auto;
+}
+
+/* White band between black showcases — Sensor & Mini+Sensor bundle subheads (centered) */
+.products-showcase-subhead {
+  background: #ffffff;
+  padding: 2.75rem 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+@media (min-width: 768px) {
+  .products-showcase-subhead {
+    padding: 3.25rem 0;
+  }
+}
+
+.products-showcase-subhead-inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  text-align: center;
+}
+
+.products-showcase-subhead-title {
+  font-size: clamp(1.75rem, 3vw, 2.35rem);
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0 0 1rem;
+}
+
+.products-showcase-subhead-desc {
+  font-size: 1.0625rem;
+  color: #4b5563;
+  line-height: 1.65;
+  margin: 0 auto;
+  max-width: 48rem;
+}
+
+@media (min-width: 768px) {
+  .products-showcase-subhead-desc {
+    font-size: 1.125rem;
+    line-height: 1.65;
+  }
+}
+
+/* Products lineup — full-bleed black showcase (content capped at 72rem) */
+.products-showcase-bleed {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: #000000;
+  padding: 2.75rem 0;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .products-showcase-bleed {
+    padding: 3.5rem 0;
+  }
+}
+
+.products-showcase-bleed-inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.products-showcase-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    'media'
+    'body';
+  gap: 2rem;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  /* Wider image column — max-width on img alone did nothing while columns were ~50/50 */
+  .products-showcase-split {
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 0.88fr);
+    grid-template-areas: 'media body';
+    gap: 2.5rem 3rem;
+  }
+
+  /* Sensor: copy left, image right — second track is the image */
+  .products-showcase-split--media-right {
+    grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.55fr);
+    grid-template-areas: 'body media';
+  }
+}
+
+@media (max-width: 767px) {
+  /* Sensor — copy first, then image */
+  .products-showcase-split--media-right {
+    grid-template-areas:
+      'body'
+      'media';
+  }
+
+  .products-showcase-media {
+    min-height: 18rem;
+  }
+}
+
+.products-showcase-media {
+  grid-area: media;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 14rem;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  background: radial-gradient(ellipse 70% 70% at 50% 45%, rgba(255, 255, 255, 0.06) 0%, transparent 65%);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  min-width: 0;
+}
+
+.products-showcase-media:hover {
+  opacity: 0.92;
+}
+
+.products-showcase-media:focus {
+  outline: 2px solid #60a5fa;
+  outline-offset: 3px;
+}
+
+.products-showcase-img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+}
+
+.products-showcase-body {
+  grid-area: body;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.products-showcase-eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #93c5fd;
+  margin: 0;
+}
+
+.products-showcase-title {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 700;
+  color: #f8fafc;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.products-showcase-heading-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.products-showcase-title-sub {
+  font-size: clamp(0.8125rem, 1.35vw, 0.9375rem);
+  font-weight: 500;
+  color: #c7d2fe;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.products-showcase-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.products-showcase-desc {
+  font-size: 0.9375rem;
+  color: #cbd5e1;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.products-showcase-benefits {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.products-showcase-benefit-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  font-size: 0.875rem;
+  color: #e2e8f0;
+  line-height: 1.45;
+}
+
+.products-showcase-benefit-icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  color: #4ade80;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.products-showcase-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.products-showcase-spec {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: #94a3b8;
+}
+
+.products-showcase-spec-icon {
+  width: 1rem;
+  height: 1rem;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.products-showcase-cta {
+  margin-top: 0.25rem;
+}
+
+.products-showcase-cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: white;
+  background: #2563eb;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+  min-height: 44px;
+}
+
+.products-showcase-cta-button:hover {
+  background: #1d4ed8;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.45);
+  transform: translateY(-1px);
+}
+
+.products-showcase-cta-icon {
+  width: 1rem;
+  height: 1rem;
 }
 
 /* Products Card Grid Layout - Modern asymmetric layout */
@@ -6965,17 +7403,39 @@
   @apply text-gray-600 leading-relaxed;
 }
 
-/* Compatibility */
-.unified-compatibility-grid {
-  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8;
+/* Compatibility — grouped clusters (eyebrow + two rows per group) */
+.unified-compatibility-groups {
+  @apply grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-8;
+}
+
+.unified-compatibility-group {
+  @apply flex flex-col rounded-xl border border-slate-200/90 bg-white p-5 md:p-6 shadow-sm;
+}
+
+.unified-compatibility-group-eyebrow {
+  margin: 0 0 1rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.unified-compatibility-group-list {
+  @apply list-none m-0 p-0 flex flex-col gap-3;
 }
 
 .unified-compatibility-item {
-  @apply flex items-center gap-3 p-4 bg-white rounded-lg shadow-sm;
+  @apply flex items-start gap-3 text-left;
 }
 
 .unified-compatibility-icon {
-  @apply h-6 w-6 text-green-500 flex-shrink-0;
+  @apply h-6 w-6 text-green-500 flex-shrink-0 mt-0.5;
+}
+
+.unified-compatibility-item span {
+  @apply text-sm text-gray-700 leading-snug;
 }
 
 .unified-compatibility-footer {

@@ -9,7 +9,7 @@ Use this rule plus `src/config/acdwKnowledge.ts` as the source of truth for prod
 
 ## Products (official names and roles)
 
-- **AC Drain Wiz Mini** (ACDW Mini): Drain line **maintenance access** device. Permanent service port on the 3/4" condensate drain line for flush (water), air (compressed air), and vacuum—no cutting PVC. One-time install, horizontal only; PVC solvent weld (e.g. Oatey All-Purpose Cement).
+- **AC Drain Wiz Mini** (ACDW Mini): Drain line **maintenance access** device. Permanent service port on the 3/4" condensate drain line for flush (water), air (compressed air), and vacuum—no cutting PVC. One-time install, horizontal only; PVC solvent weld (e.g. Oatey All-Purpose Cement)—apply primer and cement only to the condensate line, then fit into the T manifold horizontal openings (not on the manifold openings).
 - **AC Drain Wiz Standard Sensor Switch**: **Non-WiFi** overflow protection. Capacitive sensing, automatic AC shutdown at 95% water level, no moving parts, fail-safe on power loss. **Does not require the Mini to install**—sensors include their own Transparent T Manifold.
 - **AC Drain Wiz WiFi Sensor Switch**: **WiFi** variant. Adds remote monitoring, email/SMS alerts, contractor app, service alerts between 50–90% (shutdown still at 95%). **24V HVAC power is strongly recommended** for consistent LED feedback and reliable operation; battery-only operation is supported with limited LED visibility. Lithium-ion backup battery ~2 years; low-battery warning in platform. A fully depleted battery (battery-only path) may trigger protective HVAC shutdown.
 

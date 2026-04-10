@@ -180,7 +180,7 @@ export function InstallationSetupPage() {
                 <ul className="install-product-checklist">
                   <li className="install-product-checklist-item">
                     <CheckIcon className="install-checklist-icon" />
-                    Step 1: install the Transparent T manifold on the 3/4&quot; line (primer and cement only on cut pipe ends and horizontal sockets—not the bayonet port; cure; leak test)—no contractor account step in this guide
+                    Step 1: install the Transparent T manifold on the 3/4&quot; line (primer and cement only on the condensate line, then into the horizontal openings; cure; leak test)—no contractor account step in this guide
                   </li>
                   <li className="install-product-checklist-item">
                     <CheckIcon className="install-checklist-icon" />
@@ -238,7 +238,7 @@ export function InstallationSetupPage() {
                   </li>
                   <li className="install-product-checklist-item">
                     <CheckIcon className="install-checklist-icon" />
-                    Steps 2–3: Transparent T manifold on the 3/4&quot; line (unbox after the tools list, then measure; primer and cement only on cut pipe ends and horizontal sockets; cure; leak test)—same as the Standard guide
+                    Steps 2–3: Transparent T manifold on the 3/4&quot; line (unbox after the tools list, then measure; primer and cement only on the condensate line, then into the horizontal openings; cure; leak test)—same as the Standard guide
                   </li>
                   <li className="install-product-checklist-item">
                     <CheckIcon className="install-checklist-icon" />
