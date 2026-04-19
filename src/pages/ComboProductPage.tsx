@@ -249,6 +249,9 @@ export function ComboProductPage() {
             src="/images/hvac-combo-mini-sensor-product-hero.png"
             alt="AC Drain Wiz Mini + Sensor Complete System"
             className="combo-product-hero-image"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
           />
         </div>
         
@@ -628,7 +631,7 @@ export function ComboProductPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="product-faq">
+      <section id="product-faq" className="product-faq">
         <div className="product-faq-content">
           <h2 className="product-section-title">Frequently Asked Questions</h2>
           <div className="product-faq-list">

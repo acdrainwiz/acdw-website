@@ -26,10 +26,21 @@ dist-ssr
 # Local Netlify folder
 .netlify
 
-# Environment variables
+# Environment variables & secrets (commit only .env.example templates)
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+**/secrets/
+*.secrets.json
+
+# MCP & AI client configs (often contain API keys or machine paths)
+.cursor/mcp.json
+.cursor/settings.local.json
+.mcp.json.local
+**/claude_desktop_config.json
 
 # Non Essential Files
 **/*.md

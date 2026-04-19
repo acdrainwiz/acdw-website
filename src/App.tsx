@@ -1,6 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { CartProvider } from './contexts/CartContext'
+import { CompareProvider } from './contexts/CompareContext'
+import { CompareTray } from './components/products/CompareTray'
+import { CompareDrawer } from './components/products/CompareDrawer'
 import { Header } from './components/layout/Header'
 import { Footer } from './components/layout/Footer'
 import { BottomNav } from './components/layout/BottomNav'
@@ -94,6 +97,8 @@ function AppContent() {
           </main>
           {!hideHeaderFooter && <Footer />}
           {!hideHeaderFooter && <BottomNav />}
+          {!hideHeaderFooter && <CompareTray />}
+          {!hideHeaderFooter && <CompareDrawer />}
         </div>
   )
 }
@@ -102,10 +107,12 @@ function App() {
   return (
     <AuthProvider>
       <CartProvider>
-        <Router>
-          <ScrollToTop />
-          <AppContent />
-        </Router>
+        <CompareProvider>
+          <Router>
+            <ScrollToTop />
+            <AppContent />
+          </Router>
+        </CompareProvider>
       </CartProvider>
     </AuthProvider>
   )

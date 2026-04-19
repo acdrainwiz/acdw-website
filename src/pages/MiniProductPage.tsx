@@ -233,6 +233,9 @@ export function MiniProductPage() {
             src="/images/acdw-mini-hero2-background.png"
             alt="AC Drain Wiz Mini"
             className="mini-product-hero-image"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
           />
         </div>
         
@@ -401,8 +404,9 @@ export function MiniProductPage() {
                         src={testimonial.image}
                         alt={`${testimonial.name}, ${testimonial.role}`}
                         className="mini-product-testimonial-image"
+                        loading="lazy"
+                        decoding="async"
                         onError={(e) => {
-                          // Fallback to placeholder if image doesn't exist
                           const target = e.target as HTMLImageElement
                           target.src = '/images/testimonials/placeholder.jpg'
                         }}
@@ -556,6 +560,8 @@ export function MiniProductPage() {
                   src={image}
                   alt={`AC Drain Wiz Mini - View ${index + 1}`}
                   className="mini-product-gallery-image"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             ))}
