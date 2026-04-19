@@ -6569,6 +6569,100 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
+/* Lineup comparison — Sensor variants vs bundle (white/paper, before Solutions band) */
+.unified-lineup-comparison-section.products-lower-band--lineup-comparison {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
+  border-top: 1px solid #e2e8f0;
+  padding: 2.75rem 0;
+}
+
+@media (min-width: 768px) {
+  .unified-lineup-comparison-section.products-lower-band--lineup-comparison {
+    padding: 3.25rem 0;
+  }
+}
+
+.products-lineup-comparison-table-wrap {
+  border-radius: 0.75rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+}
+
+.products-lineup-comparison-table {
+  background: #ffffff;
+}
+
+.products-lineup-comparison-th {
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: bottom;
+}
+
+.products-lineup-comparison-th--feature {
+  background: #f1f5f9;
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  box-shadow: 1px 0 0 rgba(226, 232, 240, 0.95);
+}
+
+.products-lineup-comparison-th--pop {
+  background: rgba(224, 242, 254, 0.72);
+}
+
+.products-lineup-comparison-tr {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.products-lineup-comparison-tr:last-of-type {
+  border-bottom: none;
+}
+
+.products-lineup-comparison-rowhead {
+  background: #fafafa;
+  border-right: 1px solid #f1f5f9;
+  font-size: 0.8125rem;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  box-shadow: 1px 0 0 rgba(241, 245, 249, 0.9);
+}
+
+.products-lineup-comparison-td {
+  background: #ffffff;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.products-lineup-comparison-td--pop {
+  background: rgba(239, 246, 255, 0.65);
+}
+
+.products-lineup-comparison-tr--cta .products-lineup-comparison-rowhead,
+.products-lineup-comparison-tr--cta .products-lineup-comparison-td {
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.products-lineup-comparison-tr--cta .products-lineup-comparison-td--pop {
+  background: rgba(239, 246, 255, 0.5);
+}
+
+.products-lineup-comparison-cta {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.products-lineup-comparison-cta:hover {
+  background: #1d4ed8;
+}
+
+.products-lineup-comparison-cta:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
+
 /* How it works — same blue treatment as .about-cta-band */
 .unified-how-it-works-section.products-lower-band--workflow {
   position: relative;
@@ -6675,6 +6769,7 @@
 }
 
 /* Lower Products bands — centered section headers (solutions → FAQ) */
+.unified-products-page .unified-lineup-comparison-section.products-lower-band--lineup-comparison .unified-section-header,
 .unified-products-page .unified-solutions-section.products-lower-band--solutions .unified-section-header,
 .unified-products-page .unified-how-it-works-section.products-lower-band--workflow .unified-section-header,
 .unified-products-page .unified-compatibility-section.products-lower-band--compat .unified-section-header,
@@ -6683,6 +6778,7 @@
   @apply text-center;
 }
 
+.unified-products-page .unified-lineup-comparison-section.products-lower-band--lineup-comparison .unified-section-header .unified-section-subtitle,
 .unified-products-page .unified-solutions-section.products-lower-band--solutions .unified-section-header .unified-section-subtitle,
 .unified-products-page .unified-how-it-works-section.products-lower-band--workflow .unified-section-header .unified-section-subtitle,
 .unified-products-page .unified-compatibility-section.products-lower-band--compat .unified-section-header .unified-section-subtitle,
@@ -6735,6 +6831,50 @@
   }
 }
 
+/* Products — inline Sensor demo section (live Standard / WiFi toggle) */
+.products-sensor-demo-section {
+  padding-top: 2.25rem;
+  padding-bottom: 3.25rem;
+}
+
+@media (min-width: 768px) {
+  .products-sensor-demo-section {
+    padding-top: 3rem;
+    padding-bottom: 4rem;
+  }
+}
+
+.products-sensor-demo-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+}
+
+.products-sensor-demo-title {
+  font-size: clamp(1.75rem, 3vw, 2.35rem);
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.products-sensor-demo-desc {
+  font-size: 1rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 46rem;
+}
+
+@media (min-width: 768px) {
+  .products-sensor-demo-desc {
+    font-size: 1.0625rem;
+  }
+}
+
 /* Products lineup — full-bleed black showcase (content capped at 72rem) */
 .products-showcase-bleed {
   width: 100vw;
@@ -6783,6 +6923,15 @@
     grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.55fr);
     grid-template-areas: 'body media';
   }
+
+  .products-showcase-split--media-right .products-showcase-media--hotspots {
+    min-height: 28rem;
+  }
+
+  /* Combo (Mini + Sensor) — hero + workflow step cards */
+  .products-showcase-media--hotspots:has(.combo-workflow-showcase-root) {
+    min-height: 28rem;
+  }
 }
 
 @media (max-width: 767px) {
@@ -6795,6 +6944,15 @@
 
   .products-showcase-media {
     min-height: 18rem;
+  }
+
+  /* Sensor hero + demo tabs — taller media cell for the hand/product shot */
+  .products-showcase-split--media-right .products-showcase-media--hotspots {
+    min-height: 22rem;
+  }
+
+  .products-showcase-media--hotspots:has(.combo-workflow-showcase-root) {
+    min-height: 24rem;
   }
 }
 
@@ -6819,6 +6977,15 @@
 .products-showcase-media:focus {
   outline: 2px solid #60a5fa;
   outline-offset: 3px;
+}
+
+/* Hotspot-enabled media becomes a display canvas: no click affordance or hover dim. */
+.products-showcase-media--hotspots {
+  cursor: default;
+}
+
+.products-showcase-media--hotspots:hover {
+  opacity: 1;
 }
 
 .products-showcase-img {
@@ -12445,6 +12612,14 @@
 
 .sensor-product-variant-card-wifi {
   @apply border-primary-200 bg-primary-50/40;
+}
+
+.sensor-product-variant-card-head {
+  @apply flex items-start justify-between gap-3 mb-3;
+}
+
+.sensor-product-variant-card-head .sensor-product-variant-card-title {
+  @apply mb-0;
 }
 
 .sensor-product-variant-card-title {

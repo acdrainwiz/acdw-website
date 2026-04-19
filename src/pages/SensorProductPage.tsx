@@ -51,6 +51,7 @@ import {
   PRODUCT_NAMES,
 } from '../config/acdwKnowledge'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
+import { CompareChip } from '../components/products/CompareChip'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
   id: 'product-sensor',
@@ -280,10 +281,6 @@ export function SensorProductPage() {
       answer: 'Yes! The dashboard is designed for contractors managing multiple installations. You can organize sensors by customer, property, or service area, and track all installations from one central dashboard.'
     },
     {
-      question: 'How do service calls work?',
-      answer: 'Service calls are not automated. Contractors create service calls manually in the dashboard and assign technicians to specific customer locations. This keeps you in full control of scheduling and ensures your team provides maintenance when and where it’s needed.'
-    },
-    {
       question: 'Do you offer bulk pricing?',
       answer: 'Yes! Property managers and contractors can access bulk pricing for large deployments. Contact our sales team for custom pricing based on your volume needs.'
     },
@@ -291,10 +288,6 @@ export function SensorProductPage() {
       question: 'Can I monitor multiple properties?',
       answer: 'With the WiFi Sensor Switch, property managers and contractors can monitor multiple properties from the dashboard, configure alerts, and manage service workflows across locations. The Standard Sensor Switch (Non-WiFi) does not provide remote multi-property monitoring.'
     },
-    {
-      question: 'What training is available?',
-      answer: 'We provide comprehensive training materials, video tutorials, and support for contractors. Contact our support team to learn about available training resources.'
-    }
   ]
 
   const specificationCompareRows = [
@@ -333,6 +326,9 @@ export function SensorProductPage() {
             src="/images/acdw-sensor-hero2-background.png"
             alt="AC Drain Wiz Sensor"
             className="sensor-product-hero-image"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
           />
         </div>
         
@@ -498,8 +494,11 @@ export function SensorProductPage() {
             Both include a Transparent T Manifold for install—you do not need the AC Drain Wiz Mini first. Pick the model that matches how you want to service and monitor the home.
           </p>
           <div className="sensor-product-variant-compare-grid">
-            <div className="sensor-product-variant-card">
-              <h3 className="sensor-product-variant-card-title">{SENSOR_STANDARD_SHORT}</h3>
+            <div className="sensor-product-variant-card" id="sensor-variant-standard">
+              <div className="sensor-product-variant-card-head">
+                <h3 className="sensor-product-variant-card-title">{SENSOR_STANDARD_SHORT}</h3>
+                <CompareChip variant="standard" shortLabel />
+              </div>
               <p className="sensor-product-variant-card-desc">
                 Local overflow protection: capacitive sensing, automatic AC shutdown at 95%, no moving parts, fail-safe on power loss. No Wi‑Fi setup and no remote dashboard requirement.
               </p>
@@ -514,8 +513,11 @@ export function SensorProductPage() {
                 </li>
               </ul>
             </div>
-            <div className="sensor-product-variant-card sensor-product-variant-card-wifi">
-              <h3 className="sensor-product-variant-card-title">{SENSOR_WIFI_SHORT}</h3>
+            <div className="sensor-product-variant-card sensor-product-variant-card-wifi" id="sensor-variant-wifi">
+              <div className="sensor-product-variant-card-head">
+                <h3 className="sensor-product-variant-card-title">{SENSOR_WIFI_SHORT}</h3>
+                <CompareChip variant="wifi" shortLabel />
+              </div>
               <p className="sensor-product-variant-card-desc">
                 Everything the Standard model does on site, plus remote water-level monitoring, email/SMS alerts, contractor app, and service alerts between 50–90% (shutdown still at 95%). 24V HVAC power is strongly recommended; Li-ion backup (~2 years) or battery-only operation is supported with different LED behavior.
               </p>
@@ -826,7 +828,11 @@ export function SensorProductPage() {
             ))}
           </div>
           <p className="product-faq-subtitle">
-            Have questions? We've got answers. Can't find what you're looking for?{' '}
+            Looking for dashboard, service-workflow, or contractor-training answers?{' '}
+            <Link to="/products/combo#product-faq" className="product-faq-contact-link">
+              See the Mini + Sensor bundle FAQ
+            </Link>
+            . Still stuck?{' '}
             <button
               onClick={() => navigate('/contact?type=support')}
               className="product-faq-contact-link"

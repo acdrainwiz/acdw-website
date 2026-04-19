@@ -1,4 +1,11 @@
-import { useMemo, useState, type CSSProperties } from 'react'
+import {
+  useEffect,
+  useMemo,
+  useState,
+  type CSSProperties,
+  type KeyboardEvent,
+  type ReactNode,
+} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, useReducedMotion } from 'framer-motion'
 import { 
@@ -21,13 +28,18 @@ import {
   SUPPORT_CONTACT,
 } from '../config/acdwKnowledge'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
+import { ProductHotspots, type Hotspot } from '../components/products/ProductHotspots'
+import { miniHotspots } from '../components/products/miniHotspots'
+import { SensorWaterGaugeInline } from '../components/products/SensorWaterGauge'
+import { ComboWorkflowShowcase } from '../components/products/ComboWorkflowShowcase'
+import { ProductsLineupComparison } from '../components/products/ProductsLineupComparison'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
   id: 'page-products',
   kind: 'site',
   title: 'Products — AC Drain Wiz lineup',
   body:
-    'Products overview: AC Drain Wiz Mini compact maintenance manifold with bayonet port and bi-directional valve; flush, compressed air, vacuum on 3/4 inch PVC condensate lines. AC Drain Wiz Standard Sensor Switch (Non-WiFi) and WiFi Sensor Switch—capacitive overflow protection; WiFi adds remote monitoring and alerts on 2.4 GHz Wi-Fi. Mini plus Sensor bundle. Specifications, IMC references, contractor-focused catalog, FAQs.',
+    'Products overview: AC Drain Wiz Mini compact maintenance manifold with bayonet port and bi-directional valve; flush, compressed air, vacuum on 3/4 inch PVC condensate lines. AC Drain Wiz Standard Sensor Switch (Non-WiFi) and WiFi Sensor Switch—capacitive overflow protection; WiFi adds remote monitoring and alerts on 2.4 GHz Wi-Fi. Mini plus Sensor bundle. Comparison: Standard vs WiFi Sensor vs Mini plus Sensor—Wi-Fi, alerts, install time, IMC examples. Specifications, contractor-focused catalog, FAQs.',
   tags: ['products', 'mini', 'sensor', 'combo', 'catalog', 'specs', 'IMC'],
   searchTerms: ['solutions', 'lineup', 'ACDW'],
   href: '/products',
@@ -39,10 +51,31 @@ const lineupMotionViewport = { once: true, amount: 0.28, margin: '0px 0px -12% 0
 /** Below product showcases — sections animate in on scroll */
 const lowerPageViewport = { once: true, amount: 0.22, margin: '0px 0px -10% 0px' } as const
 
+/**
+ * Dev-only: enable the hotspot calibration overlay when `?calibrate=hotspots`
+ * is present in the URL AND we're running a dev build. Double-guarded so it
+ * can't activate in production even if the query param leaks in.
+ */
+const useCalibrateHotspotsFlag = () => {
+  const [enabled, setEnabled] = useState(false)
+  useEffect(() => {
+    if (!import.meta.env.DEV) return
+    if (typeof window === 'undefined') return
+    const read = () =>
+      new URLSearchParams(window.location.search).get('calibrate') === 'hotspots'
+    setEnabled(read())
+    const onPopState = () => setEnabled(read())
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [])
+  return enabled
+}
+
 export function ProductsPage() {
   const navigate = useNavigate()
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const reduceMotion = useReducedMotion()
+  const calibrateHotspots = useCalibrateHotspotsFlag()
 
   const introStagger = useMemo(
     () => ({
@@ -328,7 +361,7 @@ export function ProductsPage() {
     },
     {
       id: 'commercial',
-      accent: '#0d9488',
+      accent: '#2eb4e8',
       title: 'Light Commercial',
       description: 'Scalable solutions for select commercial installations including small offices and retail spaces.',
       icon: BuildingOfficeIcon,
@@ -350,7 +383,7 @@ export function ProductsPage() {
     },
     {
       id: 'municipal',
-      accent: '#4f46e5',
+      accent: '#ea580c',
       title: 'Municipal & Code Compliance',
       description: 'Comprehensive solutions for city officials and code compliance with proper documentation and approvals.',
       icon: ShieldCheckIcon,
@@ -491,15 +524,56 @@ export function ProductsPage() {
       imageAlt: string
       /** `true` = copy left, image right (Sensor). `false` = image left, copy right (Mini, Combo). */
       mediaRight: boolean
+      /** When provided, renders an interactive hotspot overlay on the image instead of a click-through. */
+      hotspots?: Hotspot[]
+      /** Dev-only: enables drag-to-position calibration for the hotspot overlay. */
+      calibrateHotspots?: boolean
+      /** When provided, replaces the `<img>` with arbitrary JSX (e.g. an interactive demo). */
+      customMedia?: ReactNode
     }
   ) => {
-    const { titleId, eyebrow, heading, headingSubtitle, imageSrc, imageAlt, mediaRight } = options
+    const {
+      titleId,
+      eyebrow,
+      heading,
+      headingSubtitle,
+      imageSrc,
+      imageAlt,
+      mediaRight,
+      hotspots,
+      calibrateHotspots: calibrate,
+      customMedia,
+    } = options
     const splitClass = mediaRight
       ? 'products-showcase-split products-showcase-split--media-right'
       : 'products-showcase-split'
 
     const mediaMotion = mediaRight ? slideInRight : slideInLeft
     const bodyMotion = mediaRight ? slideInLeft : slideInRight
+    const hasHotspots = Boolean(hotspots && hotspots.length > 0)
+    const hasCustomMedia = Boolean(customMedia)
+    const isInteractiveMedia = hasHotspots || hasCustomMedia
+    const imageLoading = product.id === 'mini' ? 'eager' : 'lazy'
+
+    const interactiveMediaProps = isInteractiveMedia
+      ? {}
+      : {
+          onClick: () => handleProductCTA(product.id),
+          onKeyDown: (e: KeyboardEvent<HTMLDivElement>) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              handleProductCTA(product.id)
+            }
+          },
+          role: 'button' as const,
+          tabIndex: 0,
+          'aria-label': headingSubtitle
+            ? `View details for ${heading}. ${headingSubtitle}`
+            : `View details for ${heading}`,
+          whileHover: reduceMotion ? undefined : { scale: 1.02 },
+          whileTap: reduceMotion ? undefined : { scale: 0.99 },
+          transition: { type: 'spring' as const, stiffness: 420, damping: 28 },
+        }
 
     return (
       <section className="products-showcase-bleed" aria-labelledby={titleId}>
@@ -518,33 +592,30 @@ export function ProductsPage() {
             variants={showcaseArticleStagger}
           >
             <motion.div
-              className="products-showcase-media"
+              className={`products-showcase-media${isInteractiveMedia ? ' products-showcase-media--hotspots' : ''}`}
               variants={mediaMotion}
-              onClick={() => handleProductCTA(product.id)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault()
-                  handleProductCTA(product.id)
-                }
-              }}
-              role="button"
-              tabIndex={0}
-              aria-label={
-                headingSubtitle
-                  ? `View details for ${heading}. ${headingSubtitle}`
-                  : `View details for ${heading}`
-              }
-              whileHover={reduceMotion ? undefined : { scale: 1.02 }}
-              whileTap={reduceMotion ? undefined : { scale: 0.99 }}
-              transition={{ type: 'spring', stiffness: 420, damping: 28 }}
+              {...interactiveMediaProps}
             >
-              <img
-                src={imageSrc}
-                alt={imageAlt}
-                className="products-showcase-img"
-                loading={product.id === 'mini' ? 'eager' : 'lazy'}
-                decoding="async"
-              />
+              {hasHotspots ? (
+                <ProductHotspots
+                  imageSrc={imageSrc}
+                  imageAlt={imageAlt}
+                  hotspots={hotspots!}
+                  imgClassName="products-showcase-img"
+                  loading={imageLoading}
+                  calibrate={calibrate}
+                />
+              ) : hasCustomMedia ? (
+                customMedia
+              ) : (
+                <img
+                  src={imageSrc}
+                  alt={imageAlt}
+                  className="products-showcase-img"
+                  loading={imageLoading}
+                  decoding="async"
+                />
+              )}
             </motion.div>
             <motion.div className="products-showcase-body" variants={bodyMotion}>
               <span className="products-showcase-eyebrow">{eyebrow}</span>
@@ -672,9 +743,11 @@ export function ProductsPage() {
             titleId: 'product-mini-showcase-title',
             eyebrow: 'Flagship access',
             heading: PRODUCT_NAMES.mini,
-            imageSrc: '/images/acdw-mini-hero2-background.png',
-            imageAlt: 'AC Drain Wiz Mini on a condensate drain line',
+            imageSrc: '/images/acdw-mini-product-parts.png',
+            imageAlt: 'AC Drain Wiz Mini with labeled parts on a condensate drain line',
             mediaRight: false,
+            hotspots: miniHotspots,
+            calibrateHotspots: calibrateHotspots,
           })
         : null}
 
@@ -720,6 +793,27 @@ export function ProductsPage() {
           })
         : null}
 
+      {/* Sensor — inline live demo (Standard / WiFi toggle) */}
+      <section
+        className="products-showcase-bleed products-sensor-demo-section"
+        aria-labelledby="products-sensor-demo-heading"
+      >
+        <div className="products-showcase-bleed-inner products-sensor-demo-inner">
+          <h2
+            id="products-sensor-demo-heading"
+            className="products-sensor-demo-title"
+          >
+            See it in action
+          </h2>
+          <p className="products-sensor-demo-desc">
+            Watch the Sensor react as water rises in the drain line—alerts at
+            50% and 90%, protective AC shutoff at 95%. Toggle between Standard
+            and WiFi to compare what each model does on site.
+          </p>
+          <SensorWaterGaugeInline />
+        </div>
+      </section>
+
       {/* Mini + Sensor bundle — subhead + black showcase (image left, copy right) */}
       <motion.section
         className="products-showcase-subhead"
@@ -740,7 +834,7 @@ export function ProductsPage() {
             className="products-showcase-subhead-title"
             variants={subheadTitle}
           >
-            Mini + Sensor bundle
+            One port for service and protection
           </motion.h2>
           <motion.p className="products-showcase-subhead-desc" variants={subheadDesc}>
             Pair permanent drain access with overflow protection—one coordinated install for contractors
@@ -756,8 +850,50 @@ export function ProductsPage() {
             imageSrc: '/images/hvac-combo-mini-sensor-product-hero.png',
             imageAlt: 'AC Drain Wiz Mini and Sensor bundle',
             mediaRight: false,
+            customMedia: (
+              <ComboWorkflowShowcase
+                heroImage={{
+                  src: '/images/hvac-combo-mini-sensor-product-hero.png',
+                  alt: 'AC Drain Wiz Mini and Sensor bundle',
+                }}
+              />
+            ),
           })
         : null}
+
+      {/* Standard vs WiFi vs bundle — comparison */}
+      <section
+        id="products-lineup-comparison"
+        className="unified-lineup-comparison-section products-lower-band--lineup-comparison"
+        aria-labelledby="products-lineup-comparison-heading"
+      >
+        <div className="unified-products-content">
+          <motion.div
+            className="unified-section-header"
+            variants={fadeUpLineup}
+            initial="hidden"
+            whileInView="visible"
+            viewport={lowerPageViewport}
+          >
+            <h2 id="products-lineup-comparison-heading" className="unified-section-title">
+              Which one do I need?
+            </h2>
+            <p className="unified-section-subtitle">
+              Standard and WiFi Sensor models share the same ~95% protective shutdown; WiFi adds contractor tools and
+              alerts on 2.4 GHz Wi‑Fi only. Add the Mini when you want permanent flush, air, and vacuum access on the
+              same bayonet workflow—the bundle packages both.
+            </p>
+          </motion.div>
+          <motion.div
+            variants={fadeUpLineup}
+            initial="hidden"
+            whileInView="visible"
+            viewport={lowerPageViewport}
+          >
+            <ProductsLineupComparison />
+          </motion.div>
+        </div>
+      </section>
 
       {/* Solutions by Use Case */}
       <div className="unified-solutions-section products-lower-band--solutions">
