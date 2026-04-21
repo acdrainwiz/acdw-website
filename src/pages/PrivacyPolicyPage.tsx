@@ -364,7 +364,8 @@ export function PrivacyPolicyPage() {
                 <p><strong>Email:</strong> <a href="mailto:privacy@acdrainwiz.com" className="text-primary-600 hover:text-primary-700 underline">privacy@acdrainwiz.com</a></p>
                 <p><strong>Phone:</strong> <a href={SUPPORT_CONTACT.telHref} className="text-primary-600 hover:text-primary-700 underline">{SUPPORT_CONTACT.phoneDisplay}</a></p>
                 <p><strong>Mail:</strong> AC Drain Wiz Privacy Team<br />
-                [Address to be provided]</p>
+                240 W Palmetto Park Rd, Suite 110<br />
+                Boca Raton, FL 33432</p>
               </div>
             </div>
           </div>
