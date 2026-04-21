@@ -1702,6 +1702,12 @@ export function ContactPage() {
                         {SUPPORT_CONTACT.phoneDisplay} {SUPPORT_CONTACT.phoneNumeric}
                       </a>
                     </p>
+                    <p>
+                      <strong>Office:</strong>{' '}
+                      <address className="not-italic inline">
+                        240 W Palmetto Park Rd, Suite 110, Boca Raton, FL 33432
+                      </address>
+                    </p>
                     <p><strong>Hours:</strong> 9:00 AM to 5:00 PM Eastern Standard Time, Monday through Friday</p>
                   </div>
                 </div>

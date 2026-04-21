@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/24/outline'
+import { EnvelopeIcon, PhoneIcon, MapPinIcon } from '@heroicons/react/24/outline'
 import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
 
@@ -393,6 +393,13 @@ export function TermsOfUsePage() {
             <div className="bg-primary-50 border border-primary-200 rounded-lg p-6">
               <div className="space-y-2 text-gray-700">
                 <p><strong>AC Drain Wiz</strong></p>
+                <p className="flex items-start">
+                  <MapPinIcon className="h-5 w-5 inline-block mr-2 mt-0.5 flex-shrink-0 text-primary-600" />
+                  <address className="not-italic leading-snug">
+                    240 W Palmetto Park Rd, Suite 110<br />
+                    Boca Raton, FL 33432
+                  </address>
+                </p>
                 <p><PhoneIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />Phone: <a href={SUPPORT_CONTACT.telHref} className="text-primary-600 hover:text-primary-700 underline">{SUPPORT_CONTACT.phoneDisplay}</a></p>
                 <p><EnvelopeIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />Email: <a href="mailto:info@acdrainwiz.com" className="text-primary-600 hover:text-primary-700 underline">info@acdrainwiz.com</a></p>
               </div>

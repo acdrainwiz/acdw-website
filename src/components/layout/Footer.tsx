@@ -133,9 +133,12 @@ export function Footer() {
               <PhoneIcon className="footer-contact-icon" />
               <a href={SUPPORT_CONTACT.telHref} className="footer-contact-link">{SUPPORT_CONTACT.phoneDisplay}</a>
             </div>
-            <div className="footer-contact-item">
-              <MapPinIcon className="footer-contact-icon" />
-              <span>United States</span>
+            <div className="footer-contact-item items-start">
+              <MapPinIcon className="footer-contact-icon mt-0.5" />
+              <address className="not-italic leading-snug">
+                240 W Palmetto Park Rd, Suite 110<br />
+                Boca Raton, FL 33432
+              </address>
             </div>
           </div>
         </div>
