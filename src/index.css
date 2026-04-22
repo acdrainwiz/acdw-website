@@ -3904,6 +3904,14 @@
     @apply text-red-600;
   }
 
+  .upgrade-form-sms-consent-group {
+    @apply flex flex-col rounded-lg transition-[box-shadow,background-color,border-color];
+  }
+
+  .upgrade-form-sms-consent-group--error {
+    @apply border-2 border-red-500 bg-red-50/50 p-3 shadow-sm ring-1 ring-red-500/30;
+  }
+
   .upgrade-form-textarea {
     @apply w-full px-4 py-3 border border-gray-300 rounded-lg text-base;
     @apply focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all;
