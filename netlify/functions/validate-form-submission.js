@@ -81,6 +81,10 @@ const validateFormFields = (formType, formData) => {
     if (!firstName) errors.push('First name is required')
     if (!lastName) errors.push('Last name is required')
     if (!message) errors.push('Message is required')
+    const contactPrivacyConsent = formData.get('consent')
+    if (contactPrivacyConsent !== 'yes') {
+      errors.push('You must accept the Privacy Policy to continue')
+    }
     if (message && message.length > 2000) {
       errors.push('Message must be 2000 characters or less')
     }
@@ -187,11 +191,15 @@ const validateFormFields = (formType, formData) => {
           errors.push('ZIP code must be 5 digits')
         }
         if (!upgradeConsent || upgradeConsent !== 'yes') {
-          errors.push('You must acknowledge the terms to continue')
+          errors.push(
+            'You must confirm you understand the review, payment link, and shipping timeline to continue'
+          )
         }
         const upgradeSmsTransactional = formData.get('smsTransactional')
         if (!upgradeSmsTransactional || upgradeSmsTransactional !== 'yes') {
-          errors.push('You must agree to receive transactional SMS messages related to your upgrade request')
+          errors.push(
+            'Check the checkbox for transactional SMS (service notifications) to continue your upgrade request.'
+          )
         }
         if (!upgradePhotoUrl) {
           errors.push('Photo is required. Please upload a photo of your installed Core 1.0.')

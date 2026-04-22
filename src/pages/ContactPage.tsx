@@ -24,7 +24,7 @@ export const PAGE_SEARCH_META: PageSearchMeta = {
   kind: 'product-info',
   title: 'Contact AC Drain Wiz',
   body:
-    'Contact forms for general inquiries, technical support, sales, certified installer requests, and product demos. Phone and email, leadership contacts, business hours Eastern Time, privacy consent.',
+    'Contact forms for general inquiries, technical support, sales, certified installer requests, and product demos. Phone and email, leadership contacts, business hours Eastern Time, privacy acknowledgment and optional SMS preferences.',
   tags: ['contact', 'help', 'support', 'phone', 'email', 'sales', 'demo'],
   searchTerms: ['installer', 'form', 'inquiry'],
   href: '/contact',
@@ -36,7 +36,130 @@ type ContactFormType = 'general' | 'support' | 'sales' | 'installer' | 'demo'
 const MESSAGE_MAX_LENGTH = 2000
 
 const SMS_TRANSACTIONAL_REQUIRED_MSG =
-  'When you include a phone number, check the first box below to consent to transactional SMS.'
+  'Check the checkbox above to consent to transactional SMS (service notifications). Required when you provide a phone number.'
+
+/** Tailwind `md` is 768px — treat &lt;768 as mobile for scroll-on-error. */
+const CONTACT_FORM_MOBILE_MAX_WIDTH_PX = 767
+
+/**
+ * Visual order on small screens (matches layout: e.g. company before phone via CSS `order-*`).
+ * Used to scroll to the first invalid field after submit on mobile only.
+ */
+const CONTACT_MOBILE_SCROLL_ORDER_BY_TYPE: Record<ContactFormType, readonly string[]> = {
+  general: [
+    'firstName',
+    'lastName',
+    'email',
+    'company',
+    'phone',
+    'smsTransactional',
+    'referralSource',
+    'customerType',
+    'message',
+    'consent',
+  ],
+  support: [
+    'firstName',
+    'lastName',
+    'email',
+    'company',
+    'phone',
+    'smsTransactional',
+    'customerType',
+    'product',
+    'issueType',
+    'message',
+    'consent',
+  ],
+  sales: [
+    'firstName',
+    'lastName',
+    'email',
+    'company',
+    'phone',
+    'smsTransactional',
+    'referralSource',
+    'customerType',
+    'role',
+    'annualVolume',
+    'interest',
+    'message',
+    'consent',
+  ],
+  installer: [
+    'firstName',
+    'lastName',
+    'email',
+    'phone',
+    'smsTransactional',
+    'location',
+    'productToInstall',
+    'preferredContact',
+    'message',
+    'consent',
+  ],
+  demo: [
+    'firstName',
+    'lastName',
+    'email',
+    'company',
+    'phone',
+    'smsTransactional',
+    'referralSource',
+    'customerType',
+    'demoType',
+    'preferredDate',
+    'preferredTime',
+    'city',
+    'state',
+    'zip',
+    'productsOfInterest',
+    'numberOfAttendees',
+    'portfolioSize',
+    'demoFocus',
+    'message',
+    'consent',
+  ],
+}
+
+function getFirstContactFieldKeyWithError(
+  errors: Record<string, string>,
+  activeFormType: ContactFormType
+): string | null {
+  const order = CONTACT_MOBILE_SCROLL_ORDER_BY_TYPE[activeFormType]
+  for (const key of order) {
+    if (errors[key]) return key
+  }
+  return Object.keys(errors).find((k) => errors[k]) ?? null
+}
+
+function scrollMobileToFirstContactFieldError(
+  form: HTMLFormElement,
+  errors: Record<string, string>,
+  activeFormType: ContactFormType
+) {
+  if (typeof window === 'undefined') return
+  if (!window.matchMedia(`(max-width: ${CONTACT_FORM_MOBILE_MAX_WIDTH_PX}px)`).matches) return
+
+  const fieldKey = getFirstContactFieldKeyWithError(errors, activeFormType)
+  if (!fieldKey) return
+
+  const selector =
+    fieldKey === 'productsOfInterest' ? '[name="productsOfInterest"]' : `[name="${CSS.escape(fieldKey)}"]`
+  const el = form.querySelector(selector) as HTMLElement | null
+  if (!el) return
+
+  window.requestAnimationFrame(() => {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    if (
+      el instanceof HTMLInputElement ||
+      el instanceof HTMLSelectElement ||
+      el instanceof HTMLTextAreaElement
+    ) {
+      el.focus({ preventScroll: true })
+    }
+  })
+}
 
 interface FormData {
   firstName: string
@@ -263,7 +386,7 @@ export function ContactPage() {
         break
       case 'consent':
         if (!value) {
-          return 'Please accept the privacy policy to continue'
+          return 'Please confirm you agree to the Privacy Policy to continue'
         }
         break
       case 'smsTransactional': {
@@ -400,7 +523,7 @@ export function ContactPage() {
     }
   }, [showCalendar])
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
     setSubmitError('')
@@ -448,6 +571,7 @@ export function ContactPage() {
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors)
       setIsSubmitting(false)
+      scrollMobileToFirstContactFieldError(e.currentTarget, errors, activeFormType)
       return
     }
     
@@ -894,9 +1018,19 @@ export function ContactPage() {
                       {fieldErrors.phone && (
                         <p className="field-error-message">{fieldErrors.phone}</p>
                       )}
-                      <p className="text-xs text-gray-500 mt-2 leading-relaxed">
-                        By providing your phone number and selecting the checkboxes below, you consent to receive SMS messages from AC Drain Wiz.
-                      </p>
+                      <div
+                        id="contact-sms-program-disclosure"
+                        className="text-xs text-gray-500 mt-2 leading-relaxed space-y-2"
+                      >
+                        <p>
+                          Text messages from AC Drain Wiz are{' '}
+                          <span className="font-medium text-gray-600">service and transactional notifications</span>
+                          —for example replies about your request, scheduling or appointment coordination, and service or order updates tied to your inquiry.
+                        </p>
+                        <p>
+                          Message frequency may vary. Message and data rates may apply. Reply STOP to opt out at any time.
+                        </p>
+                      </div>
                     </div>
                     {activeFormType !== 'installer' && (
                       <div className="order-1 md:order-2">
@@ -922,7 +1056,13 @@ export function ContactPage() {
                 </div>
 
                   <div className="flex flex-col gap-4">
-                    <div className="flex flex-col">
+                    <div
+                      className={`flex flex-col rounded-lg transition-[box-shadow,background-color,border-color] ${
+                        fieldErrors.smsTransactional
+                          ? 'border-2 border-red-500 bg-red-50/50 p-3 shadow-sm ring-1 ring-red-500/30'
+                          : ''
+                      }`}
+                    >
                       <label className="flex items-start gap-3 cursor-pointer">
                         <input
                           type="checkbox"
@@ -930,15 +1070,16 @@ export function ContactPage() {
                           checked={formData.smsTransactional}
                           onChange={handleInputChange}
                           onBlur={handleBlur}
-                          className={`mt-1 h-4 w-4 shrink-0 text-primary-600 focus:ring-primary-500 border-gray-300 rounded ${fieldErrors.smsTransactional ? 'border-red-500' : ''}`}
+                          aria-describedby="contact-sms-program-disclosure"
+                          className="mt-1 h-4 w-4 shrink-0 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
                         <span className="text-sm text-gray-600 leading-snug">
-                          I agree to receive SMS messages from AC Drain Wiz related to my inquiry, including support responses, appointment coordination, and service updates. Message frequency varies. Message and data rates may apply. Reply STOP to opt out at any time.
+                          I agree to receive transactional SMS from AC Drain Wiz as described above.
                           <span className="block text-xs text-gray-500 mt-1">Required if you provide a phone number.</span>
                         </span>
                       </label>
                       {fieldErrors.smsTransactional && (
-                        <p className="field-error-message ml-1">{fieldErrors.smsTransactional}</p>
+                        <p className="field-error-message mt-2 pl-0 sm:pl-7">{fieldErrors.smsTransactional}</p>
                       )}
                     </div>
                     <label className="flex items-start gap-3 cursor-pointer">
@@ -1694,9 +1835,9 @@ export function ContactPage() {
                         className={`mt-1 h-4 w-4 shrink-0 text-primary-600 focus:ring-primary-500 border-gray-300 rounded ${fieldErrors.consent ? 'border-red-500' : ''}`}
                       />
                       <span className="text-sm text-gray-600 leading-snug">
-                        I agree to the{' '}
+                        I have read and agree to the{' '}
                         <button type="button" onClick={() => navigate('/privacy-policy')} className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</button>
-                        {' '}and consent to AC Drain Wiz contacting me regarding my inquiry. *
+                        . *
                       </span>
                     </label>
                     {fieldErrors.consent && (

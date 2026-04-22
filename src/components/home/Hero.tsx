@@ -1240,13 +1240,15 @@ export function Hero() {
                     errors.zip = 'ZIP code must be 5 digits'
                   }
                   
-                  // Validate consent
+                  // Validate consent (shipping / payment acknowledgment — not SMS or privacy)
                   if (!consent) {
-                    errors.consent = 'You must acknowledge the terms to continue'
+                    errors.consent =
+                      'Please confirm you understand the review, payment link, and shipping timeline to continue'
                   }
 
                   if (!smsTransactional) {
-                    errors.smsTransactional = 'Please agree to receive transactional SMS messages related to your upgrade request'
+                    errors.smsTransactional =
+                      'Check the checkbox above to consent to transactional SMS (service notifications) for your upgrade request.'
                   }
                   
                   // If there are validation errors, stop submission
@@ -1564,18 +1566,33 @@ export function Hero() {
                   {fieldErrors.phone && (
                     <p className="upgrade-form-field-error">{fieldErrors.phone}</p>
                   )}
-                  <p className="text-xs text-gray-500 mt-2 leading-relaxed">
-                    By providing your phone number and selecting the checkboxes below, you consent to receive SMS messages from AC Drain Wiz.
-                  </p>
+                  <div
+                    id="upgrade-sms-program-disclosure"
+                    className="text-xs text-gray-500 mt-2 leading-relaxed space-y-2"
+                  >
+                    <p>
+                      Text messages from AC Drain Wiz are{' '}
+                      <span className="font-medium text-gray-600">service and transactional notifications</span>
+                      —for example replies about your upgrade request, scheduling, and service or order updates.
+                    </p>
+                    <p>
+                      Message frequency may vary. Message and data rates may apply. Reply STOP to opt out at any time.
+                    </p>
+                  </div>
                 </div>
 
                 <div className="flex flex-col gap-4">
-                  <div className="flex flex-col">
-                    <label className={`upgrade-form-checkbox-label ${fieldErrors.smsTransactional ? 'upgrade-form-checkbox-label-error' : ''}`}>
+                  <div
+                    className={`upgrade-form-sms-consent-group ${
+                      fieldErrors.smsTransactional ? 'upgrade-form-sms-consent-group--error' : ''
+                    }`}
+                  >
+                    <label className="upgrade-form-checkbox-label">
                       <input
                         type="checkbox"
                         name="smsTransactional"
-                        className={`upgrade-form-checkbox ${fieldErrors.smsTransactional ? 'upgrade-form-checkbox-error' : ''}`}
+                        className="upgrade-form-checkbox"
+                        aria-describedby="upgrade-sms-program-disclosure"
                         onChange={() => {
                           if (fieldErrors.smsTransactional) {
                             setFieldErrors(prev => {
@@ -1587,11 +1604,11 @@ export function Hero() {
                         }}
                       />
                       <span>
-                        I agree to receive SMS messages from AC Drain Wiz related to my inquiry, including support responses, appointment coordination, and service updates. Message frequency varies. Message and data rates may apply. Reply STOP to opt out at any time.
+                        I agree to receive transactional SMS from AC Drain Wiz as described above.
                       </span>
                     </label>
                     {fieldErrors.smsTransactional && (
-                      <p className="upgrade-form-field-error">{fieldErrors.smsTransactional}</p>
+                      <p className="upgrade-form-field-error mt-2 pl-0 sm:pl-8">{fieldErrors.smsTransactional}</p>
                     )}
                   </div>
                   <label className="upgrade-form-checkbox-label">
