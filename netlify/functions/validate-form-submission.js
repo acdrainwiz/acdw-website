@@ -139,6 +139,16 @@ const validateFormFields = (formType, formData) => {
       default:
         console.warn(`Unknown contact form subtype: ${contactSubType}`)
     }
+
+    // A2P 10DLC: transactional SMS consent required when a phone number is provided
+    const contactPhone = formData.get('phone')?.trim() || ''
+    const contactPhoneDigits = contactPhone.replace(/\D/g, '')
+    if (contactPhoneDigits.length >= 10) {
+      const smsTransactional = formData.get('smsTransactional')
+      if (smsTransactional !== 'yes') {
+        errors.push('Transactional SMS consent is required when a phone number is provided')
+      }
+    }
   } else {
     // Handle other form types
     switch (formType) {
@@ -178,6 +188,10 @@ const validateFormFields = (formType, formData) => {
         }
         if (!upgradeConsent || upgradeConsent !== 'yes') {
           errors.push('You must acknowledge the terms to continue')
+        }
+        const upgradeSmsTransactional = formData.get('smsTransactional')
+        if (!upgradeSmsTransactional || upgradeSmsTransactional !== 'yes') {
+          errors.push('You must agree to receive transactional SMS messages related to your upgrade request')
         }
         if (!upgradePhotoUrl) {
           errors.push('Photo is required. Please upload a photo of your installed Core 1.0.')

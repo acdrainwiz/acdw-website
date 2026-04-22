@@ -16,6 +16,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Preload Mini hero assets (product scene + wordmark). Mobile/desktop split via `media` so each viewport only pulls what it renders. -->
+    <link rel="preload" as="image" type="image/webp" href="/images/acdw-mini-hero2-product.webp" media="(min-width: 768px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/webp" href="/images/acdw-mini-hero2-product-mobile.webp" media="(max-width: 767px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/webp" href="/images/acdw-mini-wordmark.webp" media="(min-width: 768px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/webp" href="/images/acdw-mini-wordmark-mobile.webp" media="(max-width: 767px)" fetchpriority="high" />
     <!-- Google reCAPTCHA v3 -->
     <!-- Script will be loaded dynamically in UnsubscribePage component if VITE_RECAPTCHA_SITE_KEY is configured -->
     <!-- Open Graph / Facebook -->
@@ -64,6 +69,8 @@
       <textarea name="message"></textarea>
       <input type="text" name="referralSource" />
       <input type="checkbox" name="consent" />
+      <input type="checkbox" name="smsTransactional" />
+      <input type="checkbox" name="smsMarketing" />
     </form>
 
     <form name="contact-support" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
@@ -76,6 +83,8 @@
       <textarea name="message"></textarea>
       <input type="text" name="referralSource" />
       <input type="checkbox" name="consent" />
+      <input type="checkbox" name="smsTransactional" />
+      <input type="checkbox" name="smsMarketing" />
       <input type="text" name="product" />
       <input type="text" name="issueType" />
       <input type="text" name="priority" />
@@ -91,6 +100,8 @@
       <textarea name="message"></textarea>
       <input type="text" name="referralSource" />
       <input type="checkbox" name="consent" />
+      <input type="checkbox" name="smsTransactional" />
+      <input type="checkbox" name="smsMarketing" />
       <input type="text" name="role" />
       <input type="text" name="annualVolume" />
       <input type="text" name="interest" />
@@ -106,6 +117,8 @@
       <textarea name="message"></textarea>
       <input type="text" name="referralSource" />
       <input type="checkbox" name="consent" />
+      <input type="checkbox" name="smsTransactional" />
+      <input type="checkbox" name="smsMarketing" />
       <input type="text" name="location" />
       <input type="text" name="preferredContact" />
       <input type="text" name="productToInstall" />
@@ -121,6 +134,8 @@
       <textarea name="message"></textarea>
       <input type="text" name="referralSource" />
       <input type="checkbox" name="consent" />
+      <input type="checkbox" name="smsTransactional" />
+      <input type="checkbox" name="smsMarketing" />
       <input type="text" name="demoType" />
       <input type="text" name="preferredDate" />
       <input type="text" name="preferredTime" />
@@ -152,6 +167,8 @@
       <input type="text" name="state" />
       <input type="text" name="zip" />
       <input type="checkbox" name="consent" />
+      <input type="checkbox" name="smsTransactional" />
+      <input type="checkbox" name="smsMarketing" />
     </form>
 
     <form name="ep-x7k9m2" data-netlify="true" netlify-honeypot="bot-field" hidden>
