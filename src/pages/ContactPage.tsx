@@ -1074,7 +1074,7 @@ export function ContactPage() {
                           className="mt-1 h-4 w-4 shrink-0 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
                         <span className="text-sm text-gray-600 leading-snug">
-                          I agree to receive transactional SMS from AC Drain Wiz as described above.
+                          I agree to receive transactional SMS from AC Drain Wiz at the mobile number provided — including service replies, scheduling, appointment coordination, and order or support updates tied to my inquiry. Message frequency may vary. Message and data rates may apply. Reply STOP to unsubscribe or HELP for help. See our <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</a> and <a href="/terms-of-use" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-700 underline">Terms of Use</a>.
                           <span className="block text-xs text-gray-500 mt-1">Required if you provide a phone number.</span>
                         </span>
                       </label>
@@ -1092,7 +1092,7 @@ export function ContactPage() {
                         className="mt-1 h-4 w-4 shrink-0 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                       />
                       <span className="text-sm text-gray-600 leading-snug">
-                        I agree to receive occasional promotional messages from AC Drain Wiz, including product updates and special offers. Consent is optional and not required for service.
+                        I agree to receive occasional promotional SMS from AC Drain Wiz at the mobile number provided — including product updates, announcements, and special offers (up to approximately 4 msgs/month). Message frequency may vary. Message and data rates may apply. Reply STOP to unsubscribe or HELP for help. Consent is not a condition of any purchase. See our <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</a> and <a href="/terms-of-use" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-700 underline">Terms of Use</a>.
                         <span className="block text-xs text-gray-500 mt-1">
                           Optional — promotional texts only.
                         </span>
