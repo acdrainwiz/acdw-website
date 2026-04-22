@@ -541,9 +541,9 @@ export function Hero() {
                 </tr>
                 <tr>
                   <td className="product-comparison-td sticky left-0 bg-white">Size</td>
-                  <td className="product-comparison-td">5" × 3" × 2"</td>
+                  <td className="product-comparison-td">5 3/8" × 1 1/2" × 1 3/8"</td>
                   <td className="product-comparison-td">2" × 3" × 1.5"</td>
-                  <td className="product-comparison-td">5" × 3" × 2" (Mini) + Sensor</td>
+                  <td className="product-comparison-td">5 3/8" × 1 1/2" × 1 3/8" (Mini) + Sensor</td>
                 </tr>
                 <tr>
                   <td className="product-comparison-td sticky left-0 bg-white">Installation</td>
@@ -615,7 +615,7 @@ export function Hero() {
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between"><span className="font-medium">Status:</span> <span className="text-green-600">Available Now</span></div>
                 <div className="flex justify-between"><span className="font-medium">Price:</span> <span className="text-gray-600 italic">Contact us for pricing</span></div>
-                <div className="flex justify-between"><span className="font-medium">Size:</span> <span>5" × 3" × 2"</span></div>
+                <div className="flex justify-between"><span className="font-medium">Size:</span> <span>5 3/8" × 1 1/2" × 1 3/8"</span></div>
                 <div className="flex justify-between"><span className="font-medium">Best For:</span> <span className="text-right">Space-constrained</span></div>
               </div>
             </div>
@@ -655,7 +655,7 @@ export function Hero() {
                 <div className="flex justify-between"><span className="font-medium">Status:</span> <span className="text-green-600">Available Now</span></div>
                 {/* Launch Button Redirect */}
                 <div className="flex justify-between"><span className="font-medium">Price:</span> <span className="text-gray-600 italic text-xs">Contact us for pricing</span></div>
-                <div className="flex justify-between"><span className="font-medium">Size:</span> <span>5" × 3" × 2" + Sensor</span></div>
+                <div className="flex justify-between"><span className="font-medium">Size:</span> <span>5 3/8" × 1 1/2" × 1 3/8" + Sensor</span></div>
                 <div className="flex justify-between"><span className="font-medium">Best For:</span> <span className="text-right">Maximum protection</span></div>
               </div>
             </div>
@@ -1160,6 +1160,7 @@ export function Hero() {
                 data-netlify-honeypot="bot-field"
                 encType="multipart/form-data"
                 noValidate
+                aria-describedby="core-upgrade-required-legend"
                 onSubmit={async (e) => {
                   e.preventDefault()
                   setIsSubmitting(true)
@@ -1178,6 +1179,7 @@ export function Hero() {
                   const state = formData.get('state') as string
                   const zip = formData.get('zip') as string
                   const consent = formData.get('consent')
+                  const smsTransactional = formData.get('smsTransactional')
                   const photoInput = form.querySelector('#upgrade-photo') as HTMLInputElement
                   
                   // Validate firstName
@@ -1241,6 +1243,10 @@ export function Hero() {
                   // Validate consent
                   if (!consent) {
                     errors.consent = 'You must acknowledge the terms to continue'
+                  }
+
+                  if (!smsTransactional) {
+                    errors.smsTransactional = 'Please agree to receive transactional SMS messages related to your upgrade request'
                   }
                   
                   // If there are validation errors, stop submission
@@ -1374,6 +1380,8 @@ export function Hero() {
                     formDataToSubmit.append('state', formData.get('state') as string || '')
                     formDataToSubmit.append('zip', formData.get('zip') as string || '')
                     formDataToSubmit.append('consent', formData.get('consent') ? 'yes' : 'no')
+                    formDataToSubmit.append('smsTransactional', formData.get('smsTransactional') ? 'yes' : 'no')
+                    formDataToSubmit.append('smsMarketing', formData.get('smsMarketing') ? 'yes' : 'no')
                     formDataToSubmit.append('photoUrl', photoUrl) // Add photo URL instead of file
                     
                       formDataToSubmit.append('recaptcha-token', recaptchaResult.token)
@@ -1395,6 +1403,8 @@ export function Hero() {
                         state: formData.get('state'),
                         zip: formData.get('zip'),
                         consent: formData.get('consent') ? 'yes' : 'no',
+                        smsTransactional: formData.get('smsTransactional') ? 'yes' : 'no',
+                        smsMarketing: formData.get('smsMarketing') ? 'yes' : 'no',
                           hasRecaptcha: recaptchaResult.success
                       })
                       // Simulate network delay
@@ -1455,6 +1465,9 @@ export function Hero() {
                     <input name="honeypot-2" tabIndex={-1} autoComplete="off" />
                   </label>
                 </div>
+                <p id="core-upgrade-required-legend" className="text-xs text-gray-500 -mb-3">
+                  Fields marked with * are required.
+                </p>
                 <div className="upgrade-form-group">
                   <label className="upgrade-form-label" htmlFor="upgrade-firstName">First Name *</label>
                   <input 
@@ -1526,7 +1539,7 @@ export function Hero() {
                     <p className="upgrade-form-field-error">{fieldErrors.email}</p>
                   )}
                 </div>
-                
+
                 <div className="upgrade-form-group">
                   <label className="upgrade-form-label" htmlFor="upgrade-phone">Phone Number *</label>
                   <IMaskInput
@@ -1551,6 +1564,45 @@ export function Hero() {
                   {fieldErrors.phone && (
                     <p className="upgrade-form-field-error">{fieldErrors.phone}</p>
                   )}
+                  <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+                    By providing your phone number and selecting the checkboxes below, you consent to receive SMS messages from AC Drain Wiz.
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-4">
+                  <div className="flex flex-col">
+                    <label className={`upgrade-form-checkbox-label ${fieldErrors.smsTransactional ? 'upgrade-form-checkbox-label-error' : ''}`}>
+                      <input
+                        type="checkbox"
+                        name="smsTransactional"
+                        className={`upgrade-form-checkbox ${fieldErrors.smsTransactional ? 'upgrade-form-checkbox-error' : ''}`}
+                        onChange={() => {
+                          if (fieldErrors.smsTransactional) {
+                            setFieldErrors(prev => {
+                              const newErrors = { ...prev }
+                              delete newErrors.smsTransactional
+                              return newErrors
+                            })
+                          }
+                        }}
+                      />
+                      <span>
+                        I agree to receive SMS messages from AC Drain Wiz related to my inquiry, including support responses, appointment coordination, and service updates. Message frequency varies. Message and data rates may apply. Reply STOP to opt out at any time.
+                      </span>
+                    </label>
+                    {fieldErrors.smsTransactional && (
+                      <p className="upgrade-form-field-error">{fieldErrors.smsTransactional}</p>
+                    )}
+                  </div>
+                  <label className="upgrade-form-checkbox-label">
+                    <input type="checkbox" name="smsMarketing" className="upgrade-form-checkbox" />
+                    <span>
+                      I agree to receive occasional promotional messages from AC Drain Wiz, including product updates and special offers. Consent is optional and not required for service.
+                      <span className="block text-xs text-gray-500 mt-1 font-normal">
+                        Optional — promotional texts only.
+                      </span>
+                    </span>
+                  </label>
                 </div>
                 
                 <div className="upgrade-form-group">
@@ -1780,6 +1832,10 @@ export function Hero() {
                     <p className="upgrade-form-field-error">{fieldErrors.consent}</p>
                   )}
                 </div>
+
+                <p className="text-xs text-gray-500 leading-relaxed -mt-2 mb-4">
+                  AC Drain Wiz does not share SMS opt-in data with third parties for marketing purposes.
+                </p>
                 
                 <div className="upgrade-form-actions">
                   <button type="button" onClick={() => {

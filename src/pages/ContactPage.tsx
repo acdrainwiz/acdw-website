@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { IMaskInput } from 'react-imask'
 import { DayPicker } from 'react-day-picker'
@@ -35,6 +35,9 @@ type ContactFormType = 'general' | 'support' | 'sales' | 'installer' | 'demo'
 // Character limit for message field
 const MESSAGE_MAX_LENGTH = 2000
 
+const SMS_TRANSACTIONAL_REQUIRED_MSG =
+  'When you include a phone number, check the first box below to consent to transactional SMS.'
+
 interface FormData {
   firstName: string
   lastName: string
@@ -45,6 +48,10 @@ interface FormData {
   message: string
   referralSource: string
   consent: boolean
+  /** Required when phone has 10+ digits (transactional SMS, A2P 10DLC). */
+  smsTransactional: boolean
+  /** Optional marketing SMS. */
+  smsMarketing: boolean
   // Support-specific
   product?: string
   issueType?: string
@@ -148,14 +155,24 @@ export function ContactPage() {
     message: '',
     referralSource: '',
     consent: false,
+    smsTransactional: false,
+    smsMarketing: false,
     productsOfInterest: []
   })
+
+  const formDataRef = useRef(formData)
+  formDataRef.current = formData
+  const latestPhoneMaskedRef = useRef('')
 
   // Update form type when URL changes
   useEffect(() => {
     const newType = getFormTypeFromURL()
     setActiveFormType(newType)
   }, [location.search])
+
+  useEffect(() => {
+    latestPhoneMaskedRef.current = formData.phone
+  }, [formData.phone])
 
   // Update URL when tab changes (without reload)
   const handleTabChange = (type: ContactFormType) => {
@@ -249,6 +266,13 @@ export function ContactPage() {
           return 'Please accept the privacy policy to continue'
         }
         break
+      case 'smsTransactional': {
+        const digits = formData.phone.replace(/\D/g, '').length
+        if (digits >= 10 && !value) {
+          return SMS_TRANSACTIONAL_REQUIRED_MSG
+        }
+        break
+      }
     }
     return ''
   }
@@ -383,7 +407,7 @@ export function ContactPage() {
     
     // Validate all fields
     const errors: Record<string, string> = {}
-    const fieldsToValidate = ['firstName', 'lastName', 'email', 'message', 'consent']
+    const fieldsToValidate = ['firstName', 'lastName', 'email', 'message', 'consent', 'smsTransactional']
     
     // Add form-specific required fields
     if (activeFormType === 'sales' || activeFormType === 'demo') {
@@ -463,6 +487,8 @@ export function ContactPage() {
       message: formData.message,
       referralSource: formData.referralSource || '',
       consent: formData.consent ? 'yes' : 'no',
+      smsTransactional: formData.smsTransactional ? 'yes' : 'no',
+      smsMarketing: formData.smsMarketing ? 'yes' : 'no',
       'form-load-time': formLoadTime.toString(), // Include form load time for behavioral analysis
         'recaptcha-token': recaptchaResult.token,
     }
@@ -525,6 +551,8 @@ export function ContactPage() {
         message: '',
         referralSource: '',
         consent: false,
+        smsTransactional: false,
+        smsMarketing: false,
         product: '',
         issueType: '',
         priority: '',
@@ -581,6 +609,8 @@ export function ContactPage() {
           message: '',
           referralSource: '',
           consent: false,
+          smsTransactional: false,
+          smsMarketing: false,
           product: '',
           issueType: '',
           priority: '',
@@ -710,10 +740,11 @@ export function ContactPage() {
 
                 <form 
                   onSubmit={handleSubmit} 
-                  className="contact-form-field"
+                  className="flex flex-col gap-6"
                   name={`contact-${activeFormType}`}
                   data-netlify-honeypot="bot-field"
                   noValidate
+                  aria-describedby="contact-required-legend"
                 >
                   {/* Hidden Fields for Netlify */}
                   <input type="hidden" name="form-name" value={`contact-${activeFormType}`} />
@@ -732,6 +763,10 @@ export function ContactPage() {
                       Don't fill this out if you're human: <input name="bot-field" />
                     </label>
             </div>
+
+                  <p id="contact-required-legend" className="text-xs text-gray-500 -mb-2">
+                    Fields marked with * are required.
+                  </p>
                   
                   {/* Common Fields */}
                   <div className="contact-form-grid">
@@ -797,7 +832,7 @@ export function ContactPage() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
+                <div className="order-2 md:order-1">
                       <label htmlFor="phone" className="contact-form-label">
                         Phone Number
                       </label>
@@ -808,16 +843,49 @@ export function ContactPage() {
                         name="phone"
                         value={formData.phone}
                         onAccept={(value) => {
+                          latestPhoneMaskedRef.current = value
                           const event = {
                             target: { name: 'phone', value, type: 'tel' }
                           } as React.ChangeEvent<HTMLInputElement>
                           handleInputChange(event)
+                          const digits = value.replace(/\D/g, '').length
+                          if (digits < 10) {
+                            setFieldErrors(prev => {
+                              if (!prev.smsTransactional) return prev
+                              const next = { ...prev }
+                              delete next.smsTransactional
+                              return next
+                            })
+                          }
                         }}
                         onBlur={() => {
                           const event = {
                             target: { name: 'phone', value: formData.phone, type: 'tel' }
                           } as React.FocusEvent<HTMLInputElement>
                           handleBlur(event)
+                          window.setTimeout(() => {
+                            const fd = formDataRef.current
+                            const digits = fd.phone.replace(/\D/g, '').length
+                            if (digits >= 10) {
+                              setTouchedFields(prev => ({ ...prev, smsTransactional: true }))
+                              setFieldErrors(prev => {
+                                const next = { ...prev }
+                                if (!fd.smsTransactional) {
+                                  next.smsTransactional = SMS_TRANSACTIONAL_REQUIRED_MSG
+                                } else {
+                                  delete next.smsTransactional
+                                }
+                                return next
+                              })
+                            } else {
+                              setFieldErrors(prev => {
+                                if (!prev.smsTransactional) return prev
+                                const next = { ...prev }
+                                delete next.smsTransactional
+                                return next
+                              })
+                            }
+                          }, 0)
                         }}
                         className={`input ${fieldErrors.phone ? 'input-error' : ''}`}
                         placeholder="(555) 123-4567"
@@ -826,9 +894,12 @@ export function ContactPage() {
                       {fieldErrors.phone && (
                         <p className="field-error-message">{fieldErrors.phone}</p>
                       )}
+                      <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+                        By providing your phone number and selecting the checkboxes below, you consent to receive SMS messages from AC Drain Wiz.
+                      </p>
                     </div>
                     {activeFormType !== 'installer' && (
-                      <div>
+                      <div className="order-1 md:order-2">
                         <label htmlFor="company" className="contact-form-label">
                           Company {activeFormType === 'sales' || activeFormType === 'demo' ? '*' : ''}
                   </label>
@@ -849,6 +920,44 @@ export function ContactPage() {
                 </div>
                     )}
                 </div>
+
+                  <div className="flex flex-col gap-4">
+                    <div className="flex flex-col">
+                      <label className="flex items-start gap-3 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          name="smsTransactional"
+                          checked={formData.smsTransactional}
+                          onChange={handleInputChange}
+                          onBlur={handleBlur}
+                          className={`mt-1 h-4 w-4 shrink-0 text-primary-600 focus:ring-primary-500 border-gray-300 rounded ${fieldErrors.smsTransactional ? 'border-red-500' : ''}`}
+                        />
+                        <span className="text-sm text-gray-600 leading-snug">
+                          I agree to receive SMS messages from AC Drain Wiz related to my inquiry, including support responses, appointment coordination, and service updates. Message frequency varies. Message and data rates may apply. Reply STOP to opt out at any time.
+                          <span className="block text-xs text-gray-500 mt-1">Required if you provide a phone number.</span>
+                        </span>
+                      </label>
+                      {fieldErrors.smsTransactional && (
+                        <p className="field-error-message ml-1">{fieldErrors.smsTransactional}</p>
+                      )}
+                    </div>
+                    <label className="flex items-start gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="smsMarketing"
+                        checked={formData.smsMarketing}
+                        onChange={handleInputChange}
+                        onBlur={handleBlur}
+                        className="mt-1 h-4 w-4 shrink-0 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      <span className="text-sm text-gray-600 leading-snug">
+                        I agree to receive occasional promotional messages from AC Drain Wiz, including product updates and special offers. Consent is optional and not required for service.
+                        <span className="block text-xs text-gray-500 mt-1">
+                          Optional — promotional texts only.
+                        </span>
+                      </span>
+                    </label>
+                  </div>
 
                   {/* How did you hear about us - for general, sales, and demo */}
                   {(activeFormType === 'general' || activeFormType === 'sales' || activeFormType === 'demo') && (
@@ -1573,8 +1682,8 @@ export function ContactPage() {
               </div>
 
                   {/* Privacy Consent */}
-                  <div className="mt-6">
-                    <label className="flex items-start">
+                  <div>
+                    <label className="flex items-start gap-3">
                       <input
                         type="checkbox"
                         name="consent"
@@ -1582,14 +1691,16 @@ export function ContactPage() {
                         onChange={handleInputChange}
                         onBlur={handleBlur}
                         required
-                        className={`mt-1 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded ${fieldErrors.consent ? 'border-red-500' : ''}`}
+                        className={`mt-1 h-4 w-4 shrink-0 text-primary-600 focus:ring-primary-500 border-gray-300 rounded ${fieldErrors.consent ? 'border-red-500' : ''}`}
                       />
-                      <span className="ml-2 text-sm text-gray-600">
-                        I agree to the <button type="button" onClick={() => navigate('/privacy-policy')} className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</button> and consent to AC Drain Wiz contacting me via email or phone regarding my inquiry. *
+                      <span className="text-sm text-gray-600 leading-snug">
+                        I agree to the{' '}
+                        <button type="button" onClick={() => navigate('/privacy-policy')} className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</button>
+                        {' '}and consent to AC Drain Wiz contacting me regarding my inquiry. *
                       </span>
                     </label>
                     {fieldErrors.consent && (
-                      <p className="field-error-message ml-6">{fieldErrors.consent}</p>
+                      <p className="field-error-message ml-1">{fieldErrors.consent}</p>
                     )}
                   </div>
 
@@ -1641,6 +1752,10 @@ export function ContactPage() {
                       <div className="text-sm text-red-700">{submitError}</div>
                     </div>
                   )}
+
+                  <p className="text-xs text-gray-500 mt-4 mb-2 leading-relaxed">
+                    AC Drain Wiz does not share SMS opt-in data with third parties for marketing purposes.
+                  </p>
 
               <button
                 type="submit"
