@@ -55,6 +55,7 @@ export function PrivacyPolicyPage() {
               <a href="#information-we-collect" className="text-primary-600 hover:text-primary-700">→ Information We Collect</a>
               <a href="#how-we-use" className="text-primary-600 hover:text-primary-700">→ How We Use Your Information</a>
               <a href="#sharing" className="text-primary-600 hover:text-primary-700">→ Information Sharing</a>
+              <a href="#sms-text-messages" className="text-primary-600 hover:text-primary-700">→ SMS & Text Messages</a>
               <a href="#your-rights" className="text-primary-600 hover:text-primary-700">→ Your Privacy Rights</a>
               <a href="#security" className="text-primary-600 hover:text-primary-700">→ Data Security</a>
               <a href="#contact" className="text-primary-600 hover:text-primary-700">→ Contact Us</a>
@@ -214,11 +215,71 @@ export function PrivacyPolicyPage() {
             </div>
           </div>
 
-          {/* Section 4: Your Privacy Rights */}
+          {/* Section 4: SMS / Text Message Communications */}
+          <div id="sms-text-messages" className="mb-12">
+            <div className="flex items-center mb-4">
+              <ChatBubbleLeftRightIcon className="h-8 w-8 text-primary-600 mr-3" />
+              <h2 className="heading-2">4. SMS / Text Message Communications</h2>
+            </div>
+
+            <div className="space-y-4">
+              <p className="text-gray-700">
+                AC Drain Wiz operates an SMS/text messaging program for customers and prospects who provide their mobile phone number and affirmatively consent to receive text messages. This section explains how you opt in, what you'll receive, how often, and how your mobile information is handled.
+              </p>
+
+              <div className="bg-white border border-gray-200 rounded-lg p-6">
+                <h3 className="font-semibold text-gray-900 mb-3">How You Opt In</h3>
+                <p className="text-gray-700 mb-3">
+                  You may opt in to receive text messages from AC Drain Wiz only through affirmative, express consent. Opt-in methods include:
+                </p>
+                <ul className="list-disc pl-6 space-y-2 text-gray-700">
+                  <li>Checking the SMS consent box next to your phone number when you submit a contact, sales, demo, or installer form on our website</li>
+                  <li>Checking an optional promotional-messages checkbox where offered</li>
+                  <li>Providing express written consent through another AC Drain Wiz channel (such as a signed order or account form) that clearly references text-message consent</li>
+                </ul>
+                <p className="text-gray-700 mt-3 text-sm">
+                  SMS consent is never a condition of purchase. If you provide a phone number without opting in, we will contact you only by email or voice call regarding your inquiry.
+                </p>
+              </div>
+
+              <div className="bg-white border border-gray-200 rounded-lg p-6">
+                <h3 className="font-semibold text-gray-900 mb-3">Types of Messages and Frequency</h3>
+                <p className="text-gray-700 mb-3">
+                  Our SMS program includes two separate categories of messages, each with its own consent:
+                </p>
+                <ul className="list-disc pl-6 space-y-2 text-gray-700">
+                  <li><strong>Transactional / Service Messages:</strong> Replies to your inquiry, scheduling and appointment coordination, order and shipping updates, account notifications, support follow-ups, and other service communications tied to your request.</li>
+                  <li><strong>Promotional Messages (optional):</strong> Product announcements, company updates, and special offers — sent only if you separately opt in to marketing texts.</li>
+                </ul>
+                <p className="text-gray-700 mt-3">
+                  Message frequency varies based on your inquiry and account activity. You will not receive more messages than reasonably necessary for the purpose you consented to.
+                </p>
+              </div>
+
+              <div className="bg-amber-50 border-2 border-amber-300 rounded-lg p-6">
+                <h3 className="font-semibold text-gray-900 mb-3">No Sharing of Mobile Information</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  <strong>No mobile information will be shared with third parties or affiliates for marketing or promotional purposes.</strong> Information sharing to subcontractors in support services, such as customer service, message-delivery platforms, and CRM providers, is permitted solely to operate the SMS program on our behalf. These subcontractors are bound by confidentiality obligations and may not use your mobile information for their own marketing.
+                </p>
+              </div>
+
+              <div className="bg-white border border-gray-200 rounded-lg p-6">
+                <h3 className="font-semibold text-gray-900 mb-3">Opting Out and Getting Help</h3>
+                <p className="text-gray-700 mb-3">
+                  You may stop receiving text messages from AC Drain Wiz at any time by replying <strong>STOP</strong> to any message you receive from us. For assistance, reply <strong>HELP</strong> or contact us at <a href="mailto:privacy@acdrainwiz.com" className="text-primary-600 hover:text-primary-700 underline">privacy@acdrainwiz.com</a>.
+                </p>
+                <p className="text-gray-700 text-sm">
+                  Message and data rates may apply; check with your mobile carrier for details. Carriers are not liable for delayed or undelivered messages. You must be 18 years of age or older to opt in to our SMS program.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 5: Your Privacy Rights */}
           <div id="your-rights" className="mb-12">
             <div className="flex items-center mb-4">
               <ShieldCheckIcon className="h-8 w-8 text-primary-600 mr-3" />
-              <h2 className="heading-2">4. Your Privacy Rights</h2>
+              <h2 className="heading-2">5. Your Privacy Rights</h2>
             </div>
             
             <div className="bg-white border border-gray-200 rounded-lg p-6">
@@ -260,11 +321,11 @@ export function PrivacyPolicyPage() {
             </div>
           </div>
 
-          {/* Section 5: Data Security */}
+          {/* Section 6: Data Security */}
           <div id="security" className="mb-12">
             <div className="flex items-center mb-4">
               <LockClosedIcon className="h-8 w-8 text-primary-600 mr-3" />
-              <h2 className="heading-2">5. Data Security</h2>
+              <h2 className="heading-2">6. Data Security</h2>
             </div>
             
             <div className="bg-white border border-gray-200 rounded-lg p-6">
@@ -284,9 +345,9 @@ export function PrivacyPolicyPage() {
             </div>
           </div>
 
-          {/* Section 6: Cookies and Tracking */}
+          {/* Section 7: Cookies and Tracking */}
           <div id="cookies" className="mb-12">
-            <h2 className="heading-2 mb-4">6. Cookies and Tracking Technologies</h2>
+            <h2 className="heading-2 mb-4">7. Cookies and Tracking Technologies</h2>
             
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <p className="text-gray-700 mb-4">
@@ -309,9 +370,9 @@ export function PrivacyPolicyPage() {
             </div>
           </div>
 
-          {/* Section 7: Children's Privacy */}
+          {/* Section 8: Children's Privacy */}
           <div className="mb-12">
-            <h2 className="heading-2 mb-4">7. Children's Privacy</h2>
+            <h2 className="heading-2 mb-4">8. Children's Privacy</h2>
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <p className="text-gray-700">
                 Our services are not directed to individuals under the age of 18. We do not knowingly collect personal information from children. If you believe we have collected information from a child, please contact us immediately.
@@ -319,9 +380,9 @@ export function PrivacyPolicyPage() {
             </div>
           </div>
 
-          {/* Section 8: International Data Transfers */}
+          {/* Section 9: International Data Transfers */}
           <div className="mb-12">
-            <h2 className="heading-2 mb-4">8. International Data Transfers</h2>
+            <h2 className="heading-2 mb-4">9. International Data Transfers</h2>
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <p className="text-gray-700">
                 Your information may be transferred to and processed in the United States or other countries where our service providers operate. By using our services, you consent to these transfers. We ensure appropriate safeguards are in place to protect your information.
@@ -329,9 +390,9 @@ export function PrivacyPolicyPage() {
             </div>
           </div>
 
-          {/* Section 9: Data Retention */}
+          {/* Section 10: Data Retention */}
           <div className="mb-12">
-            <h2 className="heading-2 mb-4">9. Data Retention</h2>
+            <h2 className="heading-2 mb-4">10. Data Retention</h2>
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <p className="text-gray-700">
                 We retain your personal information for as long as necessary to fulfill the purposes outlined in this policy, unless a longer retention period is required or permitted by law. When we no longer need your information, we will securely delete or anonymize it.
@@ -339,9 +400,9 @@ export function PrivacyPolicyPage() {
             </div>
           </div>
 
-          {/* Section 10: Changes to Privacy Policy */}
+          {/* Section 11: Changes to Privacy Policy */}
           <div className="mb-12">
-            <h2 className="heading-2 mb-4">10. Changes to This Privacy Policy</h2>
+            <h2 className="heading-2 mb-4">11. Changes to This Privacy Policy</h2>
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <p className="text-gray-700">
                 We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new policy on this page and updating the "Last Updated" date. We encourage you to review this policy periodically.
@@ -353,7 +414,7 @@ export function PrivacyPolicyPage() {
           <div id="contact" className="mb-12">
             <div className="flex items-center mb-4">
               <EnvelopeIcon className="h-8 w-8 text-primary-600 mr-3" />
-              <h2 className="heading-2">11. Contact Us</h2>
+              <h2 className="heading-2">12. Contact Us</h2>
             </div>
             
             <div className="bg-primary-50 border border-primary-200 rounded-lg p-6">

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { EnvelopeIcon, PhoneIcon, MapPinIcon } from '@heroicons/react/24/outline'
+import { EnvelopeIcon, PhoneIcon, MapPinIcon, ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline'
 import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
 
@@ -62,7 +62,8 @@ export function TermsOfUsePage() {
               <a href="#reviews" className="text-primary-600 hover:text-primary-700">→ 5. Reviews and Legacy Products</a>
               <a href="#user-conduct" className="text-primary-600 hover:text-primary-700">→ 6. User Conduct</a>
               <a href="#ip" className="text-primary-600 hover:text-primary-700">→ 7. Intellectual Property</a>
-              <a href="#contact" className="text-primary-600 hover:text-primary-700">→ 20. Contact Information</a>
+              <a href="#sms-program" className="text-primary-600 hover:text-primary-700">→ 20. SMS / Text Messaging Program</a>
+              <a href="#contact" className="text-primary-600 hover:text-primary-700">→ 21. Contact Information</a>
             </div>
           </div>
 
@@ -384,11 +385,81 @@ export function TermsOfUsePage() {
             </div>
           </div>
 
-          {/* Section 20 - Contact */}
+          {/* Section 20 - SMS/Text Messaging Program */}
+          <div id="sms-program" className="mb-12">
+            <div className="flex items-center mb-4">
+              <ChatBubbleLeftRightIcon className="h-8 w-8 text-primary-600 mr-3" />
+              <h2 className="heading-2">20. SMS / Text Messaging Program</h2>
+            </div>
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                By providing your mobile phone number and affirmatively opting in (for example, by checking an SMS consent box on a form on the Site), you agree to receive text messages from AC Drain Wiz on the terms set forth in this Section and our Privacy Policy.
+              </p>
+
+              <div className="bg-white border border-gray-200 rounded-lg p-6">
+                <h3 className="font-semibold text-gray-900 mb-3">20.1 Program Description and Use Cases</h3>
+                <p className="text-gray-700 leading-relaxed mb-3">
+                  The AC Drain Wiz SMS program sends two categories of messages, each requiring its own separate consent:
+                </p>
+                <ul className="list-disc pl-6 space-y-2 text-gray-700">
+                  <li>
+                    <strong>Transactional / Service Messages.</strong> Replies to inquiries you submit; scheduling and appointment coordination; order confirmations and shipping or delivery updates; account and authentication notifications; installer dispatch and service follow-ups; support alerts; and other communications directly tied to a request you initiated.
+                  </li>
+                  <li>
+                    <strong>Promotional Messages (optional).</strong> Product announcements, company updates, news, and special offers. You will receive these only if you separately check the optional promotional-messages box; promotional consent is never required to purchase or use our products or services.
+                  </li>
+                </ul>
+                <p className="text-gray-700 leading-relaxed mt-3">
+                  Message frequency varies based on your inquiry and account activity. You will not receive more messages than reasonably necessary for the purpose you consented to.
+                </p>
+              </div>
+
+              <div className="bg-white border border-gray-200 rounded-lg p-6">
+                <h3 className="font-semibold text-gray-900 mb-3">20.2 Opt-Out Instructions</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  <strong>To stop receiving messages, reply STOP to any text message.</strong> You will receive one final confirmation message and no further texts from the applicable program. To re-subscribe, opt in again through our forms or contact us. For help at any time, reply <strong>HELP</strong> or email <a href="mailto:privacy@acdrainwiz.com" className="text-primary-600 hover:text-primary-700 underline">privacy@acdrainwiz.com</a>.
+                </p>
+              </div>
+
+              <div className="bg-white border border-gray-200 rounded-lg p-6">
+                <h3 className="font-semibold text-gray-900 mb-3">20.3 Message and Data Rates</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  <strong>Message and data rates may apply. Check with your carrier for details.</strong> AC Drain Wiz does not charge for text messages, but your mobile carrier may charge you for each message sent or received depending on your plan.
+                </p>
+              </div>
+
+              <div className="bg-white border border-gray-200 rounded-lg p-6">
+                <h3 className="font-semibold text-gray-900 mb-3">20.4 Carrier Liability Disclaimer</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  <strong>Carriers are not liable for delayed or undelivered messages.</strong> Delivery of text messages is subject to the effective transmission by your wireless carrier and is not guaranteed. AC Drain Wiz is not responsible for messages that are delayed, undelivered, misdirected, or intercepted due to factors outside our reasonable control.
+                </p>
+              </div>
+
+              <div className="bg-white border border-gray-200 rounded-lg p-6">
+                <h3 className="font-semibold text-gray-900 mb-3">20.5 Age Restriction</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  <strong>You must be 18 years of age or older to use this SMS service.</strong> By opting in, you represent and warrant that you are at least 18 years old and that the mobile number you provided belongs to you or that you have authority to consent to receive text messages at that number.
+                </p>
+              </div>
+
+              <div className="bg-white border border-gray-200 rounded-lg p-6">
+                <h3 className="font-semibold text-gray-900 mb-3">20.6 Supported Carriers and Changes</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  The program is available through major U.S. wireless carriers. Carriers are not liable for delayed or undelivered messages. AC Drain Wiz may modify, suspend, or terminate the SMS program or any individual message category at any time, without prior notice, and without liability. Continued participation after changes constitutes acceptance of the updated terms.
+                </p>
+              </div>
+
+              <p className="text-gray-700 leading-relaxed">
+                For a full description of how your mobile information is collected, used, and protected — including our commitment that no mobile information will be shared with third parties or affiliates for marketing or promotional purposes — please review our <button onClick={() => navigate('/privacy-policy')} className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</button>.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 21 - Contact */}
           <div id="contact" className="mb-12">
             <div className="flex items-center mb-4">
               <EnvelopeIcon className="h-8 w-8 text-primary-600 mr-3" />
-              <h2 className="heading-2">20. Contact Information</h2>
+              <h2 className="heading-2">21. Contact Information</h2>
             </div>
             <div className="bg-primary-50 border border-primary-200 rounded-lg p-6">
               <div className="space-y-2 text-gray-700">
