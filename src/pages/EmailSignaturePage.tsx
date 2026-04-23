@@ -33,7 +33,7 @@ function EmailSignatureContent() {
   const [mobile, setMobile] = useState('')
   const [includeMobileInSignature, setIncludeMobileInSignature] = useState(true)
   const [email, setEmail] = useState('')
-  /** Optional booking URL (Calendly, Microsoft Bookings, etc.) — shown as a link under role in the signature. */
+  /** Optional public booking URL (GHL; Outlook is connected via GHL) — shown as a link under role in the signature. */
   const [appointmentUrl, setAppointmentUrl] = useState('')
 
   // Validation state
@@ -43,6 +43,7 @@ function EmailSignatureContent() {
   // Modal state
   const [desktopModalOpen, setDesktopModalOpen] = useState(false)
   const [office365ModalOpen, setOffice365ModalOpen] = useState(false)
+  const [ghlCalendarModalOpen, setGhlCalendarModalOpen] = useState(false)
 
   // Instruction guide content
   const desktopGuideContent = `# How to Add/Update Your Email Signature in Outlook Desktop
@@ -56,7 +57,7 @@ Follow these steps to add or update your email signature in the Outlook desktop 
    - **Full Name** (required)
    - **Job Title** (required)
    - **Role/Department** (required) - Select from dropdown or choose "Custom"
-   - **Book appointment / scheduling link** (optional) - Paste your scheduling URL; the signature uses the link text &ldquo;Schedule an appointment&rdquo;
+   - **Book appointment / scheduling link** (optional) - Paste your **Go High Level** public booking link (Outlook calendar sync is set up in GHL; see the generator&rsquo;s GHL guide). The signature uses the link text &ldquo;Schedule an appointment&rdquo;
    - **Mobile Phone** (optional) - Will auto-format as you type
    - **Include mobile number in signature** (optional) - Uncheck if you prefer not to show your cell number on your corporate signature
    - **Email Address** (required)
@@ -174,7 +175,7 @@ Follow these steps to add or update your email signature in Outlook 365 (the web
    - **Full Name** (required)
    - **Job Title** (required)
    - **Role/Department** (required) - Select from dropdown or choose "Custom"
-   - **Book appointment / scheduling link** (optional) - Paste your scheduling URL; the signature uses the link text &ldquo;Schedule an appointment&rdquo;
+   - **Book appointment / scheduling link** (optional) - Paste your **Go High Level** public booking link (Outlook calendar sync is set up in GHL; see the generator&rsquo;s GHL guide). The signature uses the link text &ldquo;Schedule an appointment&rdquo;
    - **Mobile Phone** (optional) - Will auto-format as you type
    - **Include mobile number in signature** (optional) - Uncheck if you prefer not to show your cell number on your corporate signature
    - **Email Address** (required)
@@ -313,6 +314,40 @@ If you encounter any issues:
 - Outlook 365: https://outlook.office.com
 - Logo URL: https://acdrainwiz.com/images/ac-drain-wiz-logo-signature.png
 - Miami HEAT (signature): ${MIAMI_HEAT_SPONSORSHIP_BADGE_URL}`
+
+  const ghlCalendarGuideContent = `# Go High Level: calendar sync and your booking link
+
+**Calendar sync and Outlook connection happen in Go High Level (GHL),** not in Outlook’s signature screen and not on this page. The links below are the official walkthroughs—open them, follow the steps, and you’ll be set up to sync and avoid double-booking where your GHL and Microsoft settings allow.
+
+- **Connect Microsoft Outlook in HighLevel:** https://help.gohighlevel.com/en/support/solutions/articles/155000002371  
+- **Linked and conflict calendars** (so busy times show the way you expect): https://help.gohighlevel.com/support/solutions/articles/155000002374-setting-up-linked-calendars-conflict-calendars  
+
+For policy questions (which mailbox, permissions, on‑prem Exchange, etc.) use GHL’s article notes, your **GHL admin**, or your **IT** / Microsoft admin.
+
+When Outlook and calendars are configured in GHL, use the next sections only to copy a **public** booking URL into the AC Drain Wiz signature generator.
+
+---
+
+## Get the public booking link
+
+1. In the right **GHL sub-account (location)**, go to **Settings** → **Calendars** and open the calendar you use for booking.
+2. Use **Share** (often top right) and copy the **permanent** / **scheduling** booking link.
+3. New calendar? HighLevel’s booking calendar setup: https://help.gohighlevel.com/en/support/solutions/articles/155000005061
+
+---
+
+## Add the link in this email signature generator
+
+1. On this page, fill in your name, title, and department, then **paste** the public URL in the **scheduling / booking** field.
+2. The preview line **Schedule an appointment** uses the link you pasted.
+3. Click **Copy Signature to Clipboard** and add the signature in Outlook using the **Add the signature in Outlook** guides in the setup area on this page.
+
+## If something fails
+
+- **GHL (OAuth, disconnected integration):** GHL help or your GHL admin.  
+- **Microsoft / M365:** your IT or Microsoft admin.  
+- This page only **stores and copies** the URL in your signature preview—it does not connect GHL to Outlook.
+`
 
   const departments = [
     'Marketing & Business Development',
@@ -826,8 +861,11 @@ If you encounter any issues:
                   Scheduling / booking link <span className="text-gray-400 font-normal">(optional)</span>
                 </label>
                 <p className="text-xs text-gray-500 mb-2">
-                  Paste a Calendly, Microsoft Bookings, or other scheduling URL. It appears under your department as
-                  the link &ldquo;Schedule an appointment&rdquo;.
+                  Optional: paste a public <span className="whitespace-nowrap">https</span> booking link from{' '}
+                  <span className="font-medium text-gray-600">Go High Level</span> (Outlook sync is configured in
+                  GHL, not on this page). It appears as &ldquo;Schedule an appointment.&rdquo; Use the GHL help links
+                  in the guide to connect Outlook and sync your calendar, then paste your <em>permanent</em> Share
+                  link here. See the GHL block in the setup area below.
                 </p>
                 <input
                   id="email-sig-appointment-url"
@@ -850,7 +888,7 @@ If you encounter any issues:
                     }
                   }}
                   onBlur={() => handleBlur('appointmentUrl')}
-                  placeholder="https://calendly.com/your-link or https://outlook.office.com/bookings/…"
+                  placeholder="https://... (GHL public booking link from Share, per guide)"
                   className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
                     touched.appointmentUrl && errors.appointmentUrl
                       ? 'border-red-500 focus:ring-red-500'
@@ -979,25 +1017,54 @@ If you encounter any issues:
           </div>
 
           {/* Instructions */}
-          <div className="mt-8 p-4 bg-blue-50 rounded-lg">
-            <h3 className="font-semibold text-gray-900 mb-4">Setup Instructions:</h3>
-            <div className="flex flex-col sm:flex-row gap-3 mb-4">
-              <button
-                onClick={() => setDesktopModalOpen(true)}
-                className="px-4 py-2 bg-white border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors text-sm"
-              >
-                📧 Outlook Desktop Guide
-              </button>
-              <button
-                onClick={() => setOffice365ModalOpen(true)}
-                className="px-4 py-2 bg-white border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors text-sm"
-              >
-                🌐 Outlook 365 (Web) Guide
-              </button>
+          <div className="mt-8 rounded-lg border border-blue-200/80 bg-blue-50/80 p-4 sm:p-5">
+            <h3 className="text-base font-semibold text-gray-900 mb-4">Setup instructions</h3>
+            <div className="space-y-6">
+              <section>
+                <h4 className="text-sm font-semibold text-gray-900">Add the signature in Outlook</h4>
+                <p className="mt-1.5 text-sm text-gray-600">
+                  These guides walk you through pasting the HTML you copied from the generator into Outlook, setting
+                  defaults, and what to do if the logo or layout looks off. Use <span className="whitespace-nowrap">desktop</span> or
+                  the <span className="whitespace-nowrap">web</span> app, whichever matches how you work.
+                </p>
+                <div className="mt-3 flex flex-col sm:flex-row sm:flex-wrap gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setDesktopModalOpen(true)}
+                    className="px-4 py-2 bg-white border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors text-sm w-full sm:w-auto"
+                  >
+                    Outlook Desktop Guide
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setOffice365ModalOpen(true)}
+                    className="px-4 py-2 bg-white border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors text-sm w-full sm:w-auto"
+                  >
+                    Outlook 365 (Web) Guide
+                  </button>
+                </div>
+              </section>
+
+              <section className="border-t border-blue-200 pt-5">
+                <h4 className="text-sm font-semibold text-gray-900">Go High Level: public booking link</h4>
+                <p className="mt-1.5 text-sm text-gray-600">
+                  The scheduling field is optional. To sync <span className="whitespace-nowrap">Outlook</span> with
+                  <span className="whitespace-nowrap"> Go High Level (GHL)</span>, use the official GHL help links in the
+                  guide (Outlook integration and linked calendars). After that, come back and paste your{' '}
+                  <em>permanent</em> public booking link—not a one-time link—so &ldquo;Schedule an appointment&rdquo;
+                  is correct in your signature.
+                </p>
+                <div className="mt-3 flex w-full sm:justify-start">
+                  <button
+                    type="button"
+                    onClick={() => setGhlCalendarModalOpen(true)}
+                    className="px-4 py-2 bg-white border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors text-sm w-full sm:w-auto"
+                  >
+                    Go High Level and scheduling link
+                  </button>
+                </div>
+              </section>
             </div>
-            <p className="text-sm text-gray-600">
-              Click the buttons above to view detailed step-by-step instructions for adding your signature to Outlook.
-            </p>
           </div>
         </div>
       </div>
@@ -1014,6 +1081,12 @@ If you encounter any issues:
         onClose={() => setOffice365ModalOpen(false)}
         title="Outlook 365 (Web) Setup Guide"
         content={office365GuideContent}
+      />
+      <InstructionModal
+        isOpen={ghlCalendarModalOpen}
+        onClose={() => setGhlCalendarModalOpen(false)}
+        title="Go High Level calendar and booking link"
+        content={ghlCalendarGuideContent}
       />
     </div>
   )
