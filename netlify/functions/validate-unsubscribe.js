@@ -16,6 +16,26 @@ const { validateSubmissionBehavior } = require('./utils/behavioral-analysis')
 const { validateEmailDomain } = require('./utils/email-domain-validator')
 const { initBlobsStores, getUnsubscribeStore } = require('./utils/blobs-store')
 const { getSecurityHeaders } = require('./utils/cors-config')
+const ghlClient = require('./utils/ghl-client')
+
+// Comma-separated origin allowlist for preview/branch deploys. Supports glob `*`.
+const EXTRA_ORIGIN_ENTRIES = (process.env.EXTRA_ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean)
+
+function originAllowedByExtra(origin) {
+  if (!origin) return false
+  for (const entry of EXTRA_ORIGIN_ENTRIES) {
+    if (entry.includes('*')) {
+      const pattern = '^' + entry.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '[^/]*') + '$'
+      if (new RegExp(pattern).test(origin)) return true
+    } else if (origin.startsWith(entry)) {
+      return true
+    }
+  }
+  return false
+}
 
 
 const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY
@@ -209,11 +229,11 @@ exports.handler = async (event, context) => {
       'http://localhost:5173', // Development
       'http://localhost:8888', // Netlify dev
     ]
-    
-    const hasValidOrigin = ALLOWED_ORIGINS.some(allowedOrigin => 
+
+    const hasValidOrigin = ALLOWED_ORIGINS.some(allowedOrigin =>
       origin.startsWith(allowedOrigin)
-    )
-    
+    ) || originAllowedByExtra(origin)
+
     if (!hasValidOrigin && origin !== 'unknown') {
       logBotDetected('unsubscribe', 'invalid-origin', ip, userAgent, {
         origin,
@@ -560,39 +580,28 @@ exports.handler = async (event, context) => {
       // Don't fail the unsubscribe if Blobs fails - continue processing
     }
     
-    // Send notification email via Resend
-    const notificationUrl = event.headers.host 
-      ? `https://${event.headers.host}/.netlify/functions/send-unsubscribe-notification`
-      : 'https://acdrainwiz.com/.netlify/functions/send-unsubscribe-notification'
-    
+    // Route unsubscribe to GoHighLevel: sets DND on email channel + adds opted-out:all tag.
+    // GHL workflow triggered by opted-out:all sends the final confirmation and halts campaigns.
     try {
-      const notificationResponse = await fetch(notificationUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: sanitizedData.email,
-          reason: sanitizedData.reason,
-          feedback: sanitizedData.feedback,
-          ip,
-          userAgent
-        }),
+      const ghlResult = await ghlClient.submitForm('unsubscribe', sanitizedData)
+      console.log('✅ Unsubscribe routed to GHL:', {
+        contactId: ghlResult.contactId,
+        isNew: ghlResult.isNew,
+        traceId: ghlResult.traceId,
+        warnings: ghlResult.warnings.length || 0,
       })
-      
-      if (notificationResponse.ok) {
-        const notificationResult = await notificationResponse.json()
-        console.log('✅ Unsubscribe notification sent:', { messageId: notificationResult.messageId })
-      } else {
-        console.warn('⚠️ Failed to send notification email (unsubscribe still processed):', {
-          status: notificationResponse.status
-        })
+      if (ghlResult.warnings.length > 0) {
+        console.warn('⚠️ Unsubscribe GHL warnings:', ghlResult.warnings)
       }
-    } catch (notificationError) {
-      console.error('⚠️ Error sending notification email (unsubscribe still processed):', {
-        error: notificationError.message
+    } catch (ghlErr) {
+      console.error('❌ Unsubscribe GHL submission failed:', {
+        errorName: ghlErr && ghlErr.name,
+        message: ghlErr && ghlErr.message,
+        status: ghlErr && ghlErr.status,
+        traceId: ghlErr && ghlErr.traceId,
+        responseBody: ghlErr && ghlErr.responseBody,
+        email: trimmedEmail.substring(0, 3) + '***',
       })
-      // Don't fail the unsubscribe if notification fails - continue processing
     }
     
     // Success - return with rate limit headers
