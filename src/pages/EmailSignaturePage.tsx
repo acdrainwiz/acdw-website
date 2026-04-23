@@ -33,7 +33,9 @@ function EmailSignatureContent() {
   const [mobile, setMobile] = useState('')
   const [includeMobileInSignature, setIncludeMobileInSignature] = useState(true)
   const [email, setEmail] = useState('')
-  
+  /** Optional booking URL (Calendly, Microsoft Bookings, etc.) — shown as a link under role in the signature. */
+  const [appointmentUrl, setAppointmentUrl] = useState('')
+
   // Validation state
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
@@ -54,6 +56,7 @@ Follow these steps to add or update your email signature in the Outlook desktop 
    - **Full Name** (required)
    - **Job Title** (required)
    - **Role/Department** (required) - Select from dropdown or choose "Custom"
+   - **Book appointment / scheduling link** (optional) - Paste your scheduling URL; the signature uses the link text &ldquo;Schedule an appointment&rdquo;
    - **Mobile Phone** (optional) - Will auto-format as you type
    - **Include mobile number in signature** (optional) - Uncheck if you prefer not to show your cell number on your corporate signature
    - **Email Address** (required)
@@ -171,6 +174,7 @@ Follow these steps to add or update your email signature in Outlook 365 (the web
    - **Full Name** (required)
    - **Job Title** (required)
    - **Role/Department** (required) - Select from dropdown or choose "Custom"
+   - **Book appointment / scheduling link** (optional) - Paste your scheduling URL; the signature uses the link text &ldquo;Schedule an appointment&rdquo;
    - **Mobile Phone** (optional) - Will auto-format as you type
    - **Include mobile number in signature** (optional) - Uncheck if you prefer not to show your cell number on your corporate signature
    - **Email Address** (required)
@@ -311,7 +315,7 @@ If you encounter any issues:
 - Miami HEAT (signature): ${MIAMI_HEAT_SPONSORSHIP_BADGE_URL}`
 
   const departments = [
-    'Sales & Marketing',
+    'Marketing & Business Development',
     'Product Management',
     'Product Design',
     'Engineering',
@@ -319,7 +323,6 @@ If you encounter any issues:
     'Customer Success / Support',
     'Finance & Accounting',
     'Human Resources',
-    'Business Development',
     'Executive / Leadership',
     'Custom'
   ]
@@ -341,6 +344,29 @@ If you encounter any issues:
   }
 
   const displayRole = isCustomRole ? customRole : role
+
+  const normalizeHttpUrl = (raw: string): string | null => {
+    const t = raw.trim()
+    if (!t) return null
+    let candidate = t
+    if (!/^https?:\/\//i.test(candidate)) {
+      candidate = `https://${candidate}`
+    }
+    try {
+      const u = new URL(candidate)
+      if (u.protocol !== 'http:' && u.protocol !== 'https:') return null
+      return u.href
+    } catch {
+      return null
+    }
+  }
+
+  const escapeHtml = (s: string) =>
+    s
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
 
   // Validation functions
   const validateName = (value: string): string | null => {
@@ -389,6 +415,14 @@ If you encounter any issues:
     return null
   }
 
+  const validateOptionalAppointmentUrl = (value: string): string | null => {
+    if (!value || value.trim().length === 0) return null
+    if (!normalizeHttpUrl(value)) {
+      return 'Use a valid http(s) link (you can paste with or without https://)'
+    }
+    return null
+  }
+
   // Validate all fields
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {}
@@ -409,7 +443,10 @@ If you encounter any issues:
     
     const emailError = validateEmailField(email)
     if (emailError) newErrors.email = emailError
-    
+
+    const appointmentError = validateOptionalAppointmentUrl(appointmentUrl)
+    if (appointmentError) newErrors.appointmentUrl = appointmentError
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -435,6 +472,9 @@ If you encounter any issues:
       case 'email':
         error = validateEmailField(email)
         break
+      case 'appointmentUrl':
+        error = validateOptionalAppointmentUrl(appointmentUrl)
+        break
     }
     
     if (error) {
@@ -453,6 +493,16 @@ If you encounter any issues:
                 <td style="padding-bottom: 4px; text-align: left;">
                   <span style="color: #1e3a8a; font-size: 14px; font-weight: bold;">Mobile: </span>
                   <span style="color: #1e3a8a; font-size: 14px;">${mobile}</span>
+                </td>
+              </tr>`
+      : ''
+
+    const apptHref = normalizeHttpUrl(appointmentUrl)
+    const appointmentRow = apptHref
+      ? `
+              <tr>
+                <td style="padding-top: 4px; padding-bottom: 0; text-align: left;">
+                  <a href="${escapeHtml(apptHref)}" style="color: #2563eb; text-decoration: underline; font-size: 14px;">${escapeHtml('Schedule an appointment')}</a>
                 </td>
               </tr>`
       : ''
@@ -486,6 +536,7 @@ If you encounter any issues:
                   <span style="color: #1e3a8a; font-size: 14px;">${displayRole}</span>
                 </td>
               </tr>
+              ${appointmentRow}
             </table>
           </td>
         </tr>
@@ -555,7 +606,7 @@ If you encounter any issues:
   </tr>
 </table>
   `.trim()
-  }, [name, title, displayRole, mobile, email, includeMobileInSignature])
+  }, [name, title, displayRole, mobile, email, includeMobileInSignature, appointmentUrl])
 
   /** In dev, load signature images from the current origin so preview works before deploy. */
   const previewSignatureHTML =
@@ -573,6 +624,7 @@ If you encounter any issues:
         role: true,
         ...(includeMobileInSignature ? { mobile: true } : {}),
         email: true,
+        appointmentUrl: true,
       })
       alert('Please fix the errors in the form before copying your signature.')
       return
@@ -768,6 +820,47 @@ If you encounter any issues:
               {touched.role && errors.role && (
                 <p className="mt-1 text-sm text-red-600">{errors.role}</p>
               )}
+
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email-sig-appointment-url">
+                  Scheduling / booking link <span className="text-gray-400 font-normal">(optional)</span>
+                </label>
+                <p className="text-xs text-gray-500 mb-2">
+                  Paste a Calendly, Microsoft Bookings, or other scheduling URL. It appears under your department as
+                  the link &ldquo;Schedule an appointment&rdquo;.
+                </p>
+                <input
+                  id="email-sig-appointment-url"
+                  type="url"
+                  inputMode="url"
+                  value={appointmentUrl}
+                  onChange={(e) => {
+                    setAppointmentUrl(e.target.value)
+                    if (touched.appointmentUrl) {
+                      const err = validateOptionalAppointmentUrl(e.target.value)
+                      if (err) {
+                        setErrors((prev) => ({ ...prev, appointmentUrl: err }))
+                      } else {
+                        setErrors((prev) => {
+                          const next = { ...prev }
+                          delete next.appointmentUrl
+                          return next
+                        })
+                      }
+                    }
+                  }}
+                  onBlur={() => handleBlur('appointmentUrl')}
+                  placeholder="https://calendly.com/your-link or https://outlook.office.com/bookings/…"
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                    touched.appointmentUrl && errors.appointmentUrl
+                      ? 'border-red-500 focus:ring-red-500'
+                      : 'border-gray-300 focus:ring-blue-500'
+                  }`}
+                />
+                {touched.appointmentUrl && errors.appointmentUrl && (
+                  <p className="mt-1 text-sm text-red-600">{errors.appointmentUrl}</p>
+                )}
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="email-sig-mobile">
