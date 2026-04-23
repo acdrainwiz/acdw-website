@@ -26,8 +26,6 @@ const FORM_NAME_TO_GHL_TYPE = {
   'contact-sales': 'contact-sales',
   'contact-installer': 'contact-installer',
   'contact-demo': 'contact-demo',
-  'hero-email': 'hero-email',
-  'promo-signup': 'promo-signup',
   'core-upgrade': 'core-upgrade',
   'unsubscribe': 'unsubscribe',
   'ep-x7k9m2': 'email-preferences',

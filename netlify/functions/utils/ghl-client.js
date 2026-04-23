@@ -168,6 +168,15 @@ function buildUpsertPayload(formType, sanitizedData) {
     payload[ghlKey] = str
   }
 
+  if (formConfig.combineIntoAddress1 && formConfig.combineIntoAddress1.length > 0) {
+    const parts = formConfig.combineIntoAddress1
+      .map((k) => String(sanitizedData[k] || '').trim())
+      .filter(Boolean)
+    if (parts.length > 0) {
+      payload.address1 = parts.join(' ')
+    }
+  }
+
   const customFields = buildCustomFieldsArray(formConfig.customFields || [], sanitizedData)
   if (customFields.length > 0) {
     payload.customFields = customFields
@@ -185,26 +194,6 @@ function buildUpsertPayload(formType, sanitizedData) {
   }
 
   return payload
-}
-
-// email-preferences: derive add/remove tag lists from prefFoo=yes|no checkboxes.
-function buildPrefTagUpdates(sanitizedData) {
-  const prefMap = {
-    prefProductUpdates: 'pref:product-updates',
-    prefPromotions: 'pref:promotions',
-    prefNewsletter: 'pref:newsletter',
-  }
-  const add = []
-  const remove = []
-  for (const [formKey, tag] of Object.entries(prefMap)) {
-    const value = String(sanitizedData[formKey] || '').trim().toLowerCase()
-    if (value === 'yes' || value === 'true' || value === '1') {
-      add.push(tag)
-    } else if (value === 'no' || value === 'false' || value === '0' || value === '') {
-      remove.push(tag)
-    }
-  }
-  return { add, remove }
 }
 
 async function upsertContact(payload) {
@@ -242,6 +231,16 @@ function resolveConditionalTags(conditionalTags, sanitizedData) {
   return out
 }
 
+function resolveValueTags(valueTags, sanitizedData) {
+  if (!valueTags || valueTags.length === 0) return []
+  const out = []
+  for (const { formKey, map } of valueTags) {
+    const value = String(sanitizedData[formKey] || '').trim().toLowerCase()
+    if (value && map && map[value]) out.push(map[value])
+  }
+  return out
+}
+
 /**
  * Upsert contact → add source tags → (optional) pref tag add/remove.
  * Throws on upsert failure. Tag-write failures are swallowed and returned in `warnings`
@@ -267,7 +266,8 @@ async function submitForm(formType, sanitizedData) {
 
   const staticTags = formConfig.sourceTags || []
   const conditionalTags = resolveConditionalTags(formConfig.conditionalTags, sanitizedData)
-  const allSourceTags = [...staticTags, ...conditionalTags]
+  const valueTags = resolveValueTags(formConfig.valueTags, sanitizedData)
+  const allSourceTags = [...staticTags, ...conditionalTags, ...valueTags]
   if (allSourceTags.length > 0) {
     try {
       await addTags(contactId, allSourceTags)
@@ -276,28 +276,20 @@ async function submitForm(formType, sanitizedData) {
     }
   }
 
-  if (formConfig.writeMessageAsNote && sanitizedData.message) {
-    try {
-      await addNote(contactId, sanitizedData.message)
-    } catch (noteErr) {
-      warnings.push({ stage: 'addNote', error: noteErr.message, traceId: noteErr.traceId || null })
-    }
-  }
-
-  if (formConfig.dynamicPrefTags) {
-    const { add, remove } = buildPrefTagUpdates(sanitizedData)
-    if (add.length > 0) {
-      try {
-        await addTags(contactId, add)
-      } catch (tagErr) {
-        warnings.push({ stage: 'addPrefTags', error: tagErr.message, traceId: tagErr.traceId || null })
+  if (formConfig.writeMessageAsNote) {
+    const noteKey = formConfig.noteSourceKey || 'message'
+    let noteBody = String(sanitizedData[noteKey] || '').trim()
+    if (formConfig.noteAppendFields && formConfig.noteAppendFields.length > 0) {
+      for (const { label, formKey } of formConfig.noteAppendFields) {
+        const v = String(sanitizedData[formKey] || '').trim()
+        if (v) noteBody += (noteBody ? '\n\n' : '') + `${label}:\n${v}`
       }
     }
-    if (remove.length > 0) {
+    if (noteBody) {
       try {
-        await removeTags(contactId, remove)
-      } catch (tagErr) {
-        warnings.push({ stage: 'removePrefTags', error: tagErr.message, traceId: tagErr.traceId || null })
+        await addNote(contactId, noteBody)
+      } catch (noteErr) {
+        warnings.push({ stage: 'addNote', error: noteErr.message, traceId: noteErr.traceId || null })
       }
     }
   }
@@ -314,8 +306,8 @@ async function submitForm(formType, sanitizedData) {
 module.exports = {
   submitForm,
   buildUpsertPayload,
-  buildPrefTagUpdates,
   resolveConditionalTags,
+  resolveValueTags,
   upsertContact,
   addTags,
   removeTags,

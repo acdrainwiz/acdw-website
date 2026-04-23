@@ -46,7 +46,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const data = await ghlRequest('GET', `/locations/${locationId}/customFields`)
+    const data = await ghlRequest('GET', `/locations/${locationId}/customFields?model=all`)
 
     const rawFields = (data && data.customFields) || []
     const simplified = rawFields.map((f) => ({
