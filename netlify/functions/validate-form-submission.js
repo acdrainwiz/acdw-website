@@ -17,6 +17,21 @@ const { validateIP, addToBlacklist } = require('./utils/ip-reputation')
 const { validateSubmissionBehavior } = require('./utils/behavioral-analysis')
 const { validateEmailDomain } = require('./utils/email-domain-validator')
 const { initBlobsStores } = require('./utils/blobs-store')
+const ghlClient = require('./utils/ghl-client')
+
+// form-name values from the frontend → ghl-field-map.js config keys
+const FORM_NAME_TO_GHL_TYPE = {
+  'contact-general': 'contact-general',
+  'contact-support': 'contact-support',
+  'contact-sales': 'contact-sales',
+  'contact-installer': 'contact-installer',
+  'contact-demo': 'contact-demo',
+  'hero-email': 'hero-email',
+  'promo-signup': 'promo-signup',
+  'core-upgrade': 'core-upgrade',
+  'unsubscribe': 'unsubscribe',
+  'ep-x7k9m2': 'email-preferences',
+}
 
 
 const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY
@@ -834,98 +849,55 @@ exports.handler = async (event, context) => {
       }
     }
 
-    // 5. If validation passed, forward sanitized data to Netlify Forms
-    const netlifyFormUrl = event.headers.host 
-      ? `https://${event.headers.host}/`
-      : 'https://acdrainwiz.com/'
-    
-    // Log successful validation (will log submission after forwarding)
-    logFormSubmission(formType, email, ip, userAgent, true)
-    
-    // Build sanitized form data for forwarding (all forms now use standard form data)
-    const sanitizedFormBody = new URLSearchParams()
-    for (const [key, value] of formData.entries()) {
-        if (key === 'bot-field' || key === 'honeypot-1' || key === 'honeypot-2' ||
-            key === 'recaptcha-token' || key === 'g-recaptcha-response' ||
-            key === 'form-type' || key === 'form-load-time' || key === 'website' || key === 'url') {
-            continue
-        }
-      // Use sanitized value if available, otherwise use original
-      if (key in sanitizedData) {
-        sanitizedFormBody.append(key, sanitizedData[key])
-      } else {
-        sanitizedFormBody.append(key, value)
+    // Route to GoHighLevel — contact upsert + tag writes. GHL workflows handle
+    // confirmation emails and staff notifications downstream.
+    const ghlFormType = FORM_NAME_TO_GHL_TYPE[formName] || null
+    if (!ghlFormType) {
+      console.error('❌ No GHL form-type mapping for formName:', formName)
+      logFormSubmission(formType, email, ip, userAgent, false, ['unmapped form name'])
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'Invalid form', message: 'Form submission rejected' }),
       }
     }
-    
-    // Forward the sanitized submission to Netlify Forms (standard form data)
-    const forwardResponse = await fetch(netlifyFormUrl, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'X-Internal-Secret': process.env.INTERNAL_FORWARD_SECRET || '',
-      },
-      body: sanitizedFormBody.toString(), // Forward sanitized form data
-    })
 
-    if (forwardResponse.ok) {
-      // Success - send confirmation email to customer (fire and forget)
-      // Don't block form submission if email fails
-      try {
-        const { sendConfirmationEmail } = require('./send-confirmation-email')
-        
-        // Convert formData to plain object for email template
-        const emailFormData = {}
-        for (const [key, value] of formData.entries()) {
-          // Skip internal fields
-          if (key === 'bot-field' || key === 'honeypot-1' || key === 'honeypot-2' || key === 'recaptcha-token' || key === 'form-type' || key === 'form-name') {
-            continue
-          }
-          emailFormData[key] = value
-        }
-        
-        // Send confirmation email asynchronously (don't await - fire and forget)
-        sendConfirmationEmail(formType, emailFormData).catch(emailError => {
-          // Log error but don't fail form submission
-          console.error('⚠️ Failed to send confirmation email (non-blocking):', {
-            formType,
-            error: emailError.message || emailError
-          })
-        })
-      } catch (emailSetupError) {
-        // Log error but don't fail form submission
-        console.error('⚠️ Error setting up confirmation email (non-blocking):', {
-          formType,
-          error: emailSetupError.message || emailSetupError
-        })
-      }
-      
-      // Success - return Netlify's response
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({ 
-          success: true,
-          message: 'Form submitted successfully'
-        }),
-      }
-    } else {
-      // Netlify Forms rejected it
-      const errorText = await forwardResponse.text()
-      console.error('Netlify Forms error:', {
-        formType,
-        status: forwardResponse.status,
-        error: errorText
+    try {
+      const result = await ghlClient.submitForm(ghlFormType, sanitizedData)
+      logFormSubmission(formType, email, ip, userAgent, true)
+      console.log('✅ GHL submission succeeded', {
+        formType: ghlFormType,
+        contactId: result.contactId,
+        isNew: result.isNew,
+        traceId: result.traceId,
+        warnings: result.warnings.length || 0,
       })
-      
-      return {
-        statusCode: 500,
-        headers,
-        body: JSON.stringify({ 
-          error: 'Form submission failed',
-          message: 'Unable to process your submission'
-        }),
+      if (result.warnings.length > 0) {
+        console.warn('⚠️ GHL submission warnings:', result.warnings)
       }
+    } catch (ghlErr) {
+      console.error('❌ GHL submission failed:', {
+        formType: ghlFormType,
+        errorName: ghlErr && ghlErr.name,
+        message: ghlErr && ghlErr.message,
+        status: ghlErr && ghlErr.status,
+        traceId: ghlErr && ghlErr.traceId,
+        responseBody: ghlErr && ghlErr.responseBody,
+        email: email ? email.substring(0, 3) + '***' : 'none',
+        sanitizedData,
+      })
+      logFormSubmission(formType, email, ip, userAgent, false, [
+        `ghl-submission-failed: ${ghlErr && ghlErr.message}`,
+      ])
+    }
+
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({
+        success: true,
+        message: 'Form submitted successfully',
+      }),
     }
 
   } catch (error) {
