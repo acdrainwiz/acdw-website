@@ -48,7 +48,7 @@ export type SensorWaterGaugeProps = {
  * Example:
  * ```css
  * .sensor-water-demo-led-panel { border-color: ...; }
- * [data-sensor-water-demo='threshold-callout'][data-threshold-pct='90'] { ... }
+ * [data-sensor-water-demo='threshold-callout'][data-threshold-pct='80'] { ... }
  * ```
  */
 export const sensorWaterDemoTargets = {
@@ -155,31 +155,40 @@ const Y_HORIZONTAL_MID = (INTERIOR_HORIZ_TOP + Y_BOTTOM) / 2
 
 /**
  * Top of the 95–100% segment: water rising into the vertical stem after the horizontal run is full.
- * Keeps the last 5% visually in the riser below the bayonet (Y_TOP ≈ 48).
+ * Demo animation stops at product shutdown (80%) — which sits **below** the tee on this ruler.
  */
 const Y_RISER_CAP = 72
 
 /**
+ * Horizontal limb uses a fixed **95% = tee** ruler (original art). Product shutdown is **80%**, so the
+ * waterline at 80% is **(80−50)/(95−50)** of the way from mid-duct to tee — visibly lower than a full horizontal run.
+ * **95–100%** still compresses into the **vertical stem** for the critical overlay band.
+ */
+const GAUGE_HORIZONTAL_FULL_PCT = 95
+
+/**
  * Map logical fill % → SVG y (downward-positive).
  *
- * **0–95%** uses the **horizontal limb** as the main ruler: empty at the channel
- * floor (`Y_BOTTOM`), **50% at mid-height of that horizontal run**, and **~95%
- * at the tee ceiling** (`INTERIOR_HORIZ_TOP`) where flow would enter the riser.
- * **95–100%** compresses into the **vertical stem** so shutdown still reads at
- * ~95% product copy while the last few percent show riser fill.
+ * **0–50%:** floor → mid horizontal. **50–95%:** mid → tee (`INTERIOR_HORIZ_TOP`) on a linear ruler.
+ * **95–100%:** tee → riser cap. Threshold lines, amber/red bands, clipped water, and ripples use this mapping.
  *
- * Larger y ⇒ lower waterline (less fill). Threshold lines, amber band, red band,
- * clipped water, and surface ripples all use this single mapping.
+ * Larger y ⇒ lower waterline (less fill).
  */
 function sensorFillPercentToWaterlineY(lvl: number): number {
   const l = Math.max(0, Math.min(100, lvl))
   if (l <= 50) {
     return Y_BOTTOM + (Y_HORIZONTAL_MID - Y_BOTTOM) * (l / 50)
   }
-  if (l <= 95) {
-    return Y_HORIZONTAL_MID + (INTERIOR_HORIZ_TOP - Y_HORIZONTAL_MID) * ((l - 50) / (95 - 50))
+  if (l <= GAUGE_HORIZONTAL_FULL_PCT) {
+    return (
+      Y_HORIZONTAL_MID +
+      (INTERIOR_HORIZ_TOP - Y_HORIZONTAL_MID) * ((l - 50) / (GAUGE_HORIZONTAL_FULL_PCT - 50))
+    )
   }
-  return INTERIOR_HORIZ_TOP + (Y_RISER_CAP - INTERIOR_HORIZ_TOP) * ((l - 95) / 5)
+  return (
+    INTERIOR_HORIZ_TOP +
+    (Y_RISER_CAP - INTERIOR_HORIZ_TOP) * ((l - GAUGE_HORIZONTAL_FULL_PCT) / (100 - GAUGE_HORIZONTAL_FULL_PCT))
+  )
 }
 
 type ThresholdCalloutAnchor =
@@ -193,7 +202,7 @@ type ThresholdCalloutAnchor =
       /**
        * Dot sits on the guide at (xPct, yPct); connector drops straight down and
        * the card is centered **below** the dot. Used on narrow viewports for the
-       * 50% threshold so it clears the 90% (left) and 95% (right) horizontal cards.
+       * 50% threshold so it clears other threshold callouts near the tee.
        */
       layout: 'below'
       xPct: number
@@ -205,7 +214,7 @@ type ThresholdCalloutAnchor =
  *
  * `'side'` (default) places the card to the left/right of the dot on the waterline.
  * `'below'` (narrow 50%) drops the card vertically so it avoids overlap with the
- * 90% and 95% callouts that live on either side of the tee on small screens.
+ * shutdown callout and other markers near the tee on small screens.
  */
 function sensorThresholdCalloutAnchor(
   pct: number,
@@ -225,10 +234,7 @@ function sensorThresholdCalloutAnchor(
   let align: 'left' | 'right' = 'right'
   let xSvg: number
 
-  if (pct === 90) {
-    align = 'left'
-    xSvg = VERTICAL_STEM_LEFT + 5
-  } else if (pct === 50) {
+  if (pct === 50) {
     align = 'left'
     xSvg = HORIZ_GLASS_LEFT_CALLOUT
   } else if (ySvg > INTERIOR_HORIZ_TOP) {
@@ -487,12 +493,13 @@ function SensorWaterGaugeDemoBody({
 }) {
   const reduceMotion = useReducedMotion()
   const variant = GAUGE_VARIANTS[variantId]
+  const shutdownHold = variant.shutdownPct
   const [isPlaying, setIsPlaying] = useState(autoPlay && !reduceMotion)
-  const [level, setLevel] = useState(reduceMotion ? 95 : 0)
+  const [level, setLevel] = useState(reduceMotion ? shutdownHold : 0)
   const [stateKey, setStateKey] = useState<GaugeStateKey>(
     reduceMotion ? 'shutdown' : 'monitoring'
   )
-  const levelMv = useMotionValue(reduceMotion ? 95 : 0)
+  const levelMv = useMotionValue(reduceMotion ? shutdownHold : 0)
 
   const state = variant.states[stateKey]
 
@@ -521,10 +528,10 @@ function SensorWaterGaugeDemoBody({
   }, [reduceMotion])
 
   useEffect(() => {
-    levelMv.set(reduceMotion ? 95 : 0)
-    setStateKey(getStateFromLevel(reduceMotion ? 95 : 0, variant))
+    levelMv.set(reduceMotion ? shutdownHold : 0)
+    setStateKey(getStateFromLevel(reduceMotion ? shutdownHold : 0, variant))
     setIsPlaying(autoPlay && !reduceMotion)
-  }, [variantId, reduceMotion, variant, levelMv, autoPlay])
+  }, [variantId, reduceMotion, variant, levelMv, autoPlay, shutdownHold])
 
   const ariaLiveLabel = `Water level ${Math.round(level)} percent. ${state.label}. ${state.sublabel}`
 
@@ -929,11 +936,17 @@ function TManifoldVisual({
           />
         ) : null}
 
+        {/*
+          Critical fill: top aligns with the horizontal run (tee ceiling), not the riser cap — same vertical
+          extent as the “danger” slice above the shutdown line in the lower T, full width through the clip.
+        */}
         <rect
           x={0}
-          y={sensorFillPercentToWaterlineY(100)}
+          y={INTERIOR_HORIZ_TOP}
           width={SVG_VIEW.w}
-          height={sensorFillPercentToWaterlineY(variant.shutdownPct) - sensorFillPercentToWaterlineY(100)}
+          height={
+            sensorFillPercentToWaterlineY(variant.shutdownPct) - INTERIOR_HORIZ_TOP
+          }
           fill="rgba(239,68,68,0.22)"
         />
 

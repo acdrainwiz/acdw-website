@@ -66,7 +66,7 @@ export const SENSOR_SHARED_SETUP_SEARCH_TERMS: string[] = [
   'blinking',
   'testing',
   'shutdown',
-  '95%',
+  '80%',
   'overflow',
 ]
 
