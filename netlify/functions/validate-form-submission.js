@@ -19,6 +19,26 @@ const { validateEmailDomain } = require('./utils/email-domain-validator')
 const { initBlobsStores } = require('./utils/blobs-store')
 const ghlClient = require('./utils/ghl-client')
 
+// Comma-separated origin allowlist for preview/branch deploys. Supports glob `*`.
+// e.g. EXTRA_ALLOWED_ORIGINS=https://*--lucky-frangollo-bf579b.netlify.app
+const EXTRA_ORIGIN_ENTRIES = (process.env.EXTRA_ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean)
+
+function originAllowedByExtra(origin) {
+  if (!origin) return false
+  for (const entry of EXTRA_ORIGIN_ENTRIES) {
+    if (entry.includes('*')) {
+      const pattern = '^' + entry.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '[^/]*') + '$'
+      if (new RegExp(pattern).test(origin)) return true
+    } else if (origin.startsWith(entry)) {
+      return true
+    }
+  }
+  return false
+}
+
 // form-name values from the frontend → ghl-field-map.js config keys
 const FORM_NAME_TO_GHL_TYPE = {
   'contact-general': 'contact-general',
@@ -382,10 +402,12 @@ exports.handler = async (event, context) => {
         'https://www.acdrainwiz.com',
         'https://acdrainwiz.com'
       ]
-      
+
       const origin = event.headers.origin || event.headers.referer || ''
-      const isValidOrigin = !origin || ALLOWED_ORIGINS.some(allowed => origin.startsWith(allowed))
-      
+      const isValidOrigin = !origin
+        || ALLOWED_ORIGINS.some(allowed => origin.startsWith(allowed))
+        || originAllowedByExtra(origin)
+
       if (!isValidOrigin) {
         console.warn('❌ Invalid origin rejected:', {
           origin,
@@ -559,11 +581,11 @@ exports.handler = async (event, context) => {
       'http://localhost:5173', // Development
       'http://localhost:8888', // Netlify dev
     ]
-    
-    const hasValidOrigin = ALLOWED_ORIGINS.some(allowedOrigin => 
+
+    const hasValidOrigin = ALLOWED_ORIGINS.some(allowedOrigin =>
       origin.startsWith(allowedOrigin)
-    )
-    
+    ) || originAllowedByExtra(origin)
+
     if (!hasValidOrigin && origin !== 'unknown') {
       logBotDetected(formType, 'invalid-origin', ip, userAgent, {
         origin,
