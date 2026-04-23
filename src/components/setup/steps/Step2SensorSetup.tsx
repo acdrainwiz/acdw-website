@@ -213,7 +213,7 @@ export const Step2SensorSetup = forwardRef<Step2SensorSetupHandle, Step2SensorSe
     {
       number: 2,
       title: 'Verify LED Status & Test the Sensor',
-      description: 'With the LED solid green, the sensor is powered and ready. To verify it is working correctly: place your index finger and thumb on the green PCB board that extends out of the sensor. If the sensor is working correctly, this will turn the LED solid red and the AC will shut off—mimicking the behavior of the sensor detecting ~95% water levels in the drain line.',
+      description: 'With the LED solid green, the sensor is powered and ready. To verify it is working correctly: place your index finger and thumb on the green PCB board that extends out of the sensor. If the sensor is working correctly, this will turn the LED solid red and the AC will shut off—mimicking the behavior of the sensor detecting ~80% water levels in the drain line.',
       image: '/images/setup/step2-4-led.png',
       alt: 'LED solid green; testing sensor with touch on PCB'
     }

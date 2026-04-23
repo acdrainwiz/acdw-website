@@ -292,9 +292,9 @@ export function ProductsPage() {
         'Capacitive water-level Sensor Switch in two models: Standard (Non-WiFi) for automatic overflow protection, or WiFi for remote monitoring and alerts. Each includes a Transparent T Manifold and can install standalone—the Mini is not required.',
       keyBenefits: [
         'Standard (Non-WiFi): local overflow protection; WiFi model: remote monitoring, email/SMS alerts on 2.4 GHz Wi‑Fi (5 GHz not supported)',
-        'No moving parts; no direct water contact; automatic AC shutoff at high water (~95%)',
+        'No moving parts; no direct water contact; automatic AC shutoff at high water (~80%)',
         'Transparent T Manifold included; also fits the Mini bayonet when paired',
-        'WiFi model: contractor app and service alerts between about 50–90% fill; shutdown remains at ~95%',
+        'WiFi model: contractor app and service alerts between about 50–79% fill; shutdown at ~80%',
       ],
       compatibility: 'T Manifold (included); optional Mini bayonet',
       installationTime: '15 minutes',
@@ -806,9 +806,10 @@ export function ProductsPage() {
             See it in action
           </h2>
           <p className="products-sensor-demo-desc">
-            Watch the Sensor react as water rises in the drain line—alerts at
-            50% and 90%, protective AC shutoff at 95%. Toggle between Standard
-            and WiFi to compare what each model does on site.
+            Watch the Sensor react as water rises in the drain line—WiFi shows
+            contractor alerts from about 50–79% fill; both models protective AC
+            shutoff at ~80%. Water in the demo never rises above shutoff. Toggle
+            between Standard and WiFi to compare what each model does on site.
           </p>
           <SensorWaterGaugeInline />
         </div>
@@ -879,7 +880,7 @@ export function ProductsPage() {
               Which one do I need?
             </h2>
             <p className="unified-section-subtitle">
-              Standard and WiFi Sensor models share the same ~95% protective shutdown; WiFi adds contractor tools and
+              Standard and WiFi Sensor models share the same ~80% protective shutdown; WiFi adds contractor tools and
               alerts on 2.4 GHz Wi‑Fi only. Add the Mini when you want permanent flush, air, and vacuum access on the
               same bayonet workflow—the bundle packages both.
             </p>

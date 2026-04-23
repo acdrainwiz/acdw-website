@@ -59,7 +59,7 @@ export const LINEUP_COMPARISON_ROWS: LineupRow[] = [
     hint: 'WiFi model: alerts roughly between fifty and ninety percent fill; shutdown near ninety-five percent.',
     cells: {
       standard: '—',
-      wifi: 'Contractor app, email, and SMS — roughly 50–90% fill band',
+      wifi: 'Contractor app, email, and SMS — roughly 50–79% fill band',
       combo: 'Same as WiFi path when a WiFi Sensor is in the bundle',
     },
   },
@@ -67,9 +67,9 @@ export const LINEUP_COMPARISON_ROWS: LineupRow[] = [
     id: 'shutdown',
     label: 'Protective AC shutoff',
     cells: {
-      standard: 'Automatic near ~95% water in the T‑manifold',
-      wifi: 'Automatic near ~95% water in the T‑manifold',
-      combo: 'Same ~95% shutdown via the Sensor in the bundle',
+      standard: 'Automatic near ~80% water in the T‑manifold',
+      wifi: 'Automatic near ~80% water in the T‑manifold',
+      combo: 'Same ~80% shutdown via the Sensor in the bundle',
     },
   },
   {

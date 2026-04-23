@@ -149,7 +149,7 @@ export function Step2StandardSensorComplete({
         <h3 className="sensor-setup-assignment-success-title">Installation and setup complete</h3>
         <p className="sensor-setup-assignment-success-message">
           Your Standard Sensor Switch is mounted on the Transparent T manifold and ready for overflow protection. This
-          model provides automatic AC shutdown at 95% water level—no Wi‑Fi connection or monitoring account required.
+          model provides automatic AC shutdown at 80% water level—no Wi‑Fi connection or monitoring account required.
         </p>
       </div>
 

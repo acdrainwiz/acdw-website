@@ -131,7 +131,7 @@ export const SENSOR_LED_STANDARD = {
   },
   solidRedShutdown: {
     label: 'Solid red',
-    description: 'High water detected (~95%) — HVAC shuts down to help prevent overflow',
+    description: 'High water detected (~80%) — HVAC shuts down to help prevent overflow',
   },
 } as const
 
@@ -152,7 +152,7 @@ export const SENSOR_LED_WIFI = {
   },
   solidRed: {
     label: 'Solid red',
-    description: 'High water detected (~95%) — HVAC shuts down to help prevent overflow',
+    description: 'High water detected (~80%) — HVAC shuts down to help prevent overflow',
   },
 } as const
 
@@ -168,7 +168,7 @@ export const SENSOR_LED_WIFI_BATTERY_ONLY = {
   },
   solidRed: {
     label: 'Solid red',
-    description: 'High water detected (~95%) — HVAC shuts down to help prevent overflow',
+    description: 'High water detected (~80%) — HVAC shuts down to help prevent overflow',
   },
 } as const
 
@@ -176,7 +176,7 @@ export const SENSOR_LED_WIFI_BATTERY_ONLY = {
 export const SENSOR_LED_ANSWER: Record<SensorVariantFilter, string> = {
   all: 'Sensor LED meanings depend on your model and power source. Use the guides below: Standard (Non-WiFi), WiFi on 24V (recommended), and WiFi on battery-only (limited LED visibility).',
   standard:
-    'Standard Sensor Switch: no light means no power (check wiring). Green means normal operation with water below the shutoff threshold. Solid red means high water (~95%) and protective AC shutdown. During installation, solid red can also appear during the PCB touch test—that simulates high water and is expected.',
+    'Standard Sensor Switch: no light means no power (check wiring). Green means normal operation with water below the shutoff threshold. Solid red means high water (~80%) and protective AC shutdown. During installation, solid red can also appear during the PCB touch test—that simulates high water and is expected.',
   wifi:
     'WiFi Sensor Switch: when powered by 24V, use the first WiFi table below. Battery-only mode limits LED visibility—use the battery-only section; after startup, no light may be normal while monitoring continues.',
 } as const
@@ -193,7 +193,7 @@ export const FAQ = [
     id: 'mini_what_and_relation',
     question: 'What does the Mini do, and how does it relate to the Sensor?',
     answer:
-      'The Mini is the drain line maintenance device. It gives technicians a permanent access point to flush with water, clear clogs with compressed air, and vacuum sludge without cutting PVC—no cutting or reattaching pipe. The clear body gives you a direct view into the drain line so you can verify that cleaning was successful and spot biofilm or high water before it becomes a backup. The Sensor Switch is a separate product for overflow protection: it monitors water level in the drain line and automatically shuts down the AC at 95%. The WiFi Sensor Switch adds remote monitoring, email and SMS alerts, and configurable service alerts; the Standard Sensor Switch (Non-WiFi) does not. You can use the Mini on its own for maintenance; adding a Sensor is optional for overflow protection and monitoring.',
+      'The Mini is the drain line maintenance device. It gives technicians a permanent access point to flush with water, clear clogs with compressed air, and vacuum sludge without cutting PVC—no cutting or reattaching pipe. The clear body gives you a direct view into the drain line so you can verify that cleaning was successful and spot biofilm or high water before it becomes a backup. The Sensor Switch is a separate product for overflow protection: it monitors water level in the drain line and automatically shuts down the AC at 80%. The WiFi Sensor Switch adds remote monitoring, email and SMS alerts, and configurable service alerts; the Standard Sensor Switch (Non-WiFi) does not. You can use the Mini on its own for maintenance; adding a Sensor is optional for overflow protection and monitoring.',
     tags: ['mini', 'products', 'comparison'],
     tabs: ['mini'] as const,
   },
@@ -233,7 +233,7 @@ export const FAQ = [
     id: 'sensor_what_and_mini',
     question: 'What does the Sensor do, and do I need the Mini?',
     answer:
-      'The Sensor monitors water level in the drain line and automatically shuts down the AC at 95% to help prevent overflow. It is a monitoring and safety device—not a drain-cleaning substitute; regular HVAC maintenance is still required. The Standard Sensor Switch (Non-WiFi) provides that protection with no connectivity. The WiFi Sensor Switch adds remote monitoring, email and SMS alerts, and configurable service alerts. You do not need the Mini to install a Sensor—both sensor models include their own Transparent T Manifold. If you already have a Mini, the Sensor installs in the same bayonet port; for service, you can remove the Sensor, use the Mini valve for cleaning, then reinstall the Sensor.',
+      'The Sensor monitors water level in the drain line and automatically shuts down the AC at 80% to help prevent overflow. It is a monitoring and safety device—not a drain-cleaning substitute; regular HVAC maintenance is still required. The Standard Sensor Switch (Non-WiFi) provides that protection with no connectivity. The WiFi Sensor Switch adds remote monitoring, email and SMS alerts, and configurable service alerts. You do not need the Mini to install a Sensor—both sensor models include their own Transparent T Manifold. If you already have a Mini, the Sensor installs in the same bayonet port; for service, you can remove the Sensor, use the Mini valve for cleaning, then reinstall the Sensor.',
     tags: ['sensor', 'products', 'support'],
     tabs: ['sensor'] as const,
   },
@@ -241,7 +241,7 @@ export const FAQ = [
     id: 'wifi_vs_nonwifi',
     question: 'What is the difference between the WiFi Sensor Switch and the Standard Sensor Switch (Non-WiFi)?',
     answer:
-      'The AC Drain Wiz Standard Sensor Switch (Non-WiFi) provides capacitive water sensing, automatic AC shutdown at 95% water level, no moving parts, and fail-safe shutdown if power is lost. The AC Drain Wiz WiFi Sensor Switch adds remote water-level monitoring, contractor account monitoring, email notifications, SMS notifications, and configurable service alerts from 50% to 90% water level so contractors can schedule preventative maintenance before shutdown occurs.',
+      'The AC Drain Wiz Standard Sensor Switch (Non-WiFi) provides capacitive water sensing, automatic AC shutdown at 80% water level, no moving parts, and fail-safe shutdown if power is lost. The AC Drain Wiz WiFi Sensor Switch adds remote water-level monitoring, contractor account monitoring, email notifications, SMS notifications, and configurable service alerts from 50% to 79% water level so contractors can schedule preventative maintenance before shutdown occurs.',
     tags: ['sensor', 'wifi', 'comparison'],
     tabs: ['sensor'] as const,
   },
@@ -289,7 +289,7 @@ export const FAQ = [
     id: 'sensor_leds',
     question: 'How do I know what the sensor light means?',
     answer:
-      'Standard Sensor Switch (Non-WiFi): No light means no power (check wiring). Green means normal operation with water below the shutoff threshold. Solid red means high water (~95%) and protective AC shutdown, or during installation the PCB touch test can trigger the same shutdown (expected). WiFi Sensor Switch on 24V: No light means no power—verify 24V. Flashing red means waiting for WiFi; flashing green means setup in progress; solid green means connected and operating normally; solid red means high water (~95%) and protective shutdown. WiFi on battery-only: LED visibility is limited—a brief green at startup then no light may be normal while monitoring continues; when the LED is visible, solid red still means high water (~95%) and protective shutdown. A fully depleted battery means no power to the LED (no separate “battery depleted” light). See the LED tables on this page for details.',
+      'Standard Sensor Switch (Non-WiFi): No light means no power (check wiring). Green means normal operation with water below the shutoff threshold. Solid red means high water (~80%) and protective AC shutdown, or during installation the PCB touch test can trigger the same shutdown (expected). WiFi Sensor Switch on 24V: No light means no power—verify 24V. Flashing red means waiting for WiFi; flashing green means setup in progress; solid green means connected and operating normally; solid red means high water (~80%) and protective shutdown. WiFi on battery-only: LED visibility is limited—a brief green at startup then no light may be normal while monitoring continues; when the LED is visible, solid red still means high water (~80%) and protective shutdown. A fully depleted battery means no power to the LED (no separate “battery depleted” light). See the LED tables on this page for details.',
     tags: ['sensor', 'support', 'leds'],
     tabs: ['sensor'] as const,
   },

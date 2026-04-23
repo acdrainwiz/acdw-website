@@ -175,7 +175,7 @@ export function InstallationSetupPage() {
                 <span className="install-product-badge install-product-badge-physical">Overflow protection</span>
                 <h2 className="install-product-name">{SENSOR_STANDARD_SHORT}</h2>
                 <p className="install-product-description">
-                  Non-WiFi capacitive sensing with automatic AC shutdown at 95% water level. Includes a Transparent T Manifold—no Mini required for install.
+                  Non-WiFi capacitive sensing with automatic AC shutdown at 80% water level. Includes a Transparent T Manifold—no Mini required for install.
                 </p>
                 <ul className="install-product-checklist">
                   <li className="install-product-checklist-item">
@@ -229,7 +229,7 @@ export function InstallationSetupPage() {
                 <span className="install-product-badge install-product-badge-smart">Remote monitoring</span>
                 <h2 className="install-product-name">{SENSOR_WIFI_SHORT}</h2>
                 <p className="install-product-description">
-                  Everything the Standard model offers, plus remote monitoring, email/SMS alerts, and service alerts between 50–90% (shutdown still at 95%).
+                  Everything the Standard model offers, plus remote monitoring, email/SMS alerts, and service alerts between 50–79% (shutdown at 80%).
                 </p>
                 <ul className="install-product-checklist">
                   <li className="install-product-checklist-item">

@@ -102,7 +102,7 @@ function AnimatedStat({
 /**
  * Unified "What We Deliver" stats — replaces both the old trust strip
  * and the separate pillar section. Card 1: faster cleanouts (Mini named in sub only).
- * Card 2: combo (Mini + Standard Sensor)—“2X” (two products, X-style like card 1). Card 3: Sensor overflow protection (95% =
+ * Card 2: combo (Mini + Standard Sensor)—“2X” (two products, X-style like card 1). Card 3: Sensor overflow protection (80% =
  *   approved shutdown threshold—not a profit percentage).
  */
 const stats = [
@@ -125,11 +125,11 @@ const stats = [
     href: '/products/combo',
   },
   {
-    target: 95,
+    target: 80,
     prefix: '',
     suffix: '%',
     label: 'Overflow protection',
-    sub: 'Automatic AC shutdown at 95% water level—no moving parts, fail-safe on power loss. WiFi Sensor adds configurable alerts from 50–90% so you can schedule service before shutdown.',
+    sub: 'Automatic AC shutdown at 80% water level—no moving parts, fail-safe on power loss. WiFi Sensor adds configurable alerts from 50–79% so you can schedule service before shutdown.',
     accent: '#ea580c',
     href: '/products/sensor',
   },

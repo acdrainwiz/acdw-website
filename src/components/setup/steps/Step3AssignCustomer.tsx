@@ -166,7 +166,7 @@ export function Step3AssignCustomer({ setupModel = null, wizardStepNumber = 3 }:
         <h3 className="sensor-setup-assignment-success-title">Installation and Setup Complete!</h3>
         <p className="sensor-setup-assignment-success-message">
           {setupModel === 'standard'
-            ? 'Your Standard Sensor is installed and assigned to your customer. This model provides local overflow protection and automatic AC shutdown at 95% water level—no Wi‑Fi connection required.'
+            ? 'Your Standard Sensor is installed and assigned to your customer. This model provides local overflow protection and automatic AC shutdown at 80% water level—no Wi‑Fi connection required.'
             : 'Your WiFi Sensor is installed, connected, and assigned to your customer. You can monitor it from your dashboard and configure email, SMS, and service alerts as needed.'}
         </p>
       </div>

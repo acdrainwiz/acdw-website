@@ -58,7 +58,7 @@ export const PAGE_SEARCH_META: PageSearchMeta = {
   kind: 'product-info',
   title: PRODUCT_NAMES.sensor,
   body:
-    'Overflow protection and WiFi monitoring options. Standard Sensor Switch non-WiFi and WiFi Sensor Switch. Capacitive sensing, automatic AC shutdown at 95%, monitoring portal and alerts for WiFi model. WiFi Sensor Switch includes lithium-ion backup battery (~2 years) with low-battery warning in the platform. Product overview.',
+    'Overflow protection and WiFi monitoring options. Standard Sensor Switch non-WiFi and WiFi Sensor Switch. Capacitive sensing, automatic AC shutdown at 80%, monitoring portal and alerts for WiFi model. WiFi Sensor Switch includes lithium-ion backup battery (~2 years) with low-battery warning in the platform. Product overview.',
   tags: ['sensor', 'product', 'wifi', 'overflow', 'monitoring', 'battery', 'backup battery', 'power'],
   href: '/products/sensor',
 }
@@ -215,14 +215,14 @@ export function SensorProductPage() {
       number: 2,
       title: 'Drain line monitoring',
       description:
-        'WiFi Sensor Switch: water level and status sync to the monitoring dashboard. Standard Sensor Switch (Non-WiFi): capacitive sensing with automatic AC shutdown at 95%—no cloud connection.',
+        'WiFi Sensor Switch: water level and status sync to the monitoring dashboard. Standard Sensor Switch (Non-WiFi): capacitive sensing with automatic AC shutdown at 80%—no cloud connection.',
       icon: EyeIcon
     },
     {
       number: 3,
       title: 'Alerts & shutdown',
       description:
-        'Both models shut down the AC at 95% water level. WiFi adds email/SMS and service alerts between 50–90% before shutdown.',
+        'Both models shut down the AC at 80% water level. WiFi adds email/SMS and service alerts between 50–79% before shutdown.',
       icon: BellAlertIcon
     },
     {
@@ -239,7 +239,7 @@ export function SensorProductPage() {
     {
       question: 'What is the difference between the Standard and WiFi Sensor Switch?',
       answer:
-        'The AC Drain Wiz Standard Sensor Switch (Non-WiFi) provides capacitive water sensing, automatic AC shutdown at 95% water level, no moving parts, and fail-safe shutdown if power is lost. The AC Drain Wiz WiFi Sensor Switch adds remote water-level monitoring, contractor account monitoring, email notifications, SMS notifications, and configurable service alerts from 50% to 90% water level so contractors can schedule preventative maintenance before shutdown occurs.'
+        'The AC Drain Wiz Standard Sensor Switch (Non-WiFi) provides capacitive water sensing, automatic AC shutdown at 80% water level, no moving parts, and fail-safe shutdown if power is lost. The AC Drain Wiz WiFi Sensor Switch adds remote water-level monitoring, contractor account monitoring, email notifications, SMS notifications, and configurable service alerts from 50% to 79% water level so contractors can schedule preventative maintenance before shutdown occurs.'
     },
     {
       question: 'Why did my AC shut off?',
@@ -274,7 +274,7 @@ export function SensorProductPage() {
     },
     {
       question: 'What dashboard features are included?',
-      answer: `WiFi Sensor Switch: the monitoring application includes real-time status, smart alerts, customer and property records, service call workflows, and historical data—aligned with your contractor account. The Standard Sensor Switch (Non-WiFi) does not connect to the remote dashboard; it provides local overflow protection and automatic shutdown at 95% water level.`
+      answer: `WiFi Sensor Switch: the monitoring application includes real-time status, smart alerts, customer and property records, service call workflows, and historical data—aligned with your contractor account. The Standard Sensor Switch (Non-WiFi) does not connect to the remote dashboard; it provides local overflow protection and automatic shutdown at 80% water level.`
     },
     {
       question: 'Can I manage multiple customers?',
@@ -339,7 +339,7 @@ export function SensorProductPage() {
                 Stop Overflows: Standard or WiFi Sensor Switch
               </h1>
               <p className="sensor-product-hero-subtitle">
-                Two sensor models share the same capacitive overflow protection—automatic AC shutdown at 95% water level. The WiFi Sensor Switch adds remote monitoring, alerts, and contractor dashboard tools on a {WIFI_REQUIREMENT} network. Professional installation required—contact us for a local HVAC Pro or contractor pricing.
+                Two sensor models share the same capacitive overflow protection—automatic AC shutdown at 80% water level. The WiFi Sensor Switch adds remote monitoring, alerts, and contractor dashboard tools on a {WIFI_REQUIREMENT} network. Professional installation required—contact us for a local HVAC Pro or contractor pricing.
               </p>
             </div>
 
@@ -500,7 +500,7 @@ export function SensorProductPage() {
                 <CompareChip variant="standard" shortLabel />
               </div>
               <p className="sensor-product-variant-card-desc">
-                Local overflow protection: capacitive sensing, automatic AC shutdown at 95%, no moving parts, fail-safe on power loss. No Wi‑Fi setup and no remote dashboard requirement.
+                Local overflow protection: capacitive sensing, automatic AC shutdown at 80%, no moving parts, fail-safe on power loss. No Wi‑Fi setup and no remote dashboard requirement.
               </p>
               <ul className="sensor-product-variant-card-list">
                 <li>
@@ -509,7 +509,7 @@ export function SensorProductPage() {
                 </li>
                 <li>
                   <CheckIcon className="sensor-product-variant-card-check" />
-                  LED: green = active; solid red = touch test or ~95% shutdown
+                  LED: green = active; solid red = touch test or ~80% shutdown
                 </li>
               </ul>
             </div>
@@ -519,7 +519,7 @@ export function SensorProductPage() {
                 <CompareChip variant="wifi" shortLabel />
               </div>
               <p className="sensor-product-variant-card-desc">
-                Everything the Standard model does on site, plus remote water-level monitoring, email/SMS alerts, contractor app, and service alerts between 50–90% (shutdown still at 95%). 24V HVAC power is strongly recommended; Li-ion backup (~2 years) or battery-only operation is supported with different LED behavior.
+                Everything the Standard model does on site, plus remote water-level monitoring, email/SMS alerts, contractor app, and service alerts between 50–79% (shutdown at 80%). 24V HVAC power is strongly recommended; Li-ion backup (~2 years) or battery-only operation is supported with different LED behavior.
               </p>
               <ul className="sensor-product-variant-card-list">
                 <li>
@@ -602,7 +602,7 @@ export function SensorProductPage() {
         <div className="sensor-product-alerts-content">
           <h2 className="product-section-title">Stop Problems Before They Start</h2>
           <p className="sensor-product-section-subtitle">
-            On the WiFi Sensor Switch, proactive service alerts and notifications help you schedule maintenance before shutdown. Both models protect against overflow with automatic AC shutdown at 95% water level.
+            On the WiFi Sensor Switch, proactive service alerts and notifications help you schedule maintenance before shutdown. Both models protect against overflow with automatic AC shutdown at 80% water level.
           </p>
           
           <div className="sensor-product-alerts-grid">

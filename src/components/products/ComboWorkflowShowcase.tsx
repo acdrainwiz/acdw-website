@@ -59,7 +59,7 @@ export function ComboWorkflowShowcase({ heroImage, className }: ComboWorkflowSho
         {
           Icon: ShieldCheckIcon,
           title: 'Protection + optional Wi‑Fi',
-          body: `Automatic AC shutoff at ~95% water. ${SENSOR_WIFI_SHORT} adds contractor alerts between ~50–90% on 2.4 GHz Wi‑Fi (5 GHz not supported). ${SENSOR_STANDARD_SHORT} protects locally without Wi‑Fi.`,
+          body: `Automatic AC shutoff at ~80% water. ${SENSOR_WIFI_SHORT} adds contractor alerts between ~50–79% on 2.4 GHz Wi‑Fi (5 GHz not supported). ${SENSOR_STANDARD_SHORT} protects locally without Wi‑Fi.`,
         },
       ] as const,
     []

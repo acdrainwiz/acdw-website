@@ -5,17 +5,20 @@ import {
   SENSOR_WIFI_SHORT,
 } from '@/config/acdwKnowledge'
 
+/** Protective shutdown level — matches product copy sitewide and gauge geometry. */
+export const SENSOR_PROTECTION_SHUTDOWN_PCT = 80 as const
+
 /**
  * Configuration for the Sensor water-level gauge demo on the Products page.
  *
  * All copy derives from acdwKnowledge.ts and the acdw-knowledge rule:
  *  - Standard Sensor Switch (Non-WiFi): local overflow protection, green LED
- *    in normal operation, solid red LED at ~95% protective shutdown.
- *  - WiFi Sensor Switch: adds service alerts between 50–90% fill (via the
- *    contractor app / email / SMS on 2.4 GHz Wi-Fi). Shutdown still at ~95%.
+ *    in normal operation, solid red LED at ~80% protective shutdown.
+ *  - WiFi Sensor Switch: adds service alerts between 50–79% fill (via the
+ *    contractor app / email / SMS on 2.4 GHz Wi-Fi). Shutdown at ~80%.
  *
  * We do not invent LED states. Per the KB, there is no distinct "alert" LED —
- * between 50–90% the LED remains green and an alert is dispatched through the
+ * between 50–79% the LED remains green and an alert is dispatched through the
  * monitoring platform. The gauge reflects that: LED stays green in the
  * alert band and an accompanying badge indicates the remote alert.
  */
@@ -77,11 +80,9 @@ const STANDARD_CONFIG: GaugeVariantConfig = {
   displayName: SENSOR_STANDARD_DISPLAY,
   tabLabel: SENSOR_STANDARD_SHORT,
   summary:
-    'Capacitive sensing on the condensate line with automatic AC shutdown at ~95%. No Wi-Fi required.',
-  shutdownPct: 95,
-  thresholds: [
-    { pct: 95, label: 'Protective shutdown', tone: 'critical' },
-  ],
+    'Capacitive sensing on the condensate line with automatic AC shutdown at ~80%. No Wi-Fi required.',
+  shutdownPct: SENSOR_PROTECTION_SHUTDOWN_PCT,
+  thresholds: [{ pct: SENSOR_PROTECTION_SHUTDOWN_PCT, label: 'Protective shutdown', tone: 'critical' }],
   states: {
     monitoring: {
       label: 'Normal monitoring',
@@ -99,32 +100,33 @@ const STANDARD_CONFIG: GaugeVariantConfig = {
     },
     shutdown: {
       label: 'Protective AC shutdown',
-      sublabel: 'AC disabled at ~95% · LED solid red',
+      sublabel: 'AC disabled at ~80% · LED solid red',
       ledColor: 'red',
       ledPulse: false,
     },
   },
   cycle: {
-    // Gentle rise to 95% and reset. No alert band needed.
-    keyframes: [0, 15, 55, 85, 95, 95, 0],
+    // Rise to shutdown at 80% and reset. Demo never exceeds 80%.
+    keyframes: [0, 15, 55, 72, 80, 80, 0],
     times: [0, 0.08, 0.28, 0.5, 0.65, 0.85, 1],
     durationSec: 11,
   },
 }
+
+const WIFI_ALERT_RANGE_END = SENSOR_PROTECTION_SHUTDOWN_PCT - 1
 
 const WIFI_CONFIG: GaugeVariantConfig = {
   id: 'wifi',
   displayName: SENSOR_WIFI_DISPLAY,
   tabLabel: SENSOR_WIFI_SHORT,
   summary:
-    'Adds remote monitoring and service alerts between 50–90% fill on 2.4 GHz Wi-Fi. Shutdown still at ~95%.',
-  shutdownPct: 95,
+    'Adds remote monitoring and service alerts between 50–79% fill on 2.4 GHz Wi-Fi. Shutdown at ~80%.',
+  shutdownPct: SENSOR_PROTECTION_SHUTDOWN_PCT,
   alertRangeStart: 50,
-  alertRangeEnd: 90,
+  alertRangeEnd: WIFI_ALERT_RANGE_END,
   thresholds: [
-    { pct: 50, label: 'Alert begins', tone: 'warn' },
-    { pct: 90, label: 'Alert continues', tone: 'warn' },
-    { pct: 95, label: 'Protective shutdown', tone: 'critical' },
+    { pct: 50, label: 'Alert band begins', tone: 'warn' },
+    { pct: SENSOR_PROTECTION_SHUTDOWN_PCT, label: 'Protective shutdown', tone: 'critical' },
   ],
   states: {
     monitoring: {
@@ -142,15 +144,15 @@ const WIFI_CONFIG: GaugeVariantConfig = {
     },
     shutdown: {
       label: 'Protective AC shutdown',
-      sublabel: 'AC disabled at ~95% · LED solid red',
+      sublabel: 'AC disabled at ~80% · LED solid red',
       ledColor: 'red',
       ledPulse: false,
     },
   },
   cycle: {
-    // Linger around the 50–90% band so users have time to read the alert copy.
-    keyframes: [0, 15, 55, 70, 88, 95, 95, 0],
-    times: [0, 0.07, 0.22, 0.38, 0.55, 0.68, 0.85, 1],
+    // Linger below 80% so alert copy is readable, then hold at shutdown. Never above 80%.
+    keyframes: [0, 15, 55, 68, 76, 78, 80, 80, 0],
+    times: [0, 0.07, 0.22, 0.36, 0.5, 0.6, 0.72, 0.88, 1],
     durationSec: 13,
   },
 }

@@ -122,7 +122,7 @@ export function Step3MiniCompletion() {
             <h4 className="mini-setup-sensor-upsell-title">Managing Multiple Properties or Away for the Season?</h4>
           </div>
           <p className="mini-setup-sensor-upsell-description">
-            Property owners with Airbnbs, rental portfolios, or seasonal residences can add the <strong>AC Drain Wiz Sensor</strong> for fully automatic water level monitoring. When drain water levels reach 95% capacity, the Sensor automatically shuts down the AC unit and instantly notifies the property owner <em>and</em> their HVAC technician via email and text — so the right person can schedule a service visit before any damage occurs, with no one needing to be on-site.
+            Property owners with Airbnbs, rental portfolios, or seasonal residences can add the <strong>AC Drain Wiz Sensor</strong> for fully automatic water level monitoring. When drain water levels reach 80% capacity, the Sensor automatically shuts down the AC unit and instantly notifies the property owner <em>and</em> their HVAC technician via email and text — so the right person can schedule a service visit before any damage occurs, with no one needing to be on-site.
           </p>
           <div className="mini-setup-sensor-upsell-actions">
             <Link
