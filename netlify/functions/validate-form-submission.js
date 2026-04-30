@@ -49,6 +49,7 @@ const FORM_NAME_TO_GHL_TYPE = {
   'core-upgrade': 'core-upgrade',
   'unsubscribe': 'unsubscribe',
   'ep-x7k9m2': 'email-preferences',
+  'municipal-intake': 'municipal-intake',
 }
 
 
@@ -271,7 +272,88 @@ const validateFormFields = (formType, formData) => {
       case 'email-preferences':
         // Email preferences form - email validation handled separately
         break
-        
+
+      case 'municipal-intake': {
+        const muniFirstName = formData.get('firstName')?.trim() || ''
+        const muniLastName = formData.get('lastName')?.trim() || ''
+        const muniEmail = formData.get('email')?.trim() || ''
+        const muniPhone = formData.get('phone')?.trim() || ''
+        const muniMunicipality = formData.get('municipalityName')?.trim() || ''
+        const muniState = formData.get('state')?.trim() || ''
+        const muniParish = formData.get('parishCounty')?.trim() || ''
+        const muniRole = formData.get('role')?.trim() || ''
+        const muniNumberOfFacilities = formData.get('numberOfFacilities')?.trim() || ''
+        const muniFacilityTypes = formData.get('facilityTypes')?.trim() || ''
+        const muniAttendedEvent = formData.get('attendedEvent')?.trim() || ''
+        const muniInterestedInOffer = formData.get('interestedInOffer')?.trim() || ''
+        const muniInstallationTimeline = formData.get('installationTimeline')?.trim() || ''
+        const muniAgreesToPurchase = formData.get('agreesToPurchase')?.trim() || ''
+        const muniConsent = formData.get('consent')
+
+        // Allowed dropdown / radio values — must match GHL field options exactly.
+        const ALLOWED_STATES = ['FL', 'LA', 'AL', 'GA', 'MS', 'TX', 'Other']
+        const ALLOWED_TIMELINES = [
+          'Immediately', '1-30 Days', '31-60 Days', '61-90 Days', '90+ Days', 'Not Sure Yet',
+        ]
+        const ALLOWED_ATTENDED = ['Yes', 'No', 'Not Sure']
+        const ALLOWED_INTERESTED = ['Yes', 'No', 'Maybe / Need More Information']
+        const ALLOWED_AGREES = ['Yes', 'No', 'Pending Approval']
+
+        if (!muniFirstName) errors.push('First name is required')
+        if (!muniLastName) errors.push('Last name is required')
+        if (!muniEmail) errors.push('Email is required')
+        if (!muniPhone) errors.push('Phone is required')
+        if (!muniMunicipality) errors.push('Municipality name is required')
+        if (!muniState) {
+          errors.push('State is required')
+        } else if (!ALLOWED_STATES.includes(muniState)) {
+          errors.push('Invalid state selected')
+        }
+        if (!muniParish) errors.push('Parish/County is required')
+        if (!muniRole) errors.push('Primary contact title/role is required')
+        if (!muniNumberOfFacilities) errors.push('Number of facilities is required')
+        if (!muniFacilityTypes) errors.push('At least one facility type is required')
+        if (!muniAttendedEvent) {
+          errors.push('Attended BOAFNCOAA event answer is required')
+        } else if (!ALLOWED_ATTENDED.includes(muniAttendedEvent)) {
+          errors.push('Invalid value for Attended BOAFNCOAA Event')
+        }
+        if (!muniInterestedInOffer) {
+          errors.push('Interest in special offer answer is required')
+        } else if (!ALLOWED_INTERESTED.includes(muniInterestedInOffer)) {
+          errors.push('Invalid value for Interested in Special Offer')
+        }
+        if (!muniInstallationTimeline) {
+          errors.push('Preferred installation timeline is required')
+        } else if (!ALLOWED_TIMELINES.includes(muniInstallationTimeline)) {
+          errors.push('Invalid installation timeline selected')
+        }
+        if (!muniAgreesToPurchase) {
+          errors.push('Agreement to purchase answer is required')
+        } else if (!ALLOWED_AGREES.includes(muniAgreesToPurchase)) {
+          errors.push('Invalid value for Agrees to Purchase')
+        }
+        if (muniConsent !== 'yes') {
+          errors.push('You must accept the Privacy Policy to continue')
+        }
+
+        // A2P 10DLC: transactional SMS consent required when phone has 10+ digits
+        const muniPhoneDigits = muniPhone.replace(/\D/g, '')
+        if (muniPhoneDigits.length >= 10) {
+          const muniSmsTransactional = formData.get('smsTransactional')
+          if (muniSmsTransactional !== 'yes') {
+            errors.push('Transactional SMS consent is required when a phone number is provided')
+          }
+        }
+
+        // Optional secondary contact: if email provided, validate format
+        const muniSecondaryEmail = formData.get('secondaryEmail')?.trim() || ''
+        if (muniSecondaryEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(muniSecondaryEmail)) {
+          errors.push('Secondary contact email format is invalid')
+        }
+        break
+      }
+
       default:
         console.warn(`Unknown form type: ${formType}`)
     }
@@ -371,7 +453,8 @@ exports.handler = async (event, context) => {
       'unsubscribe',
       'promo-signup',
       'core-upgrade',
-      'hero-email'
+      'hero-email',
+      'municipal-intake'
     ]
     
     if (!isWebhookEndpoint(path) && !isCheckoutEndpoint(path)) {
