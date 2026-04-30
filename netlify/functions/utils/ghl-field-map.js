@@ -33,6 +33,10 @@ const customFieldIds = {
   email_pref_newsletter: 'TtlNO0j7868pcbnsUSYW',
   email_pref_order_updates: 'PfXJOHoCccoEtrN2HoKG',
   email_pref_support: 'jzFSRD4dFpbe6OqIoAg9',
+
+  // Note: Municipal Opportunity custom field IDs are NOT listed here.
+  // They are auto-resolved at runtime from GHL via `ensureOpportunityFieldIds()`
+  // in ghl-client.js (cached 1h). Field-key-to-type mapping below stays static.
 }
 
 // Field types: text | large_text | numeric | multiselect
@@ -70,6 +74,31 @@ const customFieldTypes = {
   email_pref_newsletter: 'text',
   email_pref_order_updates: 'text',
   email_pref_support: 'text',
+
+  // Municipal intake (Opportunity object) — keyed by short key (without "opportunity." prefix).
+  // IDs auto-resolved at runtime; types are still static (form-data shaping).
+  municipality_name: 'text',
+  parish_county: 'text',
+  state: 'text',
+  population_size: 'numeric',
+  primary_contact_title_role: 'text',
+  secondary_contact_full_name: 'text',
+  secondary_contact_title_role: 'text',
+  secondary_contact_email: 'text',
+  secondary_contact_phone: 'text',
+  number_of_facilities_buildings: 'numeric',
+  types_of_facilities: 'multiselect',
+  existing_drain_overflow_monitoring_systems: 'text',
+  attended_boafncoaa_event: 'text',
+  interested_in_special_offer: 'text',
+  estimated_number_of_units_needed: 'numeric',
+  preferred_installation_timeline: 'text',
+  agrees_to_purchase_wifi_sensor_switch: 'text',
+  eligible_for_free_monitoring: 'text',
+  notes_special_requirements: 'text',
+  municipal_program_status: 'text',
+  number_of_units_installed: 'numeric',
+  monitoring_activated: 'text',
 }
 
 // [ghlBodyKey, formFieldKey] pairs — standard GHL contact fields.
@@ -220,6 +249,53 @@ const formConfigs = {
     ],
     sourceTags: [],
     sourceAttribution: 'acdrainwiz.com: email-preferences',
+  },
+
+  // Municipal intake — targets the Opportunity object.
+  // Flow: upsert Contact (name/email/phone) → create Opportunity in pipeline → tag Contact.
+  // If GHL_MUNI_PIPELINE_ID is missing, falls back to dumping all 22 fields into a Contact Note.
+  'municipal-intake': {
+    target: 'opportunity',
+    pipelineIdEnvVar: 'GHL_MUNI_PIPELINE_ID',
+    pipelineStageIdEnvVar: 'GHL_MUNI_PIPELINE_STAGE_ID',
+    opportunityNameTemplate: '{municipalityName} — Municipal Intake',
+    // Contact-side: standard fields for the linked Contact + sms_transactional_consent custom field.
+    contactStandardFields: [STD.firstName, STD.lastName, STD.email, STD.phone],
+    contactCustomFields: [
+      ['sms_transactional_consent', 'smsTransactional'],
+    ],
+    // Opportunity-side custom fields (form key on the right, GHL custom field key on the left).
+    opportunityCustomFields: [
+      ['municipality_name', 'municipalityName'],
+      ['parish_county', 'parishCounty'],
+      ['state', 'state'],
+      ['population_size', 'populationSize'],
+      ['primary_contact_title_role', 'role'],
+      ['secondary_contact_full_name', 'secondaryName'],
+      ['secondary_contact_title_role', 'secondaryTitle'],
+      ['secondary_contact_email', 'secondaryEmail'],
+      ['secondary_contact_phone', 'secondaryPhone'],
+      ['number_of_facilities_buildings', 'numberOfFacilities'],
+      ['types_of_facilities', 'facilityTypes'],
+      ['existing_drain_overflow_monitoring_systems', 'existingMonitoring'],
+      ['attended_boafncoaa_event', 'attendedEvent'],
+      ['interested_in_special_offer', 'interestedInOffer'],
+      ['estimated_number_of_units_needed', 'unitsNeeded'],
+      ['preferred_installation_timeline', 'installationTimeline'],
+      ['agrees_to_purchase_wifi_sensor_switch', 'agreesToPurchase'],
+      ['eligible_for_free_monitoring', 'eligibleFreeMonitoring'],
+      ['notes_special_requirements', 'message'],
+      ['municipal_program_status', 'municipalProgramStatus'],
+      ['number_of_units_installed', 'numberOfUnitsInstalled'],
+      ['monitoring_activated', 'monitoringActivated'],
+    ],
+    sourceTags: ['municipal-intake', 'warm lead'],
+    conditionalTags: [
+      { tag: 'BOAFNCOAA-attendee', when: 'attendedEvent', equals: 'Yes' },
+      { tag: 'agreed-to-purchase', when: 'agreesToPurchase', equals: 'Yes' },
+      { tag: 'interested-in-offer', when: 'interestedInOffer', equals: 'Yes' },
+    ],
+    sourceAttribution: 'acdrainwiz.com: municipal-intake',
   },
 }
 
