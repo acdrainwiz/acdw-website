@@ -1043,7 +1043,7 @@ export function MunicipalIntakePage() {
                   5. Interest &amp; Participation
                 </h3>
                 <div>
-                  <label className="contact-form-label">Attended BOAFNCOAA Event? *</label>
+                  <label className="contact-form-label">Attended BOAF or COAA Event? *</label>
                   <div className="flex flex-wrap gap-x-6 gap-y-2 mt-1" role="radiogroup">
                     {ATTENDED_OPTIONS.map((opt) => (
                       <label key={opt} className="flex items-center gap-2 cursor-pointer">
