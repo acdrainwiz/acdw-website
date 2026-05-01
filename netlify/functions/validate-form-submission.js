@@ -314,14 +314,14 @@ const validateFormFields = (formType, formData) => {
         if (!muniNumberOfFacilities) errors.push('Number of facilities is required')
         if (!muniFacilityTypes) errors.push('At least one facility type is required')
         if (!muniAttendedEvent) {
-          errors.push('Attended BOAFNCOAA event answer is required')
+          errors.push('Attended COAA event answer is required')
         } else if (!ALLOWED_ATTENDED.includes(muniAttendedEvent)) {
-          errors.push('Invalid value for Attended BOAFNCOAA Event')
+          errors.push('Invalid value for Attended COAA Event')
         }
         if (!muniInterestedInOffer) {
-          errors.push('Interest in special offer answer is required')
+          errors.push('COAA 2026 conference free Wi-Fi monitoring service offer interest answer is required')
         } else if (!ALLOWED_INTERESTED.includes(muniInterestedInOffer)) {
-          errors.push('Invalid value for Interested in Special Offer')
+          errors.push('Invalid value for COAA 2026 conference free Wi-Fi monitoring service offer interest')
         }
         if (!muniInstallationTimeline) {
           errors.push('Preferred installation timeline is required')
