@@ -13185,6 +13185,84 @@
 }
 
 /* ==========================================================================
+   BEGIN HERO DYNAMICS ENHANCEMENTS (2026-04-30)
+   To revert: delete everything between BEGIN/END markers, and revert the
+   `.mini-hero-v2-product-wrap` motion props in MiniProductPage.tsx.
+   Adds:
+     #1 Idle float on the T-manifold (continuous breathing after intro)
+     #2 Cyan core glow pulse (subtle "system live" rhythm)
+   Honors prefers-reduced-motion.
+   ========================================================================== */
+
+/* #1 — Manifold idle float.
+   Starts after the intro lands (delay matches re-sequenced product reveal:
+   0.45s delay + 0.9s duration ≈ 1.4s, then a small breath before idle begins).
+   Pure translateY so it composes cleanly with the parallax `y` motion value
+   on the parent .mini-hero-v2-product-wrap. */
+.mini-hero-v2-product-float {
+  animation: mini-hero-v2-product-idle 7.2s cubic-bezier(0.45, 0, 0.55, 1) 1.6s infinite alternate;
+  will-change: transform;
+}
+
+@keyframes mini-hero-v2-product-idle {
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(0, -7px, 0); }
+}
+
+/* #2 — Cyan core glow pulse.
+   Slow sine breathing on opacity + scale; tiny enough to feel ambient,
+   not strobe-y. Uses cubic-bezier sine so direction reversal stays smooth. */
+.mini-hero-v2-product-glow {
+  animation: mini-hero-v2-glow-pulse 5.6s cubic-bezier(0.45, 0, 0.55, 1) 1.4s infinite alternate;
+  will-change: transform, opacity;
+}
+
+@keyframes mini-hero-v2-glow-pulse {
+  0%   { opacity: 0.82; transform: scale(1); }
+  100% { opacity: 1;    transform: scale(1.045); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini-hero-v2-product-float,
+  .mini-hero-v2-product-glow {
+    animation: none;
+  }
+}
+/* ========================================================================
+   END HERO DYNAMICS ENHANCEMENTS (2026-04-30)
+   ======================================================================== */
+
+/* ==========================================================================
+   BEGIN HERO SWAY (2026-04-30)
+   To revert: delete everything between BEGIN/END markers.
+   Adds:
+     A continuous, smooth Z-axis sway on the T-manifold (-2.2deg ↔ +2.2deg
+     over an 11s alternate cycle). Applied to the inner <img> so it composes
+     with the Tier 1 #1 Y-bob on .mini-hero-v2-product-float (different
+     element + different period = organic compound motion, never syncs).
+   Honors prefers-reduced-motion.
+   ========================================================================== */
+.mini-hero-v2-product-img {
+  animation: mini-hero-v2-product-sway 11s cubic-bezier(0.45, 0, 0.55, 1) 1.6s infinite alternate;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+@keyframes mini-hero-v2-product-sway {
+  0%   { transform: rotate(-2.2deg); }
+  100% { transform: rotate(2.2deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini-hero-v2-product-img {
+    animation: none;
+  }
+}
+/* ========================================================================
+   END HERO SWAY (2026-04-30)
+   ======================================================================== */
+
+/* ==========================================================================
    MINI PURCHASE CTA — Option B: card below the fold (first scroll target)
    ========================================================================== */
 

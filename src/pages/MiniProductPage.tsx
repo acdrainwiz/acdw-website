@@ -61,7 +61,10 @@ export function MiniProductPage() {
     target: heroRef,
     offset: ['start start', 'end start'],
   })
-  const productParallaxY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 44])
+  // SCROLL-UP MANIFOLD (2026-04-30): negative target so the manifold rises on
+  // scroll down (and returns to place on scroll up — useTransform is bidirectional).
+  // Amplitude bumped to -100 for a clearly visible movement vs. the prior +44.
+  const productParallaxY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : -100])
   const wordmarkParallaxY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 22])
 
   const [openFaq, setOpenFaq] = useState<number | null>(null)
@@ -272,9 +275,9 @@ export function MiniProductPage() {
               <motion.div
                 className="mini-hero-v2-product-wrap"
                 style={{ y: productParallaxY }}
-                initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+                initial={reduceMotion ? false : { opacity: 0, y: 56 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.06 }}
+                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.45 }}
               >
                 <span className="mini-hero-v2-product-glow" aria-hidden />
                 <div className="mini-hero-v2-product-float">

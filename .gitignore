@@ -48,3 +48,6 @@ dist-ssr
 scripts/
 **/*.sh
 *.sh
+
+# Local agent backup snapshots (rollback safety net for in-flight edits)
+.backups/
