@@ -33,6 +33,7 @@ import { miniHotspots } from '../components/products/miniHotspots'
 import { SensorWaterGaugeInline } from '../components/products/SensorWaterGauge'
 import { ComboWorkflowShowcase } from '../components/products/ComboWorkflowShowcase'
 import { ProductsLineupComparison } from '../components/products/ProductsLineupComparison'
+import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
   id: 'page-products',
@@ -692,6 +693,7 @@ export function ProductsPage() {
     <div className="unified-products-page">
       {/* Hero — same pattern as About: stagger + fade-up on mount (not scroll) */}
       <div className="unified-products-hero">
+        <PageHeroMeshBackdrop />
         <div className="unified-products-hero-content">
           <motion.div
             variants={introStagger}

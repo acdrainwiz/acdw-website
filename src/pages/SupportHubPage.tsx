@@ -19,6 +19,7 @@ import {
   buildSupportSearchHref,
   getHighlightTermsForQuery,
 } from '../utils/supportFaqSearch'
+import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 
 const MIN_QUERY_LEN = 2
 const SEARCH_ANALYTICS_DEBOUNCE_MS = 600
@@ -107,6 +108,7 @@ export function SupportHubPage() {
     <div className="support-hub-container">
       {/* Hero Banner */}
       <div className="support-hero">
+        <PageHeroMeshBackdrop />
         <div className="support-hero-content">
           <div className="support-hero-header">
             <h1 className="support-hero-title">Support Center</h1>

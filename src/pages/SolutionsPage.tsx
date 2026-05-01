@@ -1,4 +1,5 @@
 import { CheckIcon, ClockIcon, WrenchScrewdriverIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline'
+import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 
 export function SolutionsPage() {
   const solutions = [
@@ -93,6 +94,7 @@ export function SolutionsPage() {
 
       {/* Hero Banner */}
       <div className="support-hero">
+        <PageHeroMeshBackdrop />
         <div className="support-hero-content">
           <div className="support-hero-header">
             <h1 className="support-hero-title">AC Drain Wiz Solutions</h1>

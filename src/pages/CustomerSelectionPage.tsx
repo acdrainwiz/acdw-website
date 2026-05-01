@@ -1,4 +1,5 @@
 import { CustomerTypeSelector } from '../components/home/CustomerTypeSelector'
+import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
@@ -16,6 +17,7 @@ export function CustomerSelectionPage() {
     <div>
       {/* Hero Banner */}
       <div className="support-hero">
+        <PageHeroMeshBackdrop />
         <div className="support-hero-content">
           <div className="support-hero-header">
             <h1 className="support-hero-title">Choose Your Experience</h1>

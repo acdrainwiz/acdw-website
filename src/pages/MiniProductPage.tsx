@@ -9,8 +9,12 @@
  * - Stripe checkout integration
  */
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { MiniHeroV2MeshBackground } from '../components/layout/MiniHeroV2MeshBackground'
+import { HeroTitleRotator } from '../components/products/HeroTitleRotator'
+import { usePageHeroIntro } from '../hooks/usePageHeroIntro'
 import {
     CheckIcon,
     ShieldCheckIcon,
@@ -41,8 +45,25 @@ export const PAGE_SEARCH_META: PageSearchMeta = {
   href: '/products/mini',
 }
 
+const MINI_HERO_HEADLINES = [
+  'Stop Water Damage Before It Starts',
+  'See the Line. Clear Clogs Fast.',
+  'Install Once—Service Forever',
+  'Flush, Air & Vacuum—On Your Terms',
+]
+
 export function MiniProductPage() {
   const navigate = useNavigate()
+  const heroRef = useRef<HTMLElement>(null)
+  const reduceMotion = useReducedMotion()
+  const { introStagger, fadeUp } = usePageHeroIntro()
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  })
+  const productParallaxY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 44])
+  const wordmarkParallaxY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 22])
+
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
@@ -225,84 +246,146 @@ export function MiniProductPage() {
         </button>
       </div>
 
-      {/* Hero Section - Option 1: Split Layout with Full-Width Background */}
-      <section className="mini-product-hero-fullwidth">
-        {/* Inline Hero Image */}
-        <div className="mini-product-hero-image-container">
-          <img
-            src="/images/acdw-mini-hero2-background.png"
-            alt="AC Drain Wiz Mini"
-            className="mini-product-hero-image"
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-          />
+      {/* Hero — Phase 1 v2: mesh + floating product + rotating headline */}
+      <section
+        ref={heroRef}
+        className="mini-hero-v2"
+        aria-labelledby="mini-hero-heading"
+      >
+        <MiniHeroV2MeshBackground />
+
+        <div className="mini-hero-v2-inner">
+          <div className="mini-hero-v2-product-col">
+            <div className="mini-hero-v2-stage">
+              <div className="mini-hero-v2-wordmark-anchor" aria-hidden>
+                <motion.div
+                  className="mini-hero-v2-wordmark"
+                  style={{ y: wordmarkParallaxY }}
+                  initial={reduceMotion ? false : { opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
+                >
+                  <span className="mini-hero-v2-wordmark-img" />
+                </motion.div>
+              </div>
+
+              <motion.div
+                className="mini-hero-v2-product-wrap"
+                style={{ y: productParallaxY }}
+                initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.06 }}
+              >
+                <span className="mini-hero-v2-product-glow" aria-hidden />
+                <div className="mini-hero-v2-product-float">
+                  <picture>
+                    <source
+                      media="(max-width: 767px)"
+                      srcSet="/images/acdw-mini-hero2-product-mobile.webp"
+                      type="image/webp"
+                    />
+                    <source media="(max-width: 767px)" srcSet="/images/acdw-mini-hero2-product-mobile.png" />
+                    <source srcSet="/images/acdw-mini-hero2-product.webp" type="image/webp" />
+                    <img
+                      src="/images/acdw-mini-hero2-product.png"
+                      alt="AC Drain Wiz Mini clear T-manifold on condensate drain line"
+                      className="mini-hero-v2-product-img"
+                      width={1600}
+                      height={1200}
+                      loading="eager"
+                      fetchPriority="high"
+                      decoding="async"
+                    />
+                  </picture>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+
+          <motion.div
+            className="mini-hero-v2-content"
+            variants={introStagger}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.p className="mini-hero-v2-eyebrow" variants={fadeUp}>
+              AC Drain Wiz Mini
+            </motion.p>
+
+            <motion.div className="mini-hero-v2-title" variants={fadeUp}>
+              <HeroTitleRotator titles={MINI_HERO_HEADLINES} headingId="mini-hero-heading" />
+            </motion.div>
+
+            <motion.p className="mini-hero-v2-subtitle" variants={fadeUp}>
+              AC drain clogs cause thousands in water damage. The Mini gives you instant access to clear
+              blockages in about five minutes—no cutting required for maintenance, no mess, no emergency calls.
+            </motion.p>
+
+            <motion.div className="mini-hero-v2-trust" variants={fadeUp}>
+              <span className="mini-hero-v2-trust-dot" aria-hidden />
+              Trusted by homeowners &amp; AC contractors nationwide
+            </motion.div>
+          </motion.div>
         </div>
-        
-        {/* Content Overlay */}
-        <div className="mini-product-hero-overlay">
-          <div className="mini-product-hero-content-wrapper">
-            {/* Left Side - Product Info */}
-            <div className="mini-product-hero-info">
-              <h1 className="mini-product-hero-title">
-                Stop Water Damage Before It Starts
-              </h1>
-              <p className="mini-product-hero-subtitle">
-                AC drain clogs cause thousands in water damage. The Mini gives you instant access to clear blockages in 5 minutes—no cutting required for maintenance, no mess, no emergency calls.
-              </p>
-              <div className="mini-product-hero-trust-metric">
-                <span className="mini-product-hero-trust-text">Trusted by homeowners & AC contractors nationwide</span>
+      </section>
+
+      {/* Purchase / CTA — first scroll target below the dark hero */}
+      <section className="mini-purchase-cta-band" aria-labelledby="mini-purchase-heading">
+        <div className="mini-purchase-cta-inner">
+          <motion.div
+            className="mini-purchase-cta-reveal"
+            initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <p className="mini-purchase-cta-kicker">Pricing &amp; availability</p>
+            <div className="mini-purchase-cta-card">
+              <div className="mini-product-purchase-card-content">
+                <h2 id="mini-purchase-heading" className="sensor-product-purchase-title">
+                  Get started
+                </h2>
+
+                <div className="sensor-product-purchase-cta-section">
+                  <p className="sensor-product-purchase-message">
+                    Contact us for pricing and availability. Professional contractors receive special bulk
+                    pricing.
+                  </p>
+
+                  <a href={SUPPORT_CONTACT.telHref} className="sensor-product-purchase-button-primary md:hidden">
+                    Call {SUPPORT_CONTACT.phoneDisplay}
+                  </a>
+
+                  <div className="sensor-product-phone-badge hidden md:flex">
+                    <PhoneIcon className="sensor-product-phone-badge-icon" aria-hidden />
+                    <div className="sensor-product-phone-badge-text">
+                      <div className="sensor-product-phone-vanity">{SUPPORT_CONTACT.phoneDisplay}</div>
+                      <div className="sensor-product-phone-numeric">{SUPPORT_CONTACT.phoneNumeric}</div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => navigate('/contact?type=sales')}
+                    className="sensor-product-purchase-button-secondary"
+                  >
+                    Contact sales
+                  </button>
+                </div>
+
+                <div className="sensor-product-trust-section-inline">
+                  <div className="sensor-product-trust-badge">
+                    <ShieldCheckIcon className="sensor-product-trust-icon" aria-hidden />
+                    <span>2-year warranty</span>
+                  </div>
+                  <div className="sensor-product-trust-badge">
+                    <CheckIcon className="sensor-product-trust-icon" aria-hidden />
+                    <span>Fast shipping</span>
+                  </div>
+                </div>
               </div>
             </div>
-
-                      {/* Right Side - Purchase Card */}
-                      <div className="mini-product-purchase-card-hero">
-                          <div className="mini-product-purchase-card-content">
-                              <h2 className="sensor-product-purchase-title">Get Started</h2>
-
-                              <div className="sensor-product-purchase-cta-section">
-                                  <p className="sensor-product-purchase-message">
-                                      Contact us for pricing and availability. Professional contractors receive special bulk pricing.
-                                  </p>
-
-                                  {/* Mobile: Clickable phone button */}
-                                  <a href={SUPPORT_CONTACT.telHref} className="sensor-product-purchase-button-primary md:hidden">
-
-                                  Call {SUPPORT_CONTACT.phoneDisplay}
-                              </a>
-
-                              {/* Desktop: Phone badge (non-clickable) */}
-                              <div className="sensor-product-phone-badge hidden md:flex">
-                                  <PhoneIcon className="sensor-product-phone-badge-icon" />
-                                  <div className="sensor-product-phone-badge-text">
-                                      <div className="sensor-product-phone-vanity">{SUPPORT_CONTACT.phoneDisplay}</div>
-                                      <div className="sensor-product-phone-numeric">{SUPPORT_CONTACT.phoneNumeric}</div>
-                                  </div>
-                              </div>
-
-                              {/* Contact Sales Button */}
-                              <button
-                                  onClick={() => navigate('/contact?type=sales')}
-                                  className="sensor-product-purchase-button-secondary"
-                              >
-                                  Contact Sales
-                              </button>
-                          </div>
-
-                          {/* Trust Badges */}
-                          <div className="sensor-product-trust-section-inline">
-                              <div className="sensor-product-trust-badge">
-                                  <ShieldCheckIcon className="sensor-product-trust-icon" />
-                                  <span>2-year warranty</span>
-                              </div>
-                              <div className="sensor-product-trust-badge">
-                                  <CheckIcon className="sensor-product-trust-icon" />
-                                  <span>Fast shipping</span>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+          </motion.div>
         </div>
       </section>
 

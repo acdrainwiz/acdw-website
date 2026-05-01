@@ -18,6 +18,7 @@ import { validateEmail } from '../utils/emailValidation'
 import { useRecaptcha } from '../hooks/useRecaptcha'
 import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
+import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
   id: 'contact-support',
@@ -809,6 +810,7 @@ export function ContactPage() {
 
       {/* Hero Banner */}
       <div className="support-hero">
+        <PageHeroMeshBackdrop />
         <div className="support-hero-content">
           <div className="support-hero-header">
             <h1 className="support-hero-title">Contact AC Drain Wiz</h1>

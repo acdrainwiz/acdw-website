@@ -16,6 +16,7 @@ import {
   ChevronRightIcon,
   ArrowRightIcon
 } from '@heroicons/react/24/outline';
+import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop';
 import type { PageSearchMeta } from '../config/siteSearchTypes';
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
@@ -81,6 +82,7 @@ export function HomeownerHomePage() {
     <div className="homeowner-page">
       {/* Hero Section */}
       <div className="homeowner-hero-container">
+        <PageHeroMeshBackdrop />
         <div className="homeowner-hero-content">
           <div className="homeowner-hero-header">
             <h1 className="homeowner-hero-headline">

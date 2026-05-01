@@ -14,6 +14,7 @@ import {
   SENSOR_WIFI_SETUP_SEARCH_TERMS,
 } from '../config/installationSearchTerms'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
+import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 import {
   WrenchScrewdriverIcon,
   CheckCircleIcon,
@@ -49,6 +50,7 @@ export function InstallationSetupPage() {
 
       {/* Hero Banner */}
       <div className="support-hero">
+        <PageHeroMeshBackdrop />
         <div className="support-hero-content">
           <div className="support-hero-header">
             <div className="support-hero-breadcrumb">
