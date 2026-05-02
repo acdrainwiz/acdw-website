@@ -24,6 +24,7 @@ import {
 } from '../config/acdwKnowledge'
 import { parseProductSupportUrl } from '../utils/supportFaqSearch'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
+import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
   id: 'page-product-support',
@@ -169,6 +170,7 @@ export function ProductSupportPage() {
 
       {/* Hero Banner */}
       <div className="support-hero">
+        <PageHeroMeshBackdrop />
         <div className="support-hero-content">
           <div className="support-hero-header">
             <div className="support-hero-breadcrumb">

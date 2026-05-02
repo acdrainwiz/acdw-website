@@ -5,6 +5,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
+import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
   id: 'page-warranty-returns',
@@ -22,6 +23,7 @@ export function WarrantyReturnsPage() {
 
       {/* Hero Banner */}
       <div className="support-hero">
+        <PageHeroMeshBackdrop />
         <div className="support-hero-content">
           <div className="support-hero-header">
             <div className="support-hero-breadcrumb">

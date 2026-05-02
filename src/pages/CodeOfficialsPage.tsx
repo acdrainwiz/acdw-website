@@ -10,6 +10,7 @@ import {
   ExclamationTriangleIcon,
   CurrencyDollarIcon
 } from '@heroicons/react/24/outline';
+import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop';
 import { SUPPORT_CONTACT } from '../config/acdwKnowledge';
 import type { PageSearchMeta } from '../config/siteSearchTypes';
 
@@ -29,7 +30,8 @@ export function CodeOfficialsPage() {
   return (
     <div className="homeowner-page">
       {/* Hero Section */}
-      <div className="homeowner-hero-container" style={{ background: 'linear-gradient(135deg, #ea580c 0%, #fb923c 100%)' }}>
+      <div className="homeowner-hero-container">
+        <PageHeroMeshBackdrop />
         <div className="homeowner-hero-content">
           <div className="homeowner-hero-header">
             <h1 className="homeowner-hero-headline">

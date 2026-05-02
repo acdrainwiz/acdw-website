@@ -15,6 +15,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { PRODUCT_NAMES, SUPPORT_CONTACT, SENSOR_STANDARD_SHORT } from '../config/acdwKnowledge'
 import { MiamiHeatPartnershipLockup } from '../components/layout/MiamiHeatPartnershipLockup'
+import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
@@ -196,6 +197,7 @@ export function AboutPage() {
 
       {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}
       <div className="about-hero">
+        <PageHeroMeshBackdrop />
         <div className="about-section-inner">
           <motion.div
             className="about-hero-text"

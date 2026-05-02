@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { IMaskInput } from 'react-imask'
-import { BuildingOfficeIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { BuildingOfficeIcon, SparklesIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { validateEmail } from '../utils/emailValidation'
 import { useRecaptcha } from '../hooks/useRecaptcha'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
+import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
   id: 'municipal-intake',
@@ -503,6 +504,7 @@ export function MunicipalIntakePage() {
   return (
     <div className="contact-page-container">
       <div className="support-hero">
+        <PageHeroMeshBackdrop />
         <div className="support-hero-content">
           <div className="support-hero-header">
             <h1 className="support-hero-title">Municipal Intake Form</h1>
@@ -1041,7 +1043,7 @@ export function MunicipalIntakePage() {
                   5. Interest &amp; Participation
                 </h3>
                 <div>
-                  <label className="contact-form-label">Attended BOAFNCOAA Event? *</label>
+                  <label className="contact-form-label">Attended COAA Event? *</label>
                   <div className="flex flex-wrap gap-x-6 gap-y-2 mt-1" role="radiogroup">
                     {ATTENDED_OPTIONS.map((opt) => (
                       <label key={opt} className="flex items-center gap-2 cursor-pointer">
@@ -1062,27 +1064,84 @@ export function MunicipalIntakePage() {
                     <p className="field-error-message">{fieldErrors.attendedEvent}</p>
                   )}
                 </div>
-                <div>
-                  <label className="contact-form-label">Interested in Special Offer? *</label>
-                  <div className="flex flex-wrap gap-x-6 gap-y-2 mt-1" role="radiogroup">
-                    {INTERESTED_OPTIONS.map((opt) => (
-                      <label key={opt} className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="radio"
-                          name="interestedInOffer"
-                          value={opt}
-                          checked={formData.interestedInOffer === opt}
-                          onChange={handleInputChange}
-                          onBlur={handleBlur}
-                          className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300"
-                        />
-                        <span className="text-sm text-gray-700">{opt}</span>
-                      </label>
-                    ))}
+                <div className="rounded-xl border border-emerald-200/90 bg-gradient-to-b from-emerald-50/95 via-white to-white p-4 shadow-sm ring-1 ring-emerald-100/60 sm:p-5">
+                  <div className="flex gap-3 sm:gap-4">
+                    <div
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-800 shadow-sm ring-1 ring-emerald-200/60"
+                      aria-hidden
+                    >
+                      <SparklesIcon className="h-5 w-5" />
+                    </div>
+                    <div className="min-w-0 flex-1 space-y-3">
+                      <div>
+                        <span className="mb-2 inline-flex items-center rounded-full bg-emerald-600/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-emerald-800 ring-1 ring-inset ring-emerald-600/15">
+                          Conference offer
+                        </span>
+                        <p id="specialOfferQuestion" className="contact-form-label !mb-0 !mt-2">
+                          Interested in the COAA 2026 conference free wifi monitoring service offer? *
+                        </p>
+                      </div>
+                      <div
+                        id="specialOfferDetails"
+                        className="flex flex-col gap-3 rounded-lg border border-emerald-100/90 bg-white/90 p-3 shadow-sm sm:p-4"
+                      >
+                        <p className="m-0 text-sm leading-snug text-gray-700">
+                          If you attended the COAA 2026 Annual Education Conference, eligible
+                          municipalities or parishes may qualify for{' '}
+                          <strong>complimentary Wi-Fi monitoring</strong> during the conference
+                          promotion window; the offer is tied to the{' '}
+                          <strong>AC Drain Wiz Wi-Fi Sensor Switch</strong>.{' '}
+                          <strong>This is not a purchase or funding step</strong>—it only signals
+                          interest so we can follow up with your team to discuss fit, scope, and timing
+                          before any next steps.
+                        </p>
+                        <ul className="m-0 list-disc space-y-1 pl-5 text-sm leading-snug text-gray-700">
+                          <li>
+                            Applies to qualifying municipal or parish entities; we verify eligibility
+                            before enrollment.
+                          </li>
+                          <li>
+                            The conference offer is structured around the AC Drain Wiz Wi-Fi Sensor
+                            Switch—our team will walk through what participation looks like and answer
+                            questions when we connect.
+                          </li>
+                        </ul>
+                        <p className="m-0 border-t border-emerald-100/80 pt-2 text-xs leading-snug text-gray-500">
+                          <strong className="text-gray-600">Important:</strong> Subject to
+                          eligibility verification—submitting this form does not guarantee you
+                          qualify. Information must be accurate; false or misleading information may
+                          void eligibility. Offer is for the COAA 2026 Annual Education Conference
+                          period only; we may change or end it. This step does not create a financial
+                          commitment; any formal terms would be confirmed later, only if you choose to
+                          move forward.
+                        </p>
+                      </div>
+                      <div
+                        className="flex flex-wrap gap-x-6 gap-y-2 rounded-lg border border-dashed border-emerald-200/90 bg-emerald-50/50 px-3 py-3 sm:px-4"
+                        role="radiogroup"
+                        aria-labelledby="specialOfferQuestion"
+                        aria-describedby="specialOfferDetails"
+                      >
+                        {INTERESTED_OPTIONS.map((opt) => (
+                          <label key={opt} className="flex cursor-pointer items-center gap-2">
+                            <input
+                              type="radio"
+                              name="interestedInOffer"
+                              value={opt}
+                              checked={formData.interestedInOffer === opt}
+                              onChange={handleInputChange}
+                              onBlur={handleBlur}
+                              className="h-4 w-4 border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                            />
+                            <span className="text-sm font-medium text-gray-800">{opt}</span>
+                          </label>
+                        ))}
+                      </div>
+                      {fieldErrors.interestedInOffer && (
+                        <p className="field-error-message">{fieldErrors.interestedInOffer}</p>
+                      )}
+                    </div>
                   </div>
-                  {fieldErrors.interestedInOffer && (
-                    <p className="field-error-message">{fieldErrors.interestedInOffer}</p>
-                  )}
                 </div>
                 <div className="contact-form-grid">
                   <div>

@@ -7,6 +7,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { SENSOR_SETUP_MODEL_CHOICE_HREF } from '../config/acdwKnowledge'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
+import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
   id: 'page-installation-scenarios',
@@ -24,6 +25,7 @@ export function RecommendedInstallationScenariosPage() {
 
       {/* Hero Banner */}
       <div className="support-hero">
+        <PageHeroMeshBackdrop />
         <div className="support-hero-content">
           <div className="support-hero-header">
             <div className="support-hero-breadcrumb">

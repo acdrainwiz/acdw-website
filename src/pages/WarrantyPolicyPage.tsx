@@ -1,5 +1,6 @@
 import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
+import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
   id: 'page-warranty-policy',
@@ -18,6 +19,7 @@ export function WarrantyPolicyPage() {
 
       {/* Hero Banner */}
       <div className="support-hero">
+        <PageHeroMeshBackdrop />
         <div className="support-hero-content">
           <div className="support-hero-header">
             <h1 className="support-hero-title">Warranty Policy</h1>

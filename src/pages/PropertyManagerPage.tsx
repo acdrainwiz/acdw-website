@@ -12,6 +12,7 @@ import {
   SparklesIcon,
   CheckCircleIcon
 } from '@heroicons/react/24/outline';
+import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop';
 import { SUPPORT_CONTACT } from '../config/acdwKnowledge';
 import type { PageSearchMeta } from '../config/siteSearchTypes';
 
@@ -36,6 +37,7 @@ export function PropertyManagerPage() {
     <div className="property-manager-page">
       {/* Hero Section */}
       <div className="property-manager-hero-container">
+        <PageHeroMeshBackdrop />
         <div className="property-manager-hero-content">
           <div className="property-manager-hero-header">
             <h1 className="property-manager-hero-headline">

@@ -37,7 +37,7 @@ export const miniHotspots: Hotspot[] = [
       'See inside the line at a glance. Confirm a clean flush, spot biofilm early, and catch rising water before it backs up.',
     xPct: 25.9,
     yPct: 76.7,
-    align: 'left',
+    align: 'right',
   },
   {
     id: 'pvc-connection',
@@ -46,7 +46,7 @@ export const miniHotspots: Hotspot[] = [
       'Installs once, serves the life of the system. Fits standard 3/4" PVC residential condensate lines.',
     xPct: 6.4,
     yPct: 66.4,
-    align: 'left',
+    align: 'right',
   },
   {
     id: 'service-attachments',

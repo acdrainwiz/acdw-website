@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState, type KeyboardEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import {
   WrenchScrewdriverIcon,
   QuestionMarkCircleIcon,
@@ -9,6 +10,7 @@ import {
   ArrowRightIcon,
   BookOpenIcon,
   DocumentTextIcon,
+  ArrowTopRightOnSquareIcon,
 } from '@heroicons/react/24/outline'
 import { MONITORING, SENSOR_SETUP_MODEL_CHOICE_HREF, SUPPORT_CONTACT } from '../config/acdwKnowledge'
 import { SUPPORT_SEARCH_KIND_LABEL } from '../config/supportSearchIndex'
@@ -19,14 +21,85 @@ import {
   buildSupportSearchHref,
   getHighlightTermsForQuery,
 } from '../utils/supportFaqSearch'
+import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 
 const MIN_QUERY_LEN = 2
 const SEARCH_ANALYTICS_DEBOUNCE_MS = 600
 const LISTBOX_ID = 'support-hub-search-listbox'
 const INPUT_ID = 'support-hub-search-input'
 
+/** Below-hero hub content — animate into view once */
+const hubScrollViewport = { once: true, amount: 0.2, margin: '0px 0px -10% 0px' } as const
+
 export function SupportHubPage() {
   const navigate = useNavigate()
+  const reduceMotion = useReducedMotion()
+
+  const searchPanelEase = useMemo(() => [0.22, 1, 0.36, 1] as const, [])
+
+  const hubStagger = useMemo(
+    () => ({
+      hidden: {},
+      visible: {
+        transition: {
+          staggerChildren: reduceMotion ? 0 : 0.1,
+          delayChildren: reduceMotion ? 0 : 0.05,
+        },
+      },
+    }),
+    [reduceMotion],
+  )
+
+  const hubFadeUp = useMemo(
+    () =>
+      reduceMotion
+        ? { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.25 } } }
+        : {
+            hidden: { opacity: 0, y: 22 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.52, ease: searchPanelEase },
+            },
+          },
+    [reduceMotion, searchPanelEase],
+  )
+
+  const hubFadeUpSnap = useMemo(
+    () =>
+      reduceMotion
+        ? hubFadeUp
+        : {
+            hidden: { opacity: 0, y: 16 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.42, ease: searchPanelEase },
+            },
+          },
+    [reduceMotion, hubFadeUp, searchPanelEase],
+  )
+
+  const searchPanelReveal = useMemo(
+    () =>
+      reduceMotion
+        ? {
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { duration: 0.22 } },
+            exit: { opacity: 0, transition: { duration: 0.15 } },
+          }
+        : {
+            hidden: { opacity: 0, y: 14 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.38, ease: searchPanelEase },
+            },
+            exit: { opacity: 0, y: -8, transition: { duration: 0.24, ease: searchPanelEase } },
+          },
+    [reduceMotion, searchPanelEase],
+  )
+
   const [query, setQuery] = useState('')
   const [activeResultIndex, setActiveResultIndex] = useState(-1)
 
@@ -105,8 +178,9 @@ export function SupportHubPage() {
 
   return (
     <div className="support-hub-container">
-      {/* Hero Banner */}
+      {/* Hero Banner — unchanged shared pattern with other hub pages */}
       <div className="support-hero">
+        <PageHeroMeshBackdrop />
         <div className="support-hero-content">
           <div className="support-hero-header">
             <h1 className="support-hero-title">Support Center</h1>
@@ -149,22 +223,30 @@ export function SupportHubPage() {
         </div>
       </div>
 
-      <div className="container py-12">
-        {(results.length > 0 || showNoResults) && (
-          <section className="support-hub-search-results mb-12">
-            {results.length > 0 && (
-              <>
-                <h2 className="support-hub-search-results-heading" id={`${LISTBOX_ID}-label`}>
-                  {results.length} result{results.length === 1 ? '' : 's'} for &ldquo;{trimmed}&rdquo;
-                </h2>
-                <ul
-                  role="listbox"
-                  id={LISTBOX_ID}
-                  className="support-hub-search-results-list"
-                  aria-labelledby={`${LISTBOX_ID}-label`}
-                >
-                  {results.map(({ entry, snippet }, index) => {
-                    const href = buildSupportSearchHref(entry)
+      <div className="support-hub-main container pb-16 pt-12 md:pb-24 md:pt-14">
+        <AnimatePresence mode="sync">
+          {(results.length > 0 || showNoResults) && (
+            <motion.section
+              key="support-hub-search-panel"
+              className="support-hub-search-results mb-12 md:mb-16"
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={searchPanelReveal}
+            >
+              {results.length > 0 && (
+                <>
+                  <h2 className="support-hub-search-results-heading" id={`${LISTBOX_ID}-label`}>
+                    {results.length} result{results.length === 1 ? '' : 's'} for &ldquo;{trimmed}&rdquo;
+                  </h2>
+                  <ul
+                    role="listbox"
+                    id={LISTBOX_ID}
+                    className="support-hub-search-results-list"
+                    aria-labelledby={`${LISTBOX_ID}-label`}
+                  >
+                    {results.map(({ entry, snippet }, index) => {
+                      const href = buildSupportSearchHref(entry)
                     const kindClass =
                       entry.kind === 'faq'
                         ? 'support-hub-search-result-kind support-hub-search-result-kind--faq'
@@ -213,117 +295,186 @@ export function SupportHubPage() {
                       </li>
                     )
                   })}
-                </ul>
-              </>
-            )}
-            {showNoResults && (
-              <div className="support-hub-search-empty">
-                <h2 className="support-hub-search-results-heading">No matches for &ldquo;{trimmed}&rdquo;</h2>
-                <p className="support-hub-search-empty-text">
-                  Try different keywords, browse the sections below, or reach out—we&apos;re happy to help.
+                  </ul>
+                </>
+              )}
+              {showNoResults && (
+                <div className="support-hub-search-empty">
+                  <h2 className="support-hub-search-results-heading">
+                    No matches for &ldquo;{trimmed}&rdquo;
+                  </h2>
+                  <p className="support-hub-search-empty-text">
+                    Try different keywords, browse the sections below, or reach out—we&apos;re happy to help.
+                  </p>
+                  <ul className="support-hub-search-empty-actions">
+                    <li>
+                      <a href={SUPPORT_CONTACT.telHref} className="support-hub-search-empty-link">
+                        {SUPPORT_CONTACT.phoneDisplay}
+                      </a>
+                    </li>
+                    <li>
+                      <a href={`mailto:${SUPPORT_CONTACT.supportEmail}`} className="support-hub-search-empty-link">
+                        {SUPPORT_CONTACT.supportEmail}
+                      </a>
+                    </li>
+                    <li>
+                      <Link to="/contact?type=support" className="support-hub-search-empty-link">
+                        Contact form
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </motion.section>
+          )}
+        </AnimatePresence>
+
+        <motion.section
+          className="support-hub-cards-section"
+          initial="hidden"
+          whileInView="visible"
+          viewport={hubScrollViewport}
+          variants={hubStagger}
+        >
+          <motion.p className="support-hub-section-kicker" variants={hubFadeUpSnap}>
+            Browse by topic
+          </motion.p>
+          <motion.h2 className="support-hub-section-heading" variants={hubFadeUp}>
+            Guides, troubleshooting &amp; claims
+          </motion.h2>
+          <motion.div className="support-hub-cards" variants={hubStagger}>
+            <motion.div variants={hubFadeUp} className="support-hub-card-reveal min-h-[14rem] min-w-0 sm:min-h-0">
+              <Link
+                to="/support/installation-setup"
+                className="support-hub-card support-hub-card-primary support-hub-card--accent-sky focus-visible:focus-ring-support-hub group"
+              >
+                <div className="support-hub-card-icon-wrapper">
+                  <WrenchScrewdriverIcon className="support-hub-card-icon" aria-hidden />
+                </div>
+                <h3 className="support-hub-card-title">Installation &amp; Setup</h3>
+                <p className="support-hub-card-description">
+                  Step-by-step guides, video tutorials, and installation scenarios for AC Drain Wiz products.
                 </p>
-                <ul className="support-hub-search-empty-actions">
-                  <li>
-                    <a href={SUPPORT_CONTACT.telHref} className="support-hub-search-empty-link">
-                      {SUPPORT_CONTACT.phoneDisplay}
-                    </a>
-                  </li>
-                  <li>
-                    <a href={`mailto:${SUPPORT_CONTACT.supportEmail}`} className="support-hub-search-empty-link">
-                      {SUPPORT_CONTACT.supportEmail}
-                    </a>
-                  </li>
-                  <li>
-                    <Link to="/contact?type=support" className="support-hub-search-empty-link">
-                      Contact form
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            )}
-          </section>
-        )}
-        {/* Main Navigation Cards */}
-        <div className="support-hub-cards">
-          <Link to="/support/installation-setup" className="support-hub-card support-hub-card-primary">
-            <div className="support-hub-card-icon-wrapper">
-              <WrenchScrewdriverIcon className="support-hub-card-icon" />
-            </div>
-            <h2 className="support-hub-card-title">Installation & Setup</h2>
-            <p className="support-hub-card-description">
-              Step-by-step guides, video tutorials, and installation scenarios for AC Drain Wiz products.
-            </p>
-            <div className="support-hub-card-link">
-              <span>View Guides</span>
-              <ArrowRightIcon className="support-hub-card-arrow" />
-            </div>
-          </Link>
+                <div className="support-hub-card-link">
+                  <span>View Guides</span>
+                  <ArrowRightIcon className="support-hub-card-arrow" aria-hidden />
+                </div>
+              </Link>
+            </motion.div>
 
-          <Link to="/support/product-support" className="support-hub-card support-hub-card-primary">
-            <div className="support-hub-card-icon-wrapper">
-              <QuestionMarkCircleIcon className="support-hub-card-icon" />
-            </div>
-            <h2 className="support-hub-card-title">Product Support</h2>
-            <p className="support-hub-card-description">
-              Troubleshooting guides, FAQs, and technical help for your AC Drain Wiz products.
-            </p>
-            <div className="support-hub-card-link">
-              <span>Get Help</span>
-              <ArrowRightIcon className="support-hub-card-arrow" />
-            </div>
-          </Link>
+            <motion.div variants={hubFadeUp} className="support-hub-card-reveal min-h-[14rem] min-w-0 sm:min-h-0">
+              <Link
+                to="/support/product-support"
+                className="support-hub-card support-hub-card-primary support-hub-card--accent-indigo focus-visible:focus-ring-support-hub group"
+              >
+                <div className="support-hub-card-icon-wrapper">
+                  <QuestionMarkCircleIcon className="support-hub-card-icon" aria-hidden />
+                </div>
+                <h3 className="support-hub-card-title">Product Support</h3>
+                <p className="support-hub-card-description">
+                  Troubleshooting guides, FAQs, and technical help for your AC Drain Wiz products.
+                </p>
+                <div className="support-hub-card-link">
+                  <span>Get Help</span>
+                  <ArrowRightIcon className="support-hub-card-arrow" aria-hidden />
+                </div>
+              </Link>
+            </motion.div>
 
-          <Link to="/support/warranty-returns" className="support-hub-card support-hub-card-primary">
-            <div className="support-hub-card-icon-wrapper">
-              <ShieldCheckIcon className="support-hub-card-icon" />
-            </div>
-            <h2 className="support-hub-card-title">Warranty & Returns</h2>
-            <p className="support-hub-card-description">
-              Warranty coverage details, return policy, and how to file a claim.
-            </p>
-            <div className="support-hub-card-link">
-              <span>Learn More</span>
-              <ArrowRightIcon className="support-hub-card-arrow" />
-            </div>
-          </Link>
+            <motion.div variants={hubFadeUp} className="support-hub-card-reveal min-h-[14rem] min-w-0 sm:min-h-0">
+              <Link
+                to="/support/warranty-returns"
+                className="support-hub-card support-hub-card-primary support-hub-card--accent-emerald focus-visible:focus-ring-support-hub group"
+              >
+                <div className="support-hub-card-icon-wrapper">
+                  <ShieldCheckIcon className="support-hub-card-icon" aria-hidden />
+                </div>
+                <h3 className="support-hub-card-title">Warranty &amp; Returns</h3>
+                <p className="support-hub-card-description">
+                  Warranty coverage details, return policy, and how to file a claim.
+                </p>
+                <div className="support-hub-card-link">
+                  <span>Learn More</span>
+                  <ArrowRightIcon className="support-hub-card-arrow" aria-hidden />
+                </div>
+              </Link>
+            </motion.div>
 
-          <Link to="/contact?type=support" className="support-hub-card support-hub-card-primary">
-            <div className="support-hub-card-icon-wrapper">
-              <EnvelopeIcon className="support-hub-card-icon" />
-            </div>
-            <h2 className="support-hub-card-title">Contact Support</h2>
-            <p className="support-hub-card-description">
-              Get in touch with our support team via phone, email, or support form.
-            </p>
-            <div className="support-hub-card-link">
-              <span>Contact Us</span>
-              <ArrowRightIcon className="support-hub-card-arrow" />
-            </div>
-          </Link>
-        </div>
+            <motion.div variants={hubFadeUp} className="support-hub-card-reveal min-h-[14rem] min-w-0 sm:min-h-0">
+              <Link
+                to="/contact?type=support"
+                className="support-hub-card support-hub-card-primary support-hub-card--accent-amber focus-visible:focus-ring-support-hub group"
+              >
+                <div className="support-hub-card-icon-wrapper">
+                  <EnvelopeIcon className="support-hub-card-icon" aria-hidden />
+                </div>
+                <h3 className="support-hub-card-title">Contact Support</h3>
+                <p className="support-hub-card-description">
+                  Get in touch with our support team via phone, email, or support form.
+                </p>
+                <div className="support-hub-card-link">
+                  <span>Contact Us</span>
+                  <ArrowRightIcon className="support-hub-card-arrow" aria-hidden />
+                </div>
+              </Link>
+            </motion.div>
+          </motion.div>
+        </motion.section>
 
-        {/* Quick Links Section */}
-        <div className="support-hub-quick-links">
-          <h2 className="support-hub-quick-links-title">Quick Links</h2>
-          <div className="support-hub-quick-links-grid">
-            <Link to={SENSOR_SETUP_MODEL_CHOICE_HREF} className="support-hub-quick-link">
-              <DocumentTextIcon className="support-hub-quick-link-icon" />
-              <span>Sensor Setup Guide</span>
-            </Link>
-            <Link to="/support/installation-scenarios" className="support-hub-quick-link">
-              <BookOpenIcon className="support-hub-quick-link-icon" />
-              <span>Installation Scenarios</span>
-            </Link>
-            <a href={MONITORING.portalUrl} target="_blank" rel="noopener noreferrer" className="support-hub-quick-link">
-              <DocumentTextIcon className="support-hub-quick-link-icon" />
-              <span>Sensor Monitoring Portal</span>
-            </a>
-            <Link to="/compliance" className="support-hub-quick-link">
-              <DocumentTextIcon className="support-hub-quick-link-icon" />
-              <span>Compliance Resources</span>
-            </Link>
-          </div>
-        </div>
+        <motion.section
+          className="support-hub-quick-links-wrap"
+          initial="hidden"
+          whileInView="visible"
+          viewport={hubScrollViewport}
+          variants={hubStagger}
+        >
+          <motion.div variants={hubStagger} className="support-hub-quick-links">
+            <motion.h2 className="support-hub-quick-links-title" variants={hubFadeUp}>
+              Quick links
+            </motion.h2>
+            <motion.div variants={hubStagger} className="support-hub-quick-links-grid">
+              <motion.div variants={hubFadeUp} className="support-hub-quick-link-shell min-h-[3.5rem]">
+                <Link
+                  to={SENSOR_SETUP_MODEL_CHOICE_HREF}
+                  className="support-hub-quick-link focus-visible:focus-ring-support-hub group"
+                >
+                  <DocumentTextIcon className="support-hub-quick-link-icon" aria-hidden />
+                  <span className="support-hub-quick-link-label">Sensor Setup Guide</span>
+                  <ArrowRightIcon className="support-hub-quick-link-chevron" aria-hidden />
+                </Link>
+              </motion.div>
+              <motion.div variants={hubFadeUp} className="support-hub-quick-link-shell min-h-[3.5rem]">
+                <Link
+                  to="/support/installation-scenarios"
+                  className="support-hub-quick-link focus-visible:focus-ring-support-hub group"
+                >
+                  <BookOpenIcon className="support-hub-quick-link-icon" aria-hidden />
+                  <span className="support-hub-quick-link-label">Installation Scenarios</span>
+                  <ArrowRightIcon className="support-hub-quick-link-chevron" aria-hidden />
+                </Link>
+              </motion.div>
+              <motion.div variants={hubFadeUp} className="support-hub-quick-link-shell min-h-[3.5rem]">
+                <a
+                  href={MONITORING.portalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="support-hub-quick-link support-hub-quick-link--external focus-visible:focus-ring-support-hub group"
+                >
+                  <DocumentTextIcon className="support-hub-quick-link-icon" aria-hidden />
+                  <span className="support-hub-quick-link-label">Sensor Monitoring Portal</span>
+                  <ArrowTopRightOnSquareIcon className="support-hub-quick-link-external" aria-hidden />
+                </a>
+              </motion.div>
+              <motion.div variants={hubFadeUp} className="support-hub-quick-link-shell min-h-[3.5rem]">
+                <Link to="/compliance" className="support-hub-quick-link focus-visible:focus-ring-support-hub group">
+                  <DocumentTextIcon className="support-hub-quick-link-icon" aria-hidden />
+                  <span className="support-hub-quick-link-label">Compliance Resources</span>
+                  <ArrowRightIcon className="support-hub-quick-link-chevron" aria-hidden />
+                </Link>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </motion.section>
       </div>
     </div>
   )
