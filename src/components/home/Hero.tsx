@@ -7,7 +7,7 @@ import { VideoModal } from './VideoModal'
 import { CustomerTypeSelector } from './CustomerTypeSelector'
 import { isValidEmail } from '../../utils/emailValidation'
 import { useRecaptcha } from '../../hooks/useRecaptcha'
-import { SUPPORT_CONTACT } from '../../config/acdwKnowledge'
+import { MINI_MANIFOLD_DIMENSIONS_LHD, SUPPORT_CONTACT } from '../../config/acdwKnowledge'
 
 export function Hero() {
   const navigate = useNavigate()
@@ -218,19 +218,21 @@ export function Hero() {
             </h2>
             
             <div className="hero-cta-buttons">
-              <button 
+              <button
+                type="button"
                 onClick={() => navigate('/products/combo')}
                 className="hero-primary-button"
               >
                 View Complete System
                 <ArrowRightIcon className="hero-button-icon" />
               </button>
-              
-              <button 
-                disabled
-                className="hero-secondary-button hero-secondary-button-disabled"
+
+              <button
+                type="button"
+                onClick={() => navigate('/products/mini')}
+                className="hero-accent-cta"
               >
-                <span className="hero-secondary-button-badge">Video Coming Soon</span>
+                Explore Mini
               </button>
             </div>
             
@@ -541,9 +543,9 @@ export function Hero() {
                 </tr>
                 <tr>
                   <td className="product-comparison-td sticky left-0 bg-white">Size</td>
-                  <td className="product-comparison-td">5 3/8" × 1 1/2" × 1 3/8"</td>
+                  <td className="product-comparison-td">{MINI_MANIFOLD_DIMENSIONS_LHD}</td>
                   <td className="product-comparison-td">2" × 3" × 1.5"</td>
-                  <td className="product-comparison-td">5 3/8" × 1 1/2" × 1 3/8" (Mini) + Sensor</td>
+                  <td className="product-comparison-td">{MINI_MANIFOLD_DIMENSIONS_LHD} (Mini) + Sensor</td>
                 </tr>
                 <tr>
                   <td className="product-comparison-td sticky left-0 bg-white">Installation</td>
@@ -615,7 +617,7 @@ export function Hero() {
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between"><span className="font-medium">Status:</span> <span className="text-green-600">Available Now</span></div>
                 <div className="flex justify-between"><span className="font-medium">Price:</span> <span className="text-gray-600 italic">Contact us for pricing</span></div>
-                <div className="flex justify-between"><span className="font-medium">Size:</span> <span>5 3/8" × 1 1/2" × 1 3/8"</span></div>
+                <div className="flex justify-between"><span className="font-medium">Size:</span> <span>{MINI_MANIFOLD_DIMENSIONS_LHD}</span></div>
                 <div className="flex justify-between"><span className="font-medium">Best For:</span> <span className="text-right">Space-constrained</span></div>
               </div>
             </div>
@@ -655,7 +657,7 @@ export function Hero() {
                 <div className="flex justify-between"><span className="font-medium">Status:</span> <span className="text-green-600">Available Now</span></div>
                 {/* Launch Button Redirect */}
                 <div className="flex justify-between"><span className="font-medium">Price:</span> <span className="text-gray-600 italic text-xs">Contact us for pricing</span></div>
-                <div className="flex justify-between"><span className="font-medium">Size:</span> <span>5 3/8" × 1 1/2" × 1 3/8" + Sensor</span></div>
+                <div className="flex justify-between"><span className="font-medium">Size:</span> <span>{MINI_MANIFOLD_DIMENSIONS_LHD} + Sensor</span></div>
                 <div className="flex justify-between"><span className="font-medium">Best For:</span> <span className="text-right">Maximum protection</span></div>
               </div>
             </div>

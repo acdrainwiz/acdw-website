@@ -9,7 +9,7 @@
  */
 
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 // Launch Button Redirect: temporarily disabled during launch pause
 // import { useAuth } from '../contexts/AuthContext'
 import {
@@ -28,7 +28,7 @@ import {
   PhoneIcon,
   ArrowRightIcon,
 } from '@heroicons/react/24/outline'
-import { PRODUCT_NAMES, SUPPORT_CONTACT } from '../config/acdwKnowledge'
+import { MINI_MANIFOLD_DIMENSIONS_LHD, PRODUCT_NAMES, SUPPORT_CONTACT } from '../config/acdwKnowledge'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
@@ -166,7 +166,7 @@ export function ComboProductPage() {
 
   // Technical specifications
   const miniSpecs = [
-    { label: 'Dimensions', value: '5" × 3" × 2"' },
+    { label: 'Dimensions', value: MINI_MANIFOLD_DIMENSIONS_LHD },
     { label: 'Material', value: 'UV-resistant clear PVC' },
     { label: 'Connection', value: '3/4" PVC drain line' },
     { label: 'Bayonet Port', value: 'Single snap-to-lock' },
@@ -658,13 +658,10 @@ export function ComboProductPage() {
             ))}
           </div>
           <p className="product-faq-subtitle">
-            Have questions? We've got answers. Can't find what you're looking for?{' '}
-            <button
-              onClick={() => navigate('/contact?type=support')}
-              className="product-faq-contact-link"
-            >
-              Contact our support team
-            </button>
+            Have questions? We&apos;ve got answers. Can&apos;t find what you&apos;re looking for?{' '}
+            <Link to="/support/product-support" className="product-faq-contact-link">
+              Browse Product Support FAQs
+            </Link>
           </p>
         </div>
       </section>

@@ -20,6 +20,7 @@ import {
   ArrowRightIcon
 } from '@heroicons/react/24/outline'
 import {
+  MINI_MANIFOLD_DIMENSIONS_LHD,
   PRODUCT_NAMES,
   SENSOR_STANDARD_DISPLAY,
   SENSOR_WIFI_DISPLAY,
@@ -263,7 +264,7 @@ export function ProductsPage() {
       status: 'GA',
       statusText: 'Available Now',
       statusColorClass: 'products-card-status-available',
-      description: 'Our flagship compact maintenance manifold (~5" length) with a single snap-to-lock bayonet port and a bi-directional valve.',
+      description: 'Our flagship compact maintenance manifold (~5 3/16" length) with a single snap-to-lock bayonet port and a bi-directional valve.',
       keyBenefits: [
         'Flagship product with versatile attachment system',
         'One port for all services (flush, air, vacuum, sensor)',
@@ -273,7 +274,7 @@ export function ProductsPage() {
       ],
       compatibility: '3/4" PVC (most residential condensate lines)',
       installationTime: '5 minutes or less',
-      size: '5" × 3" × 2"',
+      size: MINI_MANIFOLD_DIMENSIONS_LHD,
       pricing: {
         msrp: 'Contact us for pricing',
         contractor: 'Contact us for pricing',
@@ -326,7 +327,7 @@ export function ProductsPage() {
       ],
       compatibility: '3/4" PVC + Mini integration',
       installationTime: '45 minutes total',
-      size: '5" × 3" × 2" (Mini) + Sensor',
+      size: `${MINI_MANIFOLD_DIMENSIONS_LHD} (Mini) + Sensor`,
       pricing: {
         // Launch Button Redirect
         msrp: 'Contact us for pricing',

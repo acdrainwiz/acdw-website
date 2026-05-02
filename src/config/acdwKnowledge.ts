@@ -81,6 +81,19 @@ export const PRODUCT_NAMES = {
   bundle: 'AC Drain Wiz Mini + Sensor Bundle',
 } as const
 
+/**
+ * Mini / Transparent T-manifold footprint — same part ships with Sensor kits.
+ * Length × height (to top of vertical port opening; excludes valve) × depth.
+ * Use everywhere the site states Mini manifold dimensions; keep in sync with `/products/mini`.
+ */
+export const MINI_MANIFOLD_DIMENSIONS_LHD = '5 3/16" × 1 1/2" × 1 1/2"' as const
+
+/** Horizontal span (socket opening to socket opening) — matches product spec callouts. */
+export const MINI_MANIFOLD_LENGTH = '5 3/16"' as const
+
+/** Height to top of T-manifold vertical port opening (manifold-only; excludes bi-directional valve). */
+export const MINI_MANIFOLD_HEIGHT_TO_PORT = '1 1/2"' as const
+
 /** Use for UI when distinguishing the non-WiFi variant (full name). */
 export const SENSOR_STANDARD_DISPLAY = 'AC Drain Wiz Standard Sensor Switch (Non-WiFi)' as const
 /** Use for UI when distinguishing the WiFi variant (full name). */

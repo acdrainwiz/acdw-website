@@ -16,6 +16,7 @@
 
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { buildProductSupportHubHref } from '../utils/supportFaqSearch'
 import { useAuth } from '../contexts/AuthContext'
 import {
   ArrowLeftIcon,
@@ -833,12 +834,12 @@ export function SensorProductPage() {
               See the Mini + Sensor bundle FAQ
             </Link>
             . Still stuck?{' '}
-            <button
-              onClick={() => navigate('/contact?type=support')}
+            <Link
+              to={buildProductSupportHubHref('sensor')}
               className="product-faq-contact-link"
             >
-              Contact our support team
-            </button>
+              Browse Product Support FAQs
+            </Link>
           </p>
         </div>
       </section>

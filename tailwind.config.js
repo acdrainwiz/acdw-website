@@ -56,6 +56,15 @@ export default {
           800: '#1e293b',
           900: '#0f172a',
         },
+        /* Official AC Drain Wiz palette accents (use sparingly) */
+        acdw: {
+          orange: '#FF4E00',
+          orangeHover: '#E64500',
+          yellow: '#FFC300',
+          navy: '#001A35',
+          lightBlue: '#00B8F5',
+          blue: '#0077C5',
+        },
         accent: {
           DEFAULT: 'var(--accent)',
           foreground: 'var(--accent-foreground)',

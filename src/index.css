@@ -83,6 +83,12 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+    --acdw-orange: #ff4e00;
+    --acdw-orange-soft: rgb(255 78 0 / 0.12);
+    --acdw-yellow: #ffc300;
+    --acdw-yellow-soft: rgb(255 195 0 / 0.16);
+    --acdw-white: #e4ecf5;
+    --acdw-navy: #001a35;
   }
   .dark {
     --background: oklch(0.145 0 0);
@@ -766,6 +772,32 @@
   .hero-primary-button {
     @apply btn btn-lg bg-white text-primary-700 hover:bg-primary-50 flex items-center justify-center gap-2 px-6 py-4;
     @apply w-full sm:w-auto min-w-[160px];
+  }
+
+  /* Brand accent CTA — official orange on dark hero (paired with primary white pill) */
+  .hero-accent-cta {
+    @apply btn btn-lg inline-flex items-center justify-center px-6 py-4 font-medium;
+    @apply w-full sm:w-auto min-w-[160px];
+    align-self: center;
+    cursor: pointer;
+    color: #ffffff;
+    border: 2px solid var(--acdw-orange);
+    background-color: var(--acdw-orange-soft);
+    transition:
+      background-color 0.3s cubic-bezier(0.32, 0.72, 0.16, 1),
+      border-color 0.28s ease,
+      box-shadow 0.28s ease;
+  }
+
+  .hero-accent-cta:hover {
+    background-color: rgb(255 78 0 / 0.24);
+    border-color: rgb(255 106 56 / 0.96);
+    box-shadow: 0 0 0 1px rgb(255 195 0 / 0.22);
+  }
+
+  .hero-accent-cta:focus-visible {
+    outline: 2px solid var(--acdw-yellow);
+    outline-offset: 3px;
   }
 
   .hero-secondary-button {
@@ -3225,7 +3257,8 @@
   }
 
   .proof-stack-testimonial-star {
-    @apply h-5 w-5 text-yellow-400 fill-current;
+    @apply h-5 w-5 fill-current;
+    color: var(--acdw-yellow);
   }
 
   .proof-stack-testimonial-text {
@@ -8032,9 +8065,75 @@
   @apply px-6 py-3 text-base;
 }
 
-/* Support Hub Page Classes */
+/* Support Hub Page Classes — body shell only; `.support-hero*` shared with other pages */
 .support-hub-container {
-  @apply min-h-screen bg-gray-50;
+  @apply min-h-screen relative;
+  background-color: #f8fafc;
+}
+
+.support-hub-container::before {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 110% 45% at 50% -8%, rgb(219 234 254 / 0.55), transparent 58%),
+    radial-gradient(ellipse 52% 36% at 92% 8%, rgb(207 250 254 / 0.22), transparent 50%),
+    radial-gradient(ellipse 48% 32% at 8% 12%, rgb(199 210 254 / 0.12), transparent 45%),
+    linear-gradient(to bottom, rgb(241 245 249) 0%, rgb(248 250 252) 40%, rgb(248 250 252) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .support-hub-container::before {
+    background: rgb(248 250 252);
+  }
+}
+
+.support-hub-main {
+  position: relative;
+  z-index: 1;
+}
+
+.focus-visible\:focus-ring-support-hub:focus-visible {
+  outline: none;
+  @apply ring-2 ring-offset-2 ring-offset-slate-50 ring-sky-500;
+}
+
+.support-hub-cards-section {
+  @apply mx-auto max-w-6xl mb-16 md:mb-28;
+}
+
+.support-hub-section-kicker {
+  @apply uppercase tracking-[0.16em] text-xs font-semibold text-sky-700 mb-2 text-center md:text-left;
+}
+
+.support-hub-section-heading {
+  @apply text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight mb-10 text-center md:text-left max-w-xl;
+}
+
+.support-hub-card--accent-sky {
+  --card-accent-strong: rgb(14 165 233);
+  --card-accent-soft: rgb(224 242 254);
+}
+
+.support-hub-card--accent-indigo {
+  --card-accent-strong: rgb(99 102 241);
+  --card-accent-soft: rgb(238 242 255);
+}
+
+.support-hub-card--accent-emerald {
+  --card-accent-strong: rgb(16 185 129);
+  --card-accent-soft: rgb(209 250 229);
+}
+
+.support-hub-card--accent-amber {
+  --card-accent-strong: rgb(245 158 11);
+  --card-accent-soft: rgb(254 249 231);
+}
+
+.support-hub-card-reveal {
+  display: flex;
 }
 
 .support-hub-header {
@@ -8066,131 +8165,449 @@
 }
 
 .support-hub-cards {
-  @apply grid grid-cols-1 md:grid-cols-2 gap-6 mb-12;
+  @apply grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 xl:gap-7;
 }
 
 .support-hub-card {
-  @apply bg-white rounded-lg shadow-md p-8 hover:shadow-lg transition-all duration-200 flex flex-col;
+  --card-accent-strong: rgb(56 189 248);
+  --card-accent-soft: rgb(239 246 255);
+  --hub-card-accent-strip-w: clamp(4px, 0.42em, 5px);
+  --hub-accent-stripe-a: color-mix(in srgb, var(--card-accent-strong) 88%, transparent);
+  --hub-accent-stripe-b: color-mix(in srgb, var(--card-accent-strong) 52%, transparent);
+  @apply relative flex flex-col h-full rounded-2xl p-8 min-h-[12rem];
+  isolation: isolate;
+  border: 1px solid rgb(226 232 240 / 0.85);
+  background:
+    linear-gradient(
+      180deg,
+      var(--hub-accent-stripe-a) 0%,
+      var(--hub-accent-stripe-b) 100%
+    ),
+    radial-gradient(
+      ellipse 140% 80% at 100% 0%,
+      color-mix(in srgb, var(--card-accent-soft) 76%, transparent)
+    ),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.94), rgb(255 255 255 / 0.86));
+  background-size:
+    var(--hub-card-accent-strip-w) 100%,
+    auto,
+    auto;
+  background-position:
+    0 0,
+    0 0,
+    0 0;
+  background-repeat:
+    no-repeat,
+    no-repeat,
+    no-repeat;
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.75) inset,
+    0 12px 32px rgb(15 23 42 / 0.05),
+    0 2px 6px rgb(15 23 42 / 0.035);
+  transition:
+    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease,
+    --hub-accent-stripe-a 0.38s ease,
+    --hub-accent-stripe-b 0.38s ease;
 }
 
-.support-hub-card-primary {
-  @apply border-2 border-transparent hover:border-blue-500;
+@media (hover: hover) and (pointer: fine) {
+  .support-hub-card:hover {
+    transform: translateY(-5px);
+    border-color: color-mix(in srgb, var(--card-accent-strong) 34%, rgb(226 232 240));
+    --hub-accent-stripe-a: color-mix(in srgb, var(--card-accent-strong) 94%, transparent);
+    --hub-accent-stripe-b: color-mix(in srgb, var(--card-accent-strong) 62%, transparent);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.8) inset,
+      0 22px 48px rgb(15 23 42 / 0.09),
+      0 0 0 1px color-mix(in srgb, var(--card-accent-strong) 22%, transparent);
+  }
+
+  .support-hub-card:active {
+    transform: translateY(-2px);
+  }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .support-hub-card {
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.22s ease,
+      --hub-accent-stripe-a 0.22s ease,
+      --hub-accent-stripe-b 0.22s ease;
+  }
+
+  .support-hub-card:hover {
+    transform: none;
+  }
+}
+
+.support-hub-card-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 1px;
+  right: 1px;
+  height: 1px;
+  border-radius: 1rem 1rem 0 0;
+  pointer-events: none;
+  opacity: 0.5;
+  z-index: 1;
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, white 93%, transparent) 42%,
+    color-mix(in srgb, white 93%, transparent) 58%,
+    transparent
+  );
+}
+
+/* Accent is painted as layer 1 of `background` on `.support-hub-card` so stripes follow rounded corners and hover lift. */
 
 .support-hub-card-icon-wrapper {
-  @apply mb-4;
+  @apply mb-4 inline-flex rounded-2xl p-3;
+  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+  background: linear-gradient(
+    148deg,
+    color-mix(in srgb, var(--card-accent-soft) 88%, white),
+    rgb(255 255 255 / 0.94)
+  );
+  border: 1px solid color-mix(in srgb, var(--card-accent-strong) 13%, rgb(226 232 240));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7);
 }
 
 .support-hub-card-icon {
-  @apply h-12 w-12 text-blue-600;
+  width: 2.125rem;
+  height: 2.125rem;
+  color: color-mix(in srgb, var(--card-accent-strong) 93%, rgb(30 41 59));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .support-hub-card:hover .support-hub-card-icon-wrapper {
+    transform: scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .support-hub-card:hover .support-hub-card-icon-wrapper {
+    transform: none;
+  }
 }
 
 .support-hub-card-title {
-  @apply text-2xl font-bold text-gray-900 mb-3;
+  @apply text-2xl font-bold text-slate-900 mb-3 tracking-tight;
 }
 
 .support-hub-card-description {
-  @apply text-gray-600 mb-6 flex-grow;
+  @apply text-slate-600 mb-8 flex-grow text-[15px] leading-relaxed;
 }
 
 .support-hub-card-link {
-  @apply flex items-center text-blue-600 font-semibold hover:text-blue-700;
+  @apply mt-auto inline-flex items-center gap-2 text-[15px] font-semibold;
+  color: color-mix(in srgb, var(--card-accent-strong) 94%, rgb(30 58 138));
 }
 
 .support-hub-card-arrow {
-  @apply h-5 w-5 ml-2;
+  @apply shrink-0;
+  width: 1.125rem;
+  height: 1.125rem;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .support-hub-card:hover .support-hub-card-arrow {
+    transform: translateX(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .support-hub-card-arrow {
+    transition: none;
+  }
+
+  .support-hub-card:hover .support-hub-card-arrow {
+    transform: none;
+  }
+}
+
+.support-hub-card-primary {
+  @apply border-transparent;
+}
+
+.support-hub-quick-links-wrap {
+  @apply mx-auto max-w-6xl pb-8;
 }
 
 .support-hub-quick-links {
-  @apply bg-white rounded-lg shadow-md p-8;
+  position: relative;
+  border-radius: 1.375rem;
+  padding: clamp(1.65rem, 4vw, 2.35rem);
+  border: 1px solid rgb(226 232 240 / 0.95);
+  background:
+    radial-gradient(
+      ellipse 90% 60% at 100% -10%,
+      rgb(236 253 254 / 0.52),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 70% 50% at 0% 100%,
+      rgb(239 246 255 / 0.42),
+      transparent 52%
+    ),
+    linear-gradient(165deg, rgb(255 255 255 / 0.93), rgb(248 250 252 / 0.97));
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.82) inset,
+    0 18px 44px rgb(15 23 42 / 0.055),
+    0 2px 8px rgb(15 23 42 / 0.035);
+}
+
+.support-hub-quick-links::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image: repeating-linear-gradient(
+    -28deg,
+    transparent,
+    transparent 71px,
+    rgb(226 232 240 / 0.085) 71px,
+    rgb(226 232 240 / 0.085) 72px
+  );
 }
 
 .support-hub-quick-links-title {
-  @apply text-2xl font-bold text-gray-900 mb-6 text-center;
+  @apply relative z-[1] text-lg sm:text-xl font-semibold text-slate-900 tracking-tight mb-8 text-center;
 }
 
 .support-hub-quick-links-grid {
-  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4;
+  @apply relative z-[1] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4;
 }
 
 .support-hub-quick-link {
-  @apply flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto;
+  justify-items: start;
+  text-align: left;
+  gap: 0.75rem;
+  min-height: 3.625rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.95rem;
+  display: grid;
+  align-items: center;
+  border: 1px solid rgb(226 232 240 / 0.95);
+  background: rgb(255 255 255 / 0.86);
+  transition:
+    background-color 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.28s ease,
+    box-shadow 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.support-hub-quick-link-shell {
+  display: flex;
+  min-height: 0;
+}
+
+.support-hub-quick-link-shell .support-hub-quick-link {
+  flex: 1;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.support-hub-quick-link-label {
+  @apply font-medium text-slate-700 text-[15px] leading-snug;
 }
 
 .support-hub-quick-link-icon {
-  @apply h-6 w-6 text-blue-600 flex-shrink-0;
+  @apply shrink-0;
+  width: 1.35rem;
+  height: 1.35rem;
+  color: rgb(2 132 199);
 }
 
+.support-hub-quick-link-chevron {
+  @apply shrink-0 ml-auto;
+  width: 1.05rem;
+  height: 1.05rem;
+  color: rgb(100 116 139);
+  opacity: 0.55;
+  transition: opacity 0.25s ease, transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.support-hub-quick-link-external {
+  @apply shrink-0 ml-auto;
+  width: 1.05rem;
+  height: 1.05rem;
+  color: rgb(71 85 105);
+  opacity: 0.45;
+  transition: opacity 0.25s ease, transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .support-hub-quick-link:hover {
+    border-color: color-mix(in srgb, rgb(14 165 233) 26%, rgb(226 232 240));
+    background:
+      radial-gradient(circle at 100% 0%, rgb(224 242 254 / 0.54), transparent 58%),
+      rgb(255 255 255 / 0.95);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgb(15 23 42 / 0.06), 0 0 0 1px rgb(14 165 233 / 0.08);
+  }
+
+  .support-hub-quick-link:hover .support-hub-quick-link-chevron {
+    opacity: 0.92;
+    transform: translateX(3px);
+  }
+
+  .support-hub-quick-link--external:hover .support-hub-quick-link-external {
+    opacity: 0.92;
+    transform: translate(3px, -3px);
+  }
+
+  .support-hub-quick-link--external:hover {
+    border-color: color-mix(in srgb, rgb(99 102 241) 24%, rgb(226 232 240));
+    box-shadow:
+      0 10px 26px rgb(67 56 202 / 0.06),
+      0 0 0 1px rgb(99 102 241 / 0.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .support-hub-quick-links::before {
+    opacity: 0;
+  }
+
+  .support-hub-quick-link {
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .support-hub-quick-link:hover {
+    transform: none;
+  }
+
+  .support-hub-quick-link:hover .support-hub-quick-link-chevron,
+  .support-hub-quick-link--external:hover .support-hub-quick-link-external {
+    transform: none;
+  }
+}
 .support-hero-search-scope {
   @apply text-sm text-white/80 mb-4 max-w-xl mx-auto;
 }
 
 .support-hub-search-results {
-  @apply max-w-3xl mx-auto;
+  @apply max-w-6xl mx-auto;
 }
 
 .support-hub-search-results-heading {
-  @apply text-xl font-bold text-gray-900 mb-4;
+  @apply text-lg sm:text-xl font-semibold tracking-tight text-slate-900 mb-6;
 }
 
 .support-hub-search-results-list {
-  @apply space-y-3 list-none p-0 m-0;
+  @apply space-y-4 list-none p-0 m-0;
 }
 
 .support-hub-search-result-card {
-  @apply flex flex-col items-stretch bg-white rounded-lg border border-gray-200 p-5 shadow-sm hover:border-blue-500 hover:shadow-md transition-all;
+  @apply flex flex-col items-stretch rounded-xl p-[1.125rem_1.25rem];
+  isolation: isolate;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgb(226 232 240 / 0.92);
+  background:
+    radial-gradient(circle at 100% -20%, rgb(224 242 254 / 0.42), transparent 46%),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.94), rgb(248 250 252 / 0.88));
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.76) inset,
+    0 8px 22px rgb(15 23 42 / 0.042);
+  transition:
+    transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease,
+    box-shadow 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .support-hub-search-result-card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, rgb(14 165 233) 28%, rgb(226 232 240));
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.8) inset,
+      0 16px 38px rgb(15 23 42 / 0.07),
+      0 0 0 1px rgb(56 189 248 / 0.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .support-hub-search-result-card {
+    transition: border-color 0.2s ease, box-shadow 0.22s ease;
+  }
+
+  .support-hub-search-result-card:hover {
+    transform: none;
+  }
 }
 
 .support-hub-search-result-kind {
-  @apply inline-flex self-start text-xs font-semibold uppercase tracking-wide px-2 py-0.5 rounded mb-2;
+  @apply inline-flex self-start text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.09em] px-2 py-1 rounded mb-2.5;
 }
 
 .support-hub-search-result-kind--faq {
-  @apply bg-blue-100 text-blue-800;
+  @apply bg-sky-100 text-sky-900;
 }
 
 .support-hub-search-result-kind--how-to {
-  @apply bg-emerald-100 text-emerald-800;
+  @apply bg-emerald-100 text-emerald-900;
 }
 
 .support-hub-search-result-kind--product {
-  @apply bg-slate-100 text-slate-700;
+  @apply bg-slate-100 text-slate-800;
 }
 
 .support-hub-search-result-kind--site {
-  @apply bg-violet-100 text-violet-800;
+  @apply bg-violet-100 text-violet-900;
 }
 
 .support-hub-search-result-title {
-  @apply block font-semibold text-gray-900 mb-2;
+  @apply block font-semibold text-slate-900 mb-2 text-[15px];
 }
 
 .support-hub-search-result-snippet {
-  @apply block text-sm text-gray-600 leading-relaxed line-clamp-4;
+  @apply block text-[14px] text-slate-600 leading-relaxed line-clamp-4;
 }
 
 .support-hub-search-highlight {
-  @apply bg-amber-100 text-gray-900 rounded px-0.5 font-medium;
+  @apply bg-amber-100 text-gray-900 rounded px-[3px] font-semibold;
 }
 
 .support-hub-search-result-card--active {
-  @apply ring-2 ring-blue-600 ring-offset-2 border-blue-500;
+  @apply ring-2 ring-sky-500 ring-offset-2 ring-offset-slate-50 border-sky-400;
+  transform: translateY(-1px);
 }
 
 .support-hub-search-empty {
-  @apply bg-white rounded-lg border border-gray-200 p-8 shadow-sm;
+  border-radius: 1.125rem;
+  border: 1px solid rgb(226 232 240 / 0.95);
+  padding: clamp(1.65rem, 4vw, 2.35rem);
+  background:
+    radial-gradient(ellipse 80% 50% at 100% -10%, rgb(254 249 231 / 0.45), transparent 48%),
+    linear-gradient(to bottom right, rgb(255 255 255 / 0.96), rgb(248 250 252 / 0.93));
+  box-shadow:
+    0 10px 32px rgb(15 23 42 / 0.05),
+    inset 0 1px 0 rgb(255 255 255 / 0.75);
 }
 
 .support-hub-search-empty-text {
-  @apply text-gray-600 mb-6;
+  @apply text-slate-600 mb-6 text-[15px] leading-relaxed max-w-xl;
 }
 
 .support-hub-search-empty-actions {
-  @apply list-none p-0 m-0 space-y-2;
+  @apply list-none p-0 m-0 flex flex-wrap gap-x-6 gap-y-2;
 }
 
 .support-hub-search-empty-link {
-  @apply text-blue-600 font-medium hover:text-blue-700;
+  @apply text-[15px] font-semibold text-sky-700 hover:text-sky-800 transition-colors underline-offset-[5px] decoration-sky-200/95 hover:decoration-sky-400;
 }
 
 /* Support Section Pages (Shared Styles) */
@@ -12524,6 +12941,10 @@
   @apply text-base sm:text-lg text-gray-600 leading-relaxed text-pretty;
 }
 
+.mini-product-testimonials .mini-section-eyebrow {
+  color: var(--acdw-orange);
+}
+
 /* Testimonials Carousel */
 .mini-product-testimonials-carousel {
   @apply relative;
@@ -12609,7 +13030,8 @@
 }
 
 .mini-product-testimonial-star {
-  @apply h-5 w-5 text-yellow-400 fill-current;
+  @apply h-5 w-5 fill-current;
+  color: var(--acdw-yellow);
 }
 
 .mini-product-testimonial-tags {
@@ -13159,16 +13581,18 @@
   filter: drop-shadow(0 6px 28px rgba(0, 0, 0, 0.35));
 }
 
-/* Tablet: same relative placement, slightly narrower feathered wrapper. */
+/* Tablet: stage stays centered (single-column hero); align wordmark to true
+   horizontal midpoint — legacy --wm-left: 32% tracked a side-by-side grid that
+   no longer exists here and read as visibly left-shifted. */
 @media (min-width: 768px) and (max-width: 1279px) {
   .mini-hero-v2-wordmark-anchor {
     --wm-top: 14%;
-    --wm-left: 32%;
+    --wm-left: 50%;
     --wm-width: 114%;
   }
 }
 
-/* Mobile: center the wordmark in the stage. (Tablet/desktop keep a
+/* Mobile: center the wordmark in the stage. (Wide desktop keeps a slight
    --wm-left nudge so the type optically tracks the manifold export; on
    narrow viewports that nudge read as right-heavy next to the viewport
    edge — 50% + translate(-50%) restores true horizontal center.) */
@@ -13233,24 +13657,36 @@
    ======================================================================== */
 
 /* ==========================================================================
-   BEGIN HERO SWAY (2026-04-30)
+   BEGIN HERO SWAY (2026-04-30, jump fix 2026-05-01)
    To revert: delete everything between BEGIN/END markers.
    Adds:
-     A continuous, smooth Z-axis sway on the T-manifold (-2.2deg ↔ +2.2deg
-     over an 11s alternate cycle). Applied to the inner <img> so it composes
-     with the Tier 1 #1 Y-bob on .mini-hero-v2-product-float (different
-     element + different period = organic compound motion, never syncs).
+     A continuous, smooth Z-axis sway on the T-manifold over a 22s cycle:
+     0deg → +2.2deg → 0deg → -2.2deg → 0deg. Applied to the inner <img> so
+     it composes with the Tier 1 #1 Y-bob on .mini-hero-v2-product-float
+     (different element + different period = organic compound motion).
    Honors prefers-reduced-motion.
+
+   2026-05-01 jump fix:
+     The previous version used keyframes (-2.2deg → +2.2deg) with `alternate`
+     and a 1.6s delay. Because the first keyframe was -2.2deg (not 0deg, the
+     pre-animation static state), the image visibly SNAPPED at 1.6s when the
+     animation engaged — perceived as a "jump" right after the framer-motion
+     intro settled. Rewriting the keyframes to start AND end at 0deg (with
+     the full oscillation contained in 25%/75% peaks) makes the engagement
+     seamless, then loops normally without `alternate`.
    ========================================================================== */
 .mini-hero-v2-product-img {
-  animation: mini-hero-v2-product-sway 11s cubic-bezier(0.45, 0, 0.55, 1) 1.6s infinite alternate;
+  animation: mini-hero-v2-product-sway 22s cubic-bezier(0.45, 0, 0.55, 1) 1.6s infinite;
   transform-origin: 50% 50%;
   will-change: transform;
 }
 
 @keyframes mini-hero-v2-product-sway {
-  0%   { transform: rotate(-2.2deg); }
-  100% { transform: rotate(2.2deg); }
+  0%   { transform: rotate(0deg); }
+  25%  { transform: rotate(2.2deg); }
+  50%  { transform: rotate(0deg); }
+  75%  { transform: rotate(-2.2deg); }
+  100% { transform: rotate(0deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -13269,6 +13705,9 @@
 .mini-purchase-cta-band {
   position: relative;
   z-index: 2;
+  isolation: isolate;
+  /* Clip wave SVG (+ overflow:visible paths) so nothing paints over the footer */
+  overflow: hidden;
   /* Light band under the dark hero: single surface so the card reads clearly */
   background: #eef2f7;
   padding: clamp(2.75rem, 7vw, 4.25rem) 0;
@@ -13277,6 +13716,8 @@
 }
 
 .mini-purchase-cta-inner {
+  position: relative;
+  z-index: 1;
   max-width: 42rem;
   margin: 0 auto;
   padding: 0 1rem;
@@ -13308,6 +13749,29 @@
   width: 100%;
   max-width: 36rem;
   margin: 0 auto;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mini-purchase-cta-band .mini-purchase-cta-card .sensor-product-purchase-card-content {
+    transition:
+      transform 0.52s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.52s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.35s ease;
+  }
+
+  .mini-purchase-cta-band .mini-purchase-cta-card:hover .sensor-product-purchase-card-content {
+    transform: translateY(-5px);
+    box-shadow:
+      0 26px 54px rgb(15 23 42 / 0.12),
+      0 12px 26px rgb(15 23 42 / 0.06);
+    border-color: rgb(203 213 225 / 0.95);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini-purchase-cta-band .mini-purchase-cta-card:hover .sensor-product-purchase-card-content {
+    transform: none;
+  }
 }
 
 /* ==========================================================================
@@ -17118,6 +17582,39 @@
   @apply w-5 h-5 text-blue-600;
 }
 
+/* Step 6 CTA-hierarchy fix (2026-05-01):
+   Modifier that turns the phone badge into a real primary CTA when used as
+   an <a href="tel:..."> instead of a passive <div>. Overrides the base
+   rule's `cursor-default select-none` and adds hover, focus-visible, and
+   active states so the element reads as interactive. Color stays close to
+   the base badge so the visual hierarchy with "Contact sales" (secondary)
+   doesn't collapse — the phone CTA is meant to feel like the *quietly
+   confident* primary, not the loud one.
+
+   To revert to a non-clickable badge: drop the
+   sensor-product-phone-badge--clickable class on the JSX and switch the
+   element back to a <div>. */
+.sensor-product-phone-badge--clickable {
+  @apply cursor-pointer no-underline;
+  @apply transition-all duration-150 ease-out;
+  /* Small lift + slightly stronger border on hover */
+}
+
+.sensor-product-phone-badge--clickable:hover {
+  @apply border-blue-300 shadow-md;
+  background: linear-gradient(to right, #e0eaff, #e8e9ff);
+  transform: translateY(-1px);
+}
+
+.sensor-product-phone-badge--clickable:active {
+  transform: translateY(0);
+  @apply shadow-sm;
+}
+
+.sensor-product-phone-badge--clickable:focus-visible {
+  @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+}
+
 /* Combo Product Phone Badge */
 .combo-product-phone-badge {
   @apply flex items-center justify-center gap-2;
@@ -17314,6 +17811,119 @@
     @apply py-16 md:py-24 bg-white;
 }
 
+/* Mini — ambient “clean flow” water waves behind How It Works (SVG animation,
+   prefers-reduced-motion: bands freeze without horizontal drift).
+   Decorative only; masked so headlines stay crisp. */
+.mini-product-how-it-works {
+  position: relative;
+  isolation: isolate;
+}
+
+.mini-flow-wave-backdrop {
+  pointer-events: none;
+  position: absolute;
+  inset-inline: 0;
+  bottom: -6%;
+  top: clamp(4.75rem, 14vw, 8.75rem);
+  z-index: 0;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.06) 5%,
+    rgba(0, 0, 0, 0.75) 20%,
+    #000000 44%,
+    #000000 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.06) 5%,
+    rgba(0, 0, 0, 0.75) 20%,
+    #000000 44%,
+    #000000 100%
+  );
+}
+
+/* Hero band of the motif (How It Works): taller footprint + stretched waves */
+.mini-product-how-it-works .mini-flow-wave-backdrop {
+  bottom: -8%;
+  top: clamp(3.65rem, 11vw, 7.25rem);
+}
+
+.mini-flow-wave-backdrop-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+  transform-origin: 50% 100%;
+}
+
+.mini-product-how-it-works .mini-flow-wave-backdrop-svg {
+  transform: scaleY(1.16);
+}
+
+/* Echo strips: same motion, tucked under titles, slightly quieter */
+.mini-vs-old .mini-flow-wave-backdrop {
+  bottom: -4%;
+  top: clamp(2.85rem, 9.5vw, 5.75rem);
+  opacity: 0.9;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.08) 7%,
+    rgba(0, 0, 0, 0.72) 24%,
+    #000000 48%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.08) 7%,
+    rgba(0, 0, 0, 0.72) 24%,
+    #000000 48%
+  );
+}
+
+.mini-purchase-cta-band .mini-flow-wave-backdrop {
+  /* Keep motif inside band; deep negative bottoms + overflow:visible SVGs bled onto footer */
+  bottom: 0;
+  top: clamp(1.85rem, 6.5vw, 3.6rem);
+  opacity: 0.84;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.1) 12%,
+    rgba(0, 0, 0, 0.78) 36%,
+    #000000 62%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.1) 12%,
+    rgba(0, 0, 0, 0.78) 36%,
+    #000000 62%
+  );
+}
+
+.mini-purchase-cta-band .mini-flow-wave-backdrop-svg {
+  transform: scaleY(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini-flow-wave-backdrop {
+    opacity: 0.32;
+  }
+
+  .mini-vs-old .mini-flow-wave-backdrop,
+  .mini-purchase-cta-band .mini-flow-wave-backdrop {
+    opacity: 0.26;
+  }
+}
+
+.mini-product-how-it-works .product-how-it-works-content {
+  position: relative;
+  z-index: 1;
+}
+
 .product-how-it-works-content {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
 }
@@ -17339,12 +17949,17 @@
     }
 }
 
-/* Mini Product - Small overlapping bubble */
-.mini-product-how-it-works-step-number {
-    @apply absolute -top-4 left-1/2 transform -translate-x-1/2;
-    @apply w-8 h-8 rounded-full bg-primary-600 text-white;
-    @apply flex items-center justify-center font-bold text-sm;
-    @apply z-10;
+/* Mini-only: step badge anchor + disk (badge wrapper keeps translate-X centering isolated
+ * from Framer transforms on .mini-how-step-num-disk). */
+.mini-product-how-it-works .mini-how-step-num-anchor {
+    @apply absolute -top-4 left-1/2 transform -translate-x-1/2 z-[14];
+}
+
+.mini-product-how-it-works .mini-how-step-num-disk {
+    @apply flex h-8 w-8 items-center justify-center rounded-full bg-primary-600 text-sm font-bold text-white;
+    transition:
+      background-color 1.25s cubic-bezier(0.32, 0.72, 0.16, 1),
+      box-shadow 1.25s cubic-bezier(0.32, 0.72, 0.16, 1);
 }
 
 /* Sensor Product - Large standalone bubble */
@@ -17359,22 +17974,270 @@
     @apply flex flex-col items-center;
 }
 
-/* Mini Product */
-.mini-product-how-it-works-step {
-    @apply relative flex flex-col items-center text-center;
-}
+/* Step 3 orphan-fix (2026-05-01):
+   The original 4-step `howItWorksSteps` array fit 2-cols evenly; the Tier 1
+   trim down to 3 steps left the third card orphaned on row 2. With 3 cols,
+   the three steps (Install / Inspect / Clean) now sit on a single row at
+   desktop. Mobile (1 col) is unchanged. Container max-width bumped from
+   max-w-5xl to max-w-6xl so each card has comparable width to the previous
+   2-col layout instead of getting squeezed to ~33% of 5xl. */
 .mini-product-how-it-works-steps {
-    @apply grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-16 items-stretch max-w-5xl mx-auto;
+    @apply grid grid-cols-1 mb-16 max-w-6xl mx-auto items-stretch gap-6 md:grid-cols-3 md:gap-x-14 md:gap-y-10;
 }
 
-.mini-product-how-it-works-step {
-    @apply relative flex flex-col items-center text-center h-full;
+.mini-product-how-it-works-steps.mini-how-steps-pulse-grid {
+  position: relative;
 }
 
-.mini-product-how-it-works-step-content {
-    @apply flex flex-col items-center bg-gray-50 rounded-2xl p-8 pt-10 w-full flex-1;
-    @apply hover:bg-gray-100 transition-colors;
-    @apply border-2 border-transparent hover:border-primary-200;
+.mini-product-how-it-works .mini-product-how-it-works-step.mini-how-step-slot {
+  @apply relative flex flex-col items-center text-center h-full;
+}
+
+/* Active step: radial wash (::before) + outer glow (::after) live on `.mini-how-step-card`
+ * (single shell with the badge) so the halo hugs the rounded card — no nested “frame”. */
+@keyframes mini-how-step-accent-glow {
+  0%,
+  100% {
+    opacity: 0.5;
+    box-shadow:
+      0 14px 44px rgb(255 78 0 / 0.16),
+      0 4px 28px rgb(255 195 0 / 0.08),
+      0 -10px 40px rgb(255 136 71 / 0.1),
+      0 0 64px rgb(255 195 0 / 0.06);
+  }
+  50% {
+    opacity: 0.92;
+    box-shadow:
+      0 26px 64px rgb(255 78 0 / 0.26),
+      0 10px 42px rgb(255 195 0 / 0.14),
+      0 -16px 54px rgb(255 136 71 / 0.14),
+      0 0 88px rgb(255 195 0 / 0.09);
+  }
+}
+
+/* Active spotlight “life” sits on ::before so shell props can ease between tiers without animation snap. */
+@keyframes mini-how-step-spotlight-breathe {
+  0%,
+  100% {
+    opacity: 0.52;
+    transform: translate3d(0, 1px, 0) scale(1);
+  }
+  50% {
+    opacity: 0.92;
+    transform: translate3d(0, 0, 0) scale(1.015);
+  }
+}
+
+/* Mini How It Works tiles — single shell (.mini-how-step-card); no nested content wrapper */
+.mini-how-steps-pulse-grid.mini-product-how-it-works-steps .mini-how-step-slot.mini-how-step-card {
+  @apply flex flex-col items-center rounded-2xl p-8 pt-10 text-center text-gray-900 w-full flex-1;
+  position: relative;
+  isolation: isolate;
+  border-radius: 1rem;
+  overflow: visible;
+  background: linear-gradient(168deg, #ffffff 0%, #fafbfc 44%, rgb(239 246 255 / 0.65) 100%);
+  border: 1px solid rgb(226 232 240 / 0.95);
+  box-shadow:
+    0 2px 0 rgb(255 255 255 / 0.88) inset,
+    0 18px 40px rgb(15 23 42 / 0.07),
+    0 0 0 1px rgb(148 163 184 / 0.09);
+  transition:
+    box-shadow 1.35s cubic-bezier(0.32, 0.72, 0.16, 1),
+    border-color 1.3s cubic-bezier(0.32, 0.72, 0.16, 1),
+    opacity 1.25s cubic-bezier(0.32, 0.72, 0.16, 1),
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1.28s cubic-bezier(0.32, 0.72, 0.16, 1);
+}
+
+.mini-how-steps-pulse-grid.mini-product-how-it-works-steps
+  .mini-how-step-slot.mini-how-step-card[data-mini-how-step-pulse='2'] {
+  opacity: 0.81;
+  border-color: rgb(203 213 225 / 0.88);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.82) inset,
+    0 10px 24px rgb(15 23 42 / 0.05),
+    0 0 0 1px rgb(148 163 184 / 0.08);
+  filter: saturate(0.93);
+}
+
+.mini-how-steps-pulse-grid.mini-product-how-it-works-steps
+  .mini-how-step-slot.mini-how-step-card[data-mini-how-step-pulse='1'] {
+  opacity: 0.93;
+  border-color: rgb(186 230 253 / 0.52);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.86) inset,
+    0 14px 32px rgb(14 165 233 / 0.07),
+    0 12px 28px rgb(15 23 42 / 0.06),
+    0 0 0 1px rgb(125 211 252 / 0.28);
+  filter: saturate(0.99);
+}
+
+.mini-how-steps-pulse-grid.mini-product-how-it-works-steps
+  .mini-how-step-slot.mini-how-step-card[data-mini-how-step-pulse='0'] {
+  opacity: 1;
+  filter: saturate(1.03);
+  border-color: rgb(226 226 231 / 0.96);
+  box-shadow:
+    0 2px 0 rgb(255 255 255 / 0.88) inset,
+    0 26px 52px rgb(15 23 42 / 0.09),
+    0 12px 34px rgb(15 23 42 / 0.055),
+    0 0 0 1px rgb(148 163 184 / 0.11);
+}
+
+.mini-how-steps-pulse-grid.mini-product-how-it-works-steps
+  .mini-how-step-slot.mini-how-step-card[data-mini-how-step-pulse='0']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(85% 72% at 50% -6%, rgb(255 78 0 / 0.2), transparent 58%),
+    radial-gradient(115% 78% at 50% 108%, rgb(255 195 0 / 0.11), transparent 52%);
+  animation: mini-how-step-spotlight-breathe 3.4s ease-in-out infinite;
+}
+
+.mini-how-steps-pulse-grid.mini-product-how-it-works-steps
+  .mini-how-step-slot.mini-how-step-card[data-mini-how-step-pulse='0']::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  background: transparent;
+  animation: mini-how-step-accent-glow 3.4s ease-in-out infinite;
+}
+
+/* Spotlight step: badge + icon pick up the same orange accent as the card glow; pulse 1/2 fall back to primary blue. */
+.mini-how-steps-pulse-grid.mini-product-how-it-works-steps
+  .mini-how-step-slot.mini-how-step-card[data-mini-how-step-pulse='0']
+  .mini-how-step-num-disk {
+  background-color: rgb(255 78 0);
+  box-shadow:
+    0 0 0 1px rgb(255 195 0 / 0.35),
+    0 6px 18px rgb(255 78 0 / 0.22);
+}
+
+.mini-how-steps-pulse-grid.mini-product-how-it-works-steps
+  .mini-how-step-slot.mini-how-step-card[data-mini-how-step-pulse='0']
+  .mini-how-step-icon-svg {
+  color: rgb(255 78 0);
+}
+
+.mini-how-steps-pulse-grid.mini-product-how-it-works-steps
+  .mini-how-step-slot.mini-how-step-card
+  > *:not(.mini-how-step-num-anchor) {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini-how-steps-pulse-grid.mini-product-how-it-works-steps .mini-how-step-slot.mini-how-step-card {
+    opacity: 1;
+    filter: none;
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.92) inset,
+      0 16px 36px rgb(15 23 42 / 0.08),
+      0 0 0 1px rgb(148 163 184 / 0.22);
+    border-color: rgb(226 232 240 / 0.98);
+  }
+
+  .mini-how-steps-pulse-grid.mini-product-how-it-works-steps
+    .mini-how-step-slot.mini-how-step-card[data-mini-how-step-pulse='0']::before {
+    animation: none;
+    opacity: 0;
+    transform: none;
+  }
+
+  .mini-how-steps-pulse-grid.mini-product-how-it-works-steps
+    .mini-how-step-slot.mini-how-step-card[data-mini-how-step-pulse='0']::after {
+    animation: none;
+    opacity: 0.82;
+    box-shadow:
+      0 20px 56px rgb(255 78 0 / 0.22),
+      0 8px 36px rgb(255 195 0 / 0.12),
+      0 -12px 46px rgb(255 136 71 / 0.12),
+      0 0 72px rgb(255 195 0 / 0.075);
+  }
+}
+
+.mini-product-how-it-works .mini-how-step-icon-holder {
+  @apply mx-auto mb-4 flex justify-center items-center;
+}
+
+.mini-product-how-it-works .mini-how-step-icon-svg {
+  /* margin comes from `.product-how-it-works-step-icon` — avoid doubling */
+  @apply mb-0 h-10 w-10 text-primary-600 shrink-0;
+  transition: color 1.25s cubic-bezier(0.32, 0.72, 0.16, 1);
+}
+
+/* Mini Product · pulse-grid hover complements the programmatic spotlight shells */
+@media (hover: hover) and (pointer: fine) {
+  .mini-how-steps-pulse-grid.mini-product-how-it-works-steps .mini-how-step-slot.mini-how-step-card {
+    transition:
+      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 1.35s cubic-bezier(0.32, 0.72, 0.16, 1),
+      border-color 1.3s cubic-bezier(0.32, 0.72, 0.16, 1),
+      opacity 1.25s cubic-bezier(0.32, 0.72, 0.16, 1),
+      filter 1.28s cubic-bezier(0.32, 0.72, 0.16, 1);
+  }
+
+  .mini-how-steps-pulse-grid.mini-product-how-it-works-steps .mini-how-step-slot.mini-how-step-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .mini-how-steps-pulse-grid .mini-how-step-slot .product-how-it-works-step-icon {
+    transition: transform 0.48s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mini-how-steps-pulse-grid .mini-how-step-slot:hover .product-how-it-works-step-icon {
+    transform: scale(1.05);
+  }
+
+  .mini-product-how-it-works .product-installation-video-guide-link {
+    transition:
+      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.2s ease,
+      box-shadow 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mini-product-how-it-works .product-installation-video-guide-link-lead-icon,
+  .mini-product-how-it-works .product-installation-video-guide-link-trail-icon {
+    transition: transform 0.44s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mini-product-how-it-works .product-installation-video-guide-link:hover {
+    transform: translateY(-2px);
+  }
+
+  .mini-product-how-it-works .product-installation-video-guide-link:hover .product-installation-video-guide-link-lead-icon {
+    transform: scale(1.06);
+  }
+
+  .mini-product-how-it-works .product-installation-video-guide-link:hover .product-installation-video-guide-link-trail-icon {
+    transform: translateX(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini-how-steps-pulse-grid.mini-product-how-it-works-steps .mini-how-step-slot.mini-how-step-card:hover {
+    transform: none;
+  }
+
+  .mini-how-steps-pulse-grid .mini-how-step-slot:hover .product-how-it-works-step-icon {
+    transform: none;
+  }
+
+  .mini-product-how-it-works .product-installation-video-guide-link:hover {
+    transform: none;
+  }
+
+  .mini-product-how-it-works .product-installation-video-guide-link:hover .product-installation-video-guide-link-lead-icon,
+  .mini-product-how-it-works .product-installation-video-guide-link:hover .product-installation-video-guide-link-trail-icon {
+    transform: none;
+  }
 }
 
 /* Mini - How it works: primary post-walkthrough “hero” + sticky step rail (lg+) */
@@ -18193,3 +19056,1146 @@
 .mini-setup-sensor-upsell-link-icon {
   @apply h-4 w-4 flex-shrink-0;
 }
+
+/* ==========================================================================
+   BEGIN MINI SPECS + COMPLIANCE — TIER 1 CONTENT PASS (2026-05-01)
+   Combines what used to be two separate sections (Specs + Code Compliant)
+   into one dark, hero-adjacent scene. Mirrors the hero's mesh-blob palette
+   but sits on a flat dark base — there is intentionally NO radial "center
+   highlight" here, per design direction. Pairs the product photo (with
+   length + height measurement callouts) on the left with the spec/code
+   data on the right.
+
+   Reuses the hero's @keyframes mini-hero-v2-drift-{a,b,c,d} so blobs share
+   the same idle drift cadence (defined earlier in this file around the
+   .mini-hero-v2-mesh-* block).
+
+   To revert: delete this entire BEGIN/END block and restore the JSX from
+     .backups/tier1-content-<TIMESTAMP>/MiniProductPage.tsx.pre-tier1-content
+   ========================================================================== */
+
+.mini-specs-compliance {
+  /* Bring background to hero parity (2026-05-01): swapped flat #050a14 for
+     the same radial gradient the hero uses so the blobs above have the
+     same dark-to-darker base to "pop" against. The original flat-base note
+     ("no center highlight per design direction") is reversed by user
+     direction — they explicitly said the Specs section is missing the
+     color blobs the hero has. */
+  @apply relative isolate overflow-hidden;
+  background: radial-gradient(120% 100% at 50% 0%, #0b1220 0%, #050a14 65%, #020509 100%);
+  color: #f8fafc;
+  padding: clamp(3.25rem, 7vw, 5.5rem) 0 clamp(3.5rem, 8vw, 6rem);
+}
+
+.mini-specs-compliance-mesh {
+  position: absolute;
+  inset: -10% -5% -10% -5%;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.mini-specs-compliance-mesh-blob {
+  /* Blob amp-up (2026-05-01): opacity 0.55 → 0.7 to match hero. Combined
+     with the larger blob diameters below and the new radial base above,
+     the section now reads with the same visible color depth as the hero. */
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.7;
+  mix-blend-mode: screen;
+}
+
+/* Blob sizes brought to hero parity: 38/32/30/26rem → 44/38/32/28rem. */
+.mini-specs-compliance-mesh-blob--a {
+  width: 44rem;
+  height: 44rem;
+  top: -18%;
+  left: -10%;
+  background: radial-gradient(circle at 30% 30%, rgba(14, 165, 233, 0.55), rgba(14, 165, 233, 0) 70%);
+  animation: mini-hero-v2-drift-a 22s ease-in-out infinite;
+}
+
+.mini-specs-compliance-mesh-blob--b {
+  width: 38rem;
+  height: 38rem;
+  top: 14%;
+  right: -12%;
+  background: radial-gradient(circle at 50% 50%, rgba(34, 211, 238, 0.45), rgba(34, 211, 238, 0) 70%);
+  animation: mini-hero-v2-drift-b 26s ease-in-out infinite;
+}
+
+.mini-specs-compliance-mesh-blob--c {
+  width: 32rem;
+  height: 32rem;
+  bottom: -18%;
+  left: 8%;
+  background: radial-gradient(circle at 50% 50%, rgba(232, 93, 31, 0.28), rgba(232, 93, 31, 0) 70%);
+  animation: mini-hero-v2-drift-c 30s ease-in-out infinite;
+}
+
+.mini-specs-compliance-mesh-blob--d {
+  width: 28rem;
+  height: 28rem;
+  bottom: -8%;
+  right: 12%;
+  background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.32), rgba(99, 102, 241, 0) 70%);
+  animation: mini-hero-v2-drift-d 34s ease-in-out infinite;
+}
+
+.mini-specs-compliance-mesh-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    rgb(0 0 0 / 1) clamp(112px, 26vw, 420px),
+    rgb(0 0 0 / 1) calc(100% - clamp(112px, 26vw, 420px)),
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    rgb(0 0 0) clamp(112px, 26vw, 420px),
+    rgb(0 0 0) calc(100% - clamp(112px, 26vw, 420px)),
+    transparent
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini-specs-compliance-mesh-blob--a,
+  .mini-specs-compliance-mesh-blob--b,
+  .mini-specs-compliance-mesh-blob--c,
+  .mini-specs-compliance-mesh-blob--d {
+    animation: none;
+  }
+}
+
+.mini-specs-compliance-inner {
+  @apply relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  z-index: 1;
+}
+
+.mini-specs-compliance-header {
+  @apply max-w-2xl mx-auto text-center;
+  margin-bottom: clamp(2.25rem, 5vw, 3.5rem);
+}
+
+.mini-specs-compliance-eyebrow {
+  @apply text-xs sm:text-sm font-semibold uppercase mb-3;
+  letter-spacing: 0.18em;
+  color: rgba(34, 211, 238, 0.9);
+}
+
+.mini-specs-compliance-title {
+  @apply text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4;
+  color: #f8fafc;
+}
+
+.mini-specs-compliance-lede {
+  @apply text-base sm:text-lg leading-relaxed;
+  color: rgba(226, 232, 240, 0.78);
+}
+
+/* Two-column grid (image left, data right). Stacks on small screens. */
+.mini-specs-compliance-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2.5rem, 5vw, 4rem);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .mini-specs-compliance-grid {
+    grid-template-columns: 1.05fr 1fr;
+  }
+}
+
+/* --- Visual column: product image with measurement callouts --- */
+.mini-specs-compliance-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.mini-specs-compliance-image-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 30rem;
+  overflow: visible;
+  /* Padding reserves room for the measurement callouts that sit just outside
+     the image (length below, height to the right). */
+  padding-right: 3.75rem;
+  padding-bottom: 2.5rem;
+}
+
+/* Sizing context for % on the height ruler = photo only (not wrap + bottom padding). */
+.mini-specs-compliance-image-frame {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+  isolation: isolate;
+}
+
+/* Drop-shadow on <picture>, not <img>, so the image layer doesn’t win the paint
+   order over absolutely positioned measurement overlays (filter on img caused
+   the cyan line/label to composite behind the render in some browsers). */
+.mini-specs-compliance-image-frame > picture {
+  display: block;
+  position: relative;
+  z-index: 0;
+  filter:
+    drop-shadow(0 24px 60px rgba(2, 5, 9, 0.55))
+    drop-shadow(0 6px 18px rgba(34, 211, 238, 0.18));
+}
+
+.mini-specs-compliance-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  position: relative;
+  z-index: 0;
+}
+
+.mini-specs-compliance-visual-caption {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: rgba(148, 163, 184, 0.7);
+  text-align: center;
+  max-width: 26rem;
+  margin: 0;
+}
+
+/* --- Measurement callouts (shared) --- */
+.mini-specs-compliance-measurement {
+  position: absolute;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.mini-specs-compliance-measurement-line {
+  position: absolute;
+  background: rgba(34, 211, 238, 0.55);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.25);
+}
+
+.mini-specs-compliance-measurement-tick {
+  position: absolute;
+  background: rgba(34, 211, 238, 0.85);
+}
+
+.mini-specs-compliance-measurement-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(8, 12, 20, 0.92);
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  box-shadow: 0 4px 14px rgba(2, 5, 9, 0.45);
+}
+
+.mini-specs-compliance-measurement-label-key {
+  font-size: 0.625rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(34, 211, 238, 0.92);
+}
+
+.mini-specs-compliance-measurement-label-value {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #f0f9ff;
+}
+
+/* Length: horizontal — ~11% inset matches outer horizontal pipe extent in the
+   spec art; capped right for the vertical height gutter. */
+.mini-specs-compliance-measurement--length {
+  left: 11%;
+  right: calc(3.75rem + 11%);
+  bottom: 0;
+  height: 1.75rem;
+}
+
+.mini-specs-compliance-measurement--length .mini-specs-compliance-measurement-line {
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+.mini-specs-compliance-measurement--length .mini-specs-compliance-measurement-tick--start {
+  top: 25%;
+  bottom: 25%;
+  left: 0;
+  width: 1px;
+}
+
+.mini-specs-compliance-measurement--length .mini-specs-compliance-measurement-tick--end {
+  top: 25%;
+  bottom: 25%;
+  right: 0;
+  width: 1px;
+}
+
+/* Height: strip extends into padding; label sits fully past the bitmap’s right profile. */
+.mini-specs-compliance-measurement--height {
+  top: 44%;
+  right: -3.15rem;
+  bottom: 9%;
+  width: 4.85rem;
+}
+
+.mini-specs-compliance-measurement--height .mini-specs-compliance-measurement-line {
+  left: 0.42rem;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+}
+
+.mini-specs-compliance-measurement--height .mini-specs-compliance-measurement-tick--start {
+  left: 0.42rem;
+  transform: translateX(-50%);
+  width: 0.5rem;
+  right: auto;
+  top: 0;
+  height: 1px;
+}
+
+.mini-specs-compliance-measurement--height .mini-specs-compliance-measurement-tick--end {
+  left: 0.42rem;
+  transform: translateX(-50%);
+  width: 0.5rem;
+  right: auto;
+  bottom: 0;
+  height: 1px;
+}
+
+.mini-specs-compliance-measurement--height .mini-specs-compliance-measurement-label {
+  left: 1rem;
+  right: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  /* Pinning both left+right was shrinking the pill narrower than the key+value
+     text — background/border only covered part of the inline-flex row. */
+  width: max-content;
+  max-width: none;
+}
+
+/* ≤899px: keep height ruler aligned with desktop artwork; reposition label only */
+@media (max-width: 899px) {
+  .mini-specs-compliance-measurement--height .mini-specs-compliance-measurement-label {
+    left: auto;
+    right: calc(50% + 0.45rem);
+    top: -20%;
+    transform: translateY(-30%);
+    width: -moz-max-content;
+    width: max-content;
+    max-width: none;
+    text-align: right;
+  }
+}
+
+/* Narrow phones: tighter wrap padding + scaled height strip (same as pre–mobile-fix). */
+@media (max-width: 480px) {
+  .mini-specs-compliance-image-wrap {
+    padding-right: 3rem;
+    padding-bottom: 2.35rem;
+  }
+
+  .mini-specs-compliance-measurement--length {
+    bottom: 0;
+    left: 9%;
+    right: calc(3rem + 9%);
+  }
+
+  .mini-specs-compliance-measurement--height {
+    right: -2.85rem;
+    width: 4.4rem;
+    top: 46%;
+    bottom: 10%;
+  }
+}
+
+/* --- Data column: specs list + code badges --- */
+.mini-specs-compliance-data {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mini-specs-compliance-block-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(34, 211, 238, 0.92);
+  margin: 0;
+}
+
+.mini-specs-compliance-specs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin: 0;
+}
+
+.mini-specs-compliance-spec-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.mini-specs-compliance-spec-row:first-child {
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.mini-specs-compliance-spec-label {
+  font-size: 0.875rem;
+  color: rgba(203, 213, 225, 0.78);
+  margin: 0;
+}
+
+.mini-specs-compliance-spec-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #f8fafc;
+  text-align: right;
+  margin: 0;
+}
+
+.mini-specs-compliance-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(148, 163, 184, 0.18), transparent);
+  margin: 0.5rem 0;
+}
+
+.mini-specs-compliance-codes-lede {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: rgba(203, 213, 225, 0.78);
+  margin: 0;
+}
+
+.mini-specs-compliance-codes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.mini-specs-compliance-code-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(8, 47, 73, 0.55);
+  border: 1px solid rgba(34, 211, 238, 0.32);
+  color: #e0f2fe;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.mini-specs-compliance-code-badge-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  color: rgba(34, 211, 238, 0.92);
+  flex-shrink: 0;
+}
+
+/* ========================================================================
+   END MINI SPECS + COMPLIANCE — TIER 1 CONTENT PASS (2026-05-01)
+   ======================================================================== */
+
+/* ==========================================================================
+   BEGIN MINI TESTIMONIALS EDITORIAL — STEP 2 (2026-05-01)
+   Replaces the prior "BEGIN MINI TESTIMONIALS GRID" block. The grid
+   container is unchanged (1 col mobile, 2 cols at >=760px), but the cards
+   are reskinned from carousel-era chrome (shadow-lg + primary left border
+   + centered headshot + 5-star strip) to an editorial pull-quote layout:
+
+     [ ❝ ]                            ← large quote-mark glyph, primary @ 18%
+     [ pull-quote text — slate-900,
+       font-medium, no italics ]
+     [ ◯JB  Jeff B.                  ← initials avatar (role-tinted) + meta
+            FL General Contractor ]
+
+   Role tint maps the audience hierarchy at a glance:
+     contractor → blue-100 / blue-800   (Joey, Jeff)
+     homeowner  → gray-100 / gray-700   (Charles, Jaclyn)
+
+   The base .mini-product-testimonial-card rule (defined earlier in this
+   file for the carousel) still sets bg-white + rounded-2xl + shadow-lg +
+   primary left border via @apply. The .mini-product-testimonial-card--editorial
+   modifier below overrides shadow / border / radius / padding / max-width
+   to land the editorial look without touching the base rule (which is
+   shared with the now-unused carousel JSX path).
+
+   Scope: Mini product page only. Sensor and Combo product pages don't use
+   the .mini-product-* classes.
+
+   To revert: replace this block with the prior "BEGIN MINI TESTIMONIALS
+   GRID" block (visible in git history) and switch the JSX class back from
+   `--editorial` to `--grid`. Re-import StarIcon and restore the headshot
+   <img> + rating <div> in the JSX.
+   ========================================================================== */
+
+.mini-product-testimonials-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.25rem, 3vw, 1.75rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
+  align-items: stretch;
+}
+
+@media (min-width: 760px) {
+  .mini-product-testimonials-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.mini-product-testimonial-card--editorial {
+  max-width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  background: linear-gradient(to bottom, rgb(228 236 245 / 0.22), #ffffff);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-left: 3px solid var(--acdw-yellow);
+  border-radius: 0.875rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition:
+    box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.38s ease;
+}
+
+.mini-product-testimonial-card--editorial:hover {
+  box-shadow:
+    0 20px 48px rgba(15, 23, 42, 0.09),
+    0 8px 20px rgba(15, 23, 42, 0.05);
+  transform: translateY(-4px);
+  border-color: rgba(255, 78, 0, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini-product-testimonial-card--editorial:hover {
+    transform: none;
+  }
+}
+
+.mini-product-testimonial-card--editorial:hover .mini-product-testimonial-quote-mark {
+  color: rgb(255 195 0 / 0.5);
+}
+
+.mini-product-testimonial-card--editorial .mini-product-testimonial-quote-mark {
+  display: block;
+  font-family: Georgia, "Times New Roman", "Iowan Old Style", serif;
+  font-size: 4rem;
+  line-height: 0.6;
+  color: rgb(255 195 0 / 0.34);
+  margin: 0 0 -0.25rem 0;
+  user-select: none;
+}
+
+.mini-product-testimonial-card--editorial .mini-product-testimonial-text {
+  font-size: clamp(1.0625rem, 1.5vw, 1.1875rem);
+  line-height: 1.55;
+  font-weight: 500;
+  color: #0f172a; /* slate-900 */
+  font-style: normal; /* drop the italics inherited from the carousel rule */
+  margin: 0;
+  flex: 1; /* push the byline block to the bottom of the card */
+  text-wrap: pretty;
+}
+
+.mini-product-testimonial-card--editorial .mini-product-testimonial-author {
+  display: flex;
+  flex-direction: row; /* override `flex-col` from the carousel-era base rule */
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0;
+  border-top: 0; /* drop the divider above the author from the carousel rule */
+  margin-top: 0;
+}
+
+.mini-product-testimonial-avatar {
+  --avatar-bg: #f3f4f6;
+  --avatar-fg: #374151;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  background: var(--avatar-bg);
+  color: var(--avatar-fg);
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  flex-shrink: 0;
+  /* No headshot dependency — initials read clearly at this size and the
+     role tint (modifier classes below) does the audience-coding work. */
+}
+
+.mini-product-testimonial-avatar--contractor {
+  --avatar-bg: #dbeafe; /* blue-100 */
+  --avatar-fg: #1e3a8a; /* blue-900 */
+}
+
+.mini-product-testimonial-avatar--homeowner {
+  --avatar-bg: #f3f4f6; /* gray-100 */
+  --avatar-fg: #374151; /* gray-700 */
+}
+
+.mini-product-testimonial-author-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* allow long roles like "FL General Contractor & Homeowner" to wrap */
+}
+
+.mini-product-testimonial-card--editorial .mini-product-testimonial-name {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: #0f172a; /* slate-900 */
+  line-height: 1.25;
+  margin: 0;
+}
+
+.mini-product-testimonial-card--editorial .mini-product-testimonial-role {
+  font-size: 0.8125rem;
+  color: #64748b; /* slate-500 */
+  margin-top: 0.125rem;
+  line-height: 1.3;
+}
+
+/* ========================================================================
+   END MINI TESTIMONIALS EDITORIAL — STEP 2 (2026-05-01)
+   ======================================================================== */
+
+/* ==========================================================================
+   BEGIN MINI FAQ — TIGHTER ACCORDION (2026-05-01)
+   Scope: Mini product page only. The shared .product-faq-* classes are
+   reused on the Sensor and Combo product pages with the original card
+   chrome; the .mini-product-faq wrapper opts THIS page into a chromeless,
+   row-divider treatment with smaller padding and no per-item bg.
+
+   Goal: lower the FAQ section's visual weight so it doesn't dominate the
+   page below the hero, while keeping accordion behavior + a11y attributes
+   already provided by the shared classes.
+
+   To revert: delete this BEGIN/END block and remove `mini-product-faq`
+   from the FAQ section in MiniProductPage.tsx.
+   ========================================================================== */
+
+.mini-product-faq .product-faq-list {
+  /* Drop the gap-4 vertical spacing between cards — rows are separated by
+     1px dividers instead. Top divider closes the top edge of the list. */
+  @apply space-y-0;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.mini-product-faq .product-faq-item {
+  /* Strip the per-item card chrome (border, radius, overflow, bg). Keep only
+     a 1px bottom divider to delineate rows. */
+  border: 0;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
+}
+
+.mini-product-faq .product-faq-question {
+  /* Edge-aligned with the container (no horizontal padding); tighter vertical
+     rhythm. Drops to font-medium for a less-shouty list and a calmer page. */
+  @apply px-0 py-4 md:py-5;
+  @apply text-base md:text-lg font-medium text-gray-900;
+  @apply transition-colors;
+  background: transparent;
+}
+
+.mini-product-faq .product-faq-question:hover {
+  /* Use a text-color shift on hover instead of the shared rule's bg shift —
+     keeps the row chromeless and prevents a "card" feel from re-emerging. */
+  background: transparent;
+  color: #0369a1; /* primary-700 */
+}
+
+.mini-product-faq .product-faq-question[aria-expanded="true"] {
+  /* Open question reads slightly heavier so the active row anchors visually
+     even after the chevron flips. */
+  color: #0f172a; /* slate-900 */
+  font-weight: 600;
+}
+
+.mini-product-faq .product-faq-question[aria-expanded="true"]:hover {
+  color: #0f172a;
+}
+
+.mini-product-faq .product-faq-question:active {
+  color: #0c4a6e;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mini-product-faq .product-faq-question {
+    transition:
+      color 0.22s ease,
+      transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mini-product-faq .product-faq-question:active {
+    transform: translateY(1px);
+  }
+
+  /* Specs data rows on dark plate — unobtrusive spotlight on hover */
+  .mini-specs-compliance-spec-row {
+    transition: background-color 0.36s cubic-bezier(0.16, 1, 0.3, 1);
+    border-radius: 0.35rem;
+    margin-inline: -0.4rem;
+    padding-inline: calc(1rem + 0.15rem);
+  }
+
+  .mini-specs-compliance-spec-row:hover {
+    background-color: rgba(14, 165, 233, 0.09);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini-product-faq .product-faq-question:active {
+    transform: none;
+  }
+}
+
+.mini-product-faq .product-faq-icon {
+  @apply h-5 w-5 text-gray-400 flex-shrink-0 ml-4 transition-colors;
+}
+
+.mini-product-faq .product-faq-question:hover .product-faq-icon {
+  color: #0369a1;
+}
+
+.mini-product-faq .product-faq-question[aria-expanded="true"] .product-faq-icon {
+  color: #0f172a;
+}
+
+.mini-product-faq .product-faq-answer {
+  /* Flow the answer directly under the question (no separate gray block, no
+     top divider). Padding is bottom-only so the divider on the next row
+     handles the visual separation. Constrain text width for readability. */
+  @apply px-0 pt-0 pb-5 md:pb-6;
+  @apply text-base text-gray-700 leading-relaxed;
+  background: transparent;
+  border: 0;
+  max-width: 60ch;
+}
+
+/* Subtitle ("Have a question we didn't cover?") — slightly tighter on the
+   Mini page since the new accordion ends much closer to it (no card padding
+   below the last row). */
+.mini-product-faq .product-faq-subtitle {
+  @apply text-center text-gray-600 text-base md:text-lg;
+  margin-top: 2rem;
+  margin-bottom: 0;
+}
+
+/* ========================================================================
+   END MINI FAQ — TIGHTER ACCORDION (2026-05-01)
+   ======================================================================== */
+
+/* ==========================================================================
+   BEGIN MINI LIGHT BACKDROP — TESTIMONIALS + FAQ (2026-05-01)
+   "Light mirror" of the hero/specs visual language for the proof and Q&A
+   sections that follow Specs. Both sections opt in by virtue of their
+   existing classes (.mini-product-testimonials and .mini-product-faq),
+   no JSX changes needed.
+
+   Why this exists:
+   - Before: Testimonials sat on flat bg-gray-50 and the Mini FAQ sat on
+     flat bg-white. After the carousel→editorial card redesign and the
+     bordered-card→tighter-accordion FAQ work, those flat backgrounds
+     read as plain CMS panels — disconnected from the cinematic hero/
+     specs treatment above.
+   - After: Both sections share a layered light backdrop:
+       1. Vertical gradient wash (#f8fafc → #ffffff → #f8fafc) so the
+          surface is never dead-flat.
+       2. Four soft color blobs (sky / cyan / orange / indigo) at very
+          low opacity — same palette as the hero/specs blobs but tuned
+          for a light surface so they whisper instead of shout. Different
+          positions per section so they don't read as identical panels.
+       3. A whisper-quiet micro-grid (1px gray-300 lines, 96px cell)
+          masked at the gutters to echo the hero/specs grid pattern.
+   - Net effect: when you scroll past Specs (dark, blob-heavy), the
+     proof + Q&A flow on a soft light continuum that feels like the same
+     designed page — not three different pages glued together.
+
+   Scope:
+   - Mini product page only. The Sensor and Combo product pages don't
+     have these classes; their FAQ keeps the original card chrome and
+     bg-white via .product-faq.
+
+   To revert: delete this BEGIN/END block. Sections fall back to their
+   prior backgrounds (gray-50 for testimonials via the @apply rule near
+   the top of this file; white for the Mini FAQ via the shared .product-faq
+   rule).
+   ========================================================================== */
+
+.mini-product-testimonials,
+.mini-product-faq {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* Keep the existing @apply padding from the original .mini-product-testimonials
+     and shared .product-faq rules; we only override background here. The
+     `background:` shorthand replaces background-color set by the @apply
+     `bg-gray-50` / `bg-white` classes. */
+  background:
+    /* Color blobs — declared first so they paint above the wash base */
+    radial-gradient(50rem 38rem at 8% 12%, rgba(14, 165, 233, 0.07), transparent 60%),
+    radial-gradient(40rem 32rem at 92% 18%, rgba(34, 211, 238, 0.06), transparent 60%),
+    radial-gradient(36rem 30rem at 14% 88%, rgba(232, 93, 31, 0.05), transparent 60%),
+    radial-gradient(40rem 32rem at 88% 78%, rgba(99, 102, 241, 0.06), transparent 60%),
+    /* Vertical wash base — never dead-flat */
+    linear-gradient(180deg, #f7fafc 0%, #ffffff 50%, #f6f7fb 100%);
+}
+
+/* Differentiate the FAQ blob composition from the testimonials so the two
+   sections don't read as two identical-looking panels. Same palette, same
+   intensity, just rotated positions. */
+.mini-product-faq {
+  background:
+    radial-gradient(46rem 36rem at 92% 8%, rgba(14, 165, 233, 0.06), transparent 60%),
+    radial-gradient(38rem 30rem at 6% 22%, rgba(99, 102, 241, 0.05), transparent 60%),
+    radial-gradient(40rem 32rem at 88% 92%, rgba(34, 211, 238, 0.06), transparent 60%),
+    radial-gradient(34rem 28rem at 12% 80%, rgba(232, 93, 31, 0.04), transparent 60%),
+    linear-gradient(180deg, #f6f7fb 0%, #ffffff 55%, #f8fafc 100%);
+}
+
+/* Whisper-quiet micro-grid texture — echoes the hero/specs grid but pitched
+   for a light surface. Mask fades the grid at the left/right gutters so the
+   grid never bumps into the page edges. */
+.mini-product-testimonials::before,
+.mini-product-faq::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(15, 23, 42, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.025) 1px, transparent 1px);
+  background-size: 96px 96px;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    rgb(0 0 0 / 1) clamp(112px, 26vw, 420px),
+    rgb(0 0 0 / 1) calc(100% - clamp(112px, 26vw, 420px)),
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    rgb(0 0 0) clamp(112px, 26vw, 420px),
+    rgb(0 0 0) calc(100% - clamp(112px, 26vw, 420px)),
+    transparent
+  );
+}
+
+/* Lift the section's content above the bg layer + ::before grid */
+.mini-product-testimonials > *,
+.mini-product-faq > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Gradient bridge between the dark Specs section and the light Testimonials
+   section — softens the dark→light tonal cut into a deliberate fade rather
+   than a paint-bucket flip. Mirrored at the bottom of FAQ so the soft
+   light backdrop fades down toward the CTA band's slightly cooler #eef2f7. */
+.mini-product-testimonials::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 96px;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(5, 10, 20, 0.06) 0%, rgba(5, 10, 20, 0) 100%);
+}
+
+.mini-product-faq::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(238, 242, 247, 0) 0%, rgba(238, 242, 247, 0.8) 100%);
+}
+
+/* ========================================================================
+   END MINI LIGHT BACKDROP — TESTIMONIALS + FAQ (2026-05-01)
+   ======================================================================== */
+
+/* ==========================================================================
+   BEGIN MINI SECTION TITLES — STEP 5 PROMOTE (2026-05-01)
+   Applies the "Specs section voice" to every Mini section header so the
+   page reads with editorial intent instead of CMS defaults. Three
+   reusable building blocks:
+
+     .mini-section-header        — wrapper that centers and constrains the
+                                   eyebrow + title + optional dek block
+     .mini-section-eyebrow       — small uppercase kicker above the H2
+                                   (and a `--dark` modifier for dark sections)
+     .mini-section-title-promote — modifier applied alongside the shared
+                                   `.product-section-title` to upgrade the
+                                   typography without changing the Sensor
+                                   or Combo product pages
+     .mini-section-dek           — optional one-line subtitle under the H2
+
+   Why opt-in (modifier on the shared .product-section-title): the shared
+   class still drives layout/font on the Sensor and Combo product pages.
+   We only want the *Mini* page to get the promoted look. Adding the
+   modifier on a per-H2 basis keeps the blast radius zero.
+
+   To revert: delete this BEGIN/END block, remove the
+   `.mini-section-*` classes from the JSX (How It Works, Testimonials,
+   FAQ headers in MiniProductPage.tsx).
+   ========================================================================== */
+
+.mini-section-header {
+  /* Centered, narrow stack so the eyebrow + title + dek read as a single
+     editorial unit instead of three widely-spaced lines. */
+  text-align: center;
+  max-width: 44rem;
+  margin: 0 auto clamp(2rem, 4vw, 3rem) auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mini-section-eyebrow {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #0369a1; /* primary-700 — light-bg default */
+  margin: 0;
+}
+
+.mini-section-eyebrow--dark {
+  color: rgba(125, 211, 252, 0.92); /* sky-300, ~92% — for dark sections */
+}
+
+.product-section-title.mini-section-title-promote {
+  /* Promoted heading: similar weight to .mini-specs-compliance-title
+     (text-balance + tighter letter-spacing + slightly looser top size)
+     so the editorial voice carries through. Margin-bottom is folded
+     into the .mini-section-header gap, so reset it here. */
+  font-size: clamp(1.875rem, 3.5vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.018em;
+  color: #0f172a; /* slate-900 */
+  text-align: center;
+  text-wrap: balance;
+  margin: 0;
+  max-width: 38rem;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.15;
+}
+
+.product-section-title.mini-section-title-promote--dark {
+  color: #f8fafc;
+}
+
+.mini-section-dek {
+  display: block;
+  text-align: center;
+  font-size: clamp(0.95rem, 1.3vw, 1.0625rem);
+  color: #475569; /* slate-600 */
+  max-width: 38rem;
+  margin: 0.25rem auto 0 auto;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+/* When the eyebrow + title pattern is added to How It Works (which has its
+   own legacy subtitle below the H2), the legacy subtitle becomes redundant
+   and visually noisy. Hide it on the Mini page only — the shared rule
+   stays intact for Sensor/Combo. */
+.mini-product-how-it-works .product-how-it-works-subtitle {
+  display: none;
+}
+
+/* ========================================================================
+   END MINI SECTION TITLES — STEP 5 PROMOTE (2026-05-01)
+   ======================================================================== */
+
+/* ==========================================================================
+   BEGIN MINI VS OLD — STEP 8 COMPARISON STRIP (2026-05-01)
+   Small typographic comparison strip that lives between How It Works and
+   Specs. Pure typography (no imagery) so it can ship without waiting on
+   product photography. Two columns separated by a thin vertical rule:
+
+     [ Without it    |    With the Mini ]
+       — gray, muted     — slate-900, weighted
+
+   The "without" column is intentionally muted (slate-500 text + small
+   leading minus) so the eye lands on the "with" column. The "with"
+   column uses primary-600 small plus markers and slate-900 type so it
+   reads as the resolved state.
+
+   Background: a quieter version of the Testimonials/FAQ light backdrop
+   (single subtle wash, no blobs, no grid) so it sits as a calm pause
+   between How It Works (white) and Specs (dark cinematic).
+
+   To revert: delete this BEGIN/END block and remove the <section
+   className="mini-vs-old"> block from MiniProductPage.tsx.
+   ========================================================================== */
+
+.mini-vs-old {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(2.5rem, 5.5vw, 4.5rem) 0;
+  background: linear-gradient(180deg, #f8fafc 0%, #f4f6fa 100%);
+}
+
+.mini-vs-old-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 2rem);
+}
+
+.mini-vs-old-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: stretch;
+  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+@media (min-width: 760px) {
+  .mini-vs-old-grid {
+    grid-template-columns: 1fr 1px 1fr;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+}
+
+.mini-vs-old-col {
+  padding: 1.25rem clamp(1rem, 2vw, 1.5rem);
+}
+
+.mini-vs-old-col-label {
+  margin: 0 0 1rem 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.mini-vs-old-col--before .mini-vs-old-col-label {
+  color: #94a3b8; /* slate-400 — muted, recedes */
+}
+
+.mini-vs-old-col--after .mini-vs-old-col-label {
+  color: #0369a1; /* primary-700 — confident */
+}
+
+.mini-vs-old-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  font-size: clamp(0.9375rem, 1.4vw, 1.0625rem);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.mini-vs-old-list li {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.mini-vs-old-list li::before {
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  font-weight: 700;
+  font-size: 1.1em;
+}
+
+/* "Without it" column: muted gray with a small minus marker.
+   Reads as the de-emphasized state — present but quiet. */
+.mini-vs-old-col--before .mini-vs-old-list {
+  color: #64748b; /* slate-500 */
+}
+
+.mini-vs-old-col--before .mini-vs-old-list li::before {
+  content: '−'; /* unicode minus */
+  color: #94a3b8; /* slate-400 */
+}
+
+/* "With the Mini" column: confident slate-900 with a small plus marker
+   in primary blue. The eye lands here. */
+.mini-vs-old-col--after .mini-vs-old-list {
+  color: #0f172a; /* slate-900 */
+  font-weight: 500;
+}
+
+.mini-vs-old-col--after .mini-vs-old-list li::before {
+  content: '+';
+  color: #0284c7; /* primary-600 */
+}
+
+/* Vertical center divider (desktop only — hidden on stacked mobile). */
+.mini-vs-old-divider {
+  display: none;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(15, 23, 42, 0.12) 20%,
+    rgba(15, 23, 42, 0.12) 80%,
+    transparent
+  );
+  width: 1px;
+  align-self: stretch;
+}
+
+@media (min-width: 760px) {
+  .mini-vs-old-divider {
+    display: block;
+  }
+}
+
+/* ========================================================================
+   END MINI VS OLD — STEP 8 COMPARISON STRIP (2026-05-01)
+   ======================================================================== */
