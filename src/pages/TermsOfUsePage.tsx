@@ -394,6 +394,13 @@ export function TermsOfUsePage() {
               <h2 className="heading-2">20. SMS / Text Messaging Program</h2>
             </div>
             <div className="space-y-4">
+              <div className="bg-amber-50 border-2 border-amber-300 rounded-lg p-6">
+                <h3 className="font-semibold text-gray-900 mb-3">SMS Consent Is Separate and Optional</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  <strong>Acceptance of these Terms — whether by accessing the Site, submitting a form, or otherwise — does not by itself constitute consent to receive SMS messages.</strong> SMS consent requires the separate, affirmative actions described below (typically a dedicated SMS consent checkbox next to your phone number on a form), and SMS opt-in is never required to use the Site or our products and services. You may decline SMS messaging at any time and continue to use our services; we will simply contact you by email or voice call instead.
+                </p>
+              </div>
+
               <p className="text-gray-700 leading-relaxed">
                 By providing your mobile phone number and affirmatively opting in (for example, by checking an SMS consent box on a form on the Site), you agree to receive text messages from AC Drain Wiz on the terms set forth in this Section and our Privacy Policy.
               </p>
