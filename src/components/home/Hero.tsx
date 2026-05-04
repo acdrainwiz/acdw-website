@@ -1181,7 +1181,6 @@ export function Hero() {
                   const state = formData.get('state') as string
                   const zip = formData.get('zip') as string
                   const consent = formData.get('consent')
-                  const smsTransactional = formData.get('smsTransactional')
                   const photoInput = form.querySelector('#upgrade-photo') as HTMLInputElement
                   
                   // Validate firstName
@@ -1248,11 +1247,6 @@ export function Hero() {
                       'Please confirm you understand the review, payment link, and shipping timeline to continue'
                   }
 
-                  if (!smsTransactional) {
-                    errors.smsTransactional =
-                      'Check the checkbox above to consent to transactional SMS (service notifications) for your upgrade request.'
-                  }
-                  
                   // If there are validation errors, stop submission
                   if (Object.keys(errors).length > 0) {
                     setFieldErrors(errors)
@@ -1607,6 +1601,9 @@ export function Hero() {
                       />
                       <span>
                         I agree to receive transactional SMS from AC Drain Wiz as described above.
+                        <span className="block text-xs text-gray-500 mt-1 font-normal">
+                          Optional — uncheck and we'll reach you by email or voice call only.
+                        </span>
                       </span>
                     </label>
                     {fieldErrors.smsTransactional && (

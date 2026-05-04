@@ -36,9 +36,6 @@ type ContactFormType = 'general' | 'support' | 'sales' | 'installer' | 'demo'
 // Character limit for message field
 const MESSAGE_MAX_LENGTH = 2000
 
-const SMS_TRANSACTIONAL_REQUIRED_MSG =
-  'Check the checkbox above to consent to transactional SMS (service notifications). Required when you provide a phone number.'
-
 /** Tailwind `md` is 768px — treat &lt;768 as mobile for scroll-on-error. */
 const CONTACT_FORM_MOBILE_MAX_WIDTH_PX = 767
 
@@ -284,8 +281,6 @@ export function ContactPage() {
     productsOfInterest: []
   })
 
-  const formDataRef = useRef(formData)
-  formDataRef.current = formData
   const latestPhoneMaskedRef = useRef('')
 
   // Update form type when URL changes
@@ -390,13 +385,8 @@ export function ContactPage() {
           return 'Please confirm you agree to the Privacy Policy to continue'
         }
         break
-      case 'smsTransactional': {
-        const digits = formData.phone.replace(/\D/g, '').length
-        if (digits >= 10 && !value) {
-          return SMS_TRANSACTIONAL_REQUIRED_MSG
-        }
+      case 'smsTransactional':
         break
-      }
     }
     return ''
   }
@@ -974,44 +964,12 @@ export function ContactPage() {
                             target: { name: 'phone', value, type: 'tel' }
                           } as React.ChangeEvent<HTMLInputElement>
                           handleInputChange(event)
-                          const digits = value.replace(/\D/g, '').length
-                          if (digits < 10) {
-                            setFieldErrors(prev => {
-                              if (!prev.smsTransactional) return prev
-                              const next = { ...prev }
-                              delete next.smsTransactional
-                              return next
-                            })
-                          }
                         }}
                         onBlur={() => {
                           const event = {
                             target: { name: 'phone', value: formData.phone, type: 'tel' }
                           } as React.FocusEvent<HTMLInputElement>
                           handleBlur(event)
-                          window.setTimeout(() => {
-                            const fd = formDataRef.current
-                            const digits = fd.phone.replace(/\D/g, '').length
-                            if (digits >= 10) {
-                              setTouchedFields(prev => ({ ...prev, smsTransactional: true }))
-                              setFieldErrors(prev => {
-                                const next = { ...prev }
-                                if (!fd.smsTransactional) {
-                                  next.smsTransactional = SMS_TRANSACTIONAL_REQUIRED_MSG
-                                } else {
-                                  delete next.smsTransactional
-                                }
-                                return next
-                              })
-                            } else {
-                              setFieldErrors(prev => {
-                                if (!prev.smsTransactional) return prev
-                                const next = { ...prev }
-                                delete next.smsTransactional
-                                return next
-                              })
-                            }
-                          }, 0)
                         }}
                         className={`input ${fieldErrors.phone ? 'input-error' : ''}`}
                         placeholder="(555) 123-4567"
@@ -1077,7 +1035,7 @@ export function ContactPage() {
                         />
                         <span className="text-sm text-gray-600 leading-snug">
                           I agree to receive transactional SMS from AC Drain Wiz at the mobile number provided — including service replies, scheduling, appointment coordination, and order or support updates tied to my inquiry. Message frequency may vary. Message and data rates may apply. Reply STOP to unsubscribe or HELP for help. See our <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</a> and <a href="/terms-of-use" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-700 underline">Terms of Use</a>.
-                          <span className="block text-xs text-gray-500 mt-1">Required if you provide a phone number.</span>
+                          <span className="block text-xs text-gray-500 mt-1">Optional. If unchecked, we'll reach you by email or voice call only.</span>
                         </span>
                       </label>
                       {fieldErrors.smsTransactional && (

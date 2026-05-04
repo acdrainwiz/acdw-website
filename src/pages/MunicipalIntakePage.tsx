@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { IMaskInput } from 'react-imask'
 import { BuildingOfficeIcon, SparklesIcon, XMarkIcon } from '@heroicons/react/24/outline'
@@ -18,8 +18,6 @@ export const PAGE_SEARCH_META: PageSearchMeta = {
 }
 
 const MESSAGE_MAX_LENGTH = 2000
-const SMS_TRANSACTIONAL_REQUIRED_MSG =
-  'Check the checkbox above to consent to transactional SMS (service notifications). Required when you provide a phone number.'
 
 // Defaults sent to GHL Opportunity custom fields on every submission (per spec).
 const DEFAULT_ELIGIBLE_FREE_MONITORING = 'Yes - BOAFNCOAA Participant'
@@ -183,9 +181,6 @@ export function MunicipalIntakePage() {
   const [submitError, setSubmitError] = useState('')
   const [formLoadTime] = useState<number>(Date.now())
 
-  const formDataRef = useRef(formData)
-  formDataRef.current = formData
-
   useEffect(() => {
     document.title = 'Municipal Intake Form | AC Drain Wiz'
   }, [])
@@ -256,11 +251,8 @@ export function MunicipalIntakePage() {
       case 'consent':
         if (!value) return 'Please confirm you agree to the Privacy Policy to continue'
         break
-      case 'smsTransactional': {
-        const digits = formDataRef.current.phone.replace(/\D/g, '').length
-        if (digits >= 10 && !value) return SMS_TRANSACTIONAL_REQUIRED_MSG
+      case 'smsTransactional':
         break
-      }
       case 'secondaryEmail':
         if (typeof value === 'string' && value.length > 0) {
           const err = validateEmail(value)
@@ -745,37 +737,12 @@ export function MunicipalIntakePage() {
                           target: { name: 'phone', value, type: 'tel' },
                         } as React.ChangeEvent<HTMLInputElement>
                         handleInputChange(event)
-                        const digits = value.replace(/\D/g, '').length
-                        if (digits < 10) {
-                          setFieldErrors((prev) => {
-                            if (!prev.smsTransactional) return prev
-                            const next = { ...prev }
-                            delete next.smsTransactional
-                            return next
-                          })
-                        }
                       }}
                       onBlur={() => {
                         const event = {
                           target: { name: 'phone', value: formData.phone, type: 'tel' },
                         } as React.FocusEvent<HTMLInputElement>
                         handleBlur(event)
-                        window.setTimeout(() => {
-                          const fd = formDataRef.current
-                          const digits = fd.phone.replace(/\D/g, '').length
-                          if (digits >= 10) {
-                            setTouchedFields((prev) => ({ ...prev, smsTransactional: true }))
-                            setFieldErrors((prev) => {
-                              const next = { ...prev }
-                              if (!fd.smsTransactional) {
-                                next.smsTransactional = SMS_TRANSACTIONAL_REQUIRED_MSG
-                              } else {
-                                delete next.smsTransactional
-                              }
-                              return next
-                            })
-                          }
-                        }, 0)
                       }}
                       className={`input ${fieldErrors.phone ? 'input-error' : ''}`}
                       placeholder="(555) 123-4567"
@@ -829,7 +796,7 @@ export function MunicipalIntakePage() {
                       </a>
                       .
                       <span className="block text-xs text-gray-500 mt-1">
-                        Required if you provide a phone number.
+                        Optional. If unchecked, we'll reach you by email or voice call only.
                       </span>
                     </span>
                   </label>

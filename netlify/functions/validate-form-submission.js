@@ -177,16 +177,6 @@ const validateFormFields = (formType, formData) => {
       default:
         console.warn(`Unknown contact form subtype: ${contactSubType}`)
     }
-
-    // A2P 10DLC: transactional SMS consent required when a phone number is provided
-    const contactPhone = formData.get('phone')?.trim() || ''
-    const contactPhoneDigits = contactPhone.replace(/\D/g, '')
-    if (contactPhoneDigits.length >= 10) {
-      const smsTransactional = formData.get('smsTransactional')
-      if (smsTransactional !== 'yes') {
-        errors.push('Transactional SMS consent is required when a phone number is provided')
-      }
-    }
   } else {
     // Handle other form types
     switch (formType) {
@@ -227,12 +217,6 @@ const validateFormFields = (formType, formData) => {
         if (!upgradeConsent || upgradeConsent !== 'yes') {
           errors.push(
             'You must confirm you understand the review, payment link, and shipping timeline to continue'
-          )
-        }
-        const upgradeSmsTransactional = formData.get('smsTransactional')
-        if (!upgradeSmsTransactional || upgradeSmsTransactional !== 'yes') {
-          errors.push(
-            'Check the checkbox for transactional SMS (service notifications) to continue your upgrade request.'
           )
         }
         if (!upgradePhotoUrl) {
@@ -335,15 +319,6 @@ const validateFormFields = (formType, formData) => {
         }
         if (muniConsent !== 'yes') {
           errors.push('You must accept the Privacy Policy to continue')
-        }
-
-        // A2P 10DLC: transactional SMS consent required when phone has 10+ digits
-        const muniPhoneDigits = muniPhone.replace(/\D/g, '')
-        if (muniPhoneDigits.length >= 10) {
-          const muniSmsTransactional = formData.get('smsTransactional')
-          if (muniSmsTransactional !== 'yes') {
-            errors.push('Transactional SMS consent is required when a phone number is provided')
-          }
         }
 
         // Optional secondary contact: if email provided, validate format
@@ -962,6 +937,23 @@ exports.handler = async (event, context) => {
         statusCode: 400,
         headers,
         body: JSON.stringify({ error: 'Invalid form', message: 'Form submission rejected' }),
+      }
+    }
+
+    // A2P 10DLC: SMS consent must be optional. For every form that can collect SMS
+    // consent, normalize to explicit yes/no so GHL records a clear opt-out, and stamp
+    // audit-trail metadata (timestamp, source URL, IP) when the user opted in.
+    const SMS_CAPABLE_FORMS = new Set([
+      'contact-general', 'contact-support', 'contact-sales', 'contact-installer', 'contact-demo',
+      'core-upgrade', 'municipal-intake',
+    ])
+    if (SMS_CAPABLE_FORMS.has(ghlFormType)) {
+      sanitizedData.smsTransactional = sanitizedData.smsTransactional === 'yes' ? 'yes' : 'no'
+      sanitizedData.smsMarketing = sanitizedData.smsMarketing === 'yes' ? 'yes' : 'no'
+      if (sanitizedData.smsTransactional === 'yes' || sanitizedData.smsMarketing === 'yes') {
+        sanitizedData.smsConsentTimestamp = new Date().toISOString()
+        sanitizedData.smsConsentSourceUrl = event.headers.referer || event.headers.origin || ''
+        sanitizedData.smsConsentIp = ip
       }
     }
 
