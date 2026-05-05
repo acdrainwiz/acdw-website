@@ -538,10 +538,11 @@ async function submitOpportunityForm(formType, sanitizedData, formConfig) {
 
   // 4a. Fallback: pipeline not configured → dump fields into a Note on the Contact.
   if (!pipelineId || !pipelineStageId) {
+    const idVar = formConfig.pipelineIdEnvVar || '<pipelineIdEnvVar>'
+    const stageVar = formConfig.pipelineStageIdEnvVar || '<pipelineStageIdEnvVar>'
     warnings.push({
       stage: 'pipelineNotConfigured',
-      message:
-        'Set GHL_MUNI_PIPELINE_ID and GHL_MUNI_PIPELINE_STAGE_ID env vars to enable Opportunity creation. Field values written to Contact Note as fallback.',
+      message: `Set ${idVar} and ${stageVar} env vars to enable Opportunity creation. Field values written to Contact Note as fallback.`,
     })
     const noteBody = buildOpportunityFallbackNote(formConfig, sanitizedData, opportunityName)
     try {
