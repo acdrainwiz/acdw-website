@@ -17,6 +17,7 @@ import { CustomerSelectionPage } from './pages/CustomerSelectionPage'
 import { ProductsPage } from './pages/ProductsPage'
 import { ContactPage } from './pages/ContactPage'
 import { MunicipalIntakePage } from './pages/MunicipalIntakePage'
+import { MunicipalQuickIntakePage } from './pages/MunicipalQuickIntakePage'
 import { AboutPage } from './pages/AboutPage'
 import { SupportHubPage } from './pages/SupportHubPage'
 import { InstallationSetupPage } from './pages/InstallationSetupPage'
@@ -68,6 +69,7 @@ function AppContent() {
                     <Route path="/solutions" element={<ProductsPage />} />
                     <Route path="/contact" element={<ContactPage />} />
                     <Route path="/boafcoaa-muni-intake-form" element={<MunicipalIntakePage />} />
+                    <Route path="/municipal-quick-intake" element={<MunicipalQuickIntakePage />} />
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="/support" element={<SupportHubPage />} />
                     <Route path="/support/installation-setup" element={<InstallationSetupPage />} />

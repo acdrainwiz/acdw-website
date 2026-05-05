@@ -50,6 +50,7 @@ const FORM_NAME_TO_GHL_TYPE = {
   'unsubscribe': 'unsubscribe',
   'ep-x7k9m2': 'email-preferences',
   'municipal-intake': 'municipal-intake',
+  'municipal-quick-intake': 'municipal-quick-intake',
 }
 
 
@@ -329,6 +330,37 @@ const validateFormFields = (formType, formData) => {
         break
       }
 
+      case 'municipal-quick-intake': {
+        const quickFirstName = formData.get('firstName')?.trim() || ''
+        const quickLastName  = formData.get('lastName')?.trim()  || ''
+        const quickEmail     = formData.get('email')?.trim()     || ''
+        const quickStreet    = formData.get('street')?.trim()    || ''
+        const quickCity      = formData.get('city')?.trim()      || ''
+        const quickState     = formData.get('state')?.trim()     || ''
+        const quickZip       = formData.get('zip')?.trim()       || ''
+        const quickConsent   = formData.get('consent')
+
+        if (!quickFirstName) errors.push('First name is required')
+        if (!quickLastName)  errors.push('Last name is required')
+        if (!quickEmail) {
+          errors.push('Email is required')
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(quickEmail)) {
+          errors.push('Invalid email format')
+        }
+        if (!quickStreet) errors.push('Street address is required')
+        if (!quickCity)   errors.push('City is required')
+        if (!quickState)  errors.push('State is required')
+        if (!quickZip) {
+          errors.push('ZIP code is required')
+        } else if (!/^\d{5}$/.test(quickZip)) {
+          errors.push('ZIP code must be 5 digits')
+        }
+        if (quickConsent !== 'yes') {
+          errors.push('You must accept the Privacy Policy to continue')
+        }
+        break
+      }
+
       default:
         console.warn(`Unknown form type: ${formType}`)
     }
@@ -429,7 +461,8 @@ exports.handler = async (event, context) => {
       'promo-signup',
       'core-upgrade',
       'hero-email',
-      'municipal-intake'
+      'municipal-intake',
+      'municipal-quick-intake'
     ]
     
     if (!isWebhookEndpoint(path) && !isCheckoutEndpoint(path)) {

@@ -324,6 +324,24 @@ const formConfigs = {
     ],
     sourceAttribution: 'acdrainwiz.com: municipal-intake',
   },
+
+  // Lightweight quick-intake form — only collects name/email/address.
+  // Reuses the same Opportunity pipeline as 'municipal-intake' so submissions land
+  // in the existing BOAA sales workflow.
+  'municipal-quick-intake': {
+    target: 'opportunity',
+    pipelineIdEnvVar: 'GHL_MUNI_PIPELINE_ID',
+    pipelineStageIdEnvVar: 'GHL_MUNI_PIPELINE_STAGE_ID',
+    opportunityNameTemplate: '{firstName} {lastName} — Quick Intake',
+    contactStandardFields: [
+      STD.firstName, STD.lastName, STD.email,
+      STD.address1, STD.city, STD.state, STD.postalCode,
+    ],
+    contactCustomFields: [],
+    opportunityCustomFields: [],
+    sourceTags: ['municipal-quick-intake', 'warm lead'],
+    sourceAttribution: 'acdrainwiz.com: municipal-quick-intake',
+  },
 }
 
 function getFormConfig(formType) {
