@@ -35,6 +35,7 @@ interface FormData {
   firstName: string
   lastName: string
   email: string
+  company: string
   street: string
   city: string
   state: string
@@ -46,6 +47,7 @@ const INITIAL_FORM_DATA: FormData = {
   firstName: '',
   lastName: '',
   email: '',
+  company: '',
   street: '',
   city: '',
   state: '',
@@ -214,6 +216,7 @@ export function MunicipalQuickIntakePage() {
       firstName: formData.firstName,
       lastName: formData.lastName,
       email: formData.email,
+      company: formData.company,
       street: formData.street,
       city: formData.city,
       state: formData.state,
@@ -406,6 +409,29 @@ export function MunicipalQuickIntakePage() {
                   {fieldErrors.email && (
                     <p className="field-error-message">{fieldErrors.email}</p>
                   )}
+                </div>
+              </section>
+
+              {/* Business (optional) */}
+              <section className="flex flex-col gap-4">
+                <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
+                  Business
+                </h3>
+                <div>
+                  <label htmlFor="company" className="contact-form-label">
+                    Business Name
+                  </label>
+                  <input
+                    type="text"
+                    id="company"
+                    name="company"
+                    value={formData.company}
+                    onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    autoComplete="organization"
+                    className="input"
+                    placeholder="Optional"
+                  />
                 </div>
               </section>
 

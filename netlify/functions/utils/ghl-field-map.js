@@ -334,7 +334,7 @@ const formConfigs = {
     pipelineStageIdEnvVar: 'GHL_MUNI_PIPELINE_STAGE_ID',
     opportunityNameTemplate: '{firstName} {lastName} — Quick Intake',
     contactStandardFields: [
-      STD.firstName, STD.lastName, STD.email,
+      STD.firstName, STD.lastName, STD.email, STD.companyName,
       STD.address1, STD.city, STD.state, STD.postalCode,
     ],
     contactCustomFields: [],
