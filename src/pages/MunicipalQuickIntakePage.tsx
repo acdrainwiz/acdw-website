@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { IMaskInput } from 'react-imask'
 import { UserPlusIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { validateEmail } from '../utils/emailValidation'
 import { useRecaptcha } from '../hooks/useRecaptcha'
@@ -27,14 +28,28 @@ const US_STATES: readonly string[] = [
 
 const MOBILE_MAX_WIDTH_PX = 767
 
+// Match GHL Contact Type custom field options exactly (round-trip safe).
+const CONTACT_TYPE_OPTIONS = [
+  'Building Inspector,',
+  'Mechanical Inspector',
+  'Plans Examiner',
+  'Code Official',
+  'Fire/Building Dept.',
+  'Property Maintenance Official',
+  'Other',
+] as const
+
 const SCROLL_ORDER: readonly string[] = [
-  'firstName', 'lastName', 'email', 'street', 'city', 'state', 'zip', 'consent',
+  'firstName', 'lastName', 'email', 'phone', 'contactType',
+  'street', 'city', 'state', 'zip', 'consent',
 ]
 
 interface FormData {
   firstName: string
   lastName: string
   email: string
+  phone: string
+  contactType: string
   company: string
   street: string
   city: string
@@ -47,6 +62,8 @@ const INITIAL_FORM_DATA: FormData = {
   firstName: '',
   lastName: '',
   email: '',
+  phone: '',
+  contactType: '',
   company: '',
   street: '',
   city: '',
@@ -109,6 +126,18 @@ export function MunicipalQuickIntakePage() {
         if (typeof value === 'string') {
           const err = validateEmail(value)
           if (err) return err
+        }
+        break
+      case 'phone':
+        if (!value || isEmptyString) return 'Please enter a phone number'
+        if (typeof value === 'string' && value.replace(/\D/g, '').length < 10) {
+          return 'Please enter a valid phone number'
+        }
+        break
+      case 'contactType':
+        if (!value || isEmptyString) return 'Please select a contact type'
+        if (typeof value === 'string' && !CONTACT_TYPE_OPTIONS.includes(value as typeof CONTACT_TYPE_OPTIONS[number])) {
+          return 'Please select a valid contact type'
         }
         break
       case 'street':
@@ -174,7 +203,8 @@ export function MunicipalQuickIntakePage() {
 
     const errors: Record<string, string> = {}
     const required = [
-      'firstName', 'lastName', 'email', 'street', 'city', 'state', 'zip', 'consent',
+      'firstName', 'lastName', 'email', 'phone', 'contactType',
+      'street', 'city', 'state', 'zip', 'consent',
     ] as const
 
     required.forEach((name) => {
@@ -216,6 +246,8 @@ export function MunicipalQuickIntakePage() {
       firstName: formData.firstName,
       lastName: formData.lastName,
       email: formData.email,
+      phone: formData.phone,
+      contactType: formData.contactType,
       company: formData.company,
       street: formData.street,
       city: formData.city,
@@ -385,29 +417,86 @@ export function MunicipalQuickIntakePage() {
                 </div>
               </section>
 
-              {/* Email */}
+              {/* Email + Phone */}
               <section className="flex flex-col gap-4">
                 <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
-                  Email
+                  Contact Info
                 </h3>
+                <div className="contact-form-grid">
+                  <div>
+                    <label htmlFor="email" className="contact-form-label">
+                      Email Address *
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      onBlur={handleBlur}
+                      required
+                      autoComplete="email"
+                      className={`input ${fieldErrors.email ? 'input-error' : ''}`}
+                      placeholder="your.email@example.com"
+                    />
+                    {fieldErrors.email && (
+                      <p className="field-error-message">{fieldErrors.email}</p>
+                    )}
+                  </div>
+                  <div>
+                    <label htmlFor="phone" className="contact-form-label">
+                      Phone Number *
+                    </label>
+                    <IMaskInput
+                      mask="(000) 000-0000"
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      autoComplete="tel"
+                      value={formData.phone}
+                      onAccept={(value) => {
+                        const event = {
+                          target: { name: 'phone', value, type: 'tel' },
+                        } as React.ChangeEvent<HTMLInputElement>
+                        handleInputChange(event)
+                      }}
+                      onBlur={() => {
+                        const event = {
+                          target: { name: 'phone', value: formData.phone, type: 'tel' },
+                        } as React.FocusEvent<HTMLInputElement>
+                        handleBlur(event)
+                      }}
+                      className={`input ${fieldErrors.phone ? 'input-error' : ''}`}
+                      placeholder="(555) 123-4567"
+                      unmask={false}
+                    />
+                    {fieldErrors.phone && (
+                      <p className="field-error-message">{fieldErrors.phone}</p>
+                    )}
+                  </div>
+                </div>
                 <div>
-                  <label htmlFor="email" className="contact-form-label">
-                    Email Address *
+                  <label htmlFor="contactType" className="contact-form-label">
+                    Contact Type *
                   </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
+                  <select
+                    id="contactType"
+                    name="contactType"
+                    value={formData.contactType}
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     required
-                    autoComplete="email"
-                    className={`input ${fieldErrors.email ? 'input-error' : ''}`}
-                    placeholder="your.email@example.com"
-                  />
-                  {fieldErrors.email && (
-                    <p className="field-error-message">{fieldErrors.email}</p>
+                    className={`input ${fieldErrors.contactType ? 'input-error' : ''}`}
+                  >
+                    <option value="">Select One</option>
+                    {CONTACT_TYPE_OPTIONS.map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                  {fieldErrors.contactType && (
+                    <p className="field-error-message">{fieldErrors.contactType}</p>
                   )}
                 </div>
               </section>

@@ -81,6 +81,9 @@ const customFieldTypes = {
   email_pref_order_updates: 'text',
   email_pref_support: 'text',
 
+  // Auto-resolved at runtime via ensureContactFieldIds() — no static ID required.
+  contact_type: 'text',
+
   // Municipal intake (Opportunity object) — keyed by short key (without "opportunity." prefix).
   // IDs auto-resolved at runtime; types are still static (form-data shaping).
   municipality_name: 'text',
@@ -330,14 +333,16 @@ const formConfigs = {
   // in the existing BOAA sales workflow.
   'municipal-quick-intake': {
     target: 'opportunity',
-    pipelineIdEnvVar: 'GHL_MUNI_PIPELINE_ID',
-    pipelineStageIdEnvVar: 'GHL_MUNI_PIPELINE_STAGE_ID',
+    pipelineIdEnvVar: 'GHL_QUICK_PIPELINE_ID',
+    pipelineStageIdEnvVar: 'GHL_QUICK_PIPELINE_STAGE_ID',
     opportunityNameTemplate: '{firstName} {lastName} — Quick Intake',
     contactStandardFields: [
-      STD.firstName, STD.lastName, STD.email, STD.companyName,
+      STD.firstName, STD.lastName, STD.email, STD.phone, STD.companyName,
       STD.address1, STD.city, STD.state, STD.postalCode,
     ],
-    contactCustomFields: [],
+    contactCustomFields: [
+      ['contact_type', 'contactType'],
+    ],
     opportunityCustomFields: [],
     sourceTags: ['municipal-quick-intake', 'warm lead'],
     sourceAttribution: 'acdrainwiz.com: municipal-quick-intake',

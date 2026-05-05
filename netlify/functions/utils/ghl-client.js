@@ -195,8 +195,58 @@ function invalidateOpportunityFieldCache() {
   opportunityFieldCache = { idMap: null, fetchedAt: 0 }
 }
 
+// =============================================================================
+// Contact custom field ID auto-lookup (cached per cold-start, 1h TTL)
+// =============================================================================
+let contactFieldCache = { idMap: null, fetchedAt: 0 }
+
+async function fetchContactFieldIdMap() {
+  const cfg = getConfig()
+  if (!cfg.locationId) {
+    throw new GhlConfigError('GHL_LOCATION_ID must be set to look up Contact custom fields')
+  }
+  const data = await ghlRequest(
+    'GET',
+    `/locations/${cfg.locationId}/customFields?model=contact`
+  )
+  const fields = (data && data.customFields) || []
+  const map = {}
+  for (const f of fields) {
+    if (!f || !f.fieldKey || !f.id) continue
+    const shortKey = String(f.fieldKey).replace(/^contact\./, '')
+    map[shortKey] = f.id
+  }
+  return map
+}
+
+async function ensureContactFieldIds() {
+  const now = Date.now()
+  if (
+    contactFieldCache.idMap &&
+    now - contactFieldCache.fetchedAt < OPPORTUNITY_FIELD_CACHE_TTL_MS
+  ) {
+    return contactFieldCache.idMap
+  }
+  const idMap = await fetchContactFieldIdMap()
+  contactFieldCache = { idMap, fetchedAt: now }
+  return idMap
+}
+
+function invalidateContactFieldCache() {
+  contactFieldCache = { idMap: null, fetchedAt: 0 }
+}
+
+// Runtime-resolved IDs win; falls back to the hand-maintained customFieldIds
+// dict so legacy fields keep working if the API call fails.
+function makeContactIdLookup(contactIdMap) {
+  return (key) => (contactIdMap && contactIdMap[key]) || getCustomFieldId(key) || ''
+}
+
 // Never includes `tags` — tag writes are additive via POST /contacts/{id}/tags.
-function buildUpsertPayload(formType, sanitizedData) {
+// `contactIdLookup` is an optional resolver for contact custom field IDs (defaults
+// to the static dict for backward compat). Pass a runtime-resolved lookup when
+// the caller has already awaited ensureContactFieldIds().
+function buildUpsertPayload(formType, sanitizedData, contactIdLookup = getCustomFieldId) {
   const cfg = getConfig()
   const formConfig = getFormConfig(formType)
   if (!formConfig) {
@@ -225,7 +275,7 @@ function buildUpsertPayload(formType, sanitizedData) {
     }
   }
 
-  const customFields = buildCustomFieldsArray(formConfig.customFields || [], sanitizedData)
+  const customFields = buildCustomFieldsArray(formConfig.customFields || [], sanitizedData, contactIdLookup)
   if (customFields.length > 0) {
     payload.customFields = customFields
   }
@@ -305,7 +355,22 @@ async function submitForm(formType, sanitizedData) {
     return submitOpportunityForm(formType, sanitizedData, formConfig)
   }
 
-  const payload = buildUpsertPayload(formType, sanitizedData)
+  const warnings = []
+
+  let contactIdMap = null
+  try {
+    contactIdMap = await ensureContactFieldIds()
+  } catch (lookupErr) {
+    warnings.push({
+      stage: 'fetchContactFieldIds',
+      error: lookupErr.message,
+      status: lookupErr.status,
+      traceId: lookupErr.traceId || null,
+    })
+  }
+  const contactIdLookup = makeContactIdLookup(contactIdMap)
+
+  const payload = buildUpsertPayload(formType, sanitizedData, contactIdLookup)
   const upsertResult = await upsertContact(payload)
 
   const contactId = upsertResult.contactId
@@ -314,8 +379,6 @@ async function submitForm(formType, sanitizedData) {
     err.raw = upsertResult.raw
     throw err
   }
-
-  const warnings = []
 
   const staticTags = formConfig.sourceTags || []
   const conditionalTags = resolveConditionalTags(formConfig.conditionalTags, sanitizedData)
@@ -377,7 +440,7 @@ async function createOpportunity(payload) {
   }
 }
 
-function buildContactUpsertPayloadForOpportunity(formConfig, sanitizedData) {
+function buildContactUpsertPayloadForOpportunity(formConfig, sanitizedData, contactIdLookup = getCustomFieldId) {
   const cfg = getConfig()
   const payload = {
     locationId: cfg.locationId,
@@ -392,7 +455,7 @@ function buildContactUpsertPayloadForOpportunity(formConfig, sanitizedData) {
     payload[ghlKey] = str
   }
 
-  const customFields = buildCustomFieldsArray(formConfig.contactCustomFields || [], sanitizedData)
+  const customFields = buildCustomFieldsArray(formConfig.contactCustomFields || [], sanitizedData, contactIdLookup)
   if (customFields.length > 0) {
     payload.customFields = customFields
   }
@@ -424,8 +487,23 @@ async function submitOpportunityForm(formType, sanitizedData, formConfig) {
   const cfg = getConfig()
   const warnings = []
 
-  // 1. Upsert the Contact (just name/email/phone + sms consent).
-  const contactPayload = buildContactUpsertPayloadForOpportunity(formConfig, sanitizedData)
+  // 0. Resolve Contact custom field IDs from GHL (cached). Falls back to the
+  //    static dict if the lookup fails — legacy hardcoded IDs still work.
+  let contactIdMap = null
+  try {
+    contactIdMap = await ensureContactFieldIds()
+  } catch (lookupErr) {
+    warnings.push({
+      stage: 'fetchContactFieldIds',
+      error: lookupErr.message,
+      status: lookupErr.status,
+      traceId: lookupErr.traceId || null,
+    })
+  }
+  const contactIdLookup = makeContactIdLookup(contactIdMap)
+
+  // 1. Upsert the Contact (name/email/phone/address + custom fields like contact_type).
+  const contactPayload = buildContactUpsertPayloadForOpportunity(formConfig, sanitizedData, contactIdLookup)
   const contactResult = await upsertContact(contactPayload)
   const contactId = contactResult.contactId
   if (!contactId) {
@@ -582,6 +660,10 @@ module.exports = {
   fetchOpportunityFieldIdMap,
   ensureOpportunityFieldIds,
   invalidateOpportunityFieldCache,
+  fetchContactFieldIdMap,
+  ensureContactFieldIds,
+  invalidateContactFieldCache,
+  makeContactIdLookup,
   GhlApiError,
   GhlConfigError,
 }
