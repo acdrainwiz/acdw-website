@@ -13574,7 +13574,7 @@
   display: block;
   width: 100%;
   height: 100%;
-  background-image: url('/images/acdw-mini-wordmark.webp');
+  background-image: url('/images/acdw-mini-wordmark.png');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -13603,7 +13603,7 @@
     --wm-width: 110%;
   }
   .mini-hero-v2-wordmark-img {
-    background-image: url('/images/acdw-mini-wordmark-mobile.webp');
+    background-image: url('/images/acdw-mini-wordmark-mobile.png');
     filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.4));
   }
 }
