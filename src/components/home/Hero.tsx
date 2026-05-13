@@ -7,7 +7,7 @@ import { VideoModal } from './VideoModal'
 import { CustomerTypeSelector } from './CustomerTypeSelector'
 import { isValidEmail } from '../../utils/emailValidation'
 import { useRecaptcha } from '../../hooks/useRecaptcha'
-import { MINI_MANIFOLD_DIMENSIONS_LHD, SUPPORT_CONTACT } from '../../config/acdwKnowledge'
+import { MINI_MANIFOLD_DIMENSIONS_LHD, SENSOR_STANDARD_SHORT, SENSOR_WIFI_SHORT, SUPPORT_CONTACT } from '../../config/acdwKnowledge'
 
 export function Hero() {
   const navigate = useNavigate()
@@ -336,7 +336,7 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Sensor Card - Full Width, Contractor Only (third product spot) */}
+      {/* Sensor Card - Full Width, Professional Only (third product spot) */}
       <div className="product-showcase-card product-showcase-card-sensor product-showcase-card-full-width">
         <div className="product-showcase-card-background">
           {/* Sensor product image background */}
@@ -345,7 +345,7 @@ export function Hero() {
         <div className="product-showcase-card-content">
           <div className="product-showcase-card-header">
             <h3 className="product-showcase-card-title">ACDW Sensor</h3>
-            <span className="product-showcase-card-status available">Contractor Only</span>
+            <span className="product-showcase-card-status available">Professional Only</span>
           </div>
           
           <h4 className="product-showcase-card-headline">Smarter. Safer. Sensor Switch.</h4>
@@ -510,8 +510,14 @@ export function Hero() {
                   </th>
                   <th className="product-comparison-th">
                     <div className="product-comparison-product-header">
-                      <div className="font-bold text-lg">Sensor</div>
-                      <div className="text-sm text-orange-600 font-semibold">Professional Monitoring</div>
+                      <div className="font-bold text-lg">{SENSOR_STANDARD_SHORT}</div>
+                      <div className="text-sm text-orange-600 font-semibold">Local Overflow Protection</div>
+                    </div>
+                  </th>
+                  <th className="product-comparison-th">
+                    <div className="product-comparison-product-header">
+                      <div className="font-bold text-lg">{SENSOR_WIFI_SHORT}</div>
+                      <div className="text-sm text-orange-600 font-semibold">Smart Monitoring & Alerts</div>
                     </div>
                   </th>
                   <th className="product-comparison-th">
@@ -528,56 +534,70 @@ export function Hero() {
                   <td className="product-comparison-td"><span className="text-green-600 font-semibold">Available Now</span></td>
                   <td className="product-comparison-td">
                     <span className="text-green-600 font-semibold">Available Now</span>
-                    <span className="ml-2 text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded">Contractor Only</span>
                   </td>
                   <td className="product-comparison-td">
                     <span className="text-green-600 font-semibold">Available Now</span>
-                    <span className="ml-2 text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded">Contractor Only</span>
+                    <span className="ml-2 text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded">Professional Only</span>
+                  </td>
+                  <td className="product-comparison-td">
+                    <span className="text-green-600 font-semibold">Available Now</span>
                   </td>
                 </tr>
                 <tr>
                   <td className="product-comparison-td sticky left-0 bg-white">Best For</td>
                   <td className="product-comparison-td">Space-constrained, all-in-one</td>
-                  <td className="product-comparison-td">Early warning, existing setups</td>
-                  <td className="product-comparison-td">Maximum protection & monitoring</td>
+                  <td className="product-comparison-td">Local overflow protection, no Wi‑Fi needed</td>
+                  <td className="product-comparison-td">Remote monitoring, contractor alerts</td>
+                  <td className="product-comparison-td">Maximum protection — pair Mini with Standard or WiFi</td>
                 </tr>
                 <tr>
                   <td className="product-comparison-td sticky left-0 bg-white">Size</td>
                   <td className="product-comparison-td">{MINI_MANIFOLD_DIMENSIONS_LHD}</td>
+                  <td className="product-comparison-td">2" × 3" × 1.5"</td>
                   <td className="product-comparison-td">2" × 3" × 1.5"</td>
                   <td className="product-comparison-td">{MINI_MANIFOLD_DIMENSIONS_LHD} (Mini) + Sensor</td>
                 </tr>
                 <tr>
                   <td className="product-comparison-td sticky left-0 bg-white">Installation</td>
                   <td className="product-comparison-td">5 min</td>
-                  <td className="product-comparison-td">15 min</td>
-                  <td className="product-comparison-td">45 min total</td>
+                  <td className="product-comparison-td">~15 min</td>
+                  <td className="product-comparison-td">~15 min</td>
+                  <td className="product-comparison-td">~45 min total</td>
+                </tr>
+                <tr>
+                  <td className="product-comparison-td sticky left-0 bg-white">Connectivity</td>
+                  <td className="product-comparison-td">—</td>
+                  <td className="product-comparison-td">None (fully local)</td>
+                  <td className="product-comparison-td">2.4 GHz Wi‑Fi (5 GHz not supported)</td>
+                  <td className="product-comparison-td">Matches sensor chosen</td>
+                </tr>
+                <tr>
+                  <td className="product-comparison-td sticky left-0 bg-white">Monitoring</td>
+                  <td className="product-comparison-td">Manual inspection</td>
+                  <td className="product-comparison-td">Local LED status only</td>
+                  <td className="product-comparison-td">24/7 dashboard + email/SMS alerts (50–79% service alerts)</td>
+                  <td className="product-comparison-td">Manual access + alerts (if WiFi sensor)</td>
+                </tr>
+                <tr>
+                  <td className="product-comparison-td sticky left-0 bg-white">Power</td>
+                  <td className="product-comparison-td">—</td>
+                  <td className="product-comparison-td">24V wired</td>
+                  <td className="product-comparison-td">24V HVAC strongly recommended; battery backup supported</td>
+                  <td className="product-comparison-td">Per sensor in bundle</td>
                 </tr>
                 <tr>
                   <td className="product-comparison-td sticky left-0 bg-white">Key Benefit</td>
                   <td className="product-comparison-td">Compact versatility</td>
-                  <td className="product-comparison-td">Smart monitoring</td>
+                  <td className="product-comparison-td">Automatic AC shutoff at ~80%</td>
+                  <td className="product-comparison-td">Smart monitoring + early service alerts</td>
                   <td className="product-comparison-td">Complete protection system</td>
                 </tr>
                 <tr>
                   <td className="product-comparison-td sticky left-0 bg-white">Price (MSRP)</td>
                   <td className="product-comparison-td text-sm text-gray-600 italic">Contact us for pricing</td>
-                  {/* Launch Button Redirect */}
                   <td className="product-comparison-td text-sm text-gray-600 italic">Contact us for pricing</td>
-                  {/* Launch Button Redirect */}
                   <td className="product-comparison-td text-sm text-gray-600 italic">Contact us for pricing</td>
-                </tr>
-                <tr>
-                  <td className="product-comparison-td sticky left-0 bg-white">Monitoring</td>
-                  <td className="product-comparison-td">Manual inspection</td>
-                  <td className="product-comparison-td">24/7 smart alerts</td>
-                  <td className="product-comparison-td">24/7 smart alerts + manual access</td>
-                </tr>
-                <tr>
-                  <td className="product-comparison-td sticky left-0 bg-white">Compatibility</td>
-                  <td className="product-comparison-td">3/4" PVC</td>
-                  <td className="product-comparison-td">Bayonet mount accessory</td>
-                  <td className="product-comparison-td">3/4" PVC + Mini integration</td>
+                  <td className="product-comparison-td text-sm text-gray-600 italic">Contact us for pricing</td>
                 </tr>
                 <tr className="product-comparison-action-row">
                   <td className="product-comparison-td sticky left-0 bg-white"></td>
@@ -587,7 +607,12 @@ export function Hero() {
                     </button>
                   </td>
                   <td className="product-comparison-td">
-                    <button onClick={() => navigate('/products/sensor')} className="product-comparison-btn-primary">
+                    <button onClick={() => navigate('/products/sensor#sensor-variant-standard')} className="product-comparison-btn-primary">
+                      Learn More
+                    </button>
+                  </td>
+                  <td className="product-comparison-td">
+                    <button onClick={() => navigate('/products/sensor#sensor-variant-wifi')} className="product-comparison-btn-primary">
                       Learn More
                     </button>
                   </td>
@@ -622,23 +647,48 @@ export function Hero() {
               </div>
             </div>
 
-            {/* Sensor Card */}
+            {/* Standard Sensor Switch Card */}
             <div className="product-comparison-mobile-card">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900">Sensor</h3>
-                  <span className="text-sm text-orange-600 font-semibold">Contractor Only</span>
+                  <h3 className="text-2xl font-bold text-gray-900">{SENSOR_STANDARD_SHORT}</h3>
+                  <span className="text-sm text-orange-600 font-semibold">Local Overflow Protection</span>
                 </div>
-                <button onClick={() => navigate('/products/sensor')} className="product-comparison-btn-primary">
+                <button onClick={() => navigate('/products/sensor#sensor-variant-standard')} className="product-comparison-btn-primary">
                   Learn More
                 </button>
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between"><span className="font-medium">Status:</span> <span className="text-green-600">Available Now</span></div>
-                {/* Launch Button Redirect */}
                 <div className="flex justify-between"><span className="font-medium">Price:</span> <span className="text-gray-600 italic">Contact us for pricing</span></div>
                 <div className="flex justify-between"><span className="font-medium">Size:</span> <span>2" × 3" × 1.5"</span></div>
-                <div className="flex justify-between"><span className="font-medium">Best For:</span> <span className="text-right">Early warning</span></div>
+                <div className="flex justify-between"><span className="font-medium">Connectivity:</span> <span className="text-right">None (fully local)</span></div>
+                <div className="flex justify-between"><span className="font-medium">Monitoring:</span> <span className="text-right">Local LED status only</span></div>
+                <div className="flex justify-between"><span className="font-medium">Best For:</span> <span className="text-right">No-Wi‑Fi overflow shutoff</span></div>
+              </div>
+            </div>
+
+            {/* WiFi Sensor Switch Card */}
+            <div className="product-comparison-mobile-card">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900">{SENSOR_WIFI_SHORT}</h3>
+                  <div className="flex items-center gap-2 mt-1 flex-wrap">
+                    <span className="text-sm text-orange-600 font-semibold">Smart Monitoring & Alerts</span>
+                    <span className="text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded">Professional Only</span>
+                  </div>
+                </div>
+                <button onClick={() => navigate('/products/sensor#sensor-variant-wifi')} className="product-comparison-btn-primary">
+                  Learn More
+                </button>
+              </div>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between"><span className="font-medium">Status:</span> <span className="text-green-600">Available Now</span></div>
+                <div className="flex justify-between"><span className="font-medium">Price:</span> <span className="text-gray-600 italic">Contact us for pricing</span></div>
+                <div className="flex justify-between"><span className="font-medium">Size:</span> <span>2" × 3" × 1.5"</span></div>
+                <div className="flex justify-between"><span className="font-medium">Connectivity:</span> <span className="text-right">2.4 GHz Wi‑Fi</span></div>
+                <div className="flex justify-between"><span className="font-medium">Monitoring:</span> <span className="text-right">Dashboard + email/SMS alerts</span></div>
+                <div className="flex justify-between"><span className="font-medium">Best For:</span> <span className="text-right">Remote monitoring & contractor alerts</span></div>
               </div>
             </div>
 

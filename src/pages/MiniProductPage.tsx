@@ -356,13 +356,7 @@ export function MiniProductPage() {
                 <span className="mini-hero-v2-product-glow" aria-hidden />
                 <div className="mini-hero-v2-product-float">
                   <picture>
-                    <source
-                      media="(max-width: 767px)"
-                      srcSet="/images/acdw-mini-hero2-product-mobile.webp"
-                      type="image/webp"
-                    />
                     <source media="(max-width: 767px)" srcSet="/images/acdw-mini-hero2-product-mobile.png" />
-                    <source srcSet="/images/acdw-mini-hero2-product.webp" type="image/webp" />
                     <img
                       src="/images/acdw-mini-hero2-product.png"
                       alt="AC Drain Wiz Mini clear T-manifold on condensate drain line"
@@ -634,7 +628,6 @@ export function MiniProductPage() {
               <div className="mini-specs-compliance-image-wrap">
                 <div className="mini-specs-compliance-image-frame">
                   <picture>
-                    <source srcSet="/images/acdw-mini-hero-product-mobile.webp" type="image/webp" />
                     <img
                       src="/images/acdw-mini-hero-product-mobile.png"
                       alt={`AC Drain Wiz Mini T-manifold on 3/4 inch PVC condensate line; callouts show length ${MINI_MANIFOLD_LENGTH.replace(/"/g, '')} inches and height ${MINI_MANIFOLD_HEIGHT_TO_PORT.replace(/"/g, '')} inches to the top of the vertical port opening`}
