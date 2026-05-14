@@ -72,6 +72,10 @@ function loadHandlerWithGhlFailure(handlerPath) {
       return { validateEmailDomain: async () => ({ valid: true }) }
     }
 
+    if (request === './utils/csrf-validator') {
+      return { validateCSRFToken: async () => ({ valid: true }) }
+    }
+
     if (request === './utils/blobs-store') {
       return {
         initBlobsStores: () => ({ initialized: true }),
@@ -132,6 +136,7 @@ test('unsubscribe returns a visible failure when GHL opt-out fails', async () =>
       reason: 'too-many-emails',
       feedback: '',
       'form-load-time': String(Date.now() - 10000),
+      'csrf-token': 'csrf-test',
     }),
     path: '/.netlify/functions/validate-unsubscribe',
   }, {})
