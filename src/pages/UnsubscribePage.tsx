@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { EnvelopeIcon, CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline'
 import { isValidEmail, validateEmail } from '../utils/emailValidation'
+import { useCsrfToken } from '../hooks/useCsrfToken'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
@@ -17,6 +18,7 @@ export const PAGE_SEARCH_META: PageSearchMeta = {
 export function UnsubscribePage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { csrfToken, isLoading: isCsrfLoading } = useCsrfToken()
   
   // Get email from URL parameter if provided
   const searchParams = new URLSearchParams(location.search)
@@ -176,6 +178,18 @@ export function UnsubscribePage() {
       return
     }
     
+    // Check if we're in development mode
+    const isDevelopment = import.meta.env.DEV || window.location.hostname === 'localhost'
+
+    if (!csrfToken && !isDevelopment) {
+      setSubmitError(isCsrfLoading
+        ? 'Security token is still loading. Please try again in a moment.'
+        : 'Security token unavailable. Please refresh and try again.'
+      )
+      setIsSubmitting(false)
+      return
+    }
+
     // Get reCAPTCHA token before submitting
     const recaptchaToken = await getRecaptchaToken()
     if (!recaptchaToken && RECAPTCHA_SITE_KEY !== 'RECAPTCHA_SITE_KEY') {
@@ -191,11 +205,9 @@ export function UnsubscribePage() {
       reason: reason,
       feedback: feedback || '',
       'form-load-time': formLoadTime.toString(), // Include form load time for behavioral analysis
+      ...(csrfToken && { 'csrf-token': csrfToken }),
       ...(recaptchaToken && { 'recaptcha-token': recaptchaToken }), // Add token if available
     }
-    
-    // Check if we're in development mode
-    const isDevelopment = import.meta.env.DEV || window.location.hostname === 'localhost'
     
     try {
       let response: Response

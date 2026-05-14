@@ -14,6 +14,7 @@ const { validateRequestFingerprint } = require('./utils/request-fingerprint')
 const { validateIP, addToBlacklist } = require('./utils/ip-reputation')
 const { validateSubmissionBehavior } = require('./utils/behavioral-analysis')
 const { validateEmailDomain } = require('./utils/email-domain-validator')
+const { validateCSRFToken } = require('./utils/csrf-validator')
 const { initBlobsStores, getUnsubscribeStore } = require('./utils/blobs-store')
 const { getSecurityHeaders } = require('./utils/cors-config')
 const ghlClient = require('./utils/ghl-client')
@@ -533,11 +534,6 @@ exports.handler = async (event, context) => {
     // 5. If validation passed, store in Blobs and send notification via Resend
     // NO LONGER FORWARDING TO NETLIFY FORMS - This eliminates the bypass attack vector
     
-    logFormSubmission('unsubscribe', trimmedEmail, true, ip, userAgent, {
-      hasReason: !!reason,
-      hasFeedback: !!feedback,
-      recaptchaScore: recaptchaResult?.score
-    })
     console.log('✅ Validation passed, processing unsubscribe (no Netlify Forms):', {
       email: trimmedEmail.substring(0, 20) + '***',
       ip,
@@ -602,7 +598,28 @@ exports.handler = async (event, context) => {
         responseBody: ghlErr && ghlErr.responseBody,
         email: trimmedEmail.substring(0, 3) + '***',
       })
+      logFormSubmission('unsubscribe', trimmedEmail, ip, userAgent, false, [
+        `ghl-submission-failed: ${ghlErr && ghlErr.message}`,
+      ])
+      return {
+        statusCode: 502,
+        headers: {
+          ...headers,
+          ...getRateLimitHeaders(rateLimitResult)
+        },
+        body: JSON.stringify({
+          success: false,
+          error: 'Unsubscribe failed',
+          message: 'We could not process your unsubscribe request. Please try again or contact support.',
+        }),
+      }
     }
+
+    logFormSubmission('unsubscribe', trimmedEmail, ip, userAgent, true, {
+      hasReason: !!reason,
+      hasFeedback: !!feedback,
+      recaptchaScore: recaptchaResult?.score
+    })
     
     // Success - return with rate limit headers
     return {
