@@ -53,6 +53,7 @@ import {
 } from '../config/acdwKnowledge'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
 import { CompareChip } from '../components/products/CompareChip'
+import { SensorWireHarnessDiagram } from '../components/products/SensorWireHarnessDiagram'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
   id: 'product-sensor',
@@ -541,6 +542,9 @@ export function SensorProductPage() {
           </div>
         </div>
       </section>
+
+      {/* Standard Sensor Switch — Wire Harness Diagram */}
+      <SensorWireHarnessDiagram />
 
       {/* Value Proposition by Customer Type */}
       <section className="sensor-product-value-props">
