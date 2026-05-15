@@ -14894,8 +14894,15 @@
   @apply md:hidden flex flex-col gap-6;
 }
 
+/* Sensor + harness fan-out: image sits above the SVG in z-order; fan-out
+   negative margin pulls strokes under the housing (transparent PNG at wire
+   exit required). */
+.sensor-wire-diagram-mobile-hero {
+  @apply relative isolate w-full;
+}
+
 .sensor-wire-diagram-mobile-sensor {
-  @apply block w-full max-w-md mx-auto h-auto select-none;
+  @apply relative z-[2] block w-full max-w-2xl mx-auto h-auto select-none;
 }
 
 .sensor-wire-diagram-mobile-callouts {
@@ -14926,12 +14933,16 @@
   @apply text-[10px] font-semibold uppercase tracking-[0.12em] text-center text-gray-600 mb-3;
 }
 
+/* Mobile terminal rows are vertically stacked (one terminal per row) so
+   each row can carry a colored wire stub on the left — the harness wire
+   "ending" at that terminal. Replaces the previous side-by-side layout
+   used while mobile had no visible wires. */
 .sensor-wire-diagram-mobile-card-terminals {
-  @apply flex justify-around gap-3;
+  @apply flex flex-col gap-3;
 }
 
 .sensor-wire-diagram-mobile-terminal {
-  @apply flex flex-row items-center gap-2 text-left;
+  @apply flex flex-row items-center gap-3 text-left w-full;
 }
 
 .sensor-wire-diagram-mobile-terminal > div {
@@ -14941,6 +14952,112 @@
 .sensor-wire-diagram-mobile-terminal > div strong {
   @apply font-bold text-gray-900 text-[11px] tracking-[0.12em];
 }
+
+/* Wire stub — a short, thick, color-coded "wire ending" sitting on the
+   left of each terminal row. Visually links the swatch+text in the wire
+   map list above to the specific terminal it lands on. */
+.sensor-wire-diagram-mobile-terminal-stub {
+  flex: none;
+  display: block;
+  width: 2.75rem;
+  height: 0.3125rem;
+  border-radius: 999px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+}
+
+.sensor-wire-diagram-mobile-terminal-stub--red    { background-color: #dc2626; }
+.sensor-wire-diagram-mobile-terminal-stub--black  { background-color: #111827; }
+.sensor-wire-diagram-mobile-terminal-stub--white {
+  background-color: #ffffff;
+  border: 1px solid theme('colors.gray.300');
+}
+.sensor-wire-diagram-mobile-terminal-stub--yellow { background-color: #facc15; }
+
+/* ── Mobile harness fan-out ──────────────────────────────────────────
+   Compact 4-wire SVG; z-below sensor. max-width 42rem matches sensor. */
+.sensor-wire-diagram-mobile-fanout {
+  position: relative;
+  z-index: 1;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 42rem;
+  margin-top: -2.25rem;
+  aspect-ratio: 400 / 130;
+}
+
+.sensor-wire-diagram-mobile-fanout-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.sensor-wire-diagram-mobile-fanout-wire {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sensor-wire-diagram-mobile-fanout-wire--red    { stroke: #dc2626; }
+.sensor-wire-diagram-mobile-fanout-wire--black  { stroke: #111827; }
+.sensor-wire-diagram-mobile-fanout-wire--white {
+  stroke: #f3f4f6;
+  stroke-width: 4;
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.35));
+}
+.sensor-wire-diagram-mobile-fanout-wire--yellow { stroke: #facc15; }
+
+/* Destination tags — small HTML chips overlaid on the SVG at the wire
+   endpoints. HTML (not SVG text) so font-size stays consistent across
+   phone widths and the labels remain accessible. */
+.sensor-wire-diagram-mobile-fanout-tag {
+  position: absolute;
+  left: var(--tag-x);
+  top: var(--tag-y);
+  transform: translate(-50%, 0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.sensor-wire-diagram-mobile-fanout-tag-dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.25);
+}
+
+.sensor-wire-diagram-mobile-fanout-tag-dot--red    { background-color: #dc2626; }
+.sensor-wire-diagram-mobile-fanout-tag-dot--black  { background-color: #111827; }
+.sensor-wire-diagram-mobile-fanout-tag-dot--white {
+  background-color: #ffffff;
+  border: 1px solid theme('colors.gray.300');
+  box-shadow: none;
+}
+.sensor-wire-diagram-mobile-fanout-tag-dot--yellow { background-color: #facc15; }
+
+.sensor-wire-diagram-mobile-fanout-tag-text {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: theme('colors.gray.900');
+  line-height: 1.15;
+}
+
+/* Wire endpoints in viewBox: y=72. Tag-y = 72 / 130 ≈ 55.4%. */
+.sensor-wire-diagram-mobile-fanout-tag--hot        { --tag-x: 15%; --tag-y: 55.4%; }
+.sensor-wire-diagram-mobile-fanout-tag--common     { --tag-x: 35%; --tag-y: 55.4%; }
+.sensor-wire-diagram-mobile-fanout-tag--safety-in  { --tag-x: 65%; --tag-y: 55.4%; }
+.sensor-wire-diagram-mobile-fanout-tag--safety-com { --tag-x: 85%; --tag-y: 55.4%; }
 
 /* Mobile uses canvas terminal dots at a fixed pixel size (cqi falls back
    to 0 when no container is in scope, which would make them invisible). */

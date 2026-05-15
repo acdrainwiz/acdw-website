@@ -337,15 +337,79 @@ function DesktopCanvas() {
 function MobileStack() {
   return (
     <div className="sensor-wire-diagram-mobile">
-      <img
-        src="/images/acdw-sensor-standard-on-manifold.png"
-        alt=""
-        className="sensor-wire-diagram-mobile-sensor"
-        width={1672}
-        height={941}
-        loading="lazy"
-        decoding="async"
-      />
+      <div className="sensor-wire-diagram-mobile-hero">
+        <img
+          src="/images/acdw-sensor-standard-on-manifold.png"
+          alt=""
+          className="sensor-wire-diagram-mobile-sensor"
+          width={1672}
+          height={941}
+          loading="lazy"
+          decoding="async"
+        />
+
+        {/* Harness fan-out — wires sit z-below the PNG so they read as
+            sliding out from under the back of the housing (needs transparent
+            PNG at the wire-exit zone; same as desktop). */}
+        <div className="sensor-wire-diagram-mobile-fanout" aria-hidden="true">
+        <svg
+          className="sensor-wire-diagram-mobile-fanout-svg"
+          viewBox="0 0 400 130"
+          preserveAspectRatio="none"
+          focusable="false"
+        >
+          <path
+            d="M 190 8 C 190 35 60 45 60 72"
+            className="sensor-wire-diagram-mobile-fanout-wire sensor-wire-diagram-mobile-fanout-wire--red"
+            vectorEffect="non-scaling-stroke"
+          />
+          <path
+            d="M 197 8 C 197 42 140 58 140 72"
+            className="sensor-wire-diagram-mobile-fanout-wire sensor-wire-diagram-mobile-fanout-wire--black"
+            vectorEffect="non-scaling-stroke"
+          />
+          <path
+            d="M 203 8 C 203 42 260 58 260 72"
+            className="sensor-wire-diagram-mobile-fanout-wire sensor-wire-diagram-mobile-fanout-wire--white"
+            vectorEffect="non-scaling-stroke"
+          />
+          <path
+            d="M 210 8 C 210 35 340 45 340 72"
+            className="sensor-wire-diagram-mobile-fanout-wire sensor-wire-diagram-mobile-fanout-wire--yellow"
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
+
+        <span className="sensor-wire-diagram-mobile-fanout-tag sensor-wire-diagram-mobile-fanout-tag--hot">
+          <span className="sensor-wire-diagram-mobile-fanout-tag-dot sensor-wire-diagram-mobile-fanout-tag-dot--red" />
+          <span className="sensor-wire-diagram-mobile-fanout-tag-text">
+            Hot
+          </span>
+        </span>
+        <span className="sensor-wire-diagram-mobile-fanout-tag sensor-wire-diagram-mobile-fanout-tag--common">
+          <span className="sensor-wire-diagram-mobile-fanout-tag-dot sensor-wire-diagram-mobile-fanout-tag-dot--black" />
+          <span className="sensor-wire-diagram-mobile-fanout-tag-text">
+            Common
+          </span>
+        </span>
+        <span className="sensor-wire-diagram-mobile-fanout-tag sensor-wire-diagram-mobile-fanout-tag--safety-in">
+          <span className="sensor-wire-diagram-mobile-fanout-tag-dot sensor-wire-diagram-mobile-fanout-tag-dot--white" />
+          <span className="sensor-wire-diagram-mobile-fanout-tag-text">
+            Safety
+            <br />
+            Input
+          </span>
+        </span>
+        <span className="sensor-wire-diagram-mobile-fanout-tag sensor-wire-diagram-mobile-fanout-tag--safety-com">
+          <span className="sensor-wire-diagram-mobile-fanout-tag-dot sensor-wire-diagram-mobile-fanout-tag-dot--yellow" />
+          <span className="sensor-wire-diagram-mobile-fanout-tag-text">
+            Safety
+            <br />
+            Common
+          </span>
+        </span>
+        </div>
+      </div>
 
       <div className="sensor-wire-diagram-mobile-callouts">
         <div className="sensor-wire-diagram-callout">
@@ -415,8 +479,15 @@ function MobileStack() {
             <p className="sensor-wire-diagram-mobile-card-label">
               24-Volt AC Power Source
             </p>
+            {/* Mobile: stacked terminals with a colored "wire stub" on the
+                left of each row — the visual link from the wire-map list
+                above to the specific terminal that wire lands on. */}
             <div className="sensor-wire-diagram-mobile-card-terminals">
               <div className="sensor-wire-diagram-mobile-terminal">
+                <span
+                  className="sensor-wire-diagram-mobile-terminal-stub sensor-wire-diagram-mobile-terminal-stub--red"
+                  aria-hidden="true"
+                />
                 <span className="sensor-wire-diagram-canvas-terminal-dot sensor-wire-diagram-canvas-terminal-dot--hot">
                   +
                 </span>
@@ -426,6 +497,10 @@ function MobileStack() {
                 </div>
               </div>
               <div className="sensor-wire-diagram-mobile-terminal">
+                <span
+                  className="sensor-wire-diagram-mobile-terminal-stub sensor-wire-diagram-mobile-terminal-stub--black"
+                  aria-hidden="true"
+                />
                 <span className="sensor-wire-diagram-canvas-terminal-dot sensor-wire-diagram-canvas-terminal-dot--common">
                   −
                 </span>
@@ -455,6 +530,10 @@ function MobileStack() {
             </p>
             <div className="sensor-wire-diagram-mobile-card-terminals">
               <div className="sensor-wire-diagram-mobile-terminal">
+                <span
+                  className="sensor-wire-diagram-mobile-terminal-stub sensor-wire-diagram-mobile-terminal-stub--white"
+                  aria-hidden="true"
+                />
                 <span className="sensor-wire-diagram-canvas-terminal-dot sensor-wire-diagram-canvas-terminal-dot--safety">
                   −
                 </span>
@@ -464,6 +543,10 @@ function MobileStack() {
                 </div>
               </div>
               <div className="sensor-wire-diagram-mobile-terminal">
+                <span
+                  className="sensor-wire-diagram-mobile-terminal-stub sensor-wire-diagram-mobile-terminal-stub--yellow"
+                  aria-hidden="true"
+                />
                 <span className="sensor-wire-diagram-canvas-terminal-dot sensor-wire-diagram-canvas-terminal-dot--safety">
                   −
                 </span>
