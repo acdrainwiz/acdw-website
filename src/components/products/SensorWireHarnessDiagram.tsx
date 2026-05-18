@@ -53,6 +53,7 @@ const STANDARD_SENSOR_WIRE_HARNESS_DIAGRAM_PDF =
 export function SensorWireHarnessDiagram() {
   return (
     <section
+      id="wire-harness-diagram"
       className="sensor-wire-diagram"
       aria-labelledby="sensor-wire-diagram-title"
     >
