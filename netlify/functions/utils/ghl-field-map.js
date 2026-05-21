@@ -156,6 +156,9 @@ const formConfigs = {
     valueTags: [{ formKey: 'customerType', map: CUSTOMER_TYPE_TAGS }],
     sourceAttribution: 'acdrainwiz.com: contact-general',
     writeMessageAsNote: true,
+    opportunityPipelineEnvVar: 'GHL_WEBSITE_PIPELINE_ID',
+    opportunityStageEnvVar: 'GHL_WEBSITE_PIPELINE_STAGE_ID',
+    opportunityNameTemplate: 'General Inquiry: {firstName} {lastName}',
   },
 
   'contact-support': {
@@ -175,6 +178,9 @@ const formConfigs = {
     valueTags: [{ formKey: 'customerType', map: CUSTOMER_TYPE_TAGS }],
     sourceAttribution: 'acdrainwiz.com: contact-support',
     writeMessageAsNote: true,
+    opportunityPipelineEnvVar: 'GHL_SUPPORT_PIPELINE_ID',
+    opportunityStageEnvVar: 'GHL_SUPPORT_PIPELINE_STAGE_ID',
+    opportunityNameTemplate: 'Support Request: {firstName} {lastName}',
   },
 
   'contact-sales': {
@@ -193,6 +199,9 @@ const formConfigs = {
     valueTags: [{ formKey: 'customerType', map: CUSTOMER_TYPE_TAGS }],
     sourceAttribution: 'acdrainwiz.com: contact-sales',
     writeMessageAsNote: true,
+    opportunityPipelineEnvVar: 'GHL_WEBSITE_PIPELINE_ID',
+    opportunityStageEnvVar: 'GHL_WEBSITE_PIPELINE_STAGE_ID',
+    opportunityNameTemplate: 'Sales Inquiry: {firstName} {lastName}',
   },
 
   'contact-installer': {
@@ -209,6 +218,9 @@ const formConfigs = {
     sourceTags: ['contractor'],
     sourceAttribution: 'acdrainwiz.com: contact-installer',
     writeMessageAsNote: true,
+    opportunityPipelineEnvVar: 'GHL_WEBSITE_PIPELINE_ID',
+    opportunityStageEnvVar: 'GHL_WEBSITE_PIPELINE_STAGE_ID',
+    opportunityNameTemplate: 'Installer Signup: {firstName} {lastName}',
   },
 
   'contact-demo': {
@@ -236,6 +248,9 @@ const formConfigs = {
     noteAppendFields: [
       { label: 'Demo Focus', formKey: 'demoFocus' },
     ],
+    opportunityPipelineEnvVar: 'GHL_WEBSITE_PIPELINE_ID',
+    opportunityStageEnvVar: 'GHL_WEBSITE_PIPELINE_STAGE_ID',
+    opportunityNameTemplate: 'Demo Request: {firstName} {lastName}',
   },
 
   'core-upgrade': {
@@ -254,6 +269,9 @@ const formConfigs = {
     ],
     sourceTags: ['follow-up'],
     sourceAttribution: 'acdrainwiz.com: core-upgrade',
+    opportunityPipelineEnvVar: 'GHL_WEBSITE_PIPELINE_ID',
+    opportunityStageEnvVar: 'GHL_WEBSITE_PIPELINE_STAGE_ID',
+    opportunityNameTemplate: 'Core 1.0 Upgrade: {firstName} {lastName}',
   },
 
   'unsubscribe': {
