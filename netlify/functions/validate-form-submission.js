@@ -50,7 +50,6 @@ const FORM_NAME_TO_GHL_TYPE = {
   'unsubscribe': 'unsubscribe',
   'ep-x7k9m2': 'email-preferences',
   'municipal-intake': 'municipal-intake',
-  'municipal-quick-intake': 'municipal-quick-intake',
 }
 
 
@@ -280,7 +279,7 @@ const validateFormFields = (formType, formData) => {
         const ALLOWED_TIMELINES = [
           'Immediately', '1-30 Days', '31-60 Days', '61-90 Days', '90+ Days', 'Not Sure Yet',
         ]
-        const ALLOWED_ATTENDED = ['Yes', 'No', 'Not Sure']
+        const ALLOWED_ATTENDED = ['Yes', 'No']
         const ALLOWED_INTERESTED = ['Yes', 'No', 'Maybe / Need More Information']
         const ALLOWED_AGREES = ['Yes', 'No', 'Pending Approval']
 
@@ -326,61 +325,6 @@ const validateFormFields = (formType, formData) => {
         const muniSecondaryEmail = formData.get('secondaryEmail')?.trim() || ''
         if (muniSecondaryEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(muniSecondaryEmail)) {
           errors.push('Secondary contact email format is invalid')
-        }
-        break
-      }
-
-      case 'municipal-quick-intake': {
-        const quickFirstName   = formData.get('firstName')?.trim()   || ''
-        const quickLastName    = formData.get('lastName')?.trim()    || ''
-        const quickEmail       = formData.get('email')?.trim()       || ''
-        const quickPhone       = formData.get('phone')?.trim()       || ''
-        const quickContactType = formData.get('contactType')?.trim() || ''
-        const quickStreet      = formData.get('street')?.trim()      || ''
-        const quickCity        = formData.get('city')?.trim()        || ''
-        const quickState       = formData.get('state')?.trim()       || ''
-        const quickZip         = formData.get('zip')?.trim()         || ''
-        const quickConsent     = formData.get('consent')
-
-        // Must match the GHL Contact Type custom-field options exactly (case-sensitive).
-        // Note: "Building Inspector," includes a trailing comma — preserved to round-trip cleanly.
-        const ALLOWED_CONTACT_TYPES = [
-          'Building Inspector,',
-          'Mechanical Inspector',
-          'Plans Examiner',
-          'Code Official',
-          'Fire/Building Dept.',
-          'Property Maintenance Official',
-          'Other',
-        ]
-
-        if (!quickFirstName) errors.push('First name is required')
-        if (!quickLastName)  errors.push('Last name is required')
-        if (!quickEmail) {
-          errors.push('Email is required')
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(quickEmail)) {
-          errors.push('Invalid email format')
-        }
-        if (!quickPhone) {
-          errors.push('Phone number is required')
-        } else if (quickPhone.replace(/\D/g, '').length < 10) {
-          errors.push('Please enter a valid phone number')
-        }
-        if (!quickContactType) {
-          errors.push('Contact type is required')
-        } else if (!ALLOWED_CONTACT_TYPES.includes(quickContactType)) {
-          errors.push('Invalid contact type selected')
-        }
-        if (!quickStreet) errors.push('Street address is required')
-        if (!quickCity)   errors.push('City is required')
-        if (!quickState)  errors.push('State is required')
-        if (!quickZip) {
-          errors.push('ZIP code is required')
-        } else if (!/^\d{5}$/.test(quickZip)) {
-          errors.push('ZIP code must be 5 digits')
-        }
-        if (quickConsent !== 'yes') {
-          errors.push('You must accept the Privacy Policy to continue')
         }
         break
       }
@@ -485,8 +429,7 @@ exports.handler = async (event, context) => {
       'promo-signup',
       'core-upgrade',
       'hero-email',
-      'municipal-intake',
-      'municipal-quick-intake'
+      'municipal-intake'
     ]
     
     if (!isWebhookEndpoint(path) && !isCheckoutEndpoint(path)) {
