@@ -149,6 +149,18 @@ function buildCustomFieldsArray(pairs, sanitizedData, idLookup = getCustomFieldI
   return out
 }
 
+function countSubmittableCustomFieldValues(pairs, sanitizedData) {
+  let count = 0
+  for (const [ghlKey, formKey] of pairs) {
+    const type = getCustomFieldType(ghlKey)
+    const shaped = shapeCustomFieldValue(sanitizedData[formKey], type)
+    if (shaped === null) continue
+    if (Array.isArray(shaped) && shaped.length === 0) continue
+    count += 1
+  }
+  return count
+}
+
 // =============================================================================
 // Opportunity custom field ID auto-lookup (cached per cold-start, 1h TTL)
 // =============================================================================
@@ -592,15 +604,17 @@ async function submitOpportunityForm(formType, sanitizedData, formConfig) {
     opportunityPayload.customFields = opportunityCustomFields
   }
 
-  // Safety net: if we couldn't resolve any custom field IDs (e.g., GHL lookup
-  // failed or the fields don't exist yet), drop a Note on the Contact with all
-  // 22 form values so nothing is lost while you debug.
-  const expectedFieldCount = (formConfig.opportunityCustomFields || []).length
-  if (expectedFieldCount > 0 && opportunityCustomFields.length === 0) {
+  // Safety net: if any submitted Opportunity values could not be sent because
+  // their GHL IDs were not resolved, attach a full Note so no lead detail is lost.
+  const submittedFieldCount = countSubmittableCustomFieldValues(
+    formConfig.opportunityCustomFields || [],
+    sanitizedData
+  )
+  if (submittedFieldCount > 0 && opportunityCustomFields.length < submittedFieldCount) {
     warnings.push({
-      stage: 'noOpportunityCustomFieldsResolved',
+      stage: 'missingOpportunityCustomFields',
       message:
-        'No Opportunity custom field IDs resolved from GHL. Falling back to Contact Note. Verify the BOAF & COAA group exists on the Opportunity object.',
+        'One or more Opportunity custom field IDs did not resolve from GHL. Full field values written to Contact Note as fallback.',
     })
     const noteBody = buildOpportunityFallbackNote(formConfig, sanitizedData, opportunityName)
     try {
@@ -665,6 +679,7 @@ module.exports = {
   ensureContactFieldIds,
   invalidateContactFieldCache,
   makeContactIdLookup,
+  countSubmittableCustomFieldValues,
   GhlApiError,
   GhlConfigError,
 }
