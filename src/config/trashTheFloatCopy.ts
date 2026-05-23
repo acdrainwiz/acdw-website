@@ -50,6 +50,20 @@ export type CampaignEligibilityItem = {
   detail: string
 }
 
+/** Hall of Fame placeholder — shows expected card layout before API stories exist */
+export type CampaignHallOfFamePreviewStory = {
+  id: string
+  firstName: string
+  instagramHandle: string
+  audience: string
+  region: string
+  storyTitle: string
+  excerpt: string
+  imageKey: 'storyDamage1' | 'storyDamage2' | 'floatSwitchTrans'
+  imageAlt: string
+  layoutNote: string
+}
+
 export const TRASH_THE_FLOAT = {
   /** Anchor path for all Official Rules links site-wide */
   officialRulesHref: TRASH_THE_FLOAT_OFFICIAL_RULES_HREF,
@@ -411,8 +425,48 @@ export const TRASH_THE_FLOAT = {
       intro:
         'The callbacks that left a mark — ceiling stains, drain pan floods, emergency visits, and repair bills. We feature approved stories that best show why floats fail when it matters most. Featured for impact; separate from our monthly iPad drawing.',
       comingSoonLabel: 'Coming soon',
-      /** Empty slots shown until the story spotlight API is wired. */
-      placeholderSlotCount: 3,
+      /** Example layouts shown until approved stories load from the API */
+      previewStories: [
+        {
+          id: 'preview-callback',
+          firstName: 'Marcus',
+          instagramHandle: '@fl_hvac_pro',
+          audience: 'Contractor',
+          region: 'South Florida',
+          storyTitle: 'The 10 p.m. callback',
+          excerpt:
+            'Float switch never tripped. Pan overflowed before anyone noticed — second emergency visit that month.',
+          imageKey: 'storyDamage2',
+          imageAlt: 'Water overflow in an AC drain pan',
+          layoutNote: 'Example layout · not a submission',
+        },
+        {
+          id: 'preview-ceiling',
+          firstName: 'Elena',
+          instagramHandle: '@texas_home_fix',
+          audience: 'Homeowner',
+          region: 'Central Texas',
+          storyTitle: 'Stain above the living room',
+          excerpt:
+            'By the time the float worked, condensate had already reached the ceiling. Drywall repair followed.',
+          imageKey: 'storyDamage1',
+          imageAlt: 'Water stain on a ceiling from condensate line backup',
+          layoutNote: 'Example layout · not a submission',
+        },
+        {
+          id: 'preview-stuck-float',
+          firstName: 'Jordan',
+          instagramHandle: '@atl_property_ops',
+          audience: 'Property Manager',
+          region: 'Metro Atlanta',
+          storyTitle: 'Same float, third visit',
+          excerpt:
+            'Mechanical float looked fine on the last service call — until it did not. Another stuck-float callback.',
+          imageKey: 'floatSwitchTrans',
+          imageAlt: 'Traditional mechanical float switch',
+          layoutNote: 'Example layout · not a submission',
+        },
+      ] satisfies readonly CampaignHallOfFamePreviewStory[],
     },
 
     winners: {

@@ -16,6 +16,8 @@ export const TRASH_THE_FLOAT_CAMPAIGN_API = {
 
 export type TrashTheFloatHallOfFameEntry = {
   id: string
+  firstName: string
+  instagramHandle: string
   storyTitle: string
   excerpt: string
   audience: string

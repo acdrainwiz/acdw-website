@@ -22,6 +22,7 @@ import {
 } from '@/components/campaign/TtfScrollReveal'
 import { TtfOfficialRulesSection } from '@/components/campaign/TtfOfficialRulesSection'
 import { TtfStickyMobileCta } from '@/components/campaign/TtfStickyMobileCta'
+import { TtfStorySpotlightCard } from '@/components/campaign/TtfStorySpotlightCard'
 import { useCountUp } from '@/components/campaign/useCountUp'
 import { SUPPORT_CONTACT } from '@/config/acdwKnowledge'
 import { TtfHashLink } from '@/components/campaign/TtfHashLink'
@@ -678,7 +679,7 @@ function SubmissionSection() {
 
 function HallOfShameSection() {
   const { sectionEyebrows, hallOfShame } = TRASH_THE_FLOAT.landing
-  const { title, intro, comingSoonLabel, placeholderSlotCount } = hallOfShame
+  const { title, intro, comingSoonLabel, previewStories } = hallOfShame
 
   return (
     <section id="story-spotlight" className="ttf-page-section ttf-page-section--surface ttf-page-section--atmo-gallery scroll-mt-24">
@@ -694,14 +695,9 @@ function HallOfShameSection() {
         </TtfReveal>
 
         <TtfRevealGroup className="ttf-page-shame-grid">
-          {Array.from({ length: placeholderSlotCount }, (_, idx) => (
-            <TtfRevealItem
-              as="article"
-              key={idx}
-              className="ttf-page-story-card ttf-page-story-card--empty campaign-card-light"
-              aria-label={comingSoonLabel}
-            >
-              <span className="ttf-page-shame-badge">{comingSoonLabel}</span>
+          {previewStories.map((story) => (
+            <TtfRevealItem key={story.id} as="div">
+              <TtfStorySpotlightCard story={story} comingSoonLabel={comingSoonLabel} />
             </TtfRevealItem>
           ))}
         </TtfRevealGroup>
