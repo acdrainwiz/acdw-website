@@ -25,13 +25,23 @@ import { useAuth } from '../../contexts/AuthContext'
 import { MONITORING, SENSOR_SETUP_MODEL_CHOICE_HREF } from '../../config/acdwKnowledge'
 import { MiamiHeatPartnershipLockup } from './MiamiHeatPartnershipLockup'
 
-const baseNavigation = [
+const coreNavigation = [
   { name: 'Products', href: '/products' },
   { name: 'About', href: '/about' },
   { name: 'Support', href: '/support' },
   { name: 'Contact', href: '/contact' },
-  { name: 'Sensor Monitoring', href: MONITORING.portalUrl, external: true },
 ]
+
+const sensorMonitoringLink = {
+  name: 'Sensor Monitoring',
+  href: MONITORING.portalUrl,
+  external: true as const,
+}
+
+const trashTheFloatNav = {
+  name: 'Trash the Float',
+  href: '/trash-the-float',
+}
 
 // Mobile drawer key: only one can be open at a time
 type MobileDrawerKey = 'shop' | 'support' | 'legal' | null
@@ -86,11 +96,8 @@ export function Header() {
 
   // Build navigation array with Dashboard first when authenticated
   const navigation = isAuthenticated
-    ? [
-        { name: 'Dashboard', href: '/dashboard' },
-        ...baseNavigation,
-      ]
-    : baseNavigation
+    ? [{ name: 'Dashboard', href: '/dashboard' }, ...coreNavigation]
+    : coreNavigation
 
   // Check if a navigation item is active (href may include query string)
   const isActive = (href: string) => {
@@ -148,26 +155,31 @@ export function Header() {
           {/* Desktop Navigation */}
           <div className="header-desktop-navigation">
             {navigation.map((item) => (
-              item.external ? (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="header-nav-link"
-                >
-                  {item.name}
-                </a>
-              ) : (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`header-nav-link ${isActive(item.href) ? 'active' : ''}`}
-                >
-                  {item.name}
-                </Link>
-              )
+              <Link
+                key={item.name}
+                to={item.href}
+                className={`header-nav-link ${isActive(item.href) ? 'active' : ''}`}
+              >
+                {item.name}
+              </Link>
             ))}
+
+            <div className="header-nav-trailing">
+              <a
+                href={sensorMonitoringLink.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="header-nav-link"
+              >
+                {sensorMonitoringLink.name}
+              </a>
+              <Link
+                to={trashTheFloatNav.href}
+                className={`header-nav-campaign-cta ${isActive(trashTheFloatNav.href) ? 'active' : ''}`}
+              >
+                {trashTheFloatNav.name}
+              </Link>
+            </div>
           </div>
 
           {/* Right side actions */}
@@ -503,6 +515,15 @@ export function Header() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
                   </a>
+
+                  <Link
+                    to={trashTheFloatNav.href}
+                    className={`header-mobile-nav-item header-mobile-nav-item--campaign ${isActive(trashTheFloatNav.href) ? 'active' : ''}`}
+                    onClick={handleMobileNavClick}
+                  >
+                    <SparklesIcon className="header-mobile-nav-icon" aria-hidden="true" />
+                    <span>{trashTheFloatNav.name}</span>
+                  </Link>
 
                   {/* Compliance — secondary; after primary destinations */}
                   <Link

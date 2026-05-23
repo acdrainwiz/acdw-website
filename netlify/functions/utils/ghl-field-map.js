@@ -29,6 +29,14 @@ const customFieldIds = {
 
   upgrade_photo_url: 'zSydZDTQmgS2OllRKeDr',
 
+  // Trash the Float campaign — paste IDs from ghl-field-discovery after creating fields in GHL.
+  ttf_audience: '',
+  ttf_story_title: '',
+  ttf_damage_impact: '',
+  ttf_media_url: '',
+  ttf_city_state: '',
+  ttf_instagram_handle: '',
+
   unsubscribe_reason: 'TQyRoFTSAyBrI27EIatx',
 
   email_pref_product_updates: 'ElhRgC1lGHcbk26Bahmj',
@@ -72,6 +80,13 @@ const customFieldTypes = {
   portfolio_size: 'text',
 
   upgrade_photo_url: 'text',
+
+  ttf_audience: 'text',
+  ttf_story_title: 'text',
+  ttf_damage_impact: 'text',
+  ttf_media_url: 'text',
+  ttf_city_state: 'text',
+  ttf_instagram_handle: 'text',
 
   unsubscribe_reason: 'text',
 
@@ -346,6 +361,33 @@ const formConfigs = {
     opportunityCustomFields: [],
     sourceTags: ['municipal-quick-intake', 'warm lead'],
     sourceAttribution: 'acdrainwiz.com: municipal-quick-intake',
+  },
+
+  // Trash the Float story submissions — contact upsert + note with full story body.
+  // TODO (backend): create GHL custom fields, paste IDs into customFieldIds above,
+  // and confirm tags / workflow automations for moderation + monthly drawing.
+  'trash-the-float-story': {
+    standardFields: [STD.firstName, STD.lastName, STD.email, STD.phone, STD.city],
+    customFields: [
+      ['ttf_audience', 'audience'],
+      ['ttf_story_title', 'storyTitle'],
+      ['ttf_damage_impact', 'damageImpact'],
+      ['ttf_media_url', 'mediaUrl'],
+      ['ttf_city_state', 'cityState'],
+      ['ttf_instagram_handle', 'instagramHandle'],
+    ],
+    sourceTags: ['trash-the-float', 'campaign-story', 'pending-review'],
+    sourceAttribution: 'acdrainwiz.com: trash-the-float-story',
+    writeMessageAsNote: true,
+    noteSourceKey: 'storyBody',
+    noteAppendFields: [
+      { label: 'Story title', formKey: 'storyTitle' },
+      { label: 'Audience', formKey: 'audience' },
+      { label: 'City / State', formKey: 'cityState' },
+      { label: 'Instagram handle', formKey: 'instagramHandle' },
+      { label: 'Estimated damage / impact', formKey: 'damageImpact' },
+      { label: 'Media URL', formKey: 'mediaUrl' },
+    ],
   },
 }
 

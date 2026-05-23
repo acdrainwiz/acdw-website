@@ -51,6 +51,7 @@ const FORM_NAME_TO_GHL_TYPE = {
   'ep-x7k9m2': 'email-preferences',
   'municipal-intake': 'municipal-intake',
   'municipal-quick-intake': 'municipal-quick-intake',
+  'trash-the-float-story': 'trash-the-float-story',
 }
 
 
@@ -385,6 +386,72 @@ const validateFormFields = (formType, formData) => {
         break
       }
 
+      case 'trash-the-float-story': {
+        const ttfFirstName = formData.get('firstName')?.trim() || ''
+        const ttfLastName = formData.get('lastName')?.trim() || ''
+        const ttfEmail = formData.get('email')?.trim() || ''
+        const ttfCityState = formData.get('cityState')?.trim() || formData.get('city')?.trim() || ''
+        const ttfInstagramHandle = formData.get('instagramHandle')?.trim() || ''
+        const ttfAudience = formData.get('audience')?.trim() || ''
+        const ttfStoryTitle = formData.get('storyTitle')?.trim() || ''
+        const ttfStoryBody = formData.get('storyBody')?.trim() || formData.get('message')?.trim() || ''
+        const ttfDamageImpact = formData.get('damageImpact')?.trim() || ''
+        const ttfConsent = formData.get('consent')
+        const ttfRulesConsent = formData.get('rulesConsent')
+
+        const ALLOWED_AUDIENCES = [
+          'Contractor',
+          'Homeowner',
+          'Property Manager',
+          'Distributor',
+          'Other',
+        ]
+
+        if (!ttfFirstName) errors.push('First name is required')
+        if (!ttfLastName) errors.push('Last name is required')
+        if (!ttfEmail) {
+          errors.push('Email is required')
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ttfEmail)) {
+          errors.push('Invalid email format')
+        }
+        if (!ttfCityState) errors.push('City and state are required')
+        if (!ttfInstagramHandle) {
+          errors.push('Instagram handle is required')
+        } else {
+          const normalizedHandle = ttfInstagramHandle.replace(/^@+/, '')
+          if (!/^[a-zA-Z0-9._]{1,30}$/.test(normalizedHandle)) {
+            errors.push('Enter a valid Instagram handle (letters, numbers, periods, underscores)')
+          }
+        }
+        if (!ttfAudience) {
+          errors.push('Please select who you are')
+        } else if (!ALLOWED_AUDIENCES.includes(ttfAudience)) {
+          errors.push('Invalid audience selection')
+        }
+        if (!ttfStoryTitle) {
+          errors.push('Story title is required')
+        } else if (ttfStoryTitle.length > 120) {
+          errors.push('Story title must be 120 characters or less')
+        }
+        if (!ttfStoryBody) {
+          errors.push('Story is required')
+        } else if (ttfStoryBody.length < 30) {
+          errors.push('Please tell us a bit more about what happened (at least 30 characters)')
+        } else if (ttfStoryBody.length > 5000) {
+          errors.push('Story must be 5000 characters or less')
+        }
+        if (ttfDamageImpact && ttfDamageImpact.length > 500) {
+          errors.push('Estimated damage or impact must be 500 characters or less')
+        }
+        if (ttfConsent !== 'yes') {
+          errors.push('You must confirm your story is true and grant permission to review it')
+        }
+        if (ttfRulesConsent !== 'yes') {
+          errors.push('You must agree to the Official Rules and Privacy Policy')
+        }
+        break
+      }
+
       default:
         console.warn(`Unknown form type: ${formType}`)
     }
@@ -486,7 +553,8 @@ exports.handler = async (event, context) => {
       'core-upgrade',
       'hero-email',
       'municipal-intake',
-      'municipal-quick-intake'
+      'municipal-quick-intake',
+      'trash-the-float-story'
     ]
     
     if (!isWebhookEndpoint(path) && !isCheckoutEndpoint(path)) {
