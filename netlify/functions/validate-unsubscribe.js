@@ -602,6 +602,21 @@ exports.handler = async (event, context) => {
         responseBody: ghlErr && ghlErr.responseBody,
         email: trimmedEmail.substring(0, 3) + '***',
       })
+      logFormSubmission('unsubscribe', trimmedEmail, ip, userAgent, false, [
+        `ghl-submission-failed: ${ghlErr && ghlErr.message}`,
+      ])
+      return {
+        statusCode: 502,
+        headers: {
+          ...headers,
+          ...getRateLimitHeaders(rateLimitResult)
+        },
+        body: JSON.stringify({
+          success: false,
+          error: 'Unsubscribe service unavailable',
+          message: 'We could not process your unsubscribe request right now. Please try again shortly.',
+        }),
+      }
     }
     
     // Success - return with rate limit headers

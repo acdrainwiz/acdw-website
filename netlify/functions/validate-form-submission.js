@@ -1109,6 +1109,15 @@ exports.handler = async (event, context) => {
       logFormSubmission(formType, email, ip, userAgent, false, [
         `ghl-submission-failed: ${ghlErr && ghlErr.message}`,
       ])
+      return {
+        statusCode: 502,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          error: 'Submission service unavailable',
+          message: 'We could not process your submission right now. Please try again shortly.',
+        }),
+      }
     }
 
     return {
