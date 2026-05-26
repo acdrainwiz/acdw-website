@@ -29,12 +29,9 @@ const customFieldIds = {
 
   upgrade_photo_url: 'zSydZDTQmgS2OllRKeDr',
 
-  // Trash the Float campaign — paste IDs from ghl-field-discovery after creating fields in GHL.
-  ttf_audience: '',
-  ttf_damage_impact: '',
-  ttf_media_url: '',
-  ttf_city_state: '',
-  ttf_instagram_handle: '',
+  // Trash the Float campaign — TTF custom fields live on the Opportunity object now,
+  // and their IDs are auto-resolved at runtime via ensureOpportunityFieldIds() (like
+  // the municipal-intake fields). No paste-in step needed here.
 
   unsubscribe_reason: 'TQyRoFTSAyBrI27EIatx',
 
@@ -81,7 +78,8 @@ const customFieldTypes = {
   upgrade_photo_url: 'text',
 
   ttf_audience: 'text',
-  ttf_damage_impact: 'text',
+  ttf_story_body: 'large_text',
+  ttf_damage_impact: 'large_text',
   ttf_media_url: 'text',
   ttf_city_state: 'text',
   ttf_instagram_handle: 'text',
@@ -361,29 +359,27 @@ const formConfigs = {
     sourceAttribution: 'acdrainwiz.com: municipal-quick-intake',
   },
 
-  // Trash the Float story submissions — contact upsert + note with full story body.
-  // TODO (backend): create GHL custom fields, paste IDs into customFieldIds above,
-  // and confirm tags / workflow automations for moderation + monthly drawing.
+  // Trash the Float story submissions — Opportunity in the "Trash the Float Campaign"
+  // pipeline. Contact gets upserted as the owner of the Opportunity. Submissions land
+  // in the "Awaiting review" stage; moderation moves them through Accepted / Denied /
+  // Posted to HoF in the GHL UI.
   'trash-the-float-story': {
-    standardFields: [STD.firstName, STD.lastName, STD.email, STD.phone, STD.city],
-    customFields: [
+    target: 'opportunity',
+    pipelineIdEnvVar: 'GHL_TTF_PIPELINE_ID',
+    pipelineStageIdEnvVar: 'GHL_TTF_PIPELINE_STAGE_ID',
+    opportunityNameTemplate: '{firstName} {lastName}',
+    contactStandardFields: [STD.firstName, STD.lastName, STD.email, STD.phone, STD.city],
+    contactCustomFields: [],
+    opportunityCustomFields: [
       ['ttf_audience', 'audience'],
+      ['ttf_story_body', 'storyBody'],
       ['ttf_damage_impact', 'damageImpact'],
       ['ttf_media_url', 'mediaUrl'],
       ['ttf_city_state', 'cityState'],
       ['ttf_instagram_handle', 'instagramHandle'],
     ],
-    sourceTags: ['trash-the-float', 'campaign-story', 'pending-review'],
+    sourceTags: ['trash-the-float', 'campaign-story'],
     sourceAttribution: 'acdrainwiz.com: trash-the-float-story',
-    writeMessageAsNote: true,
-    noteSourceKey: 'storyBody',
-    noteAppendFields: [
-      { label: 'Audience', formKey: 'audience' },
-      { label: 'City / State', formKey: 'cityState' },
-      { label: 'Instagram handle', formKey: 'instagramHandle' },
-      { label: 'Estimated damage / impact', formKey: 'damageImpact' },
-      { label: 'Media URL', formKey: 'mediaUrl' },
-    ],
   },
 }
 

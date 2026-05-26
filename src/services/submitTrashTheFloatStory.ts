@@ -53,7 +53,7 @@ async function uploadStoryImage(file: File): Promise<{ ok: true; url: string } |
     const response = await fetch(TRASH_THE_FLOAT_UPLOAD_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ imageData: base64DataUrl }),
+      body: JSON.stringify({ imageData: base64DataUrl, formType: TRASH_THE_FLOAT_FORM_TYPE }),
     })
     const data = (await response.json()) as { success?: boolean; imageUrl?: string; error?: string; message?: string }
 
