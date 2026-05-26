@@ -393,7 +393,6 @@ const validateFormFields = (formType, formData) => {
         const ttfCityState = formData.get('cityState')?.trim() || formData.get('city')?.trim() || ''
         const ttfInstagramHandle = formData.get('instagramHandle')?.trim() || ''
         const ttfAudience = formData.get('audience')?.trim() || ''
-        const ttfStoryTitle = formData.get('storyTitle')?.trim() || ''
         const ttfStoryBody = formData.get('storyBody')?.trim() || formData.get('message')?.trim() || ''
         const ttfDamageImpact = formData.get('damageImpact')?.trim() || ''
         const ttfConsent = formData.get('consent')
@@ -427,11 +426,6 @@ const validateFormFields = (formType, formData) => {
           errors.push('Please select who you are')
         } else if (!ALLOWED_AUDIENCES.includes(ttfAudience)) {
           errors.push('Invalid audience selection')
-        }
-        if (!ttfStoryTitle) {
-          errors.push('Story title is required')
-        } else if (ttfStoryTitle.length > 120) {
-          errors.push('Story title must be 120 characters or less')
         }
         if (!ttfStoryBody) {
           errors.push('Story is required')

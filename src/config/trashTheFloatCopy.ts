@@ -86,8 +86,8 @@ export const TRASH_THE_FLOAT = {
    * Stories are submitted on-site; Instagram is not the submission channel.
    */
   instagram: {
-    handle: '@ACDrainWiz',
-    profileUrl: 'https://www.instagram.com/acdrainwiz/',
+    handle: '@ac_drain_wiz',
+    profileUrl: 'https://www.instagram.com/ac_drain_wiz/',
   },
 
   // Image paths — drop assets into /public/images/ (see paths below).

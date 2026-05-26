@@ -31,7 +31,6 @@ const customFieldIds = {
 
   // Trash the Float campaign — paste IDs from ghl-field-discovery after creating fields in GHL.
   ttf_audience: '',
-  ttf_story_title: '',
   ttf_damage_impact: '',
   ttf_media_url: '',
   ttf_city_state: '',
@@ -82,7 +81,6 @@ const customFieldTypes = {
   upgrade_photo_url: 'text',
 
   ttf_audience: 'text',
-  ttf_story_title: 'text',
   ttf_damage_impact: 'text',
   ttf_media_url: 'text',
   ttf_city_state: 'text',
@@ -370,7 +368,6 @@ const formConfigs = {
     standardFields: [STD.firstName, STD.lastName, STD.email, STD.phone, STD.city],
     customFields: [
       ['ttf_audience', 'audience'],
-      ['ttf_story_title', 'storyTitle'],
       ['ttf_damage_impact', 'damageImpact'],
       ['ttf_media_url', 'mediaUrl'],
       ['ttf_city_state', 'cityState'],
@@ -381,7 +378,6 @@ const formConfigs = {
     writeMessageAsNote: true,
     noteSourceKey: 'storyBody',
     noteAppendFields: [
-      { label: 'Story title', formKey: 'storyTitle' },
       { label: 'Audience', formKey: 'audience' },
       { label: 'City / State', formKey: 'cityState' },
       { label: 'Instagram handle', formKey: 'instagramHandle' },

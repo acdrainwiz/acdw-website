@@ -40,10 +40,6 @@ const storySchema = z.object({
   audience: z.enum(AUDIENCE_OPTIONS, {
     message: 'Pick the option that best describes you',
   }),
-  storyTitle: z
-    .string()
-    .min(4, 'Give your story a short title')
-    .max(120, 'Keep the title under 120 characters'),
   storyBody: z.string().min(30, 'Tell us a bit more — at least 30 characters'),
   damageImpact: z
     .string()
@@ -96,7 +92,6 @@ export function StorySubmissionForm({ theme = 'dark' }: StorySubmissionFormProps
       phone: '',
       cityState: '',
       instagramHandle: '',
-      storyTitle: '',
       storyBody: '',
       damageImpact: '',
     },
@@ -317,38 +312,32 @@ export function StorySubmissionForm({ theme = 'dark' }: StorySubmissionFormProps
       </fieldset>
 
       <div className="mt-5 grid grid-cols-1 gap-4">
-        <Field label="Story title" required error={errors.storyTitle?.message} htmlFor="ttf-title">
-          <input
-            id="ttf-title"
-            type="text"
-            placeholder="The ceiling-stain callback"
-            aria-required
-            aria-invalid={Boolean(errors.storyTitle)}
-            {...register('storyTitle')}
-            className={inputClass(Boolean(errors.storyTitle))}
-          />
-        </Field>
-
         <Field
           label="Tell us what happened"
           required
+          featured
           error={errors.storyBody?.message}
           htmlFor="ttf-body"
         >
           <textarea
             id="ttf-body"
-            rows={5}
+            rows={6}
             placeholder="What did the float do — or fail to do? Walk us through what you found, what it took to resolve, and what it cost in time, callbacks, or trust."
             aria-required
             aria-invalid={Boolean(errors.storyBody)}
             {...register('storyBody')}
-            className={cn(inputClass(Boolean(errors.storyBody)), 'ttf-form-input--textarea')}
+            className={cn(
+              inputClass(Boolean(errors.storyBody)),
+              'ttf-form-input--textarea',
+              'ttf-form-input--story',
+            )}
           />
         </Field>
 
         <Field
           label="Estimated damage or impact"
-          hint="Optional — dollars, callbacks, hours, customer churn, etc."
+          optional
+          hint="Dollars, callbacks, hours, customer churn, etc."
           error={errors.damageImpact?.message}
           htmlFor="ttf-impact"
         >
@@ -365,9 +354,7 @@ export function StorySubmissionForm({ theme = 'dark' }: StorySubmissionFormProps
         <div>
           <label htmlFor="ttf-upload" className="ttf-form-label">
             {TRASH_THE_FLOAT.landing.uploadExamples.uploadLabel}{' '}
-            <span className={cn('font-normal', isLight ? 'text-[rgba(0,26,53,0.55)]' : 'text-white/50')}>
-              (optional)
-            </span>
+            <span className="ttf-form-label-optional">(optional)</span>
           </label>
 
           <TtfStoryPhotoExamples
@@ -477,17 +464,20 @@ interface FieldProps {
   label: string
   htmlFor: string
   required?: boolean
+  optional?: boolean
+  featured?: boolean
   hint?: string
   error?: string
   children: React.ReactNode
 }
 
-function Field({ label, htmlFor, required, hint, error, children }: FieldProps) {
+function Field({ label, htmlFor, required, optional, featured, hint, error, children }: FieldProps) {
   return (
-    <div>
+    <div className={cn(featured && 'ttf-form-story-field')}>
       <label htmlFor={htmlFor} className="ttf-form-label">
         {label}
         {required ? <span className="ttf-form-label-required">*</span> : null}
+        {optional ? <span className="ttf-form-label-optional"> (optional)</span> : null}
       </label>
       {hint ? <p className="ttf-form-hint">{hint}</p> : null}
       {children}

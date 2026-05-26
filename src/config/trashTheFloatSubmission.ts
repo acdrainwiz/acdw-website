@@ -22,7 +22,6 @@ export type TrashTheFloatStoryPayload = {
   cityState: string
   instagramHandle: string
   audience: string
-  storyTitle: string
   storyBody: string
   damageImpact?: string
   consent: true

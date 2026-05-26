@@ -170,11 +170,6 @@ function Hero() {
 
           <div className="ttf-page-hero-versus-foreground">
             <div className="ttf-page-hero-versus-side ttf-page-hero-versus-side--old">
-              <div className="ttf-page-hero-versus-meta">
-                <span className="ttf-page-hero-versus-badge ttf-page-hero-versus-badge--old">
-                  {leftCard.badge}
-                </span>
-              </div>
               <HeroFloatTrashDunk floatSrc={floatSwitchTrans} floatAlt={floatSwitchAlt} />
               <p className="ttf-page-hero-versus-caption">{leftCard.title}</p>
             </div>
@@ -362,15 +357,15 @@ function PrizeSection() {
       <TtfConfettiRain
         className="ttf-page-prize-confetti"
         animBaseVar="--ttf-prize-anim-base"
+        continuous
         options={{
-          count: 32,
-          prizeStartS: 0.35,
-          spawnWindowS: 3.8,
+          count: 52,
+          prizeStartS: 0,
+          spawnWindowS: 12,
           seedOffset: 1200,
-          durationMinS: 6.6,
-          durationMaxS: 11,
+          durationMinS: 5,
+          durationMaxS: 8.5,
         }}
-        recyclePauseS={15}
       />
 
       <div className="ttf-page-section-inner ttf-page-section-inner--center">

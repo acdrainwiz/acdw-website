@@ -221,7 +221,6 @@ const sanitizeFormData = (data, formType = 'general') => {
       case 'storybody':
         sanitized[key] = sanitizeMessage(value)
         break
-      case 'storytitle':
       case 'damageimpact':
       case 'fullName':
       case 'fullname':
@@ -230,7 +229,7 @@ const sanitizeFormData = (data, formType = 'general') => {
       case 'mediaurl':
       case 'rulesconsent':
         sanitized[key] = sanitizeString(String(value), {
-          maxLength: key === 'damageimpact' ? 500 : key === 'storytitle' ? 120 : 500,
+          maxLength: 500,
           allowNewlines: false,
           allowHTML: false,
           trim: true,

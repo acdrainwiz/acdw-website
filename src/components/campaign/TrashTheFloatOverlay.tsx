@@ -123,14 +123,15 @@ export function TrashTheFloatOverlay() {
                   <div className="ttf-modal-prize-frame">
                     <TtfConfettiRain
                       className="ttf-modal-prize-confetti"
+                      continuous
                       options={{
-                        count: 60,
-                        prizeStartS: 1.88,
-                        spawnWindowS: 5.5,
-                        durationMinS: 6.8,
-                        durationMaxS: 11.5,
+                        count: 52,
+                        prizeStartS: 0,
+                        spawnWindowS: 12,
+                        seedOffset: 1200,
+                        durationMinS: 5,
+                        durationMaxS: 8.5,
                       }}
-                      recyclePauseS={15}
                     />
                     <Link
                       to={TRASH_THE_FLOAT.cta.primary.href}

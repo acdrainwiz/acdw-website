@@ -21995,6 +21995,10 @@
   border-radius: 50%;
 }
 
+.ttf-confetti-rain--continuous .ttf-confetti-rain-piece {
+  animation-iteration-count: infinite;
+}
+
 .ttf-modal-poster-main .ttf-modal-prize-img,
 .ttf-modal-poster-main .ttf-modal-prize-placeholder {
   position: relative;
@@ -22443,6 +22447,37 @@
   color: #fff;
 }
 .ttf-form-label-required { margin-left: 0.25rem; color: var(--acdw-orange); }
+.ttf-form-label-optional {
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.ttf-form-story-field {
+  padding: 1rem 1.1rem 1.15rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(56, 189, 248, 0.32);
+  background: linear-gradient(180deg, rgba(56, 189, 248, 0.14) 0%, rgba(238, 243, 249, 0.96) 100%);
+  box-shadow: 0 2px 14px rgba(56, 189, 248, 0.1);
+}
+.ttf-form-story-field .ttf-form-label {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.ttf-form-story-field .ttf-form-hint {
+  margin-top: 0.125rem;
+}
+.ttf-form-input--story {
+  min-height: 148px;
+  margin-top: 0.5rem;
+  border-width: 1.5px;
+  border-color: rgba(56, 189, 248, 0.34);
+  background-color: rgba(255, 255, 255, 0.06);
+}
+.ttf-form-story-field .ttf-form-input--story:focus {
+  border-color: rgb(56, 189, 248);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22);
+}
 
 .ttf-form-hint {
   margin-top: 0.125rem;
@@ -22669,6 +22704,26 @@
 }
 .ttf-page-section--submission .ttf-form-label-required {
   color: var(--acdw-orange);
+}
+.ttf-page-section--submission .ttf-form-label-optional {
+  color: rgba(0, 26, 53, 0.55);
+}
+.ttf-page-section--submission .ttf-form-story-field {
+  border-color: rgba(56, 189, 248, 0.32);
+  background: linear-gradient(180deg, rgba(56, 189, 248, 0.14) 0%, rgba(238, 243, 249, 0.96) 100%);
+  box-shadow: 0 2px 14px rgba(56, 189, 248, 0.1);
+}
+.ttf-page-section--submission .ttf-form-story-field .ttf-form-label {
+  color: var(--acdw-navy);
+}
+.ttf-page-section--submission .ttf-form-input--story {
+  border-color: rgba(56, 189, 248, 0.34);
+  background-color: #fff;
+}
+.ttf-page-section--submission .ttf-form-story-field .ttf-form-input--story:focus,
+.ttf-page-section--submission .ttf-form-story-field .ttf-form-input--story:focus-visible {
+  border-color: rgb(56, 189, 248);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18);
 }
 .ttf-page-section--submission .ttf-form-hint {
   color: rgba(0, 26, 53, 0.65);
@@ -23460,14 +23515,7 @@
 
 .ttf-page-hero-versus-side--old {
   align-self: center;
-}
-
-.ttf-page-hero-versus-meta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-height: 1.75rem;
+  margin-top: -2.5rem;
 }
 
 .ttf-page-hero-versus-badge {
@@ -23762,6 +23810,7 @@
     z-index: 1;
     width: 100%;
     max-width: none;
+    margin-top: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23772,10 +23821,6 @@
     background: linear-gradient(180deg, rgba(148, 163, 184, 0.16), rgba(248, 250, 252, 0.92));
     border: 1px solid rgba(0, 26, 53, 0.08);
     box-shadow: 0 4px 14px rgba(0, 26, 53, 0.05);
-  }
-
-  .ttf-page-hero-versus-meta {
-    min-height: 0;
   }
 
   .ttf-page-hero-versus-badge {
@@ -23920,13 +23965,6 @@
     isolation: isolate;
   }
 
-  .ttf-page-hero-versus-meta {
-    position: relative;
-    z-index: 5;
-    margin-top: -0.5rem;
-    margin-bottom: 0.5rem;
-  }
-
   .ttf-page-hero-dunk {
     --ttf-dunk-lid-rest-y: -58;
     z-index: 1;
@@ -23943,13 +23981,6 @@
 @media screen and (width: 1024px) and (height: 768px) {
   .ttf-page-hero-versus-side--old {
     isolation: isolate;
-  }
-
-  .ttf-page-hero-versus-meta {
-    position: relative;
-    z-index: 5;
-    margin-top: -0.5rem;
-    margin-bottom: 0.5rem;
   }
 
   .ttf-page-hero-dunk {
@@ -25095,8 +25126,9 @@
 }
 
 .ttf-page-section--submission .ttf-form-card {
-  background-color: var(--ttf-page-cream);
+  background: linear-gradient(180deg, var(--ttf-page-cream) 0%, #ffffff 68%, #ffffff 100%);
   border-color: rgba(0, 26, 53, 0.08);
+  box-shadow: 0 4px 22px rgba(0, 26, 53, 0.06);
 }
 
 .ttf-page-section--submission .ttf-page-section-header {

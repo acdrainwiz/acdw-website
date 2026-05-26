@@ -93,7 +93,6 @@ function buildSubmissionBody(
     city: input.cityState.trim(),
     instagramHandle: normalizeInstagramHandle(input.instagramHandle),
     audience: input.audience,
-    storyTitle: input.storyTitle.trim(),
     storyBody: input.storyBody.trim(),
     message: input.storyBody.trim(),
     damageImpact: input.damageImpact?.trim() || '',

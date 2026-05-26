@@ -44,6 +44,17 @@ export function getTtfConfettiCycleEndS(pieces: TtfConfettiPiece[]): number {
   return pieces.reduce((max, piece) => Math.max(max, piece.delay + piece.duration), 0)
 }
 
+/** Negative delay offset so infinite-loop pieces stay desynced across the shower cycle. */
+export function getTtfConfettiContinuousOffset(
+  piece: TtfConfettiPiece,
+  index: number,
+  count: number,
+  cycleEndS: number,
+): number {
+  const spread = cycleEndS > 0 ? cycleEndS : piece.delay + piece.duration
+  return -(((index + 0.5) / count) * spread + piece.delay * 0.12)
+}
+
 /** Scattered “rain” confetti — random spawn times, speeds, drift (not burst waves). */
 export function buildTtfConfettiPieces({
   count = 60,
