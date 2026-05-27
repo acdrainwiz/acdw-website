@@ -42,6 +42,7 @@ import { SensorSetupPage } from './pages/SensorSetupPage'
 import { MiniSetupPage } from './pages/MiniSetupPage'
 import { RecommendedInstallationScenariosPage } from './pages/RecommendedInstallationScenariosPage'
 import { EmailSignaturePage } from './pages/EmailSignaturePage'
+import { TrashTheFloatPage } from './pages/TrashTheFloatPage'
 import { usePageTracking } from './hooks/useAnalytics'
 
 function AppContent() {
@@ -95,6 +96,7 @@ function AppContent() {
                     <Route path="/mini-setup" element={<MiniSetupPage />} />
                     <Route path="/support/installation-scenarios" element={<RecommendedInstallationScenariosPage />} />
                     <Route path="/email-signature" element={<EmailSignaturePage />} />
+                    <Route path="/trash-the-float" element={<TrashTheFloatPage />} />
             </Routes>
           </main>
           {!hideHeaderFooter && <Footer />}

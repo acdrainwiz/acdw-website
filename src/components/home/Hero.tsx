@@ -1380,7 +1380,7 @@ export function Hero() {
                           reader.readAsDataURL(file)
                         })
                         
-                        // Step 2: Upload to Cloudinary and get permanent URL
+                        // Step 2: Upload to GHL Media Library and get permanent URL
                         try {
                           const uploadResponse = await fetch('/.netlify/functions/upload-image', {
                             method: 'POST',
@@ -1388,8 +1388,8 @@ export function Hero() {
                               'Content-Type': 'application/json',
                             },
                             body: JSON.stringify({
-                              imageData: base64DataUrl
-                              // Folder is handled by Cloudinary upload preset
+                              imageData: base64DataUrl,
+                              formType: 'core-upgrade',
                             })
                           })
                           
@@ -1403,7 +1403,7 @@ export function Hero() {
                             return
                           }
                           
-                          photoUrl = uploadData.imageUrl // Use the permanent Cloudinary URL
+                          photoUrl = uploadData.imageUrl // Permanent GHL Media URL
                         } catch (uploadError) {
                           console.error('Image upload error:', uploadError)
                           setPhotoFileError('Network error during image upload. Please try again.')

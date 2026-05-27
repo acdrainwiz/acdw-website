@@ -29,7 +29,11 @@ const customFieldIds = {
 
   upgrade_photo_url: '7iSBKTD3rkJzKxcKFO1S',
 
-  unsubscribe_reason: '5drWf2GOVRhCu5l1SrVb',
+  // Trash the Float campaign — TTF custom fields live on the Opportunity object now,
+  // and their IDs are auto-resolved at runtime via ensureOpportunityFieldIds() (like
+  // the municipal-intake fields). No paste-in step needed here.
+
+  unsubscribe_reason: 'TQyRoFTSAyBrI27EIatx',
 
   email_pref_product_updates: 'Va7SJQVFbvTkOVDZ52IS',
   email_pref_promotions: '6NB4WSJGU6j1JzknrH1j',
@@ -72,6 +76,13 @@ const customFieldTypes = {
   portfolio_size: 'text',
 
   upgrade_photo_url: 'text',
+
+  ttf_audience: 'text',
+  ttf_story_body: 'large_text',
+  ttf_damage_impact: 'large_text',
+  ttf_media_url: 'text',
+  ttf_city_state: 'text',
+  ttf_instagram_handle: 'text',
 
   unsubscribe_reason: 'text',
 
@@ -347,6 +358,49 @@ const formConfigs = {
       { tag: 'interested-in-offer', when: 'interestedInOffer', equals: 'Yes' },
     ],
     sourceAttribution: 'acdrainwiz.com: municipal-intake',
+  },
+
+  // Lightweight quick-intake form — only collects name/email/address.
+  // Reuses the same Opportunity pipeline as 'municipal-intake' so submissions land
+  // in the existing BOAA sales workflow.
+  'municipal-quick-intake': {
+    target: 'opportunity',
+    pipelineIdEnvVar: 'GHL_QUICK_PIPELINE_ID',
+    pipelineStageIdEnvVar: 'GHL_QUICK_PIPELINE_STAGE_ID',
+    opportunityNameTemplate: '{firstName} {lastName} — Quick Intake',
+    contactStandardFields: [
+      STD.firstName, STD.lastName, STD.email, STD.phone, STD.companyName,
+      STD.address1, STD.city, STD.state, STD.postalCode,
+    ],
+    contactCustomFields: [
+      ['contact_type', 'contactType'],
+    ],
+    opportunityCustomFields: [],
+    sourceTags: ['municipal-quick-intake', 'warm lead'],
+    sourceAttribution: 'acdrainwiz.com: municipal-quick-intake',
+  },
+
+  // Trash the Float story submissions — Opportunity in the "Trash the Float Campaign"
+  // pipeline. Contact gets upserted as the owner of the Opportunity. Submissions land
+  // in the "Awaiting review" stage; moderation moves them through Accepted / Denied /
+  // Posted to HoF in the GHL UI.
+  'trash-the-float-story': {
+    target: 'opportunity',
+    pipelineIdEnvVar: 'GHL_TTF_PIPELINE_ID',
+    pipelineStageIdEnvVar: 'GHL_TTF_PIPELINE_STAGE_ID',
+    opportunityNameTemplate: '{firstName} {lastName}',
+    contactStandardFields: [STD.firstName, STD.lastName, STD.email, STD.phone, STD.city],
+    contactCustomFields: [],
+    opportunityCustomFields: [
+      ['ttf_audience', 'audience'],
+      ['ttf_story_body', 'storyBody'],
+      ['ttf_damage_impact', 'damageImpact'],
+      ['ttf_media_url', 'mediaUrl'],
+      ['ttf_city_state', 'cityState'],
+      ['ttf_instagram_handle', 'instagramHandle'],
+    ],
+    sourceTags: ['trash-the-float', 'campaign-story'],
+    sourceAttribution: 'acdrainwiz.com: trash-the-float-story',
   },
 }
 

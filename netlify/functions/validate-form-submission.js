@@ -50,6 +50,8 @@ const FORM_NAME_TO_GHL_TYPE = {
   'unsubscribe': 'unsubscribe',
   'ep-x7k9m2': 'email-preferences',
   'municipal-intake': 'municipal-intake',
+  'municipal-quick-intake': 'municipal-quick-intake',
+  'trash-the-float-story': 'trash-the-float-story',
 }
 
 
@@ -329,6 +331,121 @@ const validateFormFields = (formType, formData) => {
         break
       }
 
+      case 'municipal-quick-intake': {
+        const quickFirstName   = formData.get('firstName')?.trim()   || ''
+        const quickLastName    = formData.get('lastName')?.trim()    || ''
+        const quickEmail       = formData.get('email')?.trim()       || ''
+        const quickPhone       = formData.get('phone')?.trim()       || ''
+        const quickContactType = formData.get('contactType')?.trim() || ''
+        const quickStreet      = formData.get('street')?.trim()      || ''
+        const quickCity        = formData.get('city')?.trim()        || ''
+        const quickState       = formData.get('state')?.trim()       || ''
+        const quickZip         = formData.get('zip')?.trim()         || ''
+        const quickConsent     = formData.get('consent')
+
+        // Must match the GHL Contact Type custom-field options exactly (case-sensitive).
+        // Note: "Building Inspector," includes a trailing comma — preserved to round-trip cleanly.
+        const ALLOWED_CONTACT_TYPES = [
+          'Building Inspector,',
+          'Mechanical Inspector',
+          'Plans Examiner',
+          'Code Official',
+          'Fire/Building Dept.',
+          'Property Maintenance Official',
+          'Other',
+        ]
+
+        if (!quickFirstName) errors.push('First name is required')
+        if (!quickLastName)  errors.push('Last name is required')
+        if (!quickEmail) {
+          errors.push('Email is required')
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(quickEmail)) {
+          errors.push('Invalid email format')
+        }
+        if (!quickPhone) {
+          errors.push('Phone number is required')
+        } else if (quickPhone.replace(/\D/g, '').length < 10) {
+          errors.push('Please enter a valid phone number')
+        }
+        if (!quickContactType) {
+          errors.push('Contact type is required')
+        } else if (!ALLOWED_CONTACT_TYPES.includes(quickContactType)) {
+          errors.push('Invalid contact type selected')
+        }
+        if (!quickStreet) errors.push('Street address is required')
+        if (!quickCity)   errors.push('City is required')
+        if (!quickState)  errors.push('State is required')
+        if (!quickZip) {
+          errors.push('ZIP code is required')
+        } else if (!/^\d{5}$/.test(quickZip)) {
+          errors.push('ZIP code must be 5 digits')
+        }
+        if (quickConsent !== 'yes') {
+          errors.push('You must accept the Privacy Policy to continue')
+        }
+        break
+      }
+
+      case 'trash-the-float-story': {
+        const ttfFirstName = formData.get('firstName')?.trim() || ''
+        const ttfLastName = formData.get('lastName')?.trim() || ''
+        const ttfEmail = formData.get('email')?.trim() || ''
+        const ttfCityState = formData.get('cityState')?.trim() || formData.get('city')?.trim() || ''
+        const ttfInstagramHandle = formData.get('instagramHandle')?.trim() || ''
+        const ttfAudience = formData.get('audience')?.trim() || ''
+        const ttfStoryBody = formData.get('storyBody')?.trim() || formData.get('message')?.trim() || ''
+        const ttfDamageImpact = formData.get('damageImpact')?.trim() || ''
+        const ttfConsent = formData.get('consent')
+        const ttfRulesConsent = formData.get('rulesConsent')
+
+        const ALLOWED_AUDIENCES = [
+          'Contractor',
+          'Homeowner',
+          'Property Manager',
+          'Distributor',
+          'Other',
+        ]
+
+        if (!ttfFirstName) errors.push('First name is required')
+        if (!ttfLastName) errors.push('Last name is required')
+        if (!ttfEmail) {
+          errors.push('Email is required')
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ttfEmail)) {
+          errors.push('Invalid email format')
+        }
+        if (!ttfCityState) errors.push('City and state are required')
+        if (!ttfInstagramHandle) {
+          errors.push('Instagram handle is required')
+        } else {
+          const normalizedHandle = ttfInstagramHandle.replace(/^@+/, '')
+          if (!/^[a-zA-Z0-9._]{1,30}$/.test(normalizedHandle)) {
+            errors.push('Enter a valid Instagram handle (letters, numbers, periods, underscores)')
+          }
+        }
+        if (!ttfAudience) {
+          errors.push('Please select who you are')
+        } else if (!ALLOWED_AUDIENCES.includes(ttfAudience)) {
+          errors.push('Invalid audience selection')
+        }
+        if (!ttfStoryBody) {
+          errors.push('Story is required')
+        } else if (ttfStoryBody.length < 30) {
+          errors.push('Please tell us a bit more about what happened (at least 30 characters)')
+        } else if (ttfStoryBody.length > 5000) {
+          errors.push('Story must be 5000 characters or less')
+        }
+        if (ttfDamageImpact && ttfDamageImpact.length > 500) {
+          errors.push('Estimated damage or impact must be 500 characters or less')
+        }
+        if (ttfConsent !== 'yes') {
+          errors.push('You must confirm your story is true and grant permission to review it')
+        }
+        if (ttfRulesConsent !== 'yes') {
+          errors.push('You must agree to the Official Rules and Privacy Policy')
+        }
+        break
+      }
+
       default:
         console.warn(`Unknown form type: ${formType}`)
     }
@@ -429,7 +546,9 @@ exports.handler = async (event, context) => {
       'promo-signup',
       'core-upgrade',
       'hero-email',
-      'municipal-intake'
+      'municipal-intake',
+      'municipal-quick-intake',
+      'trash-the-float-story'
     ]
     
     if (!isWebhookEndpoint(path) && !isCheckoutEndpoint(path)) {
