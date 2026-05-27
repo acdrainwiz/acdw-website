@@ -365,9 +365,19 @@ export const TRASH_THE_FLOAT = {
             'Each month, one eligible approved entry is selected to receive a new Apple iPad (latest available model). Prize details and approximate retail value are subject to the Official Rules.',
         },
         {
+          question: 'When can I enter?',
+          answer:
+            'Entries open on May 27, 2026 for the first drawing — everything received from May 27 through June 30, 2026 is placed in the July 1, 2026 drawing. After that, each monthly entry period runs from the 1st through the last day of the calendar month, and whichever month you submit in is the month you\'re entered to win. Entries cannot be held over or applied to a different month (except where the two-entry minimum isn\'t met, in which case entries roll forward — see Official Rules).',
+        },
+        {
           question: 'How are winners selected?',
           answer:
-            'Eligible approved entries from the monthly entry period are entered into a random drawing. The drawing is conducted live on Instagram so entrants can watch in real time. Winner announcements are also posted on this campaign page.',
+            'Eligible approved entries from the monthly entry period are entered into a random drawing held on or about the 1st of the following month — live on Instagram so entrants can watch in real time. Our first drawing is on or about July 1, 2026 for the extended May 27 – June 30 launch window. Winner announcements are also posted on this campaign page.',
+        },
+        {
+          question: 'What are my odds of winning?',
+          answer:
+            'Odds of winning vary based on the size of the eligible drawing pool, which may include entries rolled forward from one or more prior months if those months did not meet the minimum-entries threshold. A drawing requires at least two eligible entries to be held; if a given month does not meet that minimum, that month\'s iPad prize is forfeited (not awarded), and only the eligible entries from that month roll forward into the next drawing. Note: you can only win once during the Promotion Period — if you win in an earlier month, your later entries are not eligible to win an additional prize. See Official Rules for full details.',
         },
         {
           question: 'Why do you need my Instagram handle?',
@@ -377,7 +387,7 @@ export const TRASH_THE_FLOAT = {
         {
           question: 'Can I submit more than once?',
           answer:
-            'Please limit entries to one submission per person per story experience. Duplicate or incomplete submissions may be disqualified. See Official Rules for entry limits and drawing periods.',
+            'One entry per Instagram account per month, and one entry per person per distinct story experience. The Instagram account you cite on the form must be your own, active, and following @ACDrainWiz at the time you submit. Multiple accounts controlled by the same person or household — or accounts created to game the system — will be treated as a single entrant and additional submissions may be disqualified. See Official Rules for full entry limits.',
         },
         {
           question: 'Can I include photos or video?',
@@ -387,7 +397,7 @@ export const TRASH_THE_FLOAT = {
         {
           question: 'How will my contact information be used?',
           answer:
-            'We use your name, email, phone, city, and Instagram handle to verify eligibility, confirm your Instagram follow, follow up during review, and contact winners. We do not sell your information. See our Privacy Policy at the bottom of this page.',
+            'We use your name, email, phone, city, and Instagram handle solely to verify eligibility, confirm your Instagram follow, and notify potential winners. We will not email, text, or call you with marketing or promotional messages unless you separately opt in. We do not sell your information. See our Privacy Policy at the bottom of this page.',
         },
       ] satisfies CampaignFaqItem[],
       footerNote:
@@ -472,8 +482,8 @@ export const TRASH_THE_FLOAT = {
     winners: {
       title: 'Monthly Winners',
       body:
-        'One eligible approved entry wins an iPad (latest available model) each month. After our first drawing, the winner announcement and live drawing replay will be posted here — watch the selection live on Instagram.',
-      comingSoonLabel: 'First drawing — coming soon',
+        'One eligible approved entry wins an iPad (latest available model) each month, provided at least two eligible entries are received during the monthly entry period. Entries are accepted starting May 27, 2026 for our extended launch window — all entries received between May 27 and June 30, 2026 are placed in the first drawing on or about July 1, 2026. After that, the cycle is monthly: entries received during the calendar month are entered into that month\'s drawing held on or about the 1st of the following month, broadcast live on Instagram, with winner announcements and drawing replays posted here.',
+      comingSoonLabel: 'First drawing — July 1, 2026 · Live on Instagram',
     },
 
     legal: {
