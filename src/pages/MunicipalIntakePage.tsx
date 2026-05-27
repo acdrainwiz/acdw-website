@@ -49,7 +49,7 @@ const TIMELINE_OPTIONS = [
   'Not Sure Yet',
 ] as const
 
-const ATTENDED_OPTIONS = ['Yes', 'No', 'Not Sure'] as const
+const ATTENDED_OPTIONS = ['Yes', 'No'] as const
 const INTERESTED_OPTIONS = ['Yes', 'No', 'Maybe / Need More Information'] as const
 const AGREES_OPTIONS = ['Yes', 'No', 'Pending Approval'] as const
 

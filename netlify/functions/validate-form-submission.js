@@ -281,7 +281,7 @@ const validateFormFields = (formType, formData) => {
         const ALLOWED_TIMELINES = [
           'Immediately', '1-30 Days', '31-60 Days', '61-90 Days', '90+ Days', 'Not Sure Yet',
         ]
-        const ALLOWED_ATTENDED = ['Yes', 'No', 'Not Sure']
+        const ALLOWED_ATTENDED = ['Yes', 'No']
         const ALLOWED_INTERESTED = ['Yes', 'No', 'Maybe / Need More Information']
         const ALLOWED_AGREES = ['Yes', 'No', 'Pending Approval']
 

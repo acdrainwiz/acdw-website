@@ -1,7 +1,7 @@
 // One-shot diagnostic: GET /.netlify/functions/ghl-pipeline-discovery?secret=<GHL_DISCOVERY_SECRET>
 // Lists every Opportunity pipeline for the configured location with its stages.
 // Use this to grab pipeline IDs and stage IDs for env-var configuration
-// (e.g. GHL_QUICK_PIPELINE_ID, GHL_QUICK_PIPELINE_STAGE_ID). Delete after migration.
+// (e.g. GHL_MUNI_PIPELINE_ID, GHL_MUNI_PIPELINE_STAGE_ID). Delete after migration.
 
 const { ghlRequest, GhlConfigError, GhlApiError } = require('./utils/ghl-client')
 

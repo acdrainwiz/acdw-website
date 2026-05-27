@@ -2,32 +2,32 @@
 // /.netlify/functions/ghl-field-discovery and paste IDs into customFieldIds below.
 
 const customFieldIds = {
-  referral_source: 'AkB8KPSsP1O7OiP9Z9ng',
-  sms_transactional_consent: 'Q9Rc13AlfqEUTTcu2qxI',
-  sms_marketing_consent: 'qqVis84MXtdQJJyxDtYy',
-  sms_consent_timestamp: '7y1IRlaHVrL6tAYLCwIz',
-  sms_consent_source_url: 'FFQZBt0DCiMtlnCzV2Wj',
-  sms_consent_ip: 'daNUnFxXXRdI23XA6AzW',
+  referral_source: 'Psv6fT4lnwOk3IVwtnbB',
+  sms_transactional_consent: 'rOtHmtB27vfSGBuDJujK',
+  sms_marketing_consent: '98bqq9VgEUl2LuUDBHyz',
+  sms_consent_timestamp: '3e6uSCw2iGf5ykGtohu6',
+  sms_consent_source_url: '7FPCWnLYYCKE17WMdHuw',
+  sms_consent_ip: 'gMD5M9W6AkC9Ux6t4kue',
 
-  product: 'HefKgAN3Bu7jsPC5ogo1',
-  issue_type: 'JvJQhKLJpp7KzkSDjHct',
+  product: '8um1Z810bI4Iyu8vWXst',
+  issue_type: 'uQbnZ6UjbCtEhQU0sHhP',
 
-  role: 'dBHn7sjofi6xd2wjWmzt',
-  annual_volume: 'WjhjBvePkaH6UB2oVa8D',
-  interest: '3htYTBaSXGnnZaVUp6oU',
+  role: 'hHDD3HvWpUVTsJN7Ya52',
+  annual_volume: 'lM54anvfT2kvp9m8G8w1',
+  interest: 'fSyljUNZJtwJ0I0HdBB3',
 
-  location: 'kPeplx04fEdPXg0CXJ6R',
-  product_to_install: 'f1C9zjdDIrAppgAFgrLZ',
-  preferred_contact: 'IZKVwVY8ekH3dS7fvWnz',
+  location: 'WJza3UCnygdHLFV504HP',
+  product_to_install: 'FjFBuE7eERmqU98p0PLW',
+  preferred_contact: 'J2x4bB54juiTKZe7g1Tw',
 
-  demo_type: 'rWQdwlB1Wpo8fU43Uveo',
-  preferred_date: '8oXPUTIFLUhYBhjXQCil',
-  preferred_time: 'uNMoRYOC4YQHSvjolfoV',
-  number_of_attendees: 'k8OerAmm3MwM3QQtsPBW',
-  products_of_interest: 'ppB3opnq2jaqDFUD0gqR',
-  portfolio_size: 'wl3LKXKtOFhMOiXgF4dy',
+  demo_type: 'QdaAcLKl6iHOv3mf0LJ1',
+  preferred_date: 'oY7RSTUSLxOFoROaLZPz',
+  preferred_time: 'JyNlEpnSuiS01YWAhjoi',
+  number_of_attendees: '7Vew3iuHntZCHiNuJImK',
+  products_of_interest: 'rgr35ytJoapGudPyHoq1',
+  portfolio_size: 'RS7ErBmzdb4g355mPi2F',
 
-  upgrade_photo_url: 'zSydZDTQmgS2OllRKeDr',
+  upgrade_photo_url: '7iSBKTD3rkJzKxcKFO1S',
 
   // Trash the Float campaign — TTF custom fields live on the Opportunity object now,
   // and their IDs are auto-resolved at runtime via ensureOpportunityFieldIds() (like
@@ -35,11 +35,11 @@ const customFieldIds = {
 
   unsubscribe_reason: 'TQyRoFTSAyBrI27EIatx',
 
-  email_pref_product_updates: 'ElhRgC1lGHcbk26Bahmj',
-  email_pref_promotions: 'W2XzWoneO3N1ez5T20wP',
-  email_pref_newsletter: 'TtlNO0j7868pcbnsUSYW',
-  email_pref_order_updates: 'PfXJOHoCccoEtrN2HoKG',
-  email_pref_support: 'jzFSRD4dFpbe6OqIoAg9',
+  email_pref_product_updates: 'Va7SJQVFbvTkOVDZ52IS',
+  email_pref_promotions: '6NB4WSJGU6j1JzknrH1j',
+  email_pref_newsletter: 'txn3JL4fAs18ExAeD1kp',
+  email_pref_order_updates: 'zrQJmC3WVoWXrO84SPA7',
+  email_pref_support: 'BMSViGCwpKVEPm7ko8xx',
 
   // Note: Municipal Opportunity custom field IDs are NOT listed here.
   // They are auto-resolved at runtime from GHL via `ensureOpportunityFieldIds()`
@@ -97,25 +97,28 @@ const customFieldTypes = {
 
   // Municipal intake (Opportunity object) — keyed by short key (without "opportunity." prefix).
   // IDs auto-resolved at runtime; types are still static (form-data shaping).
+  // NOTE: GHL slugifies "/" as DOUBLE underscore, so several keys below have `__`
+  // (e.g. parish__county, primary_contact_title__role). Don't "fix" these — they must
+  // match the fieldKeys GHL returns, or ID resolution silently drops the value.
   municipality_name: 'text',
-  parish_county: 'text',
+  parish__county: 'text',
   state: 'text',
   population_size: 'numeric',
-  primary_contact_title_role: 'text',
+  primary_contact_title__role: 'text',
   secondary_contact_full_name: 'text',
-  secondary_contact_title_role: 'text',
+  secondary_contact_title__role: 'text',
   secondary_contact_email: 'text',
   secondary_contact_phone: 'text',
-  number_of_facilities_buildings: 'numeric',
+  number_of_facilities__buildings: 'numeric',
   types_of_facilities: 'multiselect',
-  existing_drain_overflow_monitoring_systems: 'text',
-  attended_boafncoaa_event: 'text',
+  existing_drain__overflow_monitoring_systems: 'text',
+  attended_boaf_or_coaa_event: 'text',
   interested_in_special_offer: 'text',
   estimated_number_of_units_needed: 'numeric',
   preferred_installation_timeline: 'text',
   agrees_to_purchase_wifi_sensor_switch: 'text',
   eligible_for_free_monitoring: 'text',
-  notes_special_requirements: 'text',
+  notes__special_requirements: 'text',
   municipal_program_status: 'text',
   number_of_units_installed: 'numeric',
   monitoring_activated: 'text',
@@ -164,6 +167,9 @@ const formConfigs = {
     valueTags: [{ formKey: 'customerType', map: CUSTOMER_TYPE_TAGS }],
     sourceAttribution: 'acdrainwiz.com: contact-general',
     writeMessageAsNote: true,
+    opportunityPipelineEnvVar: 'GHL_WEBSITE_PIPELINE_ID',
+    opportunityStageEnvVar: 'GHL_WEBSITE_PIPELINE_STAGE_ID',
+    opportunityNameTemplate: 'General Inquiry: {firstName} {lastName}',
   },
 
   'contact-support': {
@@ -183,6 +189,9 @@ const formConfigs = {
     valueTags: [{ formKey: 'customerType', map: CUSTOMER_TYPE_TAGS }],
     sourceAttribution: 'acdrainwiz.com: contact-support',
     writeMessageAsNote: true,
+    opportunityPipelineEnvVar: 'GHL_SUPPORT_PIPELINE_ID',
+    opportunityStageEnvVar: 'GHL_SUPPORT_PIPELINE_STAGE_ID',
+    opportunityNameTemplate: 'Support Request: {firstName} {lastName}',
   },
 
   'contact-sales': {
@@ -201,6 +210,9 @@ const formConfigs = {
     valueTags: [{ formKey: 'customerType', map: CUSTOMER_TYPE_TAGS }],
     sourceAttribution: 'acdrainwiz.com: contact-sales',
     writeMessageAsNote: true,
+    opportunityPipelineEnvVar: 'GHL_WEBSITE_PIPELINE_ID',
+    opportunityStageEnvVar: 'GHL_WEBSITE_PIPELINE_STAGE_ID',
+    opportunityNameTemplate: 'Sales Inquiry: {firstName} {lastName}',
   },
 
   'contact-installer': {
@@ -217,6 +229,9 @@ const formConfigs = {
     sourceTags: ['contractor'],
     sourceAttribution: 'acdrainwiz.com: contact-installer',
     writeMessageAsNote: true,
+    opportunityPipelineEnvVar: 'GHL_WEBSITE_PIPELINE_ID',
+    opportunityStageEnvVar: 'GHL_WEBSITE_PIPELINE_STAGE_ID',
+    opportunityNameTemplate: 'Installer Signup: {firstName} {lastName}',
   },
 
   'contact-demo': {
@@ -244,6 +259,9 @@ const formConfigs = {
     noteAppendFields: [
       { label: 'Demo Focus', formKey: 'demoFocus' },
     ],
+    opportunityPipelineEnvVar: 'GHL_WEBSITE_PIPELINE_ID',
+    opportunityStageEnvVar: 'GHL_WEBSITE_PIPELINE_STAGE_ID',
+    opportunityNameTemplate: 'Demo Request: {firstName} {lastName}',
   },
 
   'core-upgrade': {
@@ -262,6 +280,9 @@ const formConfigs = {
     ],
     sourceTags: ['follow-up'],
     sourceAttribution: 'acdrainwiz.com: core-upgrade',
+    opportunityPipelineEnvVar: 'GHL_WEBSITE_PIPELINE_ID',
+    opportunityStageEnvVar: 'GHL_WEBSITE_PIPELINE_STAGE_ID',
+    opportunityNameTemplate: 'Core 1.0 Upgrade: {firstName} {lastName}',
   },
 
   'unsubscribe': {
@@ -308,24 +329,24 @@ const formConfigs = {
     // Opportunity-side custom fields (form key on the right, GHL custom field key on the left).
     opportunityCustomFields: [
       ['municipality_name', 'municipalityName'],
-      ['parish_county', 'parishCounty'],
+      ['parish__county', 'parishCounty'],
       ['state', 'state'],
       ['population_size', 'populationSize'],
-      ['primary_contact_title_role', 'role'],
+      ['primary_contact_title__role', 'role'],
       ['secondary_contact_full_name', 'secondaryName'],
-      ['secondary_contact_title_role', 'secondaryTitle'],
+      ['secondary_contact_title__role', 'secondaryTitle'],
       ['secondary_contact_email', 'secondaryEmail'],
       ['secondary_contact_phone', 'secondaryPhone'],
-      ['number_of_facilities_buildings', 'numberOfFacilities'],
+      ['number_of_facilities__buildings', 'numberOfFacilities'],
       ['types_of_facilities', 'facilityTypes'],
-      ['existing_drain_overflow_monitoring_systems', 'existingMonitoring'],
-      ['attended_boafncoaa_event', 'attendedEvent'],
+      ['existing_drain__overflow_monitoring_systems', 'existingMonitoring'],
+      ['attended_boaf_or_coaa_event', 'attendedEvent'],
       ['interested_in_special_offer', 'interestedInOffer'],
       ['estimated_number_of_units_needed', 'unitsNeeded'],
       ['preferred_installation_timeline', 'installationTimeline'],
       ['agrees_to_purchase_wifi_sensor_switch', 'agreesToPurchase'],
       ['eligible_for_free_monitoring', 'eligibleFreeMonitoring'],
-      ['notes_special_requirements', 'message'],
+      ['notes__special_requirements', 'message'],
       ['municipal_program_status', 'municipalProgramStatus'],
       ['number_of_units_installed', 'numberOfUnitsInstalled'],
       ['monitoring_activated', 'monitoringActivated'],

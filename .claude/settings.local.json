@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell($src='C:\\\\Users\\\\Lucas\\\\acdw-website'; $dst='C:\\\\Users\\\\Lucas\\\\Marketing ACDW Website'; Copy-Item -Path \"$src\\\\src\" -Destination \"$dst\\\\src\" -Recurse -Force; Copy-Item -Path \"$src\\\\public\" -Destination \"$dst\\\\public\" -Recurse -Force; Copy-Item -Path \"$src\\\\tsconfig.json\",\"$src\\\\tsconfig.app.json\",\"$src\\\\tsconfig.node.json\",\"$src\\\\vite.config.ts\",\"$src\\\\tailwind.config.js\",\"$src\\\\eslint.config.js\",\"$src\\\\postcss.config.js\",\"$src\\\\package-lock.json\",\"$src\\\\.nvmrc\",\"$src\\\\email-signature-template.html\" -Destination $dst -Force; Remove-Item \"$dst\\\\src\\\\pages\\\\SolutionsPage.tsx\",\"$dst\\\\src\\\\pages\\\\SupportPage.tsx\",\"$dst\\\\src\\\\pages\\\\CartPage.tsx\" -Force; Write-Host \"Copied src/, public/, top-level configs. Removed 3 unrouted page files.\")"
+    ]
+  }
+}

@@ -410,8 +410,59 @@ async function submitForm(formType, sanitizedData) {
     }
   }
 
+  // Optionally create a "light" Opportunity in a pipeline tied to this form. Used by
+  // contact-* and core-upgrade forms to land leads as pipeline cards (Website Leads,
+  // Support Requests, etc.) — distinct from the heavy municipal-intake flow which
+  // sets `target: 'opportunity'` and runs through submitOpportunityForm instead.
+  // Contact tags + notes are already attached above; this only adds the pipeline card.
+  let opportunityId = null
+  if (formConfig.opportunityPipelineEnvVar) {
+    const pipelineId = process.env[formConfig.opportunityPipelineEnvVar]
+    const stageId = formConfig.opportunityStageEnvVar
+      ? process.env[formConfig.opportunityStageEnvVar]
+      : ''
+    if (!pipelineId || !stageId) {
+      warnings.push({
+        stage: 'opportunityPipelineNotConfigured',
+        message: `${formConfig.opportunityPipelineEnvVar} or ${formConfig.opportunityStageEnvVar} not set; Opportunity not created.`,
+      })
+    } else {
+      const cfg = getConfig()
+      const opportunityPayload = {
+        pipelineId,
+        locationId: cfg.locationId,
+        pipelineStageId: stageId,
+        name: renderOpportunityName(formConfig.opportunityNameTemplate, sanitizedData),
+        status: 'open',
+        contactId,
+        source: formConfig.sourceAttribution,
+      }
+      try {
+        const oppResult = await createOpportunity(opportunityPayload)
+        opportunityId = oppResult.opportunityId || null
+        if (!opportunityId) {
+          warnings.push({
+            stage: 'createOpportunity',
+            error: 'No opportunityId returned',
+            raw: oppResult.raw,
+          })
+        }
+      } catch (oppErr) {
+        // Contact has already landed — don't fail the submission over a pipeline-card miss.
+        warnings.push({
+          stage: 'createOpportunity',
+          error: oppErr.message,
+          status: oppErr.status,
+          traceId: oppErr.traceId || null,
+          responseBody: oppErr.responseBody,
+        })
+      }
+    }
+  }
+
   return {
     contactId,
+    opportunityId,
     isNew: upsertResult.isNew,
     traceId: upsertResult.traceId,
     warnings,
