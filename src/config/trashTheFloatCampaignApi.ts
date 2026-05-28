@@ -24,6 +24,10 @@ export type TrashTheFloatHallOfFameEntry = {
   cityState?: string
   publishedAt: string
   mediaUrl?: string
+  /** Monthly iPad drawing winner vs impact spotlight runner-up */
+  featuredKind?: 'monthly-winner' | 'featured-story'
+  /** Shown in live card footer, e.g. "March 2026" */
+  monthLabel?: string
 }
 
 export type TrashTheFloatWinnerEntry = {

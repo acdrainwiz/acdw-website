@@ -50,6 +50,9 @@ export type CampaignEligibilityItem = {
   detail: string
 }
 
+/** Hall of Fame card badge — monthly iPad winner vs impact spotlight runner-up vs preview sample */
+export type HallOfFameStoryBadgeKind = 'monthly-winner' | 'featured-story' | 'sample-story'
+
 /** Hall of Fame placeholder — shows expected card layout before API stories exist */
 export type CampaignHallOfFamePreviewStory = {
   id: string
@@ -61,16 +64,20 @@ export type CampaignHallOfFamePreviewStory = {
   excerpt: string
   imageKey: 'storyDamage1' | 'storyDamage2' | 'floatSwitchTrans'
   imageAlt: string
-  layoutNote: string
+  badgeKind: HallOfFameStoryBadgeKind
+  footerNote: string
 }
 
 export const TRASH_THE_FLOAT = {
   /** Anchor path for all Official Rules links site-wide */
   officialRulesHref: TRASH_THE_FLOAT_OFFICIAL_RULES_HREF,
 
-  // Storage key version-bumped so we can re-show the overlay later if copy changes materially.
-  /** Bump when dismiss semantics change so prior test keys do not block the overlay. */
+  // Permanent dismiss — localStorage (survives browser restarts).
+  /** Bump when permanent dismiss semantics change. */
   storageKey: 'acdw.trashTheFloat.overlay.dismissed.v2',
+
+  /** Session dismiss — sessionStorage (once per browser tab session). */
+  sessionStorageKey: 'acdw.trashTheFloat.overlay.session.v1',
 
   // Delay before the overlay opens, so the hero gets to paint first.
   showDelayMs: 600,
@@ -158,6 +165,7 @@ export const TRASH_THE_FLOAT = {
     disclaimer:
       'Stories are reviewed before publication. No purchase necessary where applicable. See Official Rules on the campaign page.',
     closeLabel: 'Close',
+    dontShowAgainLabel: "Don't show again on future visits",
   },
 
   /** @deprecated Modal no longer renders these — kept for reference / future A-B tests */
@@ -270,7 +278,7 @@ export const TRASH_THE_FLOAT = {
       howItWorks: 'How it works',
       faq: 'FAQ & eligibility',
       submission: 'Your turn',
-      hallOfShame: 'Impact spotlight',
+      hallOfShame: 'Past winners & standouts',
       winners: 'Winners',
     },
 
@@ -412,6 +420,56 @@ export const TRASH_THE_FLOAT = {
     moderationNote:
       'Submissions are reviewed before publication to protect privacy, remove inappropriate language, verify your Instagram follow, and confirm campaign eligibility.',
 
+    /** Post-submit #submit-story section — replaces pre-submit header when entry succeeds */
+    sectionSuccess: {
+      eyebrow: 'Entry received',
+      title: 'Story received — nice work trashing the float',
+      lead:
+        'We got your story. Follow the steps below so we can verify eligibility and move your entry into review.',
+      checklist: {
+        submittedLabel: 'Story submitted',
+        followLabel: 'Follow @ac_drain_wiz on Instagram',
+        followHint:
+          'Required — we verify your follow with the handle you provided before your entry is eligible for the monthly drawing.',
+      },
+      nextStepsTitle: 'What happens next',
+      nextSteps: [
+        {
+          title: 'We review your story',
+          body:
+            'Our team checks privacy, eligibility, and confirms you follow @ac_drain_wiz on Instagram using the handle you submitted.',
+        },
+        {
+          title: 'Approved entries enter the monthly drawing',
+          body:
+            'Each calendar month is a separate entry period (first day 12:00:01 a.m. ET through last day 11:59:59 p.m. ET). Approved stories from that period are entered into that month\'s random drawing.',
+        },
+        {
+          title: 'Live drawing on Instagram',
+          body:
+            'On or about the fifth (5th) business day of the month following your entry period, we conduct a random drawing live on @ac_drain_wiz (for example, June entries are drawn on or about the fifth business day of July). Winners are also announced on this page.',
+        },
+      ] satisfies { title: string; body: string }[],
+      primaryCtaLabel: 'Follow @ac_drain_wiz on Instagram',
+      hallOfFameLink: 'Explore the Hall of Fame',
+      anotherStoryLink: 'Have another float-switch story? Submit another entry',
+      reentryGate: {
+        eyebrow: 'Additional entry',
+        title: 'Before you submit another story',
+        lead:
+          'Each story counts as a separate entry. Confirm these requirements with your new Instagram account before you continue to the form.',
+        bullets: [
+          'Use a different Instagram handle than your previous submission(s).',
+          'Follow @ac_drain_wiz on Instagram with that new handle — required for drawing eligibility.',
+          'One entry per distinct story experience per entry period. See Official Rules for full details.',
+        ],
+        continueLabel: 'Continue to form',
+        cancelLabel: 'Stay on this page',
+      },
+      instagramReuseHint:
+        'Each story needs its own Instagram handle — different from your previous submission(s). Follow @ac_drain_wiz with that account before you submit.',
+    },
+
     form: {
       instagramHandle: {
         label: 'Instagram handle',
@@ -431,10 +489,17 @@ export const TRASH_THE_FLOAT = {
     },
 
     hallOfShame: {
-      title: 'The Float Switch Story Hall of Fame',
+      title: 'Float Switch Story Hall of Fame',
       intro:
-        'The callbacks that left a mark — ceiling stains, drain pan floods, emergency visits, and repair bills. We feature approved stories that best show why floats fail when it matters most. Featured for impact; separate from our monthly iPad drawing.',
-      comingSoonLabel: 'Coming soon',
+        'Real callbacks from contractors, homeowners, and property managers who entered Trash the Float — including monthly drawing winners and runner-up stories we feature for impact. Names and details are published only with permission.',
+      badges: {
+        monthlyWinner: 'Monthly winner',
+        featuredStory: 'Featured story',
+        sampleStory: 'Sample story',
+      },
+      previewFooterNote:
+        'Sample layout — real winner stories post after our first drawing',
+      liveFooterNoteTemplate: 'Featured with permission · {monthYear}',
       /** Example layouts shown until approved stories load from the API */
       previewStories: [
         {
@@ -448,7 +513,9 @@ export const TRASH_THE_FLOAT = {
             'Float switch never tripped. Pan overflowed before anyone noticed — second emergency visit that month.',
           imageKey: 'storyDamage2',
           imageAlt: 'Water overflow in an AC drain pan',
-          layoutNote: 'Example layout · not a submission',
+          badgeKind: 'sample-story',
+          footerNote:
+            'Sample layout — real winner stories post after our first drawing',
         },
         {
           id: 'preview-ceiling',
@@ -461,7 +528,9 @@ export const TRASH_THE_FLOAT = {
             'By the time the float worked, condensate had already reached the ceiling. Drywall repair followed.',
           imageKey: 'storyDamage1',
           imageAlt: 'Water stain on a ceiling from condensate line backup',
-          layoutNote: 'Example layout · not a submission',
+          badgeKind: 'sample-story',
+          footerNote:
+            'Sample layout — real winner stories post after our first drawing',
         },
         {
           id: 'preview-stuck-float',
@@ -474,7 +543,9 @@ export const TRASH_THE_FLOAT = {
             'Mechanical float looked fine on the last service call — until it did not. Another stuck-float callback.',
           imageKey: 'floatSwitchTrans',
           imageAlt: 'Traditional mechanical float switch',
-          layoutNote: 'Example layout · not a submission',
+          badgeKind: 'sample-story',
+          footerNote:
+            'Sample layout — real winner stories post after our first drawing',
         },
       ] satisfies readonly CampaignHallOfFamePreviewStory[],
     },

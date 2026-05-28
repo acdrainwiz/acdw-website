@@ -1,25 +1,55 @@
 import { TRASH_THE_FLOAT } from '@/config/trashTheFloatCopy'
-import type { CampaignHallOfFamePreviewStory } from '@/config/trashTheFloatCopy'
+import type {
+  CampaignHallOfFamePreviewStory,
+  HallOfFameStoryBadgeKind,
+} from '@/config/trashTheFloatCopy'
+import { cn } from '@/lib/utils'
 
 type TtfStorySpotlightCardProps = {
   story: CampaignHallOfFamePreviewStory
-  comingSoonLabel: string
+}
+
+const BADGE_LABELS = TRASH_THE_FLOAT.landing.hallOfShame.badges
+
+function hallOfFameBadgeLabel(kind: HallOfFameStoryBadgeKind): string {
+  switch (kind) {
+    case 'monthly-winner':
+      return BADGE_LABELS.monthlyWinner
+    case 'featured-story':
+      return BADGE_LABELS.featuredStory
+    case 'sample-story':
+      return BADGE_LABELS.sampleStory
+  }
 }
 
 /**
  * Hall of Fame preview card — shows the expected story layout before approved
  * submissions are wired from the campaign API.
  */
-export function TtfStorySpotlightCard({ story, comingSoonLabel }: TtfStorySpotlightCardProps) {
+export function TtfStorySpotlightCard({ story }: TtfStorySpotlightCardProps) {
   const { images } = TRASH_THE_FLOAT
   const imageSrc = images[story.imageKey]
+  const badgeLabel = hallOfFameBadgeLabel(story.badgeKind)
 
   return (
     <article
-      className="ttf-page-story-card ttf-page-story-card--preview campaign-card-light"
-      aria-label={`${story.layoutNote}: ${story.storyTitle}`}
+      className={cn(
+        'ttf-page-story-card ttf-page-story-card--preview campaign-card-light',
+        story.badgeKind === 'monthly-winner' && 'ttf-page-story-card--winner',
+        story.badgeKind === 'featured-story' && 'ttf-page-story-card--featured',
+        story.badgeKind === 'sample-story' && 'ttf-page-story-card--sample',
+      )}
+      aria-label={`${badgeLabel}: ${story.storyTitle}`}
     >
-      <span className="ttf-page-shame-badge ttf-page-story-card-badge">{comingSoonLabel}</span>
+      <span
+        className={cn(
+          'ttf-page-shame-badge ttf-page-story-card-badge',
+          story.badgeKind === 'monthly-winner' && 'ttf-page-story-card-badge--winner',
+          story.badgeKind === 'featured-story' && 'ttf-page-story-card-badge--featured',
+        )}
+      >
+        {badgeLabel}
+      </span>
 
       <div className="ttf-page-story-card-media">
         <img
@@ -56,7 +86,7 @@ export function TtfStorySpotlightCard({ story, comingSoonLabel }: TtfStorySpotli
         </p>
         <h3 className="ttf-page-story-card-title">{story.storyTitle}</h3>
         <p className="ttf-page-story-card-excerpt">{story.excerpt}</p>
-        <p className="ttf-page-story-card-note">{story.layoutNote}</p>
+        <p className="ttf-page-story-card-note">{story.footerNote}</p>
       </div>
     </article>
   )

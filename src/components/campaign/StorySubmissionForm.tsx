@@ -1,8 +1,8 @@
-import { forwardRef, useRef, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { forwardRef, useMemo, useRef, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { CheckCircleIcon } from '@heroicons/react/24/solid'
+import { IMaskInput } from 'react-imask'
 import { cn } from '@/lib/utils'
 import { TtfOfficialRulesLink } from '@/components/campaign/TtfOfficialRulesLink'
 import { TtfStoryPhotoExamples } from '@/components/campaign/TtfStoryPhotoExamples'
@@ -13,7 +13,7 @@ import {
   TRASH_THE_FLOAT_RECAPTCHA_ACTION,
 } from '@/config/trashTheFloatSubmission'
 import { useRecaptcha } from '@/hooks/useRecaptcha'
-import { submitTrashTheFloatStory } from '@/services/submitTrashTheFloatStory'
+import { submitTrashTheFloatStory, normalizeInstagramHandle } from '@/services/submitTrashTheFloatStory'
 import { isLocalDevEnvironment } from '@/utils/isLocalDevEnvironment'
 
 const AUDIENCE_OPTIONS = [
@@ -24,37 +24,56 @@ const AUDIENCE_OPTIONS = [
   'Other',
 ] as const
 
-const storySchema = z.object({
-  fullName: z.string().min(2, 'Please enter your full name'),
-  email: z.string().email('Enter a valid email address'),
-  phone: z.string().min(7, 'Enter a phone number we can reach you at').optional().or(z.literal('')),
-  cityState: z.string().min(2, 'City and state help us verify eligibility'),
-  instagramHandle: z
-    .string()
-    .min(1, 'Instagram handle is required')
-    .max(31, 'Keep your handle under 30 characters')
-    .refine((value) => {
-      const handle = value.trim().replace(/^@+/, '')
-      return /^[a-zA-Z0-9._]{1,30}$/.test(handle)
-    }, 'Enter a valid Instagram handle (letters, numbers, periods, underscores)'),
-  audience: z.enum(AUDIENCE_OPTIONS, {
-    message: 'Pick the option that best describes you',
-  }),
-  storyBody: z.string().min(30, 'Tell us a bit more — at least 30 characters'),
-  damageImpact: z
-    .string()
-    .max(500, 'Keep this under 500 characters')
-    .optional()
-    .or(z.literal('')),
-  consent: z.literal(true, {
-    message: 'Please confirm your story is true and you give us permission to review it',
-  }),
-  rules: z.literal(true, {
-    message: 'Please agree to the Official Rules and Privacy Policy',
-  }),
-})
+function normalizeHandleKey(raw: string): string {
+  return raw.trim().replace(/^@+/, '').toLowerCase()
+}
 
-type StoryFormValues = z.infer<typeof storySchema>
+function createStorySchema(usedInstagramHandles: string[]) {
+  const usedKeys = new Set(usedInstagramHandles.map(normalizeHandleKey))
+
+  return z.object({
+    fullName: z.string().min(2, 'Please enter your full name'),
+    email: z.string().email('Enter a valid email address'),
+    phone: z
+      .string()
+      .optional()
+      .or(z.literal(''))
+      .refine((value) => {
+        if (!value || value.trim() === '') return true
+        return value.replace(/\D/g, '').length >= 10
+      }, 'Please enter a valid phone number'),
+    cityState: z.string().min(2, 'City and state help us verify eligibility'),
+    instagramHandle: z
+      .string()
+      .min(1, 'Instagram handle is required')
+      .max(31, 'Keep your handle under 30 characters')
+      .refine((value) => {
+        const handle = value.trim().replace(/^@+/, '')
+        return /^[a-zA-Z0-9._]{1,30}$/.test(handle)
+      }, 'Enter a valid Instagram handle (letters, numbers, periods, underscores)')
+      .refine((value) => !usedKeys.has(normalizeHandleKey(value)), {
+        message:
+          'Each story needs its own Instagram handle. Use a different handle than your previous submission.',
+      }),
+    audience: z.enum(AUDIENCE_OPTIONS, {
+      message: 'Pick the option that best describes you',
+    }),
+    storyBody: z.string().min(30, 'Tell us a bit more — at least 30 characters'),
+    damageImpact: z
+      .string()
+      .max(500, 'Keep this under 500 characters')
+      .optional()
+      .or(z.literal('')),
+    consent: z.literal(true, {
+      message: 'Please confirm your story is true and you give us permission to review it',
+    }),
+    rules: z.literal(true, {
+      message: 'Please agree to the Official Rules and Privacy Policy',
+    }),
+  })
+}
+
+type StoryFormValues = z.infer<ReturnType<typeof createStorySchema>>
 
 /**
  * Trash the Float story submission form.
@@ -65,12 +84,25 @@ type StoryFormValues = z.infer<typeof storySchema>
 type StorySubmissionFormProps = {
   /** Light theme for the cream #submit-story editorial plate on the landing page. */
   theme?: 'dark' | 'light'
+  /** Handles already used this session — blocks duplicate entries on re-submit. */
+  usedInstagramHandles?: string[]
+  /** When true, show callout above Instagram field (after re-entry gate). */
+  showInstagramReuseHint?: boolean
+  onSuccess?: (instagramHandle: string) => void
 }
 
-export function StorySubmissionForm({ theme = 'dark' }: StorySubmissionFormProps) {
+export function StorySubmissionForm({
+  theme = 'dark',
+  usedInstagramHandles = [],
+  showInstagramReuseHint = false,
+  onSuccess,
+}: StorySubmissionFormProps) {
   const isLight = theme === 'light'
+  const storySchema = useMemo(
+    () => createStorySchema(usedInstagramHandles),
+    [usedInstagramHandles],
+  )
   const { getRecaptchaToken } = useRecaptcha()
-  const [submitted, setSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [fileName, setFileName] = useState<string | null>(null)
   const [mediaFile, setMediaFile] = useState<File | null>(null)
@@ -81,6 +113,7 @@ export function StorySubmissionForm({ theme = 'dark' }: StorySubmissionFormProps
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
@@ -127,54 +160,10 @@ export function StorySubmissionForm({ theme = 'dark' }: StorySubmissionFormProps
       return
     }
 
-    setSubmitted(true)
+    onSuccess?.(normalizeInstagramHandle(values.instagramHandle))
     reset()
     setFileName(null)
     setMediaFile(null)
-  }
-
-  if (submitted) {
-    return (
-      <div className={isLight ? 'ttf-form-card ttf-form-card--success' : 'campaign-card p-6 sm:p-8'}>
-        <div className="ttf-form-success">
-          <CheckCircleIcon
-            className={cn(
-              'mt-0.5 h-6 w-6 shrink-0',
-              isLight ? 'text-primary-600' : 'text-[var(--acdw-orange)]',
-            )}
-            aria-hidden
-          />
-          <div>
-            <h3
-              className={cn(
-                'text-xl font-semibold',
-                isLight ? 'text-[var(--acdw-navy)]' : 'text-white',
-              )}
-            >
-              Thanks — your story is queued for review.
-            </h3>
-            <p
-              className={cn(
-                'mt-2 text-sm leading-relaxed',
-                isLight ? 'text-[rgba(0,26,53,0.72)]' : 'text-white/75',
-              )}
-            >
-              {TRASH_THE_FLOAT.landing.moderationNote}
-            </p>
-            <button
-              type="button"
-              onClick={() => setSubmitted(false)}
-              className={cn(
-                'mt-5 rounded-lg px-4 py-2 text-sm',
-                isLight ? 'btn btn-outline' : 'campaign-cta-secondary',
-              )}
-            >
-              Submit another story
-            </button>
-          </div>
-        </div>
-      </div>
-    )
   }
 
   return (
@@ -228,14 +217,26 @@ export function StorySubmissionForm({ theme = 'dark' }: StorySubmissionFormProps
         </Field>
 
         <Field label="Phone" error={errors.phone?.message} htmlFor="ttf-phone">
-          <input
-            id="ttf-phone"
-            type="tel"
-            autoComplete="tel"
-            placeholder="(555) 555-5555"
-            aria-invalid={Boolean(errors.phone)}
-            {...register('phone')}
-            className={inputClass(Boolean(errors.phone))}
+          <Controller
+            name="phone"
+            control={control}
+            render={({ field: { onChange, onBlur, value, ref } }) => (
+              <IMaskInput
+                mask="(000) 000-0000"
+                type="tel"
+                id="ttf-phone"
+                name="phone"
+                autoComplete="tel"
+                inputRef={ref}
+                value={value ?? ''}
+                onAccept={(maskedValue) => onChange(maskedValue)}
+                onBlur={onBlur}
+                placeholder="(555) 123-4567"
+                aria-invalid={Boolean(errors.phone)}
+                className={inputClass(Boolean(errors.phone))}
+                unmask={false}
+              />
+            )}
           />
         </Field>
 
@@ -259,6 +260,14 @@ export function StorySubmissionForm({ theme = 'dark' }: StorySubmissionFormProps
       </div>
 
       <div className="mt-4">
+        {showInstagramReuseHint && usedInstagramHandles.length > 0 ? (
+          <div className="ttf-form-instagram-reuse-hint" role="note">
+            <p>{TRASH_THE_FLOAT.landing.sectionSuccess.instagramReuseHint}</p>
+            <p className="ttf-form-instagram-reuse-handles">
+              Already used: {usedInstagramHandles.join(', ')}
+            </p>
+          </div>
+        ) : null}
         <Field
           label={TRASH_THE_FLOAT.landing.form.instagramHandle.label}
           required
