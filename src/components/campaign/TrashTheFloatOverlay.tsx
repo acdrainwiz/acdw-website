@@ -39,7 +39,9 @@ export function TrashTheFloatOverlay() {
 
     let dismissed = false
     try {
-      dismissed = window.localStorage.getItem(TRASH_THE_FLOAT.storageKey) === '1'
+      dismissed =
+        window.sessionStorage.getItem(TRASH_THE_FLOAT.sessionStorageKey) === '1' ||
+        window.localStorage.getItem(TRASH_THE_FLOAT.storageKey) === '1'
     } catch {
       // Storage unavailable; show overlay.
     }
@@ -52,7 +54,15 @@ export function TrashTheFloatOverlay() {
     return () => window.clearTimeout(timeout)
   }, [])
 
-  const persistDismissal = () => {
+  const persistSessionDismissal = () => {
+    try {
+      window.sessionStorage.setItem(TRASH_THE_FLOAT.sessionStorageKey, '1')
+    } catch {
+      // Storage unavailable; swallow.
+    }
+  }
+
+  const persistPermanentDismissal = () => {
     try {
       window.localStorage.setItem(TRASH_THE_FLOAT.storageKey, '1')
     } catch {
@@ -60,14 +70,18 @@ export function TrashTheFloatOverlay() {
     }
   }
 
-  const handleClose = () => {
-    if (dontShowAgainRef.current) persistDismissal()
+  const dismissOverlay = () => {
+    persistSessionDismissal()
+    if (dontShowAgainRef.current) persistPermanentDismissal()
     setIsOpen(false)
   }
 
+  const handleClose = () => {
+    dismissOverlay()
+  }
+
   const handleCtaClick = () => {
-    if (dontShowAgainRef.current) persistDismissal()
-    setIsOpen(false)
+    dismissOverlay()
   }
 
   const modalActionsClassName = 'ttf-modal-cta-row ttf-modal-reveal ttf-modal-reveal--7'
@@ -199,7 +213,7 @@ export function TrashTheFloatOverlay() {
                   onChange={(e) => setDontShowAgain(e.target.checked)}
                   className="ttf-modal-dismiss-checkbox"
                 />
-                Don't show again
+                {overlay.dontShowAgainLabel}
               </label>
             </div>
 

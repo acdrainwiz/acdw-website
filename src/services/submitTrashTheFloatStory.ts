@@ -75,6 +75,8 @@ function normalizeInstagramHandle(raw: string): string {
   return handle ? `@${handle}` : ''
 }
 
+export { normalizeInstagramHandle }
+
 function buildSubmissionBody(
   input: SubmitTrashTheFloatStoryInput,
   mediaUrl: string,

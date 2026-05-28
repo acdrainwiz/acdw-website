@@ -12,6 +12,10 @@ import {
 } from '@heroicons/react/24/outline'
 import { HeroFloatTrashDunk } from '@/components/campaign/HeroFloatTrashDunk'
 import { StorySubmissionForm } from '@/components/campaign/StorySubmissionForm'
+import {
+  TtfSubmissionReentryModal,
+  TtfSubmissionSuccessPanel,
+} from '@/components/campaign/TtfSubmissionPostEntry'
 import { TtfConfettiRain } from '@/components/campaign/TtfConfettiRain'
 import { TtfPageMeshBackdrop } from '@/components/campaign/TtfPageMeshBackdrop'
 import {
@@ -29,6 +33,7 @@ import { TtfHashLink } from '@/components/campaign/TtfHashLink'
 import { TtfOfficialRulesLink } from '@/components/campaign/TtfOfficialRulesLink'
 import { TRASH_THE_FLOAT } from '@/config/trashTheFloatCopy'
 import { scrollToHashTargetWithRetries } from '@/utils/scrollToHashTarget'
+import { cn } from '@/lib/utils'
 import type { PageSearchMeta } from '@/config/siteSearchTypes'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
@@ -642,39 +647,137 @@ function SectionHeader({
 }
 
 function SubmissionSection() {
-  const { sectionEyebrows, submissionTitle, submissionIntro, submissionReassurance, moderationNote } =
-    TRASH_THE_FLOAT.landing
+  type SubmissionPhase = 'entry' | 'success'
+
+  const {
+    sectionEyebrows,
+    submissionTitle,
+    submissionIntro,
+    submissionReassurance,
+    moderationNote,
+    sectionSuccess,
+  } = TRASH_THE_FLOAT.landing
+
+  const [phase, setPhase] = useState<SubmissionPhase>('entry')
+  const [reentryModalOpen, setReentryModalOpen] = useState(false)
+  const [usedInstagramHandles, setUsedInstagramHandles] = useState<string[]>([])
+  const successRegionRef = useRef<HTMLDivElement>(null)
+  const entryRegionRef = useRef<HTMLDivElement>(null)
+
+  const isFormReentry = usedInstagramHandles.length > 0
+
+  useEffect(() => {
+    if (phase !== 'success') return
+
+    const el = successRegionRef.current
+    if (!el) return
+
+    window.requestAnimationFrame(() => {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      el.focus({ preventScroll: true })
+    })
+  }, [phase])
+
+  const handleSubmitSuccess = (instagramHandle: string) => {
+    setUsedInstagramHandles((current) =>
+      current.includes(instagramHandle) ? current : [...current, instagramHandle],
+    )
+    setPhase('success')
+  }
+
+  const handleReentryContinue = () => {
+    setReentryModalOpen(false)
+    setPhase('entry')
+    window.requestAnimationFrame(() => {
+      entryRegionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      entryRegionRef.current?.focus({ preventScroll: true })
+    })
+  }
+
+  const entryHeader = (
+    <>
+      <SectionHeader
+        eyebrow={sectionEyebrows.submission}
+        title={submissionTitle}
+        body={submissionIntro}
+        tone="light"
+        headingId={isFormReentry ? 'ttf-submit-reentry-heading' : undefined}
+      />
+      <p className="ttf-page-submission-reassurance">{submissionReassurance}</p>
+    </>
+  )
 
   return (
-    <section id="submit-story" className="ttf-page-section ttf-page-section--submission ttf-page-section--atmo-submit scroll-mt-24">
+    <section
+      id="submit-story"
+      className={cn(
+        'ttf-page-section ttf-page-section--submission ttf-page-section--atmo-submit scroll-mt-24',
+        phase === 'success' && 'ttf-page-section--submission-success',
+      )}
+    >
       <TtfSectionAtmosphere tone="submit" />
       <div className="ttf-page-section-inner ttf-page-section-inner--narrow">
-        <TtfReveal>
-          <SectionHeader
-            eyebrow={sectionEyebrows.submission}
-            title={submissionTitle}
-            body={submissionIntro}
-            tone="light"
-          />
-          <p className="ttf-page-submission-reassurance">{submissionReassurance}</p>
-        </TtfReveal>
+        {phase === 'entry' ? (
+          <div
+            ref={entryRegionRef}
+            className="ttf-submission-entry-region scroll-mt-24"
+            tabIndex={-1}
+          >
+            {isFormReentry ? entryHeader : <TtfReveal>{entryHeader}</TtfReveal>}
 
-        {/* Form is taller than the mobile viewport — skip scroll-reveal so fields stay visible */}
-        <div className="mt-8">
-          <StorySubmissionForm theme="light" />
-        </div>
+            <div className="mt-8">
+              <StorySubmissionForm
+                theme="light"
+                usedInstagramHandles={usedInstagramHandles}
+                showInstagramReuseHint={isFormReentry}
+                onSuccess={handleSubmitSuccess}
+              />
+            </div>
 
-        <TtfReveal>
-          <p className="ttf-page-moderation-note">{moderationNote}</p>
-        </TtfReveal>
+            {isFormReentry ? (
+              <p className="ttf-page-moderation-note">{moderationNote}</p>
+            ) : (
+              <TtfReveal>
+                <p className="ttf-page-moderation-note">{moderationNote}</p>
+              </TtfReveal>
+            )}
+          </div>
+        ) : null}
+
+        {phase === 'success' ? (
+          <div
+            ref={successRegionRef}
+            className="ttf-submission-success-region scroll-mt-24"
+            tabIndex={-1}
+            role="status"
+            aria-live="polite"
+          >
+            <SectionHeader
+              eyebrow={sectionSuccess.eyebrow}
+              title={sectionSuccess.title}
+              body={sectionSuccess.lead}
+              tone="light"
+              headingId="ttf-submit-success-heading"
+            />
+            <div className="mt-8">
+              <TtfSubmissionSuccessPanel onAnotherStory={() => setReentryModalOpen(true)} />
+            </div>
+          </div>
+        ) : null}
       </div>
+
+      <TtfSubmissionReentryModal
+        open={reentryModalOpen}
+        onContinue={handleReentryContinue}
+        onCancel={() => setReentryModalOpen(false)}
+      />
     </section>
   )
 }
 
 function HallOfShameSection() {
   const { sectionEyebrows, hallOfShame } = TRASH_THE_FLOAT.landing
-  const { title, intro, comingSoonLabel, previewStories } = hallOfShame
+  const { title, intro, previewStories } = hallOfShame
 
   return (
     <section id="story-spotlight" className="ttf-page-section ttf-page-section--surface ttf-page-section--atmo-gallery scroll-mt-24">
@@ -692,7 +795,7 @@ function HallOfShameSection() {
         <TtfRevealGroup className="ttf-page-shame-grid">
           {previewStories.map((story) => (
             <TtfRevealItem key={story.id} as="div">
-              <TtfStorySpotlightCard story={story} comingSoonLabel={comingSoonLabel} />
+              <TtfStorySpotlightCard story={story} />
             </TtfRevealItem>
           ))}
         </TtfRevealGroup>
