@@ -6,9 +6,18 @@ const handlerPath = path.join(functionDir, 'validate-form-submission.js')
 const ghlClientPath = path.join(functionDir, 'utils', 'ghl-client.js')
 const emailValidatorPath = path.join(functionDir, 'utils', 'email-domain-validator.js')
 const ipReputationPath = path.join(functionDir, 'utils', 'ip-reputation.js')
+const rateLimiterPath = path.join(functionDir, 'utils', 'rate-limiter.js')
+const blobsStorePath = path.join(functionDir, 'utils', 'blobs-store.js')
 
 function clearHandlerModules() {
-  for (const modulePath of [handlerPath, ghlClientPath, emailValidatorPath, ipReputationPath]) {
+  for (const modulePath of [
+    handlerPath,
+    ghlClientPath,
+    emailValidatorPath,
+    ipReputationPath,
+    rateLimiterPath,
+    blobsStorePath,
+  ]) {
     delete require.cache[require.resolve(modulePath)]
   }
 }
@@ -40,6 +49,32 @@ function loadHandler({
     exports: {
       validateIP: async () => ({ allowed: true }),
       addToBlacklist,
+    },
+  }
+  require.cache[require.resolve(rateLimiterPath)] = {
+    id: rateLimiterPath,
+    filename: rateLimiterPath,
+    loaded: true,
+    exports: {
+      checkRateLimit: async () => ({
+        allowed: true,
+        remaining: 9,
+        limit: 10,
+        resetTime: Date.now() + 60_000,
+        retryAfter: 0,
+      }),
+      getRateLimitHeaders: () => ({}),
+      getClientIP: (event) => event.headers['x-forwarded-for'] || 'unknown',
+    },
+  }
+  require.cache[require.resolve(blobsStorePath)] = {
+    id: blobsStorePath,
+    filename: blobsStorePath,
+    loaded: true,
+    exports: {
+      initBlobsStores: () => ({ initialized: false }),
+      getBehavioralPatternsStore: () => null,
+      isBlobsAvailable: () => false,
     },
   }
 
