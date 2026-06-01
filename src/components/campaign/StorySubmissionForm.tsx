@@ -106,6 +106,8 @@ export function StorySubmissionForm({
   const [submitError, setSubmitError] = useState('')
   const [fileName, setFileName] = useState<string | null>(null)
   const [mediaFile, setMediaFile] = useState<File | null>(null)
+  const [mediaError, setMediaError] = useState('')
+  const mediaInputRef = useRef<HTMLInputElement>(null)
   const [formLoadTime] = useState(() => Date.now())
   const botFieldRef = useRef<HTMLInputElement>(null)
   const honeypot1Ref = useRef<HTMLInputElement>(null)
@@ -132,6 +134,15 @@ export function StorySubmissionForm({
 
   const onSubmit = async (values: StoryFormValues) => {
     setSubmitError('')
+
+    if (!mediaFile) {
+      setMediaError(
+        'A photo is required. Please attach a photo of the float or the damage before submitting.',
+      )
+      mediaInputRef.current?.focus()
+      mediaInputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      return
+    }
 
     let recaptchaToken = ''
     if (!isLocalDevEnvironment()) {
@@ -164,6 +175,7 @@ export function StorySubmissionForm({
     reset()
     setFileName(null)
     setMediaFile(null)
+    setMediaError('')
   }
 
   return (
@@ -362,8 +374,8 @@ export function StorySubmissionForm({
 
         <div>
           <label htmlFor="ttf-upload" className="ttf-form-label">
-            {TRASH_THE_FLOAT.landing.uploadExamples.uploadLabel}{' '}
-            <span className="ttf-form-label-optional">(optional)</span>
+            {TRASH_THE_FLOAT.landing.uploadExamples.uploadLabel}
+            <span className="ttf-form-label-required">*</span>
           </label>
 
           <TtfStoryPhotoExamples
@@ -375,13 +387,17 @@ export function StorySubmissionForm({
           />
 
           <input
+            ref={mediaInputRef}
             id="ttf-upload"
             type="file"
             accept="image/*"
+            aria-required
+            aria-invalid={Boolean(mediaError)}
             onChange={(e) => {
               const file = e.target.files?.[0] ?? null
               setMediaFile(file)
               setFileName(file?.name ?? null)
+              if (file) setMediaError('')
             }}
             className="ttf-form-upload"
           />
@@ -389,10 +405,11 @@ export function StorySubmissionForm({
             <p className="ttf-form-filename">Selected: {fileName}</p>
           ) : (
             <p className="ttf-form-upload-hint">
-              {TRASH_THE_FLOAT.landing.uploadExamples.uploadOptionalNote}{' '}
-              We'll never publish identifying details without your approval.
+              A photo is required so we can verify your story. Photos only — we'll never publish
+              identifying details without your approval.
             </p>
           )}
+          {mediaError ? <p className="campaign-field-error">{mediaError}</p> : null}
         </div>
       </div>
 

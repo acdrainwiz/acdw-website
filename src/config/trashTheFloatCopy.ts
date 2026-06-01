@@ -480,10 +480,10 @@ export const TRASH_THE_FLOAT = {
       },
     },
 
-    /** Compact examples above optional photo upload — photos/caption from overlay.storyContext */
+    /** Compact examples above the required photo upload — photos/caption from overlay.storyContext */
     uploadExamples: {
       title: 'Examples of helpful photos',
-      hint: 'Stains, backups, drain pans, or on-site damage—optional, and no identifying details.',
+      hint: 'Stains, backups, drain pans, or on-site damage—no identifying details.',
       uploadLabel: 'Upload photo',
       uploadOptionalNote: 'Video upload coming soon.',
     },

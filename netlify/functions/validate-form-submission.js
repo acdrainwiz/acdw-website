@@ -395,6 +395,7 @@ const validateFormFields = (formType, formData) => {
         const ttfAudience = formData.get('audience')?.trim() || ''
         const ttfStoryBody = formData.get('storyBody')?.trim() || formData.get('message')?.trim() || ''
         const ttfDamageImpact = formData.get('damageImpact')?.trim() || ''
+        const ttfMediaUrl = formData.get('mediaUrl')?.trim() || ''
         const ttfConsent = formData.get('consent')
         const ttfRulesConsent = formData.get('rulesConsent')
 
@@ -436,6 +437,11 @@ const validateFormFields = (formType, formData) => {
         }
         if (ttfDamageImpact && ttfDamageImpact.length > 500) {
           errors.push('Estimated damage or impact must be 500 characters or less')
+        }
+        if (!ttfMediaUrl) {
+          errors.push('A photo is required. Please attach a photo of the float or the damage before submitting.')
+        } else if (!/^https?:\/\//i.test(ttfMediaUrl)) {
+          errors.push('Invalid photo. Please re-upload your photo and try again.')
         }
         if (ttfConsent !== 'yes') {
           errors.push('You must confirm your story is true and grant permission to review it')
