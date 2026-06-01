@@ -484,23 +484,6 @@ exports.handler = async (event, context) => {
     }
     }
 
-    // Rate limiting
-    const ip = getClientIP(event)
-    const rateLimitResult = await checkRateLimit(ip, 'form', context)
-    if (!rateLimitResult.allowed) {
-        return {
-            statusCode: 429,
-            headers: {
-                ...headers,
-                ...getRateLimitHeaders(rateLimitResult)
-            },
-            body: JSON.stringify({
-                error: 'Too many form submissions. Please wait and try again.',
-                retryAfter: rateLimitResult.retryAfter
-            }),
-        }
-    }
-
   try {
     // SECURITY: Check if this is a webhook endpoint (exempt from some validations)
     const isWebhookEndpoint = (path) => {
@@ -1103,6 +1086,15 @@ exports.handler = async (event, context) => {
       logFormSubmission(formType, email, ip, userAgent, false, [
         `ghl-submission-failed: ${ghlErr && ghlErr.message}`,
       ])
+      return {
+        statusCode: 502,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          error: 'Form submission failed',
+          message: 'We could not process your submission. Please try again.',
+        }),
+      }
     }
 
     return {
