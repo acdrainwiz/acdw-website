@@ -1,5 +1,5 @@
-import { forwardRef, useMemo, useRef, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
+import { Controller, useForm, type FieldErrors } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { IMaskInput } from 'react-imask'
@@ -24,8 +24,31 @@ const AUDIENCE_OPTIONS = [
   'Other',
 ] as const
 
+const TTF_ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png'] as const
+
 function normalizeHandleKey(raw: string): string {
   return raw.trim().replace(/^@+/, '').toLowerCase()
+}
+
+const VALIDATION_ERROR_FIELD_ORDER: (keyof StoryFormValues)[] = [
+  'fullName',
+  'email',
+  'phone',
+  'cityState',
+  'instagramHandle',
+  'audience',
+  'storyBody',
+  'damageImpact',
+  'consent',
+  'rules',
+]
+
+function firstValidationErrorMessage(errors: FieldErrors<StoryFormValues>): string {
+  for (const key of VALIDATION_ERROR_FIELD_ORDER) {
+    const message = errors[key]?.message
+    if (typeof message === 'string' && message.length > 0) return message
+  }
+  return 'Please review the required fields above and try again.'
 }
 
 function createStorySchema(usedInstagramHandles: string[]) {
@@ -103,7 +126,8 @@ export function StorySubmissionForm({
     [usedInstagramHandles],
   )
   const { getRecaptchaToken } = useRecaptcha()
-  const [submitError, setSubmitError] = useState('')
+  const [formError, setFormError] = useState('')
+  const formErrorRef = useRef<HTMLParagraphElement>(null)
   const [fileName, setFileName] = useState<string | null>(null)
   const [mediaFile, setMediaFile] = useState<File | null>(null)
   const [formLoadTime] = useState(() => Date.now())
@@ -115,6 +139,7 @@ export function StorySubmissionForm({
     register,
     control,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<StoryFormValues>({
@@ -130,14 +155,25 @@ export function StorySubmissionForm({
     },
   })
 
+  const showFormError = (message: string) => {
+    setFormError(message)
+    requestAnimationFrame(() => {
+      formErrorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    })
+  }
+
+  const onInvalid = (fieldErrors: FieldErrors<StoryFormValues>) => {
+    showFormError(firstValidationErrorMessage(fieldErrors))
+  }
+
   const onSubmit = async (values: StoryFormValues) => {
-    setSubmitError('')
+    setFormError('')
 
     let recaptchaToken = ''
     if (!isLocalDevEnvironment()) {
       const recaptchaResult = await getRecaptchaToken(TRASH_THE_FLOAT_RECAPTCHA_ACTION)
       if (!recaptchaResult.success) {
-        setSubmitError(recaptchaResult.error)
+        showFormError(recaptchaResult.error)
         return
       }
       recaptchaToken = recaptchaResult.token
@@ -156,7 +192,7 @@ export function StorySubmissionForm({
     })
 
     if (!result.ok) {
-      setSubmitError(result.error)
+      showFormError(result.error)
       return
     }
 
@@ -164,11 +200,26 @@ export function StorySubmissionForm({
     reset()
     setFileName(null)
     setMediaFile(null)
+    setFormError('')
   }
+
+  useEffect(() => {
+    if (!formError) return
+    if (Object.keys(errors).length === 0) setFormError('')
+  }, [errors, formError])
+
+  useEffect(() => {
+    const subscription = watch(() => {
+      if (!formError) return
+      if (Object.keys(errors).length > 0) return
+      setFormError('')
+    })
+    return () => subscription.unsubscribe()
+  }, [watch, errors, formError])
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit, onInvalid)}
       noValidate
       name={TRASH_THE_FLOAT_FORM_NAME}
       data-netlify-honeypot="bot-field"
@@ -184,12 +235,6 @@ export function StorySubmissionForm({
       </div>
 
       {isLight ? <p className="ttf-form-kicker">Step 1 of 1 — Your story</p> : null}
-
-      {submitError ? (
-        <p className="campaign-field-error mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-          {submitError}
-        </p>
-      ) : null}
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Full name" required error={errors.fullName?.message} htmlFor="ttf-fullName">
@@ -377,18 +422,44 @@ export function StorySubmissionForm({
           <input
             id="ttf-upload"
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,.jpg,.jpeg,.png"
+            aria-invalid={Boolean(formError)}
+            aria-describedby={formError ? 'ttf-form-error' : undefined}
             onChange={(e) => {
               const file = e.target.files?.[0] ?? null
+              if (
+                file &&
+                !TTF_ACCEPTED_IMAGE_TYPES.includes(
+                  file.type as (typeof TTF_ACCEPTED_IMAGE_TYPES)[number],
+                )
+              ) {
+                showFormError('Please choose a JPEG or PNG image.')
+                e.target.value = ''
+                setMediaFile(null)
+                setFileName(null)
+                return
+              }
+              setFormError('')
               setMediaFile(file)
               setFileName(file?.name ?? null)
             }}
-            className="ttf-form-upload"
+            className={cn('ttf-form-upload', formError && 'ttf-form-upload--error')}
           />
+          {formError ? (
+            <p
+              id="ttf-form-error"
+              ref={formErrorRef}
+              role="alert"
+              className="campaign-field-error mt-1"
+            >
+              {formError}
+            </p>
+          ) : null}
           {fileName ? (
             <p className="ttf-form-filename">Selected: {fileName}</p>
           ) : (
             <p className="ttf-form-upload-hint">
+              {TRASH_THE_FLOAT.landing.uploadExamples.acceptedFormats}{' '}
               {TRASH_THE_FLOAT.landing.uploadExamples.uploadOptionalNote}{' '}
               We'll never publish identifying details without your approval.
             </p>

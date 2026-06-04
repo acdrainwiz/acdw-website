@@ -34,11 +34,13 @@ function isHoneypotTripped(honeypot: TrashTheFloatHoneypotValues): boolean {
   return Boolean(honeypot.botField || honeypot.honeypot1 || honeypot.honeypot2)
 }
 
+const TTF_ACCEPTED_IMAGE_TYPES = new Set(['image/jpeg', 'image/png'])
+
 async function uploadStoryImage(file: File): Promise<{ ok: true; url: string } | { ok: false; error: string }> {
-  if (!file.type.startsWith('image/')) {
+  if (!TTF_ACCEPTED_IMAGE_TYPES.has(file.type)) {
     return {
       ok: false,
-      error: 'Video upload is not supported yet. Please attach a photo, or submit without media for now.',
+      error: 'Please attach a JPEG or PNG image, or submit without media.',
     }
   }
 
