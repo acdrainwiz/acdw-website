@@ -1,5 +1,4 @@
 import { Hero } from '../components/home/Hero'
-import { TrashTheFloatOverlay } from '../components/campaign/TrashTheFloatOverlay'
 import type { PageSearchMeta } from '../config/siteSearchTypes'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
@@ -13,10 +12,5 @@ export const PAGE_SEARCH_META: PageSearchMeta = {
 }
 
 export function HomePage() {
-  return (
-    <>
-      <Hero />
-      <TrashTheFloatOverlay />
-    </>
-  )
+  return <Hero />
 }

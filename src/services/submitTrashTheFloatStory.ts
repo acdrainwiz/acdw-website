@@ -123,12 +123,16 @@ export async function submitTrashTheFloatStory(
     return { ok: false, error: 'Invalid submission detected.' }
   }
 
-  let mediaUrl = ''
-  if (input.mediaFile) {
-    const upload = await uploadStoryImage(input.mediaFile)
-    if (!upload.ok) return { ok: false, error: upload.error }
-    mediaUrl = upload.url
+  if (!input.mediaFile) {
+    return {
+      ok: false,
+      error: 'A photo is required. Please attach a photo before submitting your story.',
+    }
   }
+
+  const upload = await uploadStoryImage(input.mediaFile)
+  if (!upload.ok) return { ok: false, error: upload.error }
+  const mediaUrl = upload.url
 
   const submissionData = buildSubmissionBody(input, mediaUrl)
 

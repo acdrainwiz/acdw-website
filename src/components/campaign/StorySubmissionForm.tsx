@@ -128,6 +128,7 @@ export function StorySubmissionForm({
   const { getRecaptchaToken } = useRecaptcha()
   const [formError, setFormError] = useState('')
   const formErrorRef = useRef<HTMLParagraphElement>(null)
+  const mediaInputRef = useRef<HTMLInputElement>(null)
   const [fileName, setFileName] = useState<string | null>(null)
   const [mediaFile, setMediaFile] = useState<File | null>(null)
   const [formLoadTime] = useState(() => Date.now())
@@ -168,6 +169,14 @@ export function StorySubmissionForm({
 
   const onSubmit = async (values: StoryFormValues) => {
     setFormError('')
+
+    if (!mediaFile) {
+      showFormError(
+        'A photo is required. Please attach a photo of the float or the damage before submitting.',
+      )
+      mediaInputRef.current?.focus()
+      return
+    }
 
     let recaptchaToken = ''
     if (!isLocalDevEnvironment()) {
@@ -407,8 +416,8 @@ export function StorySubmissionForm({
 
         <div>
           <label htmlFor="ttf-upload" className="ttf-form-label">
-            {TRASH_THE_FLOAT.landing.uploadExamples.uploadLabel}{' '}
-            <span className="ttf-form-label-optional">(optional)</span>
+            {TRASH_THE_FLOAT.landing.uploadExamples.uploadLabel}
+            <span className="ttf-form-label-required">*</span>
           </label>
 
           <TtfStoryPhotoExamples
@@ -420,9 +429,11 @@ export function StorySubmissionForm({
           />
 
           <input
+            ref={mediaInputRef}
             id="ttf-upload"
             type="file"
             accept="image/jpeg,image/png,.jpg,.jpeg,.png"
+            aria-required
             aria-invalid={Boolean(formError)}
             aria-describedby={formError ? 'ttf-form-error' : undefined}
             onChange={(e) => {
@@ -460,8 +471,8 @@ export function StorySubmissionForm({
           ) : (
             <p className="ttf-form-upload-hint">
               {TRASH_THE_FLOAT.landing.uploadExamples.acceptedFormats}{' '}
-              {TRASH_THE_FLOAT.landing.uploadExamples.uploadOptionalNote}{' '}
-              We'll never publish identifying details without your approval.
+              {TRASH_THE_FLOAT.landing.uploadExamples.uploadRequiredHint}{' '}
+              {TRASH_THE_FLOAT.landing.uploadExamples.uploadPrivacyNote}
             </p>
           )}
         </div>

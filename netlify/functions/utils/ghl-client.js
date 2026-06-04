@@ -514,15 +514,19 @@ function buildContactUpsertPayloadForOpportunity(formConfig, sanitizedData, cont
   return payload
 }
 
-// Fallback when GHL_MUNI_PIPELINE_ID is not yet configured: dump all opportunity
+// Fallback when the Opportunity flow can't create a card (pipeline env vars
+// missing, custom fields unresolved, or createOpportunity threw). Dumps all
 // field values into a structured Note attached to the Contact so nothing is lost.
-function buildOpportunityFallbackNote(formConfig, sanitizedData, opportunityName) {
+function buildOpportunityFallbackNote(formType, formConfig, sanitizedData, opportunityName) {
+  const idVar = formConfig.pipelineIdEnvVar || '<pipelineIdEnvVar>'
+  const stageVar = formConfig.pipelineStageIdEnvVar || '<pipelineStageIdEnvVar>'
   const lines = [
-    `MUNICIPAL INTAKE FORM SUBMISSION (pipeline not yet configured)`,
+    `FALLBACK NOTE — ${formType}`,
     `Opportunity Name: ${opportunityName}`,
     ``,
-    `Please create this Opportunity manually in GHL with the values below,`,
-    `or set GHL_MUNI_PIPELINE_ID + GHL_MUNI_PIPELINE_STAGE_ID env vars and resubmit.`,
+    `An Opportunity card could not be created for this submission. Please`,
+    `create it manually in GHL using the values below, or set ${idVar} +`,
+    `${stageVar} env vars and resubmit to enable automatic creation.`,
     ``,
     `--- Field Values ---`,
   ]
@@ -595,7 +599,7 @@ async function submitOpportunityForm(formType, sanitizedData, formConfig) {
       stage: 'pipelineNotConfigured',
       message: `Set ${idVar} and ${stageVar} env vars to enable Opportunity creation. Field values written to Contact Note as fallback.`,
     })
-    const noteBody = buildOpportunityFallbackNote(formConfig, sanitizedData, opportunityName)
+    const noteBody = buildOpportunityFallbackNote(formType, formConfig, sanitizedData, opportunityName)
     try {
       await addNote(contactId, noteBody)
     } catch (noteErr) {
@@ -653,7 +657,7 @@ async function submitOpportunityForm(formType, sanitizedData, formConfig) {
       message:
         'No Opportunity custom field IDs resolved from GHL. Falling back to Contact Note. Verify the BOAF & COAA group exists on the Opportunity object.',
     })
-    const noteBody = buildOpportunityFallbackNote(formConfig, sanitizedData, opportunityName)
+    const noteBody = buildOpportunityFallbackNote(formType, formConfig, sanitizedData, opportunityName)
     try {
       await addNote(contactId, noteBody)
     } catch (noteErr) {
@@ -678,7 +682,7 @@ async function submitOpportunityForm(formType, sanitizedData, formConfig) {
       traceId: oppErr.traceId || null,
       responseBody: oppErr.responseBody,
     })
-    const noteBody = buildOpportunityFallbackNote(formConfig, sanitizedData, opportunityName)
+    const noteBody = buildOpportunityFallbackNote(formType, formConfig, sanitizedData, opportunityName)
     try {
       await addNote(contactId, noteBody)
     } catch (noteErr) {

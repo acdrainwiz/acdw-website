@@ -480,13 +480,14 @@ export const TRASH_THE_FLOAT = {
       },
     },
 
-    /** Compact examples above optional photo upload — photos/caption from overlay.storyContext */
+    /** Compact examples above the required photo upload — photos/caption from overlay.storyContext */
     uploadExamples: {
       title: 'Examples of helpful photos',
-      hint: 'Stains, backups, drain pans, or on-site damage—optional, and no identifying details.',
+      hint: 'Stains, backups, drain pans, or on-site damage—no identifying details.',
       uploadLabel: 'Upload photo',
       acceptedFormats: 'JPEG or PNG only (max 5 MB).',
-      uploadOptionalNote: 'Optional — we review all uploads with your story.',
+      uploadRequiredHint: 'A photo is required so we can verify your story.',
+      uploadPrivacyNote: "We'll never publish identifying details without your approval.",
     },
 
     hallOfShame: {
