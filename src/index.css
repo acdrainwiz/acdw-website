@@ -22533,6 +22533,15 @@
 }
 .ttf-form-upload:hover { border-color: rgba(255,78,0,0.50); }
 .ttf-form-upload:focus-visible { outline: 2px solid var(--acdw-yellow); outline-offset: 2px; }
+.ttf-form-upload--error {
+  border-color: rgba(239, 68, 68, 0.7);
+  background-color: rgba(239, 68, 68, 0.06);
+}
+.ttf-form-upload--error:hover { border-color: rgba(239, 68, 68, 0.85); }
+.ttf-form-upload--error:focus-visible {
+  outline-color: #ef4444;
+  border-color: #ef4444;
+}
 
 .ttf-form-checkbox {
   margin-top: 0.125rem;
@@ -23297,6 +23306,17 @@
 }
 .ttf-page-section--submission .ttf-form-upload:hover {
   border-color: rgba(2, 132, 199, 0.45);
+}
+.ttf-page-section--submission .ttf-form-upload--error {
+  border-color: #ef4444;
+  background-color: rgba(254, 226, 226, 0.45);
+}
+.ttf-page-section--submission .ttf-form-upload--error:hover {
+  border-color: #dc2626;
+}
+.ttf-page-section--submission .ttf-form-upload--error:focus-visible {
+  outline-color: #ef4444;
+  border-color: #ef4444;
 }
 .ttf-page-section--submission .ttf-form-upload:focus-visible,
 .ttf-page-section--submission .ttf-form-audience-chip:has(input:focus-visible) {

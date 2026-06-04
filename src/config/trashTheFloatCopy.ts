@@ -485,7 +485,9 @@ export const TRASH_THE_FLOAT = {
       title: 'Examples of helpful photos',
       hint: 'Stains, backups, drain pans, or on-site damage—no identifying details.',
       uploadLabel: 'Upload photo',
-      uploadOptionalNote: 'Video upload coming soon.',
+      acceptedFormats: 'JPEG or PNG only (max 5 MB).',
+      uploadRequiredHint: 'A photo is required so we can verify your story.',
+      uploadPrivacyNote: "We'll never publish identifying details without your approval.",
     },
 
     hallOfShame: {
