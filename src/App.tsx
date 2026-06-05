@@ -43,6 +43,7 @@ import { MiniSetupPage } from './pages/MiniSetupPage'
 import { RecommendedInstallationScenariosPage } from './pages/RecommendedInstallationScenariosPage'
 import { EmailSignaturePage } from './pages/EmailSignaturePage'
 import { TrashTheFloatPage } from './pages/TrashTheFloatPage'
+import { ComplimentaryMiniRequestPage } from './pages/ComplimentaryMiniRequestPage'
 import { usePageTracking } from './hooks/useAnalytics'
 
 function AppContent() {
@@ -97,6 +98,8 @@ function AppContent() {
                     <Route path="/support/installation-scenarios" element={<RecommendedInstallationScenariosPage />} />
                     <Route path="/email-signature" element={<EmailSignaturePage />} />
                     <Route path="/trash-the-float" element={<TrashTheFloatPage />} />
+                    <Route path="/complimentary-mini" element={<ComplimentaryMiniRequestPage />} />
+                    <Route path="/complimentary-mini/confirmed" element={<ComplimentaryMiniRequestPage />} />
             </Routes>
           </main>
           {!hideHeaderFooter && <Footer />}

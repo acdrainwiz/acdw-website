@@ -1,0 +1,235 @@
+<!--
+  AC Drain Wiz — Complimentary Mini invitation email (GoHighLevel)
+
+  HOW TO USE IN GHL
+  1. Settings → Email → Templates (or build in a workflow email action).
+  2. Choose "Code editor" / "Custom HTML" and paste this entire file body (inside <body> or full document).
+  3. Set up merge fields BEFORE sending (see below).
+  4. Recommended subject: Confirm your mailing address for your complimentary AC Drain Wiz Mini
+
+  REQUIRED GHL SETUP — secure link
+  Option A (recommended — one shared campaign token):
+    • Settings → Custom Values → add:
+        Name: complimentary_mini_invite_url
+        Value: https://acdrainwiz.com/complimentary-mini?access=YOUR_SECRET_TOKEN
+      (Use the same token as COMPLIMENTARY_MINI_ACCESS_TOKEN / VITE_COMPLIMENTARY_MINI_ACCESS_TOKEN.)
+    • CTA href uses: {{custom_values.complimentary_mini_invite_url}}
+
+  Option B (token in custom value, URL built in template):
+    • Custom value: complimentary_mini_access_token = YOUR_SECRET_TOKEN
+    • CTA href: https://acdrainwiz.com/complimentary-mini?access={{custom_values.complimentary_mini_access_token}}
+
+  Option C (future — unique link per contact):
+    • Contact custom field: mini_invite_token
+    • CTA href: https://acdrainwiz.com/complimentary-mini?access={{contact.mini_invite_token}}
+
+  MERGE FIELDS USED
+    {{contact.first_name}}  — falls back gracefully if empty in GHL preview
+    {{custom_values.complimentary_mini_invite_url}}  — Option A
+
+  PREHEADER (set in GHL send settings):
+    It was great meeting you — confirm where to send your complimentary AC Drain Wiz Mini.
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="x-apple-disable-message-reformatting">
+  <title>Your complimentary AC Drain Wiz Mini</title>
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <![endif]-->
+  <style type="text/css">
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+    body { margin: 0 !important; padding: 0 !important; width: 100% !important; }
+    .hero-gradient {
+      background-color: #0b1220;
+      background-image: radial-gradient(120% 100% at 50% 0%, #0c4a6e 0%, #0b1220 32%, #050a14 68%, #020509 100%);
+    }
+    @media only screen and (max-width: 620px) {
+      .email-container { width: 100% !important; max-width: 100% !important; }
+      .fluid { max-width: 100% !important; height: auto !important; }
+      .product-hero-img { width: 240px !important; max-width: 240px !important; }
+      .stack { display: block !important; width: 100% !important; }
+      .px-mobile { padding-left: 20px !important; padding-right: 20px !important; }
+      .hero-pad { padding: 24px 20px !important; }
+      .product-hero-pad { padding: 8px 20px 32px !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#f3f4f6; font-family:Arial, Helvetica, sans-serif; color:#1f2937;">
+  <!-- Preheader (hidden preview text) -->
+  <div style="display:none; font-size:1px; color:#f3f4f6; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden;">
+    It was great meeting you — confirm where to send your complimentary AC Drain Wiz Mini.
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f3f4f6;">
+    <tr>
+      <td align="center" style="padding:24px 12px;">
+
+        <table role="presentation" class="email-container" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; width:100%; background-color:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 4px 24px rgba(15,23,42,0.08);">
+
+          <!-- Header + product hero (cosmic navy + sky blues — matches .support-hero / .mini-hero-v2) -->
+          <!--[if mso]>
+          <tr>
+            <td class="hero-pad hero-gradient" style="padding:24px 40px 36px; background-color:#0b1220; text-align:center;">
+          <![endif]-->
+          <!--[if !mso]><!-->
+          <tr>
+            <td class="hero-pad hero-gradient" style="padding:24px 40px 36px; background-color:#0b1220; background-image:radial-gradient(120% 100% at 50% 0%, #0c4a6e 0%, #0b1220 32%, #050a14 68%, #020509 100%); text-align:center;">
+          <!--<![endif]-->
+              <img src="https://acdrainwiz.com/images/ac-drain-wiz-logo.png" width="160" alt="AC Drain Wiz" style="display:block; margin:0 auto 28px; max-width:160px; width:100%; height:auto;">
+
+              <!-- Complimentary badge -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto 20px;">
+                <tr>
+                  <td align="center" style="border-radius:999px; background-color:#f97316; padding:8px 18px;">
+                    <span style="font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#ffffff;">Complimentary</span>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Large product image -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td class="product-hero-pad" align="center" style="padding:0 24px 24px;">
+                    <img src="https://acdrainwiz.com/images/acdw-mini-hero2-product.png" width="300" alt="AC Drain Wiz Mini" class="product-hero-img fluid" style="display:block; margin:0 auto; max-width:300px; width:100%; height:auto;">
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:0 0 8px; font-size:13px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#bae6fd;">
+                Conference follow-up
+              </p>
+              <h1 style="margin:0 0 10px; font-size:28px; line-height:1.2; font-weight:700; color:#ffffff;">
+                AC Drain Wiz Mini
+              </h1>
+              <p style="margin:0; font-size:16px; line-height:1.5; color:#e0f2fe; max-width:460px; display:inline-block;">
+                Included at no charge&mdash;confirm where to ship yours.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Orange accent bar -->
+          <tr>
+            <td style="height:4px; background-color:#f97316; font-size:0; line-height:0;">&nbsp;</td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td class="px-mobile" style="padding:36px 40px 12px;">
+              <p style="margin:0 0 16px; font-size:16px; line-height:1.6; color:#374151;">
+                Hi {{contact.first_name}},
+              </p>
+              <p style="margin:0 0 16px; font-size:16px; line-height:1.6; color:#374151;">
+                It was great connecting with you at our recent industry event. As a thank-you, we&rsquo;d like to send you a complimentary <strong style="color:#1e3a8a;">AC Drain Wiz Mini</strong>&mdash;permanent drain line access for faster, cleaner HVAC maintenance without cutting PVC.
+              </p>
+              <p style="margin:0 0 24px; font-size:16px; line-height:1.6; color:#374151;">
+                Use your <strong>personal link below</strong> to confirm the mailing address where we should ship your Mini. The form takes just a few minutes.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Form checklist -->
+          <tr>
+            <td class="px-mobile" style="padding:0 40px 28px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f8fafc; border:1px solid #e2e8f0; border-radius:10px;">
+                <tr>
+                  <td style="padding:22px 24px;">
+                    <p style="margin:0 0 12px; font-size:14px; font-weight:700; color:#1e3a8a;">
+                      What you&rsquo;ll confirm on the form
+                    </p>
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                      <tr>
+                        <td valign="top" width="50%" style="padding:0 12px 8px 0; font-size:14px; line-height:1.5; color:#4b5563;">&#8226;&nbsp;Name, email, and phone</td>
+                        <td valign="top" width="50%" style="padding:0 0 8px; font-size:14px; line-height:1.5; color:#4b5563;">&#8226;&nbsp;Mailing address</td>
+                      </tr>
+                      <tr>
+                        <td valign="top" style="padding:0 12px 0 0; font-size:14px; line-height:1.5; color:#4b5563;">&#8226;&nbsp;Organization (optional)</td>
+                        <td valign="top" style="padding:0; font-size:14px; line-height:1.5; color:#4b5563;">&#8226;&nbsp;Contact type</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- CTA -->
+          <tr>
+            <td class="px-mobile" align="center" style="padding:0 40px 32px;">
+              <!-- Option A: full URL from GHL Custom Value (recommended) -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center" style="border-radius:8px; background-color:#2563eb;">
+                    <a href="{{custom_values.complimentary_mini_invite_url}}" target="_blank" style="display:inline-block; padding:16px 32px; font-size:16px; font-weight:700; color:#ffffff; text-decoration:none; border-radius:8px; background-color:#2563eb; border:1px solid #2563eb;">
+                      Confirm My Mailing Address
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin:16px 0 0; font-size:13px; line-height:1.5; color:#6b7280;">
+                Button not working? Copy and paste this link into your browser:<br>
+                <a href="{{custom_values.complimentary_mini_invite_url}}" target="_blank" style="color:#2563eb; word-break:break-all;">{{custom_values.complimentary_mini_invite_url}}</a>
+              </p>
+            </td>
+          </tr>
+
+          <!-- Important notice -->
+          <tr>
+            <td class="px-mobile" style="padding:0 40px 32px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#fffbeb; border:1px solid #fcd34d; border-radius:8px;">
+                <tr>
+                  <td style="padding:16px 18px;">
+                    <p style="margin:0 0 8px; font-size:13px; font-weight:700; color:#92400e;">
+                      Please keep this link private
+                    </p>
+                    <p style="margin:0; font-size:13px; line-height:1.55; color:#78350f;">
+                      This invitation is tied to the email address we have on file for you. Please do not forward this email or share the link. After you submit, we&rsquo;ll verify your eligibility and follow up with next steps by email.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td class="px-mobile" style="padding:28px 40px 32px; background-color:#f9fafb; border-top:1px solid #e5e7eb;">
+              <p style="margin:0 0 12px; font-size:14px; font-weight:600; color:#374151; text-align:center;">
+                Questions?
+              </p>
+              <p style="margin:0 0 6px; font-size:13px; line-height:1.5; color:#6b7280; text-align:center;">
+                Call <a href="tel:+18337246949" style="color:#2563eb; text-decoration:none;">83-DRAINWIZ</a> &nbsp;|&nbsp; <a href="tel:+18337246949" style="color:#2563eb; text-decoration:none;">(833) 724-6949</a>
+              </p>
+              <p style="margin:0 0 6px; font-size:13px; line-height:1.5; color:#6b7280; text-align:center;">
+                Email <a href="mailto:support@acdrainwiz.com" style="color:#2563eb; text-decoration:none;">support@acdrainwiz.com</a>
+              </p>
+              <p style="margin:16px 0 0; font-size:12px; line-height:1.5; color:#9ca3af; text-align:center;">
+                <a href="https://www.acdrainwiz.com" style="color:#6b7280; text-decoration:underline;">acdrainwiz.com</a>
+                &nbsp;&bull;&nbsp;
+                <a href="https://www.acdrainwiz.com/privacy-policy" style="color:#6b7280; text-decoration:underline;">Privacy Policy</a>
+              </p>
+              <p style="margin:16px 0 0; font-size:11px; line-height:1.5; color:#9ca3af; text-align:center;">
+                &copy; AC Drain Wiz. All rights reserved.<br>
+                You received this because we met at an industry event and you are on our event follow-up list.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

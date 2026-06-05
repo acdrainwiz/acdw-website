@@ -8876,6 +8876,106 @@
   @apply inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 text-white text-sm font-semibold backdrop-blur-md border border-white/20;
 }
 
+/* Complimentary Mini — split hero with product spotlight */
+.complimentary-mini-hero-layout {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-areas:
+    "title"
+    "product"
+    "subtitle"
+    "badges";
+  align-items: center;
+}
+
+.complimentary-mini-hero-title {
+  grid-area: title;
+  @apply text-center mb-0;
+}
+
+.complimentary-mini-hero-subtitle {
+  grid-area: subtitle;
+  @apply mx-auto mb-0 text-center;
+}
+
+.complimentary-mini-hero-badge-row {
+  grid-area: badges;
+  @apply mt-0 justify-center;
+}
+
+.complimentary-mini-hero-product {
+  grid-area: product;
+  @apply relative flex flex-col items-center gap-1 text-center;
+}
+
+@media (min-width: 768px) {
+  .complimentary-mini-hero-layout {
+    grid-template-columns: minmax(0, 1.15fr) minmax(325px, 525px);
+    grid-template-areas:
+      "title product"
+      "subtitle product"
+      "badges product";
+    column-gap: clamp(2rem, 4vw, 3.5rem);
+    row-gap: 1rem;
+  }
+
+  .complimentary-mini-hero-title {
+    @apply text-left;
+  }
+
+  .complimentary-mini-hero-subtitle {
+    @apply mx-0 max-w-2xl text-left;
+  }
+
+  .complimentary-mini-hero-badge-row {
+    @apply justify-start;
+  }
+
+  .complimentary-mini-hero-product {
+    align-self: center;
+  }
+}
+
+.complimentary-mini-hero-product-ribbon {
+  @apply absolute top-0 right-0 z-10 inline-flex items-center rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide;
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: #fff;
+  box-shadow: 0 4px 14px rgb(249 115 22 / 35%);
+}
+
+@media (min-width: 768px) {
+  .complimentary-mini-hero-product-ribbon {
+    @apply top-2 right-2;
+  }
+}
+
+.complimentary-mini-hero-product-stage {
+  @apply relative flex w-full max-w-[350px] items-center justify-center leading-none sm:max-w-[400px];
+}
+
+.complimentary-mini-hero-product-glow {
+  position: absolute;
+  inset: 8%;
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 50% 42%, rgb(56 189 248 / 28%) 0%, transparent 58%),
+    radial-gradient(circle at 50% 68%, rgb(14 165 233 / 18%) 0%, transparent 62%);
+  filter: blur(8px);
+}
+
+.complimentary-mini-hero-product-img {
+  @apply relative z-[1] h-auto w-full object-contain;
+  filter: drop-shadow(0 22px 36px rgb(2 6 23 / 45%)) drop-shadow(0 8px 16px rgb(14 165 233 / 18%));
+}
+
+.complimentary-mini-hero-product-name {
+  @apply text-base font-semibold leading-snug text-white;
+}
+
+.complimentary-mini-hero-product-note {
+  @apply text-sm leading-snug text-sky-100/85;
+}
+
 .support-hero-search {
   @apply mt-8 max-w-xl mx-auto;
 }
