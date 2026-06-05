@@ -35,6 +35,10 @@ export const COMPLIMENTARY_MINI_REQUEST = {
     title: 'Confirm Your Mailing Address',
     description:
       'Please verify your contact and shipping details. Required fields are marked with *.',
+    mailingSection: {
+      title: 'Shipping address',
+      hint: 'This is where we’ll ship your complimentary Mini. Double-check street, city, state, and ZIP before you submit.',
+    },
     submitLabel: 'Confirm My Mailing Address',
     shareReminder:
       'This invitation is for you only. Please don’t forward this link or share it with others.',

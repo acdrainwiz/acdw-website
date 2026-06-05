@@ -6,6 +6,7 @@ import {
   GiftIcon,
   EnvelopeIcon,
   LockClosedIcon,
+  MapPinIcon,
 } from '@heroicons/react/24/outline'
 import { validateEmail } from '../utils/emailValidation'
 import { useRecaptcha } from '../hooks/useRecaptcha'
@@ -614,80 +615,110 @@ export function ComplimentaryMiniRequestPage() {
                 />
               </div>
 
-              <div className="contact-form-field">
-                <label htmlFor="street" className="contact-form-label">
-                  Mailing Address *
-                </label>
-                <input
-                  type="text"
-                  id="street"
-                  name="street"
-                  value={formData.street}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  autoComplete="street-address"
-                  className={`input ${fieldErrors.street ? 'input-error' : ''}`}
-                  placeholder="Enter your full address"
-                />
-                {fieldErrors.street && <p className="field-error-message">{fieldErrors.street}</p>}
-              </div>
-
-              <div className="contact-form-grid">
-                <div className="contact-form-field">
-                  <label htmlFor="city" className="contact-form-label">
-                    City *
-                  </label>
-                  <input
-                    type="text"
-                    id="city"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleInputChange}
-                    onBlur={handleBlur}
-                    autoComplete="address-level2"
-                    className={`input ${fieldErrors.city ? 'input-error' : ''}`}
-                    placeholder="Enter your city"
-                  />
-                  {fieldErrors.city && <p className="field-error-message">{fieldErrors.city}</p>}
+              <section
+                className="complimentary-mini-mailing-section"
+                aria-labelledby="complimentary-mini-mailing-heading"
+              >
+                <div className="complimentary-mini-mailing-section-header">
+                  <div className="complimentary-mini-mailing-section-icon-wrap" aria-hidden>
+                    <MapPinIcon className="complimentary-mini-mailing-section-icon" />
+                  </div>
+                  <div>
+                    <h3
+                      id="complimentary-mini-mailing-heading"
+                      className="complimentary-mini-mailing-section-title"
+                    >
+                      {copy.form.mailingSection.title}
+                    </h3>
+                    <p className="complimentary-mini-mailing-section-hint">
+                      {copy.form.mailingSection.hint}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="contact-form-field">
-                  <label htmlFor="state" className="contact-form-label">
-                    State *
-                  </label>
-                  <input
-                    type="text"
-                    id="state"
-                    name="state"
-                    value={formData.state}
-                    onChange={handleInputChange}
-                    onBlur={handleBlur}
-                    autoComplete="address-level1"
-                    className={`input ${fieldErrors.state ? 'input-error' : ''}`}
-                    placeholder="Enter your state"
-                  />
-                  {fieldErrors.state && <p className="field-error-message">{fieldErrors.state}</p>}
-                </div>
-              </div>
+                <div className="complimentary-mini-mailing-section-fields">
+                  <div className="contact-form-field">
+                    <label htmlFor="street" className="contact-form-label">
+                      Mailing Address *
+                    </label>
+                    <input
+                      type="text"
+                      id="street"
+                      name="street"
+                      value={formData.street}
+                      onChange={handleInputChange}
+                      onBlur={handleBlur}
+                      autoComplete="street-address"
+                      className={`input complimentary-mini-mailing-input ${fieldErrors.street ? 'input-error' : ''}`}
+                      placeholder="Enter your full address"
+                    />
+                    {fieldErrors.street && (
+                      <p className="field-error-message">{fieldErrors.street}</p>
+                    )}
+                  </div>
 
-              <div className="contact-form-field">
-                <label htmlFor="zip" className="contact-form-label">
-                  ZIP Code *
-                </label>
-                <input
-                  type="text"
-                  id="zip"
-                  name="zip"
-                  value={formData.zip}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  autoComplete="postal-code"
-                  inputMode="numeric"
-                  className={`input ${fieldErrors.zip ? 'input-error' : ''}`}
-                  placeholder="e.g. 33101"
-                />
-                {fieldErrors.zip && <p className="field-error-message">{fieldErrors.zip}</p>}
-              </div>
+                  <div className="contact-form-grid">
+                    <div className="contact-form-field">
+                      <label htmlFor="city" className="contact-form-label">
+                        City *
+                      </label>
+                      <input
+                        type="text"
+                        id="city"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleInputChange}
+                        onBlur={handleBlur}
+                        autoComplete="address-level2"
+                        className={`input complimentary-mini-mailing-input ${fieldErrors.city ? 'input-error' : ''}`}
+                        placeholder="Enter your city"
+                      />
+                      {fieldErrors.city && (
+                        <p className="field-error-message">{fieldErrors.city}</p>
+                      )}
+                    </div>
+
+                    <div className="contact-form-field">
+                      <label htmlFor="state" className="contact-form-label">
+                        State *
+                      </label>
+                      <input
+                        type="text"
+                        id="state"
+                        name="state"
+                        value={formData.state}
+                        onChange={handleInputChange}
+                        onBlur={handleBlur}
+                        autoComplete="address-level1"
+                        className={`input complimentary-mini-mailing-input ${fieldErrors.state ? 'input-error' : ''}`}
+                        placeholder="Enter your state"
+                      />
+                      {fieldErrors.state && (
+                        <p className="field-error-message">{fieldErrors.state}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="contact-form-field">
+                    <label htmlFor="zip" className="contact-form-label">
+                      ZIP Code *
+                    </label>
+                    <input
+                      type="text"
+                      id="zip"
+                      name="zip"
+                      value={formData.zip}
+                      onChange={handleInputChange}
+                      onBlur={handleBlur}
+                      autoComplete="postal-code"
+                      inputMode="numeric"
+                      className={`input complimentary-mini-mailing-input ${fieldErrors.zip ? 'input-error' : ''}`}
+                      placeholder="e.g. 33101"
+                    />
+                    {fieldErrors.zip && <p className="field-error-message">{fieldErrors.zip}</p>}
+                  </div>
+                </div>
+              </section>
 
               <div className="contact-form-field">
                 <label htmlFor="contactType" className="contact-form-label">
