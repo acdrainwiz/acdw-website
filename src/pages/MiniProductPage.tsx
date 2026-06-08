@@ -414,16 +414,44 @@ export function MiniProductPage() {
                 <span className="mini-hero-v2-buy-amount">${unitPrice.toFixed(2)}</span>
                 <span className="mini-hero-v2-buy-ship">Ships in 1–2 days · Free returns</span>
               </div>
-              <StripeCheckout
-                product="mini"
-                quantity={1}
-                onError={setCheckoutError}
-                buttonText="Buy Now"
-                className="mini-hero-v2-buy-button"
-              />
-              <a href="#mini-purchase-heading" className="mini-hero-v2-buy-options">
-                Choose a quantity ↓
-              </a>
+              <div className="mini-hero-v2-buy-actions">
+                <div className="mini-hero-v2-qty" role="group" aria-label="Quantity">
+                  <button
+                    type="button"
+                    className="mini-hero-v2-qty-step"
+                    onClick={() => setQty(quantity - 1)}
+                    disabled={quantity <= 1}
+                    aria-label="Decrease quantity"
+                  >
+                    −
+                  </button>
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    min={1}
+                    max={999999}
+                    value={quantity}
+                    onChange={(e) => setQty(parseInt(e.target.value, 10))}
+                    className="mini-hero-v2-qty-input"
+                    aria-label="Quantity"
+                  />
+                  <button
+                    type="button"
+                    className="mini-hero-v2-qty-step"
+                    onClick={() => setQty(quantity + 1)}
+                    aria-label="Increase quantity"
+                  >
+                    +
+                  </button>
+                </div>
+                <StripeCheckout
+                  product="mini"
+                  quantity={quantity}
+                  onError={setCheckoutError}
+                  buttonText="Buy Now"
+                  className="mini-hero-v2-buy-button"
+                />
+              </div>
               {checkoutError && (
                 <p className="mini-buy-error" role="alert">{checkoutError}</p>
               )}
