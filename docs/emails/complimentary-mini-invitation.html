@@ -23,11 +23,6 @@
     • Contact custom field: mini_invite_token
     • CTA href: https://acdrainwiz.com/complimentary-mini?access={{contact.mini_invite_token}}
 
-  BADGE ICONS (hosted on site — deploy public/images/emails/*.png before GHL preview)
-    badge-gift-white.png      — Complimentary (invitation)
-    badge-check-white.png     — Confirmed (submission confirmed)
-    badge-truck-white.png     — Shipped (tracking)
-
   MERGE FIELDS USED
     {{contact.first_name}}  — falls back gracefully if empty in GHL preview
     {{custom_values.complimentary_mini_invite_url}}  — Option A
@@ -98,17 +93,8 @@
               <!-- Complimentary badge -->
               <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto 20px;">
                 <tr>
-                  <td align="center" style="border-radius:999px; background-color:#f97316; padding:9px 18px 9px 14px;">
-                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
-                      <tr>
-                        <td valign="middle" style="padding:0 6px 0 0; line-height:0; font-size:0;">
-                          <img src="https://acdrainwiz.com/images/emails/badge-gift-white.png" width="20" height="20" alt="" style="display:block; width:20px; height:20px; border:0;">
-                        </td>
-                        <td valign="middle" style="font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#ffffff; line-height:1;">
-                          Complimentary
-                        </td>
-                      </tr>
-                    </table>
+                  <td align="center" style="border-radius:999px; background-color:#f97316; padding:8px 18px;">
+                    <span style="font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#ffffff;">Complimentary</span>
                   </td>
                 </tr>
               </table>
