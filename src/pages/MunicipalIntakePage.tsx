@@ -4,18 +4,7 @@ import { IMaskInput } from 'react-imask'
 import { BuildingOfficeIcon, SparklesIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { validateEmail } from '../utils/emailValidation'
 import { useRecaptcha } from '../hooks/useRecaptcha'
-import type { PageSearchMeta } from '../config/siteSearchTypes'
 import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
-
-export const PAGE_SEARCH_META: PageSearchMeta = {
-  id: 'municipal-intake',
-  kind: 'product-info',
-  title: 'Municipal Intake Form (BOAFCOAA)',
-  body:
-    'Municipal intake form for BOAFCOAA participants and similar leads. Collects municipality information, primary and secondary contacts, infrastructure details, interest and participation, and program enrollment.',
-  tags: ['municipal', 'intake', 'BOAFCOAA', 'government'],
-  href: '/boafcoaa-muni-intake-form',
-}
 
 const MESSAGE_MAX_LENGTH = 2000
 

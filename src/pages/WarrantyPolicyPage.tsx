@@ -1,16 +1,5 @@
 import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
-import type { PageSearchMeta } from '../config/siteSearchTypes'
 import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
-
-export const PAGE_SEARCH_META: PageSearchMeta = {
-  id: 'page-warranty-policy',
-  kind: 'site',
-  title: 'Warranty Policy',
-  body:
-    'Warranty policy: product quality and reliability, warranty period, terms and conditions, claim process for AC Drain Wiz products.',
-  tags: ['warranty', 'claim', 'terms', 'coverage'],
-  href: '/warranty-policy',
-}
 
 export function WarrantyPolicyPage() {
 

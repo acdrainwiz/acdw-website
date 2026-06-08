@@ -17,6 +17,8 @@ export const TTF_PRIZE_HEADER_VIEWPORT = {
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
+// Animation-variants hook co-located with its reveal components (Fast Refresh hint only).
+// eslint-disable-next-line react-refresh/only-export-components
 export function useTtfRevealVariants() {
   const reduceMotion = useReducedMotion()
 

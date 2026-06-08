@@ -27,7 +27,7 @@ interface CartItem {
 export function CheckoutPage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { user, isAuthenticated } = useAuth()
+  const { user } = useAuth()
   
   // Cart state
   const [cart, setCart] = useState<CartItem | null>(null)
@@ -94,8 +94,9 @@ export function CheckoutPage() {
     }
     
     // Validate quantity
+    // No business cap on quantity; upper bound is Stripe's per-line-item maximum.
     const qty = parseInt(quantity)
-    if (isNaN(qty) || qty < 1 || qty > 500) {
+    if (isNaN(qty) || qty < 1 || qty > 999999) {
       console.error('Invalid quantity:', quantity)
       navigate('/products')
       return
@@ -130,6 +131,9 @@ export function CheckoutPage() {
     if (cart && shippingAddress.city && shippingAddress.state && shippingAddress.zip) {
       calculateShipping()
     }
+    // calculateShipping is declared later in this component; the real triggers are
+    // the address fields + cart listed below, so it is intentionally excluded.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shippingAddress.city, shippingAddress.state, shippingAddress.zip, cart])
 
   // Create Payment Intent when address is complete and validated
@@ -209,7 +213,7 @@ export function CheckoutPage() {
     } finally {
       setIsProcessing(false)
     }
-  }, [cart, shippingAddress, shippingCost, user, isAuthenticated])
+  }, [cart, shippingAddress, shippingCost, user])
 
   // Update Payment Intent when address changes (debounced)
   const updatePaymentIntent = useCallback(async () => {

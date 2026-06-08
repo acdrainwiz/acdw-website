@@ -34,17 +34,6 @@ import { TtfOfficialRulesLink } from '@/components/campaign/TtfOfficialRulesLink
 import { TRASH_THE_FLOAT } from '@/config/trashTheFloatCopy'
 import { scrollToHashTargetWithRetries } from '@/utils/scrollToHashTarget'
 import { cn } from '@/lib/utils'
-import type { PageSearchMeta } from '@/config/siteSearchTypes'
-
-export const PAGE_SEARCH_META: PageSearchMeta = {
-  id: 'page-trash-the-float',
-  kind: 'site',
-  title: 'Trash the Float — AC Drain Wiz Campaign',
-  body:
-    "Trash the Float. Smart Tech's the GOAT. Real stories from contractors, homeowners, and property managers about float switch callbacks and the move toward smarter AC drain protection. Submit your story on the campaign page. Monthly iPad drawing live on Instagram. Float Switch Story Hall of Fame.",
-  tags: ['campaign', 'trash the float', 'float switch', 'sensor switch', 'smart drain protection', 'hall of fame', 'story spotlight'],
-  href: '/trash-the-float',
-}
 
 /**
  * Campaign landing page: /trash-the-float

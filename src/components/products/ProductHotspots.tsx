@@ -278,11 +278,9 @@ export function ProductHotspots({
       }
       setCopyStatus('copied')
       // Always print to the console as a reliable fallback.
-      // eslint-disable-next-line no-console
       console.log('[ProductHotspots] Calibrated positions:\n' + text)
     } catch {
       setCopyStatus('error')
-      // eslint-disable-next-line no-console
       console.log('[ProductHotspots] Calibrated positions (copy failed, paste from here):\n' + text)
     }
     window.setTimeout(() => setCopyStatus('idle'), 1800)

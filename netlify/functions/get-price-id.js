@@ -178,15 +178,25 @@ exports.handler = async (event, context) => {
       }
     }
 
-    // Check if quantity exceeds automated limit
-    if (qty > 500) {
+    // Quantity ceiling.
+    // Contractor / property-manager pricing tiers top out at 500 units; above that we
+    // route to sales for a custom volume quote. Homeowners buy at flat MSRP, so any
+    // quantity is allowed online (only Stripe's per-line-item max of 999,999 guards it).
+    if (userRole !== 'homeowner' && qty > 500) {
       return {
         statusCode: 400,
         headers,
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           error: 'Quantity exceeds automated limit',
           requiresContact: true,
         }),
+      }
+    }
+    if (qty > 999999) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'Invalid quantity' }),
       }
     }
 
