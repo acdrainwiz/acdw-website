@@ -26,7 +26,6 @@ const PropertyManagerPage = lazy(() => import('./pages/PropertyManagerPage').the
 const CustomerSelectionPage = lazy(() => import('./pages/CustomerSelectionPage').then(m => ({ default: m.CustomerSelectionPage })))
 const ProductsPage = lazy(() => import('./pages/ProductsPage').then(m => ({ default: m.ProductsPage })))
 const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })))
-const MunicipalIntakePage = lazy(() => import('./pages/MunicipalIntakePage').then(m => ({ default: m.MunicipalIntakePage })))
 const AboutPage = lazy(() => import('./pages/AboutPage').then(m => ({ default: m.AboutPage })))
 const SupportHubPage = lazy(() => import('./pages/SupportHubPage').then(m => ({ default: m.SupportHubPage })))
 const InstallationSetupPage = lazy(() => import('./pages/InstallationSetupPage').then(m => ({ default: m.InstallationSetupPage })))
@@ -93,7 +92,7 @@ function AppContent() {
                     <Route path="/products" element={<ProductsPage />} />
                     <Route path="/solutions" element={<ProductsPage />} />
                     <Route path="/contact" element={<ContactPage />} />
-                    <Route path="/boafcoaa-muni-intake-form" element={<MunicipalIntakePage />} />
+                    {/* /boafcoaa-muni-intake-form retired — MunicipalIntakePage unrouted (file kept for re-enable) */}
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="/support" element={<SupportHubPage />} />
                     <Route path="/support/installation-setup" element={<InstallationSetupPage />} />
