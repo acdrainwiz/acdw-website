@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import type { ProductType } from '../../config/pricing'
+import { PURCHASING_ENABLED } from '../../config/features'
 
 interface StripeCheckoutProps {
   product: ProductType
@@ -123,6 +124,22 @@ export function StripeCheckout({ product, quantity, onError, buttonText, classNa
       onError?.(error instanceof Error ? error.message : 'Checkout failed. Please try again.')
       setIsLoading(false)
     }
+  }
+
+  // Purchasing not yet live — show a disabled "Coming Soon" placeholder in
+  // place of the checkout button. Reuses the same className so the layout/size
+  // stays consistent with each page's normal buy button.
+  if (!PURCHASING_ENABLED) {
+    return (
+      <button
+        type="button"
+        disabled
+        aria-disabled="true"
+        className={className || "hvac-pro-checkout-button"}
+      >
+        Coming Soon
+      </button>
+    )
   }
 
   return (

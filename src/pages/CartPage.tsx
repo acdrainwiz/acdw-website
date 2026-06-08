@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../contexts/CartContext'
 import { useAuth } from '../contexts/AuthContext'
+import { PURCHASING_ENABLED } from '../config/features'
 import { 
   TrashIcon,
   TruckIcon,
@@ -303,20 +304,31 @@ export function CartPage() {
               </div>
             )}
 
-            <button
-              onClick={handleCheckout}
-              disabled={isCheckingOut}
-              className="cart-checkout-button"
-            >
-              {isCheckingOut ? (
-                <div className="cart-checkout-loading">
-                  <div className="cart-checkout-spinner"></div>
-                  Processing...
-                </div>
-              ) : (
-                'Checkout'
-              )}
-            </button>
+            {PURCHASING_ENABLED ? (
+              <button
+                onClick={handleCheckout}
+                disabled={isCheckingOut}
+                className="cart-checkout-button"
+              >
+                {isCheckingOut ? (
+                  <div className="cart-checkout-loading">
+                    <div className="cart-checkout-spinner"></div>
+                    Processing...
+                  </div>
+                ) : (
+                  'Checkout'
+                )}
+              </button>
+            ) : (
+              <button
+                type="button"
+                disabled
+                aria-disabled="true"
+                className="cart-checkout-button"
+              >
+                Coming Soon
+              </button>
+            )}
 
             {/* Trust Indicators */}
             <div className="cart-trust-indicators">
