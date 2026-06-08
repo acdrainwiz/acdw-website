@@ -37,7 +37,7 @@ import {
 import { buildProductSupportHubHref } from '../utils/supportFaqSearch'
 import { StripeCheckout } from '../components/checkout/StripeCheckout'
 import { useCart } from '../contexts/CartContext'
-import { MSRP_PRICES } from '../config/pricing'
+import { useProductPrice } from '../hooks/useProductPrice'
 
 const MINI_HERO_HEADLINES = [
   'Stop Water Damage Before It Starts',
@@ -71,7 +71,7 @@ export function MiniProductPage() {
   // Direct online purchase (2026-06: Mini is now sold directly on-page via the
   // existing Stripe flow). Quantity has no upper cap — any amount ships at MSRP.
   const { addItem } = useCart()
-  const unitPrice = MSRP_PRICES.mini
+  const { price: unitPrice } = useProductPrice('mini')
   const [quantity, setQuantity] = useState(1)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
   const [addedToCart, setAddedToCart] = useState(false)
