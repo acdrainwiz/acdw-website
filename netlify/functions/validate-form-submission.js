@@ -397,7 +397,7 @@ const validateFormFields = (formType, formData) => {
       }
 
       case 'complimentary-mini-request': {
-        const expectedAccessToken = process.env.COMPLIMENTARY_MINI_ACCESS_TOKEN || ''
+        const expectedAccessToken = process.env.VITE_COMPLIMENTARY_MINI_ACCESS_TOKEN || ''
         const miniAccess = formData.get('access')?.trim() || ''
 
         if (!expectedAccessToken) {
