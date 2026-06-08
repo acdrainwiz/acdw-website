@@ -38,6 +38,7 @@ import { buildProductSupportHubHref } from '../utils/supportFaqSearch'
 import { StripeCheckout } from '../components/checkout/StripeCheckout'
 import { useCart } from '../contexts/CartContext'
 import { useProductPrice } from '../hooks/useProductPrice'
+import { PURCHASING_ENABLED } from '../config/features'
 
 const MINI_HERO_HEADLINES = [
   'Stop Water Damage Before It Starts',
@@ -994,17 +995,19 @@ export function MiniProductPage() {
                     buttonText="Buy Now"
                     className="mini-buy-button-primary"
                   />
-                  <button
-                    type="button"
-                    onClick={handleAddToCart}
-                    className="mini-buy-button-secondary"
-                  >
-                    <ShoppingCartIcon className="mini-buy-button-icon" aria-hidden />
-                    {addedToCart ? 'Added to cart' : 'Add to Cart'}
-                  </button>
+                  {PURCHASING_ENABLED && (
+                    <button
+                      type="button"
+                      onClick={handleAddToCart}
+                      className="mini-buy-button-secondary"
+                    >
+                      <ShoppingCartIcon className="mini-buy-button-icon" aria-hidden />
+                      {addedToCart ? 'Added to cart' : 'Add to Cart'}
+                    </button>
+                  )}
                 </div>
 
-                {addedToCart && (
+                {PURCHASING_ENABLED && addedToCart && (
                   <button
                     type="button"
                     onClick={() => navigate('/cart')}
