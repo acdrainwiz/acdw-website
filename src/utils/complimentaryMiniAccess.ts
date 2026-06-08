@@ -3,8 +3,14 @@ import { isLocalDevEnvironment } from './isLocalDevEnvironment'
 /** Must match `accessGate.queryParam` in complimentaryMiniRequestCopy.ts */
 const ACCESS_QUERY_PARAM = 'access'
 
-const STORAGE_KEY = 'complimentary-mini-access-token'
 const SUBMISSION_COMPLETE_KEY = 'complimentary-mini-submission-complete'
+
+/**
+ * Access token is held in memory only (not sessionStorage) so that leaving or
+ * reloading the page drops it — the visitor must re-open the link from their
+ * invitation email to regain access.
+ */
+let inMemoryAccessToken: string | null = null
 
 const EXPECTED_ACCESS_TOKEN = (
   import.meta.env.VITE_COMPLIMENTARY_MINI_ACCESS_TOKEN as string | undefined
@@ -25,19 +31,15 @@ export function getComplimentaryMiniAccessQueryParam(): string {
 }
 
 export function persistComplimentaryMiniAccessToken(token: string): void {
-  if (typeof sessionStorage === 'undefined') return
-  sessionStorage.setItem(STORAGE_KEY, token)
+  inMemoryAccessToken = token
 }
 
 export function getStoredComplimentaryMiniAccessToken(): string | null {
-  if (typeof sessionStorage === 'undefined') return null
-  const stored = sessionStorage.getItem(STORAGE_KEY)?.trim()
-  return stored || null
+  return inMemoryAccessToken?.trim() || null
 }
 
 export function clearComplimentaryMiniAccessToken(): void {
-  if (typeof sessionStorage === 'undefined') return
-  sessionStorage.removeItem(STORAGE_KEY)
+  inMemoryAccessToken = null
 }
 
 export function markComplimentaryMiniSubmissionComplete(): void {
