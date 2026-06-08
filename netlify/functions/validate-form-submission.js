@@ -58,7 +58,7 @@ const FORM_NAME_TO_GHL_TYPE = {
   'core-upgrade': 'core-upgrade',
   'unsubscribe': 'unsubscribe',
   'ep-x7k9m2': 'email-preferences',
-  'municipal-intake': 'municipal-intake',
+  // 'municipal-intake' retired — form disabled; its GHL_MUNI_PIPELINE_* env vars now power complimentary-mini-request.
   'municipal-quick-intake': 'municipal-quick-intake',
   'trash-the-float-story': 'trash-the-float-story',
   'complimentary-mini-request': 'complimentary-mini-request',
@@ -624,7 +624,7 @@ exports.handler = async (event, context) => {
       'promo-signup',
       'core-upgrade',
       'hero-email',
-      'municipal-intake',
+      // 'municipal-intake' retired — submissions are rejected as an unknown form name.
       'municipal-quick-intake',
       'trash-the-float-story',
       'complimentary-mini-request',

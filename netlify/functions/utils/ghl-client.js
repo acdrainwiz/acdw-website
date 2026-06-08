@@ -196,6 +196,53 @@ function invalidateOpportunityFieldCache() {
 }
 
 // =============================================================================
+// Pipeline stage-position cache (cached per cold-start, 1h TTL). Used to make
+// opportunity-stage moves "advance-only" so a resubmit never drags a card that's
+// already further along (e.g. an already-mailed sample) backward.
+// =============================================================================
+let pipelineStageCache = { map: null, fetchedAt: 0 }
+
+// Returns { [pipelineId]: { [stageId]: position } } for the configured location.
+async function fetchPipelineStageMap() {
+  const cfg = getConfig()
+  if (!cfg.locationId) {
+    throw new GhlConfigError('GHL_LOCATION_ID must be set to look up pipelines')
+  }
+  const data = await ghlRequest(
+    'GET',
+    `/opportunities/pipelines?locationId=${encodeURIComponent(cfg.locationId)}`
+  )
+  const pipelines = (data && data.pipelines) || []
+  const map = {}
+  for (const p of pipelines) {
+    if (!p || !p.id) continue
+    const stages = {}
+    for (const s of p.stages || []) {
+      if (s && s.id) stages[s.id] = typeof s.position === 'number' ? s.position : 0
+    }
+    map[p.id] = stages
+  }
+  return map
+}
+
+async function ensurePipelineStageMap() {
+  const now = Date.now()
+  if (
+    pipelineStageCache.map &&
+    now - pipelineStageCache.fetchedAt < OPPORTUNITY_FIELD_CACHE_TTL_MS
+  ) {
+    return pipelineStageCache.map
+  }
+  const map = await fetchPipelineStageMap()
+  pipelineStageCache = { map, fetchedAt: now }
+  return map
+}
+
+function invalidatePipelineStageCache() {
+  pipelineStageCache = { map: null, fetchedAt: 0 }
+}
+
+// =============================================================================
 // Contact custom field ID auto-lookup (cached per cold-start, 1h TTL)
 // =============================================================================
 let contactFieldCache = { idMap: null, fetchedAt: 0 }
@@ -491,6 +538,30 @@ async function createOpportunity(payload) {
   }
 }
 
+// Find a contact's opportunities, optionally scoped to one pipeline. NOTE: the search
+// endpoint expects snake_case query params (location_id / contact_id / pipeline_id);
+// the camelCase variants return HTTP 422.
+async function searchOpportunitiesByContact(contactId, pipelineId) {
+  const cfg = getConfig()
+  const params = new URLSearchParams({ location_id: cfg.locationId, contact_id: contactId })
+  if (pipelineId) params.set('pipeline_id', pipelineId)
+  const data = await ghlRequest('GET', `/opportunities/search?${params.toString()}`)
+  return (data && data.opportunities) || []
+}
+
+// Move an existing opportunity to a different stage. Passes the existing name through so
+// the card isn't renamed, and keeps it open.
+async function updateOpportunityStage(opportunityId, { pipelineId, pipelineStageId, name }) {
+  const body = { pipelineId, pipelineStageId, status: 'open' }
+  if (name) body.name = name
+  const data = await ghlRequest('PUT', `/opportunities/${opportunityId}`, body)
+  return {
+    opportunityId: (data && (data.opportunity?.id || data.id)) || opportunityId,
+    raw: data,
+    traceId: data && (data.traceId || data.trace_id),
+  }
+}
+
 function buildContactUpsertPayloadForOpportunity(formConfig, sanitizedData, contactIdLookup = getCustomFieldId) {
   const cfg = getConfig()
   const payload = {
@@ -615,6 +686,82 @@ async function submitOpportunityForm(formType, sanitizedData, formConfig) {
     }
   }
 
+  // 4a-dedupe. If configured, find the contact's existing OPEN card in this pipeline and
+  // advance it to the target stage instead of creating a duplicate. Picks the lowest-stage
+  // open card (the one most likely sitting at stage 0) and only moves it forward — a card
+  // already at or past the target stage is left untouched, so a resubmit never drags an
+  // already-mailed sample backward. Any search/move failure falls through to creating a
+  // fresh card so a lead is never dropped.
+  if (formConfig.dedupeOpportunityByContact) {
+    try {
+      const openCards = (await searchOpportunitiesByContact(contactId, pipelineId)).filter(
+        (o) => o && o.status === 'open'
+      )
+      if (openCards.length > 0) {
+        let positions = {}
+        try {
+          const stageMap = await ensurePipelineStageMap()
+          positions = stageMap[pipelineId] || {}
+        } catch (posErr) {
+          warnings.push({ stage: 'pipelineStagePositions', error: posErr.message })
+        }
+        const posOf = (id) =>
+          typeof positions[id] === 'number' ? positions[id] : Number.MAX_SAFE_INTEGER
+        // Lowest current stage first; on a tie prefer a card this form created.
+        openCards.sort((a, b) => {
+          const d = posOf(a.pipelineStageId) - posOf(b.pipelineStageId)
+          if (d !== 0) return d
+          const aMine = a.source === formConfig.sourceAttribution ? 0 : 1
+          const bMine = b.source === formConfig.sourceAttribution ? 0 : 1
+          return aMine - bMine
+        })
+        const target = openCards[0]
+        const currentPos = posOf(target.pipelineStageId)
+        const targetPos = posOf(pipelineStageId)
+        // Advance only. When positions can't be resolved, fall back to "move if not already there".
+        const positionsKnown =
+          currentPos !== Number.MAX_SAFE_INTEGER && targetPos !== Number.MAX_SAFE_INTEGER
+        const shouldMove = positionsKnown
+          ? currentPos < targetPos
+          : target.pipelineStageId !== pipelineStageId
+        if (shouldMove) {
+          try {
+            await updateOpportunityStage(target.id, {
+              pipelineId,
+              pipelineStageId,
+              name: target.name,
+            })
+          } catch (updErr) {
+            warnings.push({
+              stage: 'updateOpportunityStage',
+              error: updErr.message,
+              status: updErr.status,
+              traceId: updErr.traceId || null,
+              responseBody: updErr.responseBody,
+            })
+          }
+        }
+        return {
+          contactId,
+          opportunityId: target.id,
+          isNew: contactResult.isNew,
+          traceId: contactResult.traceId,
+          warnings,
+          deduped: true,
+          movedToStage: shouldMove ? pipelineStageId : target.pipelineStageId,
+          payload: { contact: contactPayload },
+        }
+      }
+    } catch (searchErr) {
+      warnings.push({
+        stage: 'searchOpportunities',
+        error: searchErr.message,
+        status: searchErr.status,
+        traceId: searchErr.traceId || null,
+      })
+    }
+  }
+
   // 4b. Create the Opportunity linked to the Contact. Resolve field IDs from the
   // GHL API (cached) so we don't have to hand-maintain IDs in source.
   let opportunityIdMap = null
@@ -704,6 +851,11 @@ module.exports = {
   submitForm,
   submitOpportunityForm,
   createOpportunity,
+  searchOpportunitiesByContact,
+  updateOpportunityStage,
+  fetchPipelineStageMap,
+  ensurePipelineStageMap,
+  invalidatePipelineStageCache,
   renderOpportunityName,
   buildUpsertPayload,
   resolveConditionalTags,
