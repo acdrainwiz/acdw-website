@@ -1,9 +1,0 @@
-{
-  "capturedAt": "seed",
-  "currency": "usd",
-  "prices": {
-    "mini": 99.99,
-    "sensor": 69.99,
-    "bundle": 179.99
-  }
-}

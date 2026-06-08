@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vite",
     "dev:netlify": "netlify dev",
-    "prebuild": "node scripts/snapshot-prices.mjs",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

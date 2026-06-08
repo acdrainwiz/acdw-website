@@ -3,10 +3,15 @@
  *
  * Returns the current homeowner/MSRP unit price for a product straight from
  * Stripe, so on-page pricing is driven by the Stripe Price (single source of
- * truth) instead of a hardcoded constant. Change the price in Stripe and the
- * site reflects it within the cache TTL — no redeploy needed.
+ * truth). Change the price in Stripe and the site reflects it within the cache
+ * window — no redeploy needed.
  *
- * Display only. The actual charge is always re-validated server-side at
+ * Resilience: every successful fetch is saved to Netlify Blobs as the
+ * "last known good" price. If Stripe is ever unreachable, we serve that last
+ * real price instead of failing. (The client also keeps a constant fallback for
+ * the rare case the function itself can't be reached.)
+ *
+ * Display only — the actual charge is always re-validated server-side at
  * checkout (create-payment-intent / get-price-id).
  *
  * GET /.netlify/functions/get-display-price?product=mini
@@ -21,52 +26,84 @@ const PRICE_ID_ENV = {
   bundle: 'STRIPE_PRICE_BUNDLE_HOMEOWNER',
 }
 
-// In-memory cache per warm function instance. Combined with the CDN Cache-Control
-// below, this keeps Stripe API calls rare even under heavy browsing traffic.
+// In-memory cache per warm instance, on top of the CDN Cache-Control below.
 const TTL_MS = 5 * 60 * 1000
-const cache = {}
+const memCache = {}
+
+// Netlify Blobs store for last-known-good prices. getStore uses the function
+// context automatically; returns null (graceful) if Blobs isn't available.
+function getPriceStore() {
+  try {
+    const { getStore } = require('@netlify/blobs')
+    return getStore('display-prices')
+  } catch (err) {
+    console.warn('get-display-price: Netlify Blobs unavailable:', err.message)
+    return null
+  }
+}
 
 exports.handler = async (event) => {
-  const headers = {
+  const baseHeaders = {
     'Content-Type': 'application/json',
-    // Cache at the browser + Netlify CDN for 5 minutes (matches the in-memory TTL).
-    'Cache-Control': 'public, max-age=300, s-maxage=300',
     'X-Content-Type-Options': 'nosniff',
   }
+  const freshCache = { ...baseHeaders, 'Cache-Control': 'public, max-age=300, s-maxage=300' }
+  // Cache last-known-good responses only briefly so we retry Stripe soon.
+  const staleCache = { ...baseHeaders, 'Cache-Control': 'public, max-age=60' }
 
   if (event.httpMethod !== 'GET') {
-    return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) }
+    return { statusCode: 405, headers: baseHeaders, body: JSON.stringify({ error: 'Method not allowed' }) }
   }
 
   const product = (event.queryStringParameters?.product || 'mini').toLowerCase()
   const envKey = PRICE_ID_ENV[product]
   if (!envKey) {
-    return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid product' }) }
-  }
-
-  const priceId = process.env[envKey]
-  if (!priceId) {
-    // Price ID not configured yet — let the client fall back to its constant.
-    return { statusCode: 503, headers, body: JSON.stringify({ error: `${envKey} not configured` }) }
+    return { statusCode: 400, headers: baseHeaders, body: JSON.stringify({ error: 'Invalid product' }) }
   }
 
   const now = Date.now()
-  const cached = cache[product]
+  const cached = memCache[product]
   if (cached && cached.expires > now) {
-    return { statusCode: 200, headers, body: JSON.stringify(cached.data) }
+    return { statusCode: 200, headers: freshCache, body: JSON.stringify(cached.data) }
   }
 
-  try {
-    const price = await stripe.prices.retrieve(priceId)
-    const data = {
-      product,
-      unitPrice: price.unit_amount / 100,
-      currency: price.currency,
+  const store = getPriceStore()
+  const priceId = process.env[envKey]
+  const blobKey = `price:${product}`
+
+  // 1) Try the live Stripe price.
+  if (priceId) {
+    try {
+      const price = await stripe.prices.retrieve(priceId)
+      const data = { product, unitPrice: price.unit_amount / 100, currency: price.currency, source: 'live' }
+      memCache[product] = { data, expires: now + TTL_MS }
+      // Persist last-known-good (best effort — never block the response on this).
+      if (store) {
+        try {
+          await store.setJSON(blobKey, { unitPrice: data.unitPrice, currency: data.currency, capturedAt: new Date().toISOString() })
+        } catch (e) {
+          console.warn('get-display-price: blob write failed', e.message)
+        }
+      }
+      return { statusCode: 200, headers: freshCache, body: JSON.stringify(data) }
+    } catch (stripeErr) {
+      console.error('get-display-price: Stripe retrieve failed, falling back to last-known', { product, message: stripeErr.message })
     }
-    cache[product] = { data, expires: now + TTL_MS }
-    return { statusCode: 200, headers, body: JSON.stringify(data) }
-  } catch (err) {
-    console.error('get-display-price: Stripe retrieve failed', { product, priceId, message: err.message })
-    return { statusCode: 502, headers, body: JSON.stringify({ error: 'Failed to retrieve price' }) }
   }
+
+  // 2) Fall back to the last-known-good price saved in Blobs.
+  if (store) {
+    try {
+      const last = await store.get(blobKey, { type: 'json' })
+      if (last && typeof last.unitPrice === 'number') {
+        const data = { product, unitPrice: last.unitPrice, currency: last.currency || 'usd', source: 'last-known', capturedAt: last.capturedAt }
+        return { statusCode: 200, headers: staleCache, body: JSON.stringify(data) }
+      }
+    } catch (e) {
+      console.warn('get-display-price: blob read failed', e.message)
+    }
+  }
+
+  // 3) Nothing available yet — let the client use its own constant fallback.
+  return { statusCode: 503, headers: baseHeaders, body: JSON.stringify({ error: 'Price temporarily unavailable' }) }
 }
