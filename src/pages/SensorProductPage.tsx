@@ -49,21 +49,9 @@ import {
   SENSOR_WIFI_DISPLAY,
   WIFI_REQUIREMENT,
   buildSensorSetupHref,
-  PRODUCT_NAMES,
 } from '../config/acdwKnowledge'
-import type { PageSearchMeta } from '../config/siteSearchTypes'
 import { CompareChip } from '../components/products/CompareChip'
 import { SensorWireHarnessDiagram } from '../components/products/SensorWireHarnessDiagram'
-
-export const PAGE_SEARCH_META: PageSearchMeta = {
-  id: 'product-sensor',
-  kind: 'product-info',
-  title: PRODUCT_NAMES.sensor,
-  body:
-    'Overflow protection and WiFi monitoring options. Standard Sensor Switch non-WiFi and WiFi Sensor Switch. Capacitive sensing, automatic AC shutdown at 80%, monitoring portal and alerts for WiFi model. WiFi Sensor Switch includes lithium-ion backup battery (~2 years) with low-battery warning in the platform. Product overview.',
-  tags: ['sensor', 'product', 'wifi', 'overflow', 'monitoring', 'battery', 'backup battery', 'power'],
-  href: '/products/sensor',
-}
 
 export function SensorProductPage() {
   const navigate = useNavigate()

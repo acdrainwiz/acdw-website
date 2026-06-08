@@ -28,24 +28,12 @@ import {
   SENSOR_WIFI_SHORT,
   SUPPORT_CONTACT,
 } from '../config/acdwKnowledge'
-import type { PageSearchMeta } from '../config/siteSearchTypes'
 import { ProductHotspots, type Hotspot } from '../components/products/ProductHotspots'
 import { miniHotspots } from '../components/products/miniHotspots'
 import { SensorWaterGaugeInline } from '../components/products/SensorWaterGauge'
 import { ComboWorkflowShowcase } from '../components/products/ComboWorkflowShowcase'
 import { ProductsLineupComparison } from '../components/products/ProductsLineupComparison'
 import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
-
-export const PAGE_SEARCH_META: PageSearchMeta = {
-  id: 'page-products',
-  kind: 'site',
-  title: 'Products — AC Drain Wiz lineup',
-  body:
-    'Products overview: AC Drain Wiz Mini compact maintenance manifold with bayonet port and bi-directional valve; flush, compressed air, vacuum on 3/4 inch PVC condensate lines. AC Drain Wiz Standard Sensor Switch (Non-WiFi) and WiFi Sensor Switch—capacitive overflow protection; WiFi adds remote monitoring and alerts on 2.4 GHz Wi-Fi. Mini plus Sensor bundle. Comparison: Standard vs WiFi Sensor vs Mini plus Sensor—Wi-Fi, alerts, install time, IMC examples. Specifications, contractor-focused catalog, FAQs.',
-  tags: ['products', 'mini', 'sensor', 'combo', 'catalog', 'specs', 'IMC'],
-  searchTerms: ['solutions', 'lineup', 'ACDW'],
-  href: '/products',
-}
 
 /** Viewport: reveal once, trigger a bit before fully centered */
 const lineupMotionViewport = { once: true, amount: 0.28, margin: '0px 0px -12% 0px' } as const

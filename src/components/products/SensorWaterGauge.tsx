@@ -51,6 +51,8 @@ export type SensorWaterGaugeProps = {
  * [data-sensor-water-demo='threshold-callout'][data-threshold-pct='80'] { ... }
  * ```
  */
+// Stable selector/classname helper co-located with its component (Fast Refresh hint only).
+// eslint-disable-next-line react-refresh/only-export-components
 export const sensorWaterDemoTargets = {
   /** `data-sensor-water-demo="<section>"` on major regions. */
   mark: (section: string) =>

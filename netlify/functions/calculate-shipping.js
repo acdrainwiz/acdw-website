@@ -112,9 +112,11 @@ exports.handler = async (event, context) => {
     }
     
     // Validate product quantities
+    // No business cap on quantity (any amount can be purchased at list price);
+    // upper bound is Stripe's per-line-item maximum (999,999) as a defensive guard.
     for (const [productType, quantity] of Object.entries(products)) {
       const qty = parseInt(quantity)
-      if (isNaN(qty) || qty < 1 || qty > 500) {
+      if (isNaN(qty) || qty < 1 || qty > 999999) {
         logSecurityEvent(EVENT_TYPES.VALIDATION_FAILED, 'Invalid product quantity', {
           ip,
           productType,

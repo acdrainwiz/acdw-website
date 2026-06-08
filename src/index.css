@@ -2397,6 +2397,19 @@
     @apply relative;
   }
 
+  .bottom-nav-badge {
+    @apply absolute bg-primary-600 text-white font-semibold rounded-full;
+    top: -0.4rem;
+    right: -0.55rem;
+    min-width: 1.05rem;
+    height: 1.05rem;
+    padding: 0 0.25rem;
+    font-size: 0.62rem;
+    line-height: 1.05rem;
+    text-align: center;
+    box-shadow: 0 0 0 2px #ffffff;
+  }
+
   .bottom-nav-icon {
     width: 1.5rem;
     height: 1.5rem;
@@ -13957,6 +13970,175 @@
   .mini-purchase-cta-band .mini-purchase-cta-card:hover .sensor-product-purchase-card-content {
     transform: none;
   }
+}
+
+/* ==========================================================================
+   MINI DIRECT-PURCHASE BUY MODULE (2026-06)
+   Online sales for the Mini opened. Styles the hero price+Buy CTA and the
+   bottom buy card (price, quantity, Buy Now + Add to Cart, bulk link). Reuses
+   the white .sensor-product-purchase-card-content shell + brand `primary`
+   palette. Revert: remove this block and restore the "Talk to our team" markup
+   in MiniProductPage.tsx.
+   ========================================================================== */
+
+/* --- Hero buy CTA (sits on the dark hero — light text, centered) -------- */
+.mini-hero-v2-buy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.mini-hero-v2-buy-price {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.mini-hero-v2-buy-amount {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.mini-hero-v2-buy-ship {
+  font-size: 0.78rem;
+  color: rgba(241, 245, 249, 0.8);
+}
+
+.mini-hero-v2-buy-button {
+  @apply inline-flex items-center justify-center py-3 px-8 bg-primary-600 text-white font-semibold rounded-full;
+  @apply hover:bg-primary-700 transition-colors;
+  box-shadow: 0 14px 32px rgba(2, 6, 23, 0.35);
+}
+.mini-hero-v2-buy-button:disabled {
+  @apply opacity-70 cursor-not-allowed;
+}
+.mini-hero-v2-buy-button:focus-visible {
+  @apply outline-none ring-2 ring-primary-400;
+}
+
+.mini-hero-v2-buy-options {
+  font-size: 0.85rem;
+  color: rgba(241, 245, 249, 0.78);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.mini-hero-v2-buy-options:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* --- Bottom buy card (inside the white card shell) ---------------------- */
+.mini-buy-card {
+  @apply text-left;
+}
+
+.mini-buy-price-row {
+  @apply flex items-baseline gap-2 mb-5;
+}
+.mini-buy-price-amount {
+  @apply text-4xl font-bold text-gray-900;
+}
+.mini-buy-price-unit {
+  @apply text-sm text-gray-500;
+}
+
+.mini-buy-qty {
+  @apply mb-5;
+}
+.mini-buy-qty-label {
+  @apply block text-sm font-medium text-gray-700 mb-2;
+}
+.mini-buy-qty-row {
+  @apply flex flex-wrap items-center gap-3;
+}
+.mini-buy-qty-controls {
+  @apply inline-flex items-center rounded-lg border border-gray-300 overflow-hidden;
+}
+.mini-buy-qty-step {
+  @apply flex items-center justify-center text-lg text-gray-700 bg-gray-50 hover:bg-gray-100 transition-colors;
+  width: 2.5rem;
+  height: 2.75rem;
+}
+.mini-buy-qty-step:disabled {
+  @apply opacity-40 cursor-not-allowed;
+}
+.mini-buy-qty-input {
+  @apply text-center text-base font-semibold text-gray-900 border-x border-gray-300;
+  @apply focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500;
+  width: 4rem;
+  height: 2.75rem;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.mini-buy-qty-input::-webkit-outer-spin-button,
+.mini-buy-qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.mini-buy-qty-chips {
+  @apply inline-flex items-center gap-1.5;
+}
+.mini-buy-qty-chip {
+  @apply h-9 px-2 rounded-md border border-gray-300 text-sm font-medium text-gray-600 bg-white;
+  @apply hover:border-primary-400 hover:text-primary-600 transition-colors;
+  min-width: 2.25rem;
+}
+.mini-buy-qty-chip.active {
+  @apply border-primary-600 text-primary-700 bg-primary-50;
+}
+
+.mini-buy-subtotal-row {
+  @apply flex items-center justify-between pt-4 border-t border-gray-100;
+}
+.mini-buy-subtotal-label {
+  @apply text-sm text-gray-600;
+}
+.mini-buy-subtotal-amount {
+  @apply text-lg font-bold text-gray-900;
+}
+.mini-buy-subtotal-note {
+  @apply text-xs text-gray-400 mt-1 mb-4;
+}
+
+.mini-buy-error {
+  @apply text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2 mb-3;
+}
+
+.mini-buy-actions {
+  @apply flex flex-col gap-3;
+}
+.mini-buy-button-primary {
+  @apply inline-flex w-full items-center justify-center py-3 px-6 bg-primary-600 text-white font-semibold rounded-lg;
+  @apply hover:bg-primary-700 transition-colors;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary-500;
+}
+.mini-buy-button-primary:disabled {
+  @apply opacity-70 cursor-not-allowed;
+}
+.mini-buy-button-secondary {
+  @apply inline-flex w-full items-center justify-center gap-2 py-3 px-6 bg-white border-2 border-primary-600 text-primary-600 font-semibold rounded-lg;
+  @apply hover:bg-primary-50 transition-colors;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary-500;
+}
+.mini-buy-button-icon {
+  @apply h-5 w-5;
+}
+.mini-buy-view-cart {
+  @apply mt-1 inline-flex w-full items-center justify-center text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors;
+}
+
+.mini-buy-bulk-note {
+  @apply text-xs text-gray-500 text-center mt-5 pt-5 border-t border-gray-200;
+}
+.mini-buy-bulk-link {
+  @apply font-semibold text-primary-600 hover:text-primary-700 underline underline-offset-2 transition-colors;
 }
 
 /* ==========================================================================

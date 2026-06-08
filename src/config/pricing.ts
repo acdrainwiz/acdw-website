@@ -83,8 +83,10 @@ export const TIER_RANGES: Record<PricingTier, PricingTierRange> = {
   tier_3: { min: 101, max: 500, label: 'Tier 3 (101-500 units)' },
 }
 
-// Maximum quantity for automated checkout
-export const MAX_AUTOMATED_QUANTITY = 500
+// Defensive upper bound on quantity for online checkout.
+// There is no business cap — any amount can be purchased at list price. This is
+// only Stripe's per-line-item maximum (999,999), guarding against overflow/abuse.
+export const MAX_AUTOMATED_QUANTITY = 999999
 
 /**
  * Calculate pricing tier based on quantity

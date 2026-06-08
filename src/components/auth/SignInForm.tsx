@@ -14,6 +14,14 @@ import {
   KeyIcon
 } from '@heroicons/react/24/outline'
 
+/** Minimal shape of the Clerk errors we read inside catch blocks. */
+type ClerkLikeError = {
+  message?: string
+  code?: string
+  status?: number
+  errors?: Array<{ message: string }>
+}
+
 export function SignInForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -30,7 +38,7 @@ export function SignInForm() {
   const [searchParams] = useSearchParams()
   
   // Get session expired message from location state (if redirected from ProtectedRoute)
-  const sessionExpiredMessage = (location.state as any)?.message || null
+  const sessionExpiredMessage = (location.state as { message?: string } | null)?.message || null
 
   // Get redirect URL from query params (for purchase intent preservation)
   const getRedirectPath = () => {
@@ -81,7 +89,8 @@ export function SignInForm() {
             // Redirect with smart redirect logic (preserves purchase intent)
             const redirectPath = getRedirectPath()
             navigate(redirectPath, { replace: true })
-          } catch (setActiveError: any) {
+          } catch (setActiveErrorRaw) {
+            const setActiveError = setActiveErrorRaw as ClerkLikeError
             console.error('Error setting active session:', setActiveError)
             // Safari-specific: Sometimes setActive fails due to cookie issues
             // Try to reload the page to let Clerk handle the session
@@ -104,7 +113,7 @@ export function SignInForm() {
       } else if (result.status === 'needs_second_factor') {
         // Client Trust: Email verification required for new/untrusted devices
         const emailCodeStrategy = result.supportedSecondFactors?.find(
-          (factor: any) => factor.strategy === 'email_code'
+          (factor) => factor.strategy === 'email_code'
         )
         
         if (emailCodeStrategy) {
@@ -116,7 +125,7 @@ export function SignInForm() {
             setNeedsEmailVerification(true)
             setError('')
             setIsLoading(false)
-          } catch (prepareError: any) {
+          } catch (prepareError) {
             console.error('Error preparing email verification:', prepareError)
             setError('Failed to send verification email. Please try again.')
             setIsLoading(false)
@@ -132,7 +141,8 @@ export function SignInForm() {
         console.warn('Unexpected sign-in status:', result.status)
         setError(`Sign in incomplete (status: ${result.status}). Please try again or contact support if the issue persists.`)
       }
-    } catch (err: any) {
+    } catch (errRaw) {
+      const err = errRaw as ClerkLikeError
       console.error('Sign in error:', {
         message: err.message,
         errors: err.errors,
@@ -194,9 +204,10 @@ export function SignInForm() {
             // Redirect with smart redirect logic (preserves purchase intent)
             const redirectPath = getRedirectPath()
             navigate(redirectPath, { replace: true })
-          } catch (setActiveError: any) {
+          } catch (setActiveErrorRaw) {
+            const setActiveError = setActiveErrorRaw as ClerkLikeError
             console.error('Error setting active session:', setActiveError)
-            if (setActiveError.message?.includes('cookie') || 
+            if (setActiveError.message?.includes('cookie') ||
                 setActiveError.message?.includes('storage') ||
                 setActiveError.message?.includes('session')) {
               console.log('Attempting Safari workaround: reloading page')
@@ -211,7 +222,8 @@ export function SignInForm() {
       } else {
         setError('Invalid verification code. Please check your email and try again.')
       }
-    } catch (err: any) {
+    } catch (errRaw) {
+      const err = errRaw as ClerkLikeError
       console.error('Email verification error:', {
         message: err.message,
         errors: err.errors,
@@ -239,7 +251,8 @@ export function SignInForm() {
       const successMsg = 'Verification code sent! Please check your email.'
       setError(successMsg)
       setTimeout(() => setError(''), 3000)
-    } catch (err: any) {
+    } catch (errRaw) {
+      const err = errRaw as ClerkLikeError
       console.error('Error resending code:', err)
       setError(err.errors?.[0]?.message || 'Failed to resend code. Please try again.')
     } finally {

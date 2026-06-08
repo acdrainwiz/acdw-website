@@ -17,19 +17,7 @@ import {
 import { validateEmail } from '../utils/emailValidation'
 import { useRecaptcha } from '../hooks/useRecaptcha'
 import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
-import type { PageSearchMeta } from '../config/siteSearchTypes'
 import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
-
-export const PAGE_SEARCH_META: PageSearchMeta = {
-  id: 'contact-support',
-  kind: 'product-info',
-  title: 'Contact AC Drain Wiz',
-  body:
-    'Contact forms for general inquiries, technical support, sales, certified installer requests, and product demos. Phone and email, leadership contacts, business hours Eastern Time, privacy acknowledgment and optional SMS preferences.',
-  tags: ['contact', 'help', 'support', 'phone', 'email', 'sales', 'demo'],
-  searchTerms: ['installer', 'form', 'inquiry'],
-  href: '/contact',
-}
 
 type ContactFormType = 'general' | 'support' | 'sales' | 'installer' | 'demo'
 
@@ -287,6 +275,9 @@ export function ContactPage() {
   useEffect(() => {
     const newType = getFormTypeFromURL()
     setActiveFormType(newType)
+    // getFormTypeFromURL reads the current URL; this should re-run only when the
+    // query string changes, so the helper is intentionally excluded.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search])
 
   useEffect(() => {

@@ -21,6 +21,8 @@ export type ComboWorkflowShowcaseProps = {
 /**
  * Stable classes + `data-combo-workflow` for overrides and QA.
  */
+// Stable selector/classname helper co-located with its component (Fast Refresh hint only).
+// eslint-disable-next-line react-refresh/only-export-components
 export const comboWorkflowShowcaseTargets = {
   mark: (section: string) =>
     ({ 'data-combo-workflow': section }) as Record<string, string>,
