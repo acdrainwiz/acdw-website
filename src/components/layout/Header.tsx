@@ -7,6 +7,7 @@ import {
   MagnifyingGlassIcon,
   HomeIcon,
   ShoppingBagIcon,
+  ShoppingCartIcon,
   QuestionMarkCircleIcon,
   EnvelopeIcon,
   ChartBarSquareIcon,
@@ -22,6 +23,7 @@ import {
   ShieldCheckIcon
 } from '@heroicons/react/24/outline'
 import { useAuth } from '../../contexts/AuthContext'
+import { useCart } from '../../contexts/CartContext'
 import { MONITORING, SENSOR_SETUP_MODEL_CHOICE_HREF } from '../../config/acdwKnowledge'
 import { MiamiHeatPartnershipLockup } from './MiamiHeatPartnershipLockup'
 
@@ -56,6 +58,7 @@ const mobileNavigationSections = {
       { name: 'AC Drain Wiz Mini', href: '/products/mini', icon: WrenchScrewdriverIcon },
       { name: 'AC Drain Wiz Sensor', href: '/products/sensor', icon: CpuChipIcon },
       { name: 'Mini + Sensor Combo', href: '/products/combo', icon: SparklesIcon },
+      { name: 'Cart', href: '/cart', icon: ShoppingCartIcon },
       { name: 'Request Demo', href: '/contact?type=demo-request', icon: EnvelopeIcon },
     ]
   },
@@ -91,6 +94,8 @@ export function Header() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchFocused, setSearchFocused] = useState(false)
   const { user, logout, isAuthenticated } = useAuth()
+  const { getCartCount } = useCart()
+  const cartCount = getCartCount()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -299,7 +304,19 @@ export function Header() {
                   </>
                 )
               )}
-            </div> 
+            </div>
+
+            {/* Cart */}
+            <Link
+              to="/cart"
+              className="header-cart-button"
+              aria-label={cartCount > 0 ? `Cart, ${cartCount} item${cartCount === 1 ? '' : 's'}` : 'Cart'}
+            >
+              <ShoppingCartIcon className="header-cart-icon" aria-hidden="true" />
+              {cartCount > 0 && (
+                <span className="header-cart-badge" aria-hidden="true">{cartCount}</span>
+              )}
+            </Link>
 
             {/* Mobile menu button */}
             <button

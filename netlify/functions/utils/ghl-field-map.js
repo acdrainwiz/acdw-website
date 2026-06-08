@@ -310,6 +310,11 @@ const formConfigs = {
     sourceAttribution: 'acdrainwiz.com: email-preferences',
   },
 
+  // RETIRED — this form is disabled in validate-form-submission.js (submissions are
+  // rejected as an unknown form name) and its page is unrouted in src/App.tsx. The
+  // GHL_MUNI_PIPELINE_ID / GHL_MUNI_PIPELINE_STAGE_ID env vars have been REASSIGNED to the
+  // complimentary-mini-request form below. Config kept for reference / quick re-enable.
+  //
   // Municipal intake — targets the Opportunity object.
   // Flow: upsert Contact (name/email/phone) → create Opportunity in pipeline → tag Contact.
   // If GHL_MUNI_PIPELINE_ID is missing, falls back to dumping all 22 fields into a Contact Note.
@@ -378,6 +383,40 @@ const formConfigs = {
     opportunityCustomFields: [],
     sourceTags: ['municipal-quick-intake', 'warm lead'],
     sourceAttribution: 'acdrainwiz.com: municipal-quick-intake',
+  },
+
+  // Complimentary Mini — mailing address confirmation after conference or event.
+  // Lands in the "COAA Convention Partner Development" pipeline via the GHL_MUNI_PIPELINE_*
+  // env vars (reassigned from the now-retired municipal-intake form); GHL_MUNI_PIPELINE_STAGE_ID
+  // points at the "Sample Requested" stage. `dedupeOpportunityByContact` moves the contact's
+  // existing open card in this pipeline to that stage on submit (advancing it from stage 0)
+  // instead of creating a duplicate — and only ever advances, never drags a further-along
+  // card backward. A new card is created only when the contact has none.
+  'complimentary-mini-request': {
+    target: 'opportunity',
+    pipelineIdEnvVar: 'GHL_MUNI_PIPELINE_ID',
+    pipelineStageIdEnvVar: 'GHL_MUNI_PIPELINE_STAGE_ID',
+    dedupeOpportunityByContact: true,
+    opportunityNameTemplate: '{firstName} {lastName} — Complimentary Mini',
+    contactStandardFields: [
+      STD.firstName, STD.lastName, STD.email, STD.phone, STD.companyName,
+      STD.address1, STD.city, STD.state, STD.postalCode,
+    ],
+    contactCustomFields: [
+      ['contact_type', 'contactType'],
+      ['sms_transactional_consent', 'smsTransactional'],
+      ['sms_marketing_consent', 'smsMarketing'],
+      ['sms_consent_timestamp', 'smsConsentTimestamp'],
+      ['sms_consent_source_url', 'smsConsentSourceUrl'],
+      ['sms_consent_ip', 'smsConsentIp'],
+    ],
+    opportunityCustomFields: [],
+    sourceTags: ['event-attendee', 'complimentary-mini', 'warm lead'],
+    sourceAttribution: 'acdrainwiz.com: complimentary-mini-request',
+    writeMessageAsNote: true,
+    noteAppendFields: [
+      { label: 'Event', formKey: 'eventName' },
+    ],
   },
 
   // Trash the Float story submissions — Opportunity in the "Trash the Float Campaign"

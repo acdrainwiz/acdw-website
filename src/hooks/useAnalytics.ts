@@ -6,9 +6,9 @@ declare global {
         gtag?: (
             command: 'config' | 'event' | 'js' | 'set',
             targetId: string,
-            config?: Record<string, any>
+            config?: Record<string, unknown>
         ) => void
-        dataLayer?: any[]
+        dataLayer?: unknown[]
     }
 }
 
@@ -26,7 +26,7 @@ export function usePageTracking() {
 }
 export function trackEvent(
     eventName: string,
-    eventParams?: Record<string, any>
+    eventParams?: Record<string, unknown>
 ) {
     if (typeof window.gtag === 'function') {
         window.gtag('event', eventName, eventParams)

@@ -1,21 +1,26 @@
 import { Link, useLocation } from 'react-router-dom'
-import { 
-  HomeIcon, 
+import {
+  HomeIcon,
   ShoppingBagIcon,
+  ShoppingCartIcon,
   QuestionMarkCircleIcon,
   UserCircleIcon
 } from '@heroicons/react/24/outline'
-import { 
-  HomeIcon as HomeIconSolid, 
+import {
+  HomeIcon as HomeIconSolid,
   ShoppingBagIcon as ShoppingBagIconSolid,
+  ShoppingCartIcon as ShoppingCartIconSolid,
   QuestionMarkCircleIcon as QuestionMarkCircleIconSolid,
   UserCircleIcon as UserCircleIconSolid
 } from '@heroicons/react/24/solid'
 import { useAuth } from '../../contexts/AuthContext'
+import { useCart } from '../../contexts/CartContext'
 
 export function BottomNav() {
   const location = useLocation()
   const { isAuthenticated } = useAuth()
+  const { getCartCount } = useCart()
+  const cartCount = getCartCount()
 
   // Check if a navigation item is active
   const isActive = (href: string) => {
@@ -47,6 +52,12 @@ export function BottomNav() {
       href: '/products',
       icon: ShoppingBagIcon,
       iconSolid: ShoppingBagIconSolid,
+    },
+    {
+      name: 'Cart',
+      href: '/cart',
+      icon: ShoppingCartIcon,
+      iconSolid: ShoppingCartIconSolid,
     },
     {
       name: 'Support',
@@ -81,6 +92,9 @@ export function BottomNav() {
             >
               <div className="bottom-nav-icon-wrapper">
                 <Icon className="bottom-nav-icon" aria-hidden="true" />
+                {item.name === 'Cart' && cartCount > 0 && (
+                  <span className="bottom-nav-badge" aria-hidden="true">{cartCount}</span>
+                )}
               </div>
               <span className="bottom-nav-label">{item.name}</span>
             </Link>

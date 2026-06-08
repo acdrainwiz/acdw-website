@@ -18,6 +18,15 @@ const { validateSubmissionBehavior } = require('./utils/behavioral-analysis')
 const { validateEmailDomain } = require('./utils/email-domain-validator')
 const { initBlobsStores } = require('./utils/blobs-store')
 const ghlClient = require('./utils/ghl-client')
+const crypto = require('crypto')
+
+function accessTokenMatches(submitted, expected) {
+  if (!submitted || !expected) return false
+  const a = Buffer.from(String(submitted))
+  const b = Buffer.from(String(expected))
+  if (a.length !== b.length) return false
+  return crypto.timingSafeEqual(a, b)
+}
 
 // Comma-separated origin allowlist for preview/branch deploys. Supports glob `*`.
 // e.g. EXTRA_ALLOWED_ORIGINS=https://*--lucky-frangollo-bf579b.netlify.app
@@ -49,9 +58,10 @@ const FORM_NAME_TO_GHL_TYPE = {
   'core-upgrade': 'core-upgrade',
   'unsubscribe': 'unsubscribe',
   'ep-x7k9m2': 'email-preferences',
-  'municipal-intake': 'municipal-intake',
+  // 'municipal-intake' retired — form disabled; its GHL_MUNI_PIPELINE_* env vars now power complimentary-mini-request.
   'municipal-quick-intake': 'municipal-quick-intake',
   'trash-the-float-story': 'trash-the-float-story',
+  'complimentary-mini-request': 'complimentary-mini-request',
 }
 
 
@@ -386,6 +396,68 @@ const validateFormFields = (formType, formData) => {
         break
       }
 
+      case 'complimentary-mini-request': {
+        const expectedAccessToken = process.env.COMPLIMENTARY_MINI_ACCESS_TOKEN || ''
+        const miniAccess = formData.get('access')?.trim() || ''
+
+        if (!expectedAccessToken) {
+          errors.push('Form temporarily unavailable')
+        } else if (!accessTokenMatches(miniAccess, expectedAccessToken)) {
+          errors.push('Invalid or missing access link')
+        }
+
+        const miniFirstName = formData.get('firstName')?.trim() || ''
+        const miniLastName = formData.get('lastName')?.trim() || ''
+        const miniEmail = formData.get('email')?.trim() || ''
+        const miniPhone = formData.get('phone')?.trim() || ''
+        const miniContactType = formData.get('contactType')?.trim() || ''
+        const miniStreet = formData.get('street')?.trim() || ''
+        const miniCity = formData.get('city')?.trim() || ''
+        const miniState = formData.get('state')?.trim() || ''
+        const miniZip = formData.get('zip')?.trim() || ''
+        const miniConsent = formData.get('consent')
+
+        const ALLOWED_CONTACT_TYPES = [
+          'Building Inspector,',
+          'Mechanical Inspector',
+          'Plans Examiner',
+          'Code Official',
+          'Fire/Building Dept.',
+          'Property Maintenance Official',
+          'Other',
+        ]
+
+        if (!miniFirstName) errors.push('First name is required')
+        if (!miniLastName) errors.push('Last name is required')
+        if (!miniEmail) {
+          errors.push('Email is required')
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(miniEmail)) {
+          errors.push('Invalid email format')
+        }
+        if (!miniPhone) {
+          errors.push('Phone number is required')
+        } else if (miniPhone.replace(/\D/g, '').length < 10) {
+          errors.push('Please enter a valid phone number')
+        }
+        if (!miniContactType) {
+          errors.push('Contact type is required')
+        } else if (!ALLOWED_CONTACT_TYPES.includes(miniContactType)) {
+          errors.push('Invalid contact type selected')
+        }
+        if (!miniStreet) errors.push('Mailing address is required')
+        if (!miniCity) errors.push('City is required')
+        if (!miniState) errors.push('State is required')
+        if (!miniZip) {
+          errors.push('ZIP code is required')
+        } else if (!/^\d{5}(-\d{4})?$/.test(miniZip)) {
+          errors.push('ZIP code must be 5 digits')
+        }
+        if (miniConsent !== 'yes') {
+          errors.push('You must accept the Privacy Policy to continue')
+        }
+        break
+      }
+
       case 'trash-the-float-story': {
         const ttfFirstName = formData.get('firstName')?.trim() || ''
         const ttfLastName = formData.get('lastName')?.trim() || ''
@@ -552,9 +624,10 @@ exports.handler = async (event, context) => {
       'promo-signup',
       'core-upgrade',
       'hero-email',
-      'municipal-intake',
+      // 'municipal-intake' retired — submissions are rejected as an unknown form name.
       'municipal-quick-intake',
-      'trash-the-float-story'
+      'trash-the-float-story',
+      'complimentary-mini-request',
     ]
     
     if (!isWebhookEndpoint(path) && !isCheckoutEndpoint(path)) {
@@ -1070,7 +1143,7 @@ exports.handler = async (event, context) => {
     // audit-trail metadata (timestamp, source URL, IP) when the user opted in.
     const SMS_CAPABLE_FORMS = new Set([
       'contact-general', 'contact-support', 'contact-sales', 'contact-installer', 'contact-demo',
-      'core-upgrade', 'municipal-intake',
+      'core-upgrade', 'municipal-intake', 'complimentary-mini-request',
     ])
     if (SMS_CAPABLE_FORMS.has(ghlFormType)) {
       sanitizedData.smsTransactional = sanitizedData.smsTransactional === 'yes' ? 'yes' : 'no'

@@ -3,22 +3,11 @@ import { IMaskInput } from 'react-imask'
 import { isValidEmail } from '../utils/emailValidation'
 import { InstructionModal } from '../components/email-signature/InstructionModal'
 import { PasswordProtection } from '../components/email-signature/PasswordProtection'
-import type { PageSearchMeta } from '../config/siteSearchTypes'
 
 // Password for email signature generator access
 // TODO: Move this to an environment variable for better security
 // Set VITE_EMAIL_SIGNATURE_PASSWORD in your .env file
 const EMAIL_SIGNATURE_PASSWORD = import.meta.env.VITE_EMAIL_SIGNATURE_PASSWORD || 'acdw2024'
-
-export const PAGE_SEARCH_META: PageSearchMeta = {
-  id: 'page-email-signature',
-  kind: 'site',
-  title: 'Contractor email signature generator',
-  body:
-    'Generate AC Drain Wiz branded email signature for Outlook desktop and Outlook on the web. Miami HEAT partnership badge option, copy to clipboard, step-by-step setup guides.',
-  tags: ['email signature', 'Outlook', 'contractor', 'branding'],
-  href: '/email-signature',
-}
 
 /** Miami HEAT partnership images — live under public/images/miami-heat-sponsorship/ (lowercase, no spaces). */
 const MIAMI_HEAT_SPONSORSHIP_BADGE_URL =

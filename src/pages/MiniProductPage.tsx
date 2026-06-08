@@ -26,27 +26,18 @@ import {
     ChevronUpIcon,
     ArrowRightIcon,
     BookOpenIcon,
-    PhoneIcon
+    ShoppingCartIcon
 } from '@heroicons/react/24/outline'
 import {
   MINI_MANIFOLD_DIMENSIONS_LHD,
   MINI_MANIFOLD_HEIGHT_TO_PORT,
   MINI_MANIFOLD_LENGTH,
   PRODUCT_NAMES,
-  SUPPORT_CONTACT,
 } from '../config/acdwKnowledge'
-import type { PageSearchMeta } from '../config/siteSearchTypes'
 import { buildProductSupportHubHref } from '../utils/supportFaqSearch'
-
-export const PAGE_SEARCH_META: PageSearchMeta = {
-  id: 'product-mini',
-  kind: 'product-info',
-  title: PRODUCT_NAMES.mini,
-  body:
-    'Drain line maintenance access device. Permanent service port on 3/4 inch condensate drain for flush, compressed air, and vacuum. Transparent body, one-time PVC install, horizontal installation. Product overview and specifications.',
-  tags: ['mini', 'product', 'drain', 'pvc', 'maintenance'],
-  href: '/products/mini',
-}
+import { StripeCheckout } from '../components/checkout/StripeCheckout'
+import { useCart } from '../contexts/CartContext'
+import { useProductPrice } from '../hooks/useProductPrice'
 
 const MINI_HERO_HEADLINES = [
   'Stop Water Damage Before It Starts',
@@ -76,6 +67,31 @@ export function MiniProductPage() {
   // Pre-open Q1 by default (Tier 1 content pass: surfaces the most-asked install
   // question without requiring a click; users can still close it).
   const [openFaq, setOpenFaq] = useState<number | null>(0)
+
+  // Direct online purchase (2026-06: Mini is now sold directly on-page via the
+  // existing Stripe flow). Quantity has no upper cap — any amount ships at MSRP.
+  const { addItem } = useCart()
+  const { price: unitPrice } = useProductPrice('mini')
+  const [quantity, setQuantity] = useState(1)
+  const [checkoutError, setCheckoutError] = useState<string | null>(null)
+  const [addedToCart, setAddedToCart] = useState(false)
+
+  const setQty = (next: number) => {
+    setQuantity(Math.max(1, Math.min(999999, Math.floor(next) || 1)))
+    setAddedToCart(false)
+  }
+
+  const handleAddToCart = () => {
+    addItem({
+      id: 'mini',
+      productId: 'mini',
+      name: PRODUCT_NAMES.mini,
+      price: unitPrice,
+      image: '/images/acdw-mini-hero2-product.png',
+      quantity,
+    })
+    setAddedToCart(true)
+  }
 
   // Key specifications
   const specifications = [
@@ -195,9 +211,9 @@ export function MiniProductPage() {
         'Service intervals depend on the system and environment, but most installs follow the standard residential AC maintenance cadence of every 3 to 6 months. The Mini\'s clear body lets you verify the line is clear after a flush, or spot rising water and biofilm before they cause a backup. When you flush with compressed air on systems that have a P-trap, refill the trap with water after the flush to reestablish the seal.'
     },
     {
-      question: 'Do you offer bulk pricing for contractors and distributors?',
+      question: 'Can I buy the Mini online, and do you offer bulk pricing?',
       answer:
-        'Yes — contractors, distributors, and property managers qualify for volume pricing. Online sales aren\'t open yet, so pricing and availability are handled directly by our sales team. Use the contact form or call us and we\'ll send a current quote and ship-date estimate.'
+        'Yes — the AC Drain Wiz Mini is available to buy directly on this page at list price, in any quantity, with secure Stripe checkout, shipping, and tracking. There\'s no online order cap: order one or stock up by the case. Contractors, distributors, and property managers also qualify for volume pricing — order online at list price now, or contact our sales team for a volume quote on larger runs. (Note: the AC Drain Wiz Sensor isn\'t available for online purchase yet — reach out to sales for the Sensor.)'
     },
     {
       question: 'How is warranty handled for stocked inventory?',
@@ -391,6 +407,54 @@ export function MiniProductPage() {
             <motion.div className="mini-hero-v2-trust" variants={fadeUp}>
               <span className="mini-hero-v2-trust-dot" aria-hidden />
               Trusted by homeowners &amp; AC contractors nationwide
+            </motion.div>
+
+            <motion.div className="mini-hero-v2-buy" variants={fadeUp}>
+              <div className="mini-hero-v2-buy-price">
+                <span className="mini-hero-v2-buy-amount">${unitPrice.toFixed(2)}</span>
+                <span className="mini-hero-v2-buy-ship">Ships in 1–2 days · Free returns</span>
+              </div>
+              <div className="mini-hero-v2-buy-actions">
+                <div className="mini-hero-v2-qty" role="group" aria-label="Quantity">
+                  <button
+                    type="button"
+                    className="mini-hero-v2-qty-step"
+                    onClick={() => setQty(quantity - 1)}
+                    disabled={quantity <= 1}
+                    aria-label="Decrease quantity"
+                  >
+                    −
+                  </button>
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    min={1}
+                    max={999999}
+                    value={quantity}
+                    onChange={(e) => setQty(parseInt(e.target.value, 10))}
+                    className="mini-hero-v2-qty-input"
+                    aria-label="Quantity"
+                  />
+                  <button
+                    type="button"
+                    className="mini-hero-v2-qty-step"
+                    onClick={() => setQty(quantity + 1)}
+                    aria-label="Increase quantity"
+                  >
+                    +
+                  </button>
+                </div>
+                <StripeCheckout
+                  product="mini"
+                  quantity={quantity}
+                  onError={setCheckoutError}
+                  buttonText="Buy Now"
+                  className="mini-hero-v2-buy-button"
+                />
+              </div>
+              {checkoutError && (
+                <p className="mini-buy-error" role="alert">{checkoutError}</p>
+              )}
             </motion.div>
           </motion.div>
         </div>
@@ -829,31 +893,14 @@ export function MiniProductPage() {
         </div>
       </section>
 
-      {/* Purchase / CTA — relocated to bottom (Tier 1 content pass, 2026-05-01).
-          Previously sat directly under the hero, which buried How It Works and
-          Specs deeper than they should be. Now serves as the closing call-to-
-          action after the user has seen the product, the install flow, the
-          specs, social proof, and FAQ.
-
-          Copy tightened: H2 "Get started" → "Talk to our team" (more decisive
-          and accurate to the contact-driven sales mechanic).
-
-          Step 6 CTA-hierarchy fix (2026-05-01):
-          - Kicker "Pricing & availability" → "How to buy". The old kicker
-            promised something the section can't deliver (no online checkout,
-            no public price), and the new FAQ entry #4 explicitly says so.
-            "How to buy" is honest and matches the body.
-          - Desktop phone badge converted from a passive <div> to an <a
-            href="tel:...">, styled via the new
-            .sensor-product-phone-badge--clickable modifier so it's a real
-            primary CTA on every viewport (was: clickable on mobile, passive
-            info on desktop — broken hierarchy).
-          - Body copy mentions distributors explicitly (audience pivot
-            confirmed by the user — primary buyer is the distributor and the
-            contractor they sell to).
-          - Trust badges tightened: "2-year warranty" → "Manufacturer
-            warranty" (we don't claim a specific term on this page); "Fast
-            shipping" → "Ships in 1–2 days" (matches the FAQ language). */}
+      {/* Purchase module — bottom of page (2026-06: direct online sales opened).
+          Replaces the prior contact-driven "Talk to our team" band with a real
+          buy module: list price, a free-quantity selector (no order cap — any
+          amount ships at MSRP), Buy Now (StripeCheckout → /checkout) and Add to
+          Cart (CartContext → header cart). The "Talk to sales" path is kept as a
+          secondary link for contractor/distributor volume pricing — optional,
+          not a gate. Trust badges and the MiniFlowWaveBackdrop are unchanged.
+          The hero carries a compact price + Buy Now mirror of this module. */}
       <section ref={miniPurchaseCtaSectionRef} className="mini-purchase-cta-band" aria-labelledby="mini-purchase-heading">
         <MiniFlowWaveBackdrop sectionRef={miniPurchaseCtaSectionRef} />
         <div className="mini-purchase-cta-inner">
@@ -864,46 +911,108 @@ export function MiniProductPage() {
             viewport={mhViewport}
             transition={tr(1.05)}
           >
-            <p className="mini-purchase-cta-kicker">How to buy</p>
+            <p className="mini-purchase-cta-kicker">Order online</p>
             <div className="mini-purchase-cta-card">
-              <div className="mini-product-purchase-card-content">
+              <div className="mini-product-purchase-card-content mini-buy-card">
                 <h2 id="mini-purchase-heading" className="sensor-product-purchase-title">
-                  Talk to our team
+                  Get your AC Drain Wiz Mini
                 </h2>
 
-                <div className="sensor-product-purchase-cta-section">
-                  <p className="sensor-product-purchase-message">
-                    Distributors, contractors, and property managers — talk to sales for
-                    current pricing, availability, ship dates, and volume terms.
-                  </p>
+                <p className="sensor-product-purchase-message">
+                  Buy one or stock up — order any quantity online at list price, with secure
+                  checkout, shipping, and tracking. Ships in 1–2 days.
+                </p>
 
-                  <a
-                    href={SUPPORT_CONTACT.telHref}
-                    className="sensor-product-purchase-button-primary md:hidden"
-                  >
-                    Call {SUPPORT_CONTACT.phoneDisplay}
-                  </a>
+                <div className="mini-buy-price-row">
+                  <span className="mini-buy-price-amount">${unitPrice.toFixed(2)}</span>
+                  <span className="mini-buy-price-unit">/ unit</span>
+                </div>
 
-                  <a
-                    href={SUPPORT_CONTACT.telHref}
-                    className="sensor-product-phone-badge sensor-product-phone-badge--clickable hidden md:flex"
-                    aria-label={`Call sales at ${SUPPORT_CONTACT.phoneDisplay}`}
-                  >
-                    <PhoneIcon className="sensor-product-phone-badge-icon" aria-hidden />
-                    <div className="sensor-product-phone-badge-text">
-                      <div className="sensor-product-phone-vanity">{SUPPORT_CONTACT.phoneDisplay}</div>
-                      <div className="sensor-product-phone-numeric">{SUPPORT_CONTACT.phoneNumeric}</div>
+                <div className="mini-buy-qty">
+                  <label htmlFor="mini-buy-qty-input" className="mini-buy-qty-label">Quantity</label>
+                  <div className="mini-buy-qty-row">
+                    <div className="mini-buy-qty-controls">
+                      <button
+                        type="button"
+                        className="mini-buy-qty-step"
+                        onClick={() => setQty(quantity - 1)}
+                        disabled={quantity <= 1}
+                        aria-label="Decrease quantity"
+                      >
+                        −
+                      </button>
+                      <input
+                        id="mini-buy-qty-input"
+                        type="number"
+                        inputMode="numeric"
+                        min={1}
+                        max={999999}
+                        value={quantity}
+                        onChange={(e) => setQty(parseInt(e.target.value, 10))}
+                        className="mini-buy-qty-input"
+                        aria-label="Quantity"
+                      />
+                      <button
+                        type="button"
+                        className="mini-buy-qty-step"
+                        onClick={() => setQty(quantity + 1)}
+                        aria-label="Increase quantity"
+                      >
+                        +
+                      </button>
                     </div>
-                  </a>
+                    <div className="mini-buy-qty-chips">
+                      {[1, 2, 5, 10].map((n) => (
+                        <button
+                          key={n}
+                          type="button"
+                          className={`mini-buy-qty-chip ${quantity === n ? 'active' : ''}`}
+                          onClick={() => setQty(n)}
+                        >
+                          {n}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
 
+                <div className="mini-buy-subtotal-row">
+                  <span className="mini-buy-subtotal-label">Subtotal</span>
+                  <span className="mini-buy-subtotal-amount">${(unitPrice * quantity).toFixed(2)}</span>
+                </div>
+                <p className="mini-buy-subtotal-note">Shipping &amp; tax calculated at checkout.</p>
+
+                {checkoutError && (
+                  <p className="mini-buy-error" role="alert">{checkoutError}</p>
+                )}
+
+                <div className="mini-buy-actions">
+                  <StripeCheckout
+                    product="mini"
+                    quantity={quantity}
+                    onError={setCheckoutError}
+                    buttonText="Buy Now"
+                    className="mini-buy-button-primary"
+                  />
                   <button
                     type="button"
-                    onClick={() => navigate('/contact?type=sales')}
-                    className="sensor-product-purchase-button-secondary"
+                    onClick={handleAddToCart}
+                    className="mini-buy-button-secondary"
                   >
-                    Contact sales
+                    <ShoppingCartIcon className="mini-buy-button-icon" aria-hidden />
+                    {addedToCart ? 'Added to cart' : 'Add to Cart'}
                   </button>
                 </div>
+
+                {addedToCart && (
+                  <button
+                    type="button"
+                    onClick={() => navigate('/cart')}
+                    className="mini-buy-view-cart"
+                  >
+                    View cart →
+                  </button>
+                )}
 
                 <div className="sensor-product-trust-section-inline">
                   <div className="sensor-product-trust-badge">
@@ -915,6 +1024,17 @@ export function MiniProductPage() {
                     <span>Ships in 1–2 days</span>
                   </div>
                 </div>
+
+                <p className="mini-buy-bulk-note">
+                  Buying 20+ or need contractor &amp; distributor pricing?{' '}
+                  <button
+                    type="button"
+                    onClick={() => navigate('/contact?type=sales')}
+                    className="mini-buy-bulk-link"
+                  >
+                    Talk to sales
+                  </button>
+                </p>
               </div>
             </div>
           </motion.div>

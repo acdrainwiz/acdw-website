@@ -35,7 +35,7 @@ export function StripeCheckout({ product, quantity, onError, buttonText, classNa
     // Note: Sensor and Bundle should never reach here as guests (they require auth)
     const userRole = user?.role || 'homeowner'
 
-    if (quantity < 1 || quantity > 500) {
+    if (quantity < 1 || quantity > 999999) {
       onError?.('Invalid quantity')
       return
     }
@@ -118,9 +118,9 @@ export function StripeCheckout({ product, quantity, onError, buttonText, classNa
       })
 
       navigate(`/checkout?${checkoutParams.toString()}`)
-    } catch (error: any) {
+    } catch (error) {
       console.error('Checkout error:', error)
-      onError?.(error.message || 'Checkout failed. Please try again.')
+      onError?.(error instanceof Error ? error.message : 'Checkout failed. Please try again.')
       setIsLoading(false)
     }
   }

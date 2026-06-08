@@ -23,18 +23,7 @@ import {
   type SensorVariantFilter,
 } from '../config/acdwKnowledge'
 import { parseProductSupportUrl } from '../utils/supportFaqSearch'
-import type { PageSearchMeta } from '../config/siteSearchTypes'
 import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
-
-export const PAGE_SEARCH_META: PageSearchMeta = {
-  id: 'page-product-support',
-  kind: 'product-info',
-  title: 'Product Support — FAQs and troubleshooting',
-  body:
-    'Product Support hub: common questions, troubleshooting, LED guides for Standard and WiFi Sensor, Mini FAQs, and technical help for AC Drain Wiz products.',
-  tags: ['faq', 'troubleshooting', 'help', 'sensor', 'mini', 'led'],
-  href: '/support/product-support',
-}
 
 /** Maps `SENSOR_LED_STANDARD` / `SENSOR_LED_WIFI` entry keys to indicator styles (solid vs flashing). */
 function supportLedIndicatorClassName(key: string): string {

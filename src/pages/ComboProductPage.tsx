@@ -28,18 +28,7 @@ import {
   PhoneIcon,
   ArrowRightIcon,
 } from '@heroicons/react/24/outline'
-import { MINI_MANIFOLD_DIMENSIONS_LHD, PRODUCT_NAMES, SUPPORT_CONTACT } from '../config/acdwKnowledge'
-import type { PageSearchMeta } from '../config/siteSearchTypes'
-
-export const PAGE_SEARCH_META: PageSearchMeta = {
-  id: 'product-combo',
-  kind: 'product-info',
-  title: PRODUCT_NAMES.bundle,
-  body:
-    'Mini and Sensor bundle. Combined drain line maintenance access and overflow protection. Product overview.',
-  tags: ['bundle', 'combo', 'mini', 'sensor', 'product'],
-  href: '/products/combo',
-}
+import { MINI_MANIFOLD_DIMENSIONS_LHD, SUPPORT_CONTACT } from '../config/acdwKnowledge'
 
 export function ComboProductPage() {
   const navigate = useNavigate()

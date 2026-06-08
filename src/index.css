@@ -2397,6 +2397,19 @@
     @apply relative;
   }
 
+  .bottom-nav-badge {
+    @apply absolute bg-primary-600 text-white font-semibold rounded-full;
+    top: -0.4rem;
+    right: -0.55rem;
+    min-width: 1.05rem;
+    height: 1.05rem;
+    padding: 0 0.25rem;
+    font-size: 0.62rem;
+    line-height: 1.05rem;
+    text-align: center;
+    box-shadow: 0 0 0 2px #ffffff;
+  }
+
   .bottom-nav-icon {
     width: 1.5rem;
     height: 1.5rem;
@@ -8876,6 +8889,143 @@
   @apply inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 text-white text-sm font-semibold backdrop-blur-md border border-white/20;
 }
 
+/* Complimentary Mini — split hero with product spotlight */
+.complimentary-mini-hero-layout {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-areas:
+    "title"
+    "product"
+    "subtitle"
+    "badges";
+  align-items: center;
+}
+
+.complimentary-mini-hero-title {
+  grid-area: title;
+  @apply text-center mb-0;
+}
+
+.complimentary-mini-hero-subtitle {
+  grid-area: subtitle;
+  @apply mx-auto mb-0 text-center;
+}
+
+.complimentary-mini-hero-badge-row {
+  grid-area: badges;
+  @apply mt-0 justify-center;
+}
+
+.complimentary-mini-hero-product {
+  grid-area: product;
+  @apply relative flex flex-col items-center gap-1 text-center;
+}
+
+@media (min-width: 768px) {
+  .complimentary-mini-hero-layout {
+    grid-template-columns: minmax(0, 1.15fr) minmax(325px, 525px);
+    grid-template-areas:
+      "title product"
+      "subtitle product"
+      "badges product";
+    column-gap: clamp(2rem, 4vw, 3.5rem);
+    row-gap: 1rem;
+  }
+
+  .complimentary-mini-hero-title {
+    @apply text-left;
+  }
+
+  .complimentary-mini-hero-subtitle {
+    @apply mx-0 max-w-2xl text-left;
+  }
+
+  .complimentary-mini-hero-badge-row {
+    @apply justify-start;
+  }
+
+  .complimentary-mini-hero-product {
+    align-self: center;
+  }
+}
+
+.complimentary-mini-hero-product-ribbon {
+  @apply absolute top-0 right-0 z-10 inline-flex items-center rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide;
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: #fff;
+  box-shadow: 0 4px 14px rgb(249 115 22 / 35%);
+}
+
+@media (min-width: 768px) {
+  .complimentary-mini-hero-product-ribbon {
+    @apply top-2 right-2;
+  }
+}
+
+.complimentary-mini-hero-product-stage {
+  @apply relative flex w-full max-w-[350px] items-center justify-center leading-none sm:max-w-[400px];
+}
+
+.complimentary-mini-hero-product-glow {
+  position: absolute;
+  inset: 8%;
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 50% 42%, rgb(56 189 248 / 28%) 0%, transparent 58%),
+    radial-gradient(circle at 50% 68%, rgb(14 165 233 / 18%) 0%, transparent 62%);
+  filter: blur(8px);
+}
+
+.complimentary-mini-hero-product-img {
+  @apply relative z-[1] h-auto w-full object-contain;
+  filter: drop-shadow(0 22px 36px rgb(2 6 23 / 45%)) drop-shadow(0 8px 16px rgb(14 165 233 / 18%));
+}
+
+.complimentary-mini-hero-product-name {
+  @apply text-base font-semibold leading-snug text-white;
+}
+
+.complimentary-mini-hero-product-note {
+  @apply text-sm leading-snug text-sky-100/85;
+}
+
+.complimentary-mini-mailing-section {
+  @apply rounded-xl border border-blue-200/90 bg-gradient-to-br from-sky-50 via-blue-50 to-slate-50 p-5 md:p-6;
+  border-left-width: 4px;
+  border-left-color: #2563eb;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.85),
+    0 1px 3px rgb(37 99 235 / 8%);
+}
+
+.complimentary-mini-mailing-section-header {
+  @apply mb-5 flex items-start gap-3;
+}
+
+.complimentary-mini-mailing-section-icon-wrap {
+  @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 ring-4 ring-blue-100/60;
+}
+
+.complimentary-mini-mailing-section-icon {
+  @apply h-5 w-5 text-blue-600;
+}
+
+.complimentary-mini-mailing-section-title {
+  @apply text-base font-semibold text-blue-950;
+}
+
+.complimentary-mini-mailing-section-hint {
+  @apply mt-1 text-sm leading-snug text-slate-600;
+}
+
+.complimentary-mini-mailing-section-fields {
+  @apply flex flex-col gap-6;
+}
+
+.complimentary-mini-mailing-input {
+  @apply border-blue-200/80 bg-white focus:border-blue-500 focus:ring-blue-500/20;
+}
+
 .support-hero-search {
   @apply mt-8 max-w-xl mx-auto;
 }
@@ -13820,6 +13970,229 @@
   .mini-purchase-cta-band .mini-purchase-cta-card:hover .sensor-product-purchase-card-content {
     transform: none;
   }
+}
+
+/* ==========================================================================
+   MINI DIRECT-PURCHASE BUY MODULE (2026-06)
+   Online sales for the Mini opened. Styles the hero price+Buy CTA and the
+   bottom buy card (price, quantity, Buy Now + Add to Cart, bulk link). Reuses
+   the white .sensor-product-purchase-card-content shell + brand `primary`
+   palette. Revert: remove this block and restore the "Talk to our team" markup
+   in MiniProductPage.tsx.
+   ========================================================================== */
+
+/* --- Hero buy CTA (sits on the dark hero — light text, centered) -------- */
+.mini-hero-v2-buy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.mini-hero-v2-buy-price {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.mini-hero-v2-buy-amount {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.mini-hero-v2-buy-ship {
+  font-size: 0.78rem;
+  color: rgba(241, 245, 249, 0.8);
+}
+
+.mini-hero-v2-buy-button {
+  @apply inline-flex items-center justify-center py-3 px-8 bg-primary-600 text-white font-semibold rounded-full;
+  @apply hover:bg-primary-700 transition-colors;
+  min-height: 3rem;
+  box-shadow: 0 14px 32px rgba(2, 6, 23, 0.35);
+}
+.mini-hero-v2-buy-button:disabled {
+  @apply opacity-70 cursor-not-allowed;
+}
+.mini-hero-v2-buy-button:focus-visible {
+  @apply outline-none ring-2 ring-primary-400;
+}
+
+/* Hero quantity stepper + Buy Now row (sits on the dark hero). */
+.mini-hero-v2-buy-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.mini-hero-v2-qty {
+  display: inline-flex;
+  align-items: stretch;
+  height: 3rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.mini-hero-v2-qty-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: #ffffff;
+  background: transparent;
+  transition: background-color 0.15s ease;
+}
+.mini-hero-v2-qty-step:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+.mini-hero-v2-qty-step:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.mini-hero-v2-qty-step:focus-visible {
+  outline: none;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.mini-hero-v2-qty-input {
+  width: 3.25rem;
+  text-align: center;
+  background: transparent;
+  border: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.22);
+  border-right: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.mini-hero-v2-qty-input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.12);
+}
+.mini-hero-v2-qty-input::-webkit-outer-spin-button,
+.mini-hero-v2-qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* --- Bottom buy card (inside the white card shell) ---------------------- */
+.mini-buy-card {
+  @apply text-left;
+}
+
+.mini-buy-price-row {
+  @apply flex items-baseline gap-2 mb-5;
+}
+.mini-buy-price-amount {
+  @apply text-4xl font-bold text-gray-900;
+}
+.mini-buy-price-unit {
+  @apply text-sm text-gray-500;
+}
+
+.mini-buy-qty {
+  @apply mb-5;
+}
+.mini-buy-qty-label {
+  @apply block text-sm font-medium text-gray-700 mb-2;
+}
+.mini-buy-qty-row {
+  @apply flex flex-wrap items-center gap-3;
+}
+.mini-buy-qty-controls {
+  @apply inline-flex items-center rounded-lg border border-gray-300 overflow-hidden;
+}
+.mini-buy-qty-step {
+  @apply flex items-center justify-center text-lg text-gray-700 bg-gray-50 hover:bg-gray-100 transition-colors;
+  width: 2.5rem;
+  height: 2.75rem;
+}
+.mini-buy-qty-step:disabled {
+  @apply opacity-40 cursor-not-allowed;
+}
+.mini-buy-qty-input {
+  @apply text-center text-base font-semibold text-gray-900 border-x border-gray-300;
+  @apply focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500;
+  width: 4rem;
+  height: 2.75rem;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.mini-buy-qty-input::-webkit-outer-spin-button,
+.mini-buy-qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.mini-buy-qty-chips {
+  @apply inline-flex items-center gap-1.5;
+}
+.mini-buy-qty-chip {
+  @apply h-9 px-2 rounded-md border border-gray-300 text-sm font-medium text-gray-600 bg-white;
+  @apply hover:border-primary-400 hover:text-primary-600 transition-colors;
+  min-width: 2.25rem;
+}
+.mini-buy-qty-chip.active {
+  @apply border-primary-600 text-primary-700 bg-primary-50;
+}
+
+.mini-buy-subtotal-row {
+  @apply flex items-center justify-between pt-4 border-t border-gray-100;
+}
+.mini-buy-subtotal-label {
+  @apply text-sm text-gray-600;
+}
+.mini-buy-subtotal-amount {
+  @apply text-lg font-bold text-gray-900;
+}
+.mini-buy-subtotal-note {
+  @apply text-xs text-gray-400 mt-1 mb-4;
+}
+
+.mini-buy-error {
+  @apply text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2 mb-3;
+}
+
+.mini-buy-actions {
+  @apply flex flex-col gap-3;
+}
+.mini-buy-button-primary {
+  @apply inline-flex w-full items-center justify-center py-3 px-6 bg-primary-600 text-white font-semibold rounded-lg;
+  @apply hover:bg-primary-700 transition-colors;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary-500;
+}
+.mini-buy-button-primary:disabled {
+  @apply opacity-70 cursor-not-allowed;
+}
+.mini-buy-button-secondary {
+  @apply inline-flex w-full items-center justify-center gap-2 py-3 px-6 bg-white border-2 border-primary-600 text-primary-600 font-semibold rounded-lg;
+  @apply hover:bg-primary-50 transition-colors;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary-500;
+}
+.mini-buy-button-icon {
+  @apply h-5 w-5;
+}
+.mini-buy-view-cart {
+  @apply mt-1 inline-flex w-full items-center justify-center text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors;
+}
+
+.mini-buy-bulk-note {
+  @apply text-xs text-gray-500 text-center mt-5 pt-5 border-t border-gray-200;
+}
+.mini-buy-bulk-link {
+  @apply font-semibold text-primary-600 hover:text-primary-700 underline underline-offset-2 transition-colors;
 }
 
 /* ==========================================================================

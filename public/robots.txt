@@ -10,5 +10,9 @@ Disallow: /email-signature
 Disallow: /dashboard
 Disallow: /sensor-setup
 
+# Unlisted campaign / invitation-only forms
+Disallow: /complimentary-mini
+Disallow: /complimentary-mini/confirmed
+
 # Sitemap
 Sitemap: https://acdrainwiz.com/sitemap.xml

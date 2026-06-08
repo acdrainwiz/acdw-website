@@ -151,7 +151,7 @@ export function SignUpForm() {
         }
         break
 
-      case 'email':
+      case 'email': {
         const emailError = validateEmail(value)
         if (emailError) {
           errors.email = emailError
@@ -159,6 +159,7 @@ export function SignUpForm() {
           delete errors.email
         }
         break
+      }
 
       case 'password':
         if (value.length < 8) {
@@ -326,7 +327,7 @@ export function SignUpForm() {
       })
 
       // Prepare verification data
-      const verificationData: any = {
+      const verificationData: Record<string, string> = {
         status: 'pending_verification',
         submittedAt: new Date().toISOString(),
       }
@@ -351,9 +352,9 @@ export function SignUpForm() {
       await signUp.prepareEmailAddressVerification({ strategy: 'email_code' })
       
       setPendingVerification(true)
-    } catch (err: any) {
-      setFieldErrors({ 
-        submit: err.errors?.[0]?.message || 'Registration failed. Please try again.' 
+    } catch (err) {
+      setFieldErrors({
+        submit: (err as { errors?: Array<{ message?: string }> }).errors?.[0]?.message || 'Registration failed. Please try again.'
       })
     } finally {
       setIsLoading(false)
@@ -380,9 +381,9 @@ export function SignUpForm() {
       } else {
         setFieldErrors({ code: 'Verification incomplete. Please try again.' })
       }
-    } catch (err: any) {
-      setFieldErrors({ 
-        code: err.errors?.[0]?.message || 'Invalid verification code' 
+    } catch (err) {
+      setFieldErrors({
+        code: (err as { errors?: Array<{ message?: string }> }).errors?.[0]?.message || 'Invalid verification code'
       })
     } finally {
       setIsLoading(false)

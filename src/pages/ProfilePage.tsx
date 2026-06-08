@@ -122,9 +122,10 @@ function ProfileContent() {
       setTimeout(() => {
         setSuccessMessage('')
       }, 3000)
-    } catch (error: any) {
+    } catch (error) {
       console.error('Password change error:', error)
-      setErrorMessage(error.errors?.[0]?.message || error.message || 'Failed to change password. Please check your current password and try again.')
+      const e = error as { errors?: Array<{ message?: string }>; message?: string }
+      setErrorMessage(e.errors?.[0]?.message || e.message || 'Failed to change password. Please check your current password and try again.')
     } finally {
       setIsLoading(false)
     }
@@ -179,9 +180,9 @@ function ProfileContent() {
         setSuccessMessage('')
         navigate('/dashboard')
       }, 2000)
-    } catch (error: any) {
+    } catch (error) {
       console.error('Profile update error:', error)
-      setErrorMessage(error.message || 'Failed to update profile. Please try again.')
+      setErrorMessage(error instanceof Error ? error.message : 'Failed to update profile. Please try again.')
     } finally {
       setIsLoading(false)
     }

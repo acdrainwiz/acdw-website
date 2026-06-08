@@ -146,6 +146,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
   )
 }
 
+// Co-located with its provider per React's Context docs; this is a Fast Refresh
+// hint only, so the hook export is intentionally kept in this file.
+// eslint-disable-next-line react-refresh/only-export-components
 export function useCart() {
   const context = useContext(CartContext)
   if (!context) {
