@@ -1,39 +1,37 @@
 <!--
-  AC Drain Wiz — Complimentary Mini invitation email (GoHighLevel)
+  AC Drain Wiz — Complimentary Mini shipping / tracking email (GoHighLevel)
+
+  WHEN TO SEND
+  • Workflow trigger: complimentary Mini has shipped (carrier label created or fulfillment marked complete in GHL).
+  • Send once per shipment; use a separate workflow branch if you reship.
 
   HOW TO USE IN GHL
   1. Settings → Email → Templates (or build in a workflow email action).
-  2. Choose "Code editor" / "Custom HTML" and paste this entire file body (inside <body> or full document).
-  3. Set up merge fields BEFORE sending (see below).
-  4. Recommended subject: Confirm your mailing address for your complimentary AC Drain Wiz Mini
+  2. Choose "Code editor" / "Custom HTML" and paste this entire file.
+  3. Populate tracking merge fields on the contact or opportunity BEFORE the send step (see below).
+  4. Recommended subject: Your complimentary AC Drain Wiz Mini is on the way
 
-  REQUIRED GHL SETUP — secure link
-  Option A (recommended — one shared campaign token):
-    • Settings → Custom Values → add:
-        Name: complimentary_mini_invite_url
-        Value: https://acdrainwiz.com/complimentary-mini?access=YOUR_SECRET_TOKEN
-      (Use the same token as COMPLIMENTARY_MINI_ACCESS_TOKEN / VITE_COMPLIMENTARY_MINI_ACCESS_TOKEN.)
-    • CTA href uses: {{custom_values.complimentary_mini_invite_url}}
+  REQUIRED GHL SETUP — tracking fields
+  Create contact or opportunity custom fields (names below are suggestions; map to your GHL field keys):
 
-  Option B (token in custom value, URL built in template):
-    • Custom value: complimentary_mini_access_token = YOUR_SECRET_TOKEN
-    • CTA href: https://acdrainwiz.com/complimentary-mini?access={{custom_values.complimentary_mini_access_token}}
-
-  Option C (future — unique link per contact):
-    • Contact custom field: mini_invite_token
-    • CTA href: https://acdrainwiz.com/complimentary-mini?access={{contact.mini_invite_token}}
-
-  BADGE ICONS (hosted on site — deploy public/images/emails/*.png before GHL preview)
-    badge-gift-white.png      — Complimentary (invitation)
-    badge-check-white.png     — Confirmed (submission confirmed)
-    badge-truck-white.png     — Shipped (tracking)
+    mini_tracking_number   — e.g. 1Z999AA10123456784
+    mini_tracking_url      — full carrier tracking URL (preferred for CTA button)
+    mini_carrier           — e.g. UPS, FedEx, USPS (optional; falls back to "your carrier" if empty)
 
   MERGE FIELDS USED
-    {{contact.first_name}}  — falls back gracefully if empty in GHL preview
-    {{custom_values.complimentary_mini_invite_url}}  — Option A
+    {{contact.first_name}}
+    {{contact.address1}}
+    {{contact.city}}
+    {{contact.state}}
+    {{contact.postal_code}}
+    {{contact.mini_tracking_number}}   — replace key with your GHL custom field slug
+    {{contact.mini_tracking_url}}
+    {{contact.mini_carrier}}
+
+  If your GHL instance uses different slugs, find/replace the three tracking placeholders above.
 
   PREHEADER (set in GHL send settings):
-    It was great meeting you — confirm where to send your complimentary AC Drain Wiz Mini.
+    Your complimentary AC Drain Wiz Mini has shipped — track your package below.
 -->
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -42,7 +40,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="x-apple-disable-message-reformatting">
-  <title>Your complimentary AC Drain Wiz Mini</title>
+  <title>Your complimentary AC Drain Wiz Mini is on the way</title>
   <!--[if mso]>
   <noscript>
     <xml>
@@ -75,7 +73,7 @@
 <body style="margin:0; padding:0; background-color:#f3f4f6; font-family:Arial, Helvetica, sans-serif; color:#1f2937;">
   <!-- Preheader (hidden preview text) -->
   <div style="display:none; font-size:1px; color:#f3f4f6; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden;">
-    It was great meeting you — confirm where to send your complimentary AC Drain Wiz Mini.
+    Your complimentary AC Drain Wiz Mini has shipped — track your package below.
   </div>
 
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f3f4f6;">
@@ -84,7 +82,7 @@
 
         <table role="presentation" class="email-container" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; width:100%; background-color:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 4px 24px rgba(15,23,42,0.08);">
 
-          <!-- Header + product hero (cosmic navy + sky blues — matches .support-hero / .mini-hero-v2) -->
+          <!-- Header + product hero -->
           <!--[if mso]>
           <tr>
             <td class="hero-pad hero-gradient" style="padding:24px 40px 36px; background-color:#0b1220; text-align:center;">
@@ -95,17 +93,17 @@
           <!--<![endif]-->
               <img src="https://acdrainwiz.com/images/ac-drain-wiz-logo.png" width="160" alt="AC Drain Wiz" style="display:block; margin:0 auto 28px; max-width:160px; width:100%; height:auto;">
 
-              <!-- Complimentary badge -->
+              <!-- Shipped badge -->
               <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto 20px;">
                 <tr>
                   <td align="center" style="border-radius:999px; background-color:#f97316; padding:9px 18px 9px 14px;">
                     <table role="presentation" cellpadding="0" cellspacing="0" border="0">
                       <tr>
                         <td valign="middle" style="padding:0 6px 0 0; line-height:0; font-size:0;">
-                          <img src="https://acdrainwiz.com/images/emails/badge-gift-white.png" width="20" height="20" alt="" style="display:block; width:20px; height:20px; border:0;">
+                          <img src="https://acdrainwiz.com/images/emails/badge-truck-white.png" width="20" height="20" alt="" style="display:block; width:20px; height:20px; border:0;">
                         </td>
                         <td valign="middle" style="font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#ffffff; line-height:1;">
-                          Complimentary
+                          Shipped
                         </td>
                       </tr>
                     </table>
@@ -123,13 +121,13 @@
               </table>
 
               <p style="margin:0 0 8px; font-size:13px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#bae6fd;">
-                Conference follow-up
+                On the way
               </p>
               <h1 style="margin:0 0 10px; font-size:28px; line-height:1.2; font-weight:700; color:#ffffff;">
-                AC Drain Wiz Mini
+                Your Mini is shipping
               </h1>
               <p style="margin:0; font-size:16px; line-height:1.5; color:#e0f2fe; max-width:460px; display:inline-block;">
-                Included at no charge&mdash;confirm where to ship yours.
+                Your complimentary AC Drain Wiz Mini has left our fulfillment center.
               </p>
             </td>
           </tr>
@@ -146,31 +144,38 @@
                 Hi {{contact.first_name}},
               </p>
               <p style="margin:0 0 16px; font-size:16px; line-height:1.6; color:#374151;">
-                It was great connecting with you at our recent industry event. As a thank-you, we&rsquo;d like to send you a complimentary <strong style="color:#1e3a8a;">AC Drain Wiz Mini</strong>&mdash;permanent drain line access for faster, cleaner HVAC maintenance without cutting PVC.
+                Good news&mdash;your complimentary <strong style="color:#1e3a8a;">AC Drain Wiz Mini</strong> is on the way. Use the tracking details below to follow your package to the address you confirmed.
               </p>
               <p style="margin:0 0 24px; font-size:16px; line-height:1.6; color:#374151;">
-                Use your <strong>personal link below</strong> to confirm the mailing address where we should ship your Mini. The form takes just a few minutes.
+                Once it arrives, you&rsquo;ll have permanent drain line access for faster, cleaner HVAC maintenance&mdash;flush, air, and vacuum service without cutting PVC.
               </p>
             </td>
           </tr>
 
-          <!-- Form checklist -->
+          <!-- Tracking card -->
           <tr>
             <td class="px-mobile" style="padding:0 40px 28px;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f8fafc; border:1px solid #e2e8f0; border-radius:10px;">
                 <tr>
                   <td style="padding:22px 24px;">
                     <p style="margin:0 0 12px; font-size:14px; font-weight:700; color:#1e3a8a;">
-                      What you&rsquo;ll confirm on the form
+                      Tracking information
                     </p>
                     <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                       <tr>
-                        <td valign="top" width="50%" style="padding:0 12px 8px 0; font-size:14px; line-height:1.5; color:#4b5563;">&#8226;&nbsp;Name, email, and phone</td>
-                        <td valign="top" width="50%" style="padding:0 0 8px; font-size:14px; line-height:1.5; color:#4b5563;">&#8226;&nbsp;Mailing address</td>
+                        <td valign="top" width="38%" style="padding:0 12px 10px 0; font-size:13px; font-weight:600; color:#6b7280;">Carrier</td>
+                        <td valign="top" style="padding:0 0 10px; font-size:15px; line-height:1.5; color:#374151;">{{contact.mini_carrier}}</td>
                       </tr>
                       <tr>
-                        <td valign="top" style="padding:0 12px 0 0; font-size:14px; line-height:1.5; color:#4b5563;">&#8226;&nbsp;Organization (optional)</td>
-                        <td valign="top" style="padding:0; font-size:14px; line-height:1.5; color:#4b5563;">&#8226;&nbsp;Contact type</td>
+                        <td valign="top" style="padding:0 12px 10px 0; font-size:13px; font-weight:600; color:#6b7280;">Tracking #</td>
+                        <td valign="top" style="padding:0 0 10px; font-size:15px; line-height:1.5; color:#374151; font-family:Consolas, 'Courier New', monospace; letter-spacing:0.02em;">{{contact.mini_tracking_number}}</td>
+                      </tr>
+                      <tr>
+                        <td valign="top" style="padding:0 12px 0 0; font-size:13px; font-weight:600; color:#6b7280;">Ship to</td>
+                        <td valign="top" style="padding:0; font-size:15px; line-height:1.6; color:#374151;">
+                          {{contact.address1}}<br>
+                          {{contact.city}}, {{contact.state}} {{contact.postal_code}}
+                        </td>
                       </tr>
                     </table>
                   </td>
@@ -179,37 +184,73 @@
             </td>
           </tr>
 
-          <!-- CTA -->
+          <!-- Track CTA -->
           <tr>
             <td class="px-mobile" align="center" style="padding:0 40px 32px;">
-              <!-- Option A: full URL from GHL Custom Value (recommended) -->
               <table role="presentation" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                   <td align="center" style="border-radius:8px; background-color:#2563eb;">
-                    <a href="{{custom_values.complimentary_mini_invite_url}}" target="_blank" style="display:inline-block; padding:16px 32px; font-size:16px; font-weight:700; color:#ffffff; text-decoration:none; border-radius:8px; background-color:#2563eb; border:1px solid #2563eb;">
-                      Confirm My Mailing Address
+                    <a href="{{contact.mini_tracking_url}}" target="_blank" style="display:inline-block; padding:16px 32px; font-size:16px; font-weight:700; color:#ffffff; text-decoration:none; border-radius:8px; background-color:#2563eb; border:1px solid #2563eb;">
+                      Track My Package
                     </a>
                   </td>
                 </tr>
               </table>
               <p style="margin:16px 0 0; font-size:13px; line-height:1.5; color:#6b7280;">
                 Button not working? Copy and paste this link into your browser:<br>
-                <a href="{{custom_values.complimentary_mini_invite_url}}" target="_blank" style="color:#2563eb; word-break:break-all;">{{custom_values.complimentary_mini_invite_url}}</a>
+                <a href="{{contact.mini_tracking_url}}" target="_blank" style="color:#2563eb; word-break:break-all;">{{contact.mini_tracking_url}}</a>
               </p>
             </td>
           </tr>
 
-          <!-- Important notice -->
+          <!-- After delivery -->
+          <tr>
+            <td class="px-mobile" style="padding:0 40px 28px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#eff6ff; border:1px solid #bfdbfe; border-radius:10px;">
+                <tr>
+                  <td style="padding:22px 24px;">
+                    <p style="margin:0 0 12px; font-size:14px; font-weight:700; color:#1e3a8a;">
+                      When your Mini arrives
+                    </p>
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                      <tr>
+                        <td valign="top" width="50%" style="padding:0 12px 8px 0; font-size:14px; line-height:1.5; color:#4b5563;">&#8226;&nbsp;Review installation guidance before you cut pipe</td>
+                        <td valign="top" width="50%" style="padding:0 0 8px; font-size:14px; line-height:1.5; color:#4b5563;">&#8226;&nbsp;Install horizontal on 3/4&Prime; PVC drain line</td>
+                      </tr>
+                      <tr>
+                        <td valign="top" style="padding:0 12px 0 0; font-size:14px; line-height:1.5; color:#4b5563;">&#8226;&nbsp;One-time install, lifetime service access</td>
+                        <td valign="top" style="padding:0; font-size:14px; line-height:1.5; color:#4b5563;">&#8226;&nbsp;Questions? We&rsquo;re here to help</td>
+                      </tr>
+                    </table>
+                    <p style="margin:14px 0 0; font-size:13px; line-height:1.5; color:#6b7280;">
+                      <a href="https://www.acdrainwiz.com/support/installation-setup" target="_blank" style="color:#2563eb; text-decoration:underline;">View installation setup guide</a>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Secondary CTA -->
+          <tr>
+            <td class="px-mobile" align="center" style="padding:0 40px 32px;">
+              <p style="margin:0; font-size:13px; line-height:1.5; color:#6b7280;">
+                <a href="https://www.acdrainwiz.com/products/mini" target="_blank" style="color:#2563eb; text-decoration:underline;">Learn more about the AC Drain Wiz Mini</a>
+              </p>
+            </td>
+          </tr>
+
+          <!-- Delivery note -->
           <tr>
             <td class="px-mobile" style="padding:0 40px 32px;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#fffbeb; border:1px solid #fcd34d; border-radius:8px;">
                 <tr>
                   <td style="padding:16px 18px;">
                     <p style="margin:0 0 8px; font-size:13px; font-weight:700; color:#92400e;">
-                      Please keep this link private
+                      Delivery timing
                     </p>
                     <p style="margin:0; font-size:13px; line-height:1.55; color:#78350f;">
-                      This invitation is tied to the email address we have on file for you. Please do not forward this email or share the link. After you submit, we&rsquo;ll verify your eligibility and follow up with next steps by email.
+                      Carrier transit times vary by location. Tracking updates may take a few hours to appear after your label is created. If your package is delayed or the tracking link shows an issue, reply to this email or call us and we&rsquo;ll help.
                     </p>
                   </td>
                 </tr>
@@ -236,7 +277,7 @@
               </p>
               <p style="margin:16px 0 0; font-size:11px; line-height:1.5; color:#9ca3af; text-align:center;">
                 &copy; AC Drain Wiz. All rights reserved.<br>
-                You received this because we met at an industry event and you are on our event follow-up list.
+                You received this because your complimentary AC Drain Wiz Mini has shipped.
               </p>
             </td>
           </tr>
