@@ -7,7 +7,7 @@ export const PAGE_SEARCH_META: PageSearchMeta = {
   kind: 'how-to',
   title: 'Recommended installation scenarios',
   body:
-    'Different installation configurations for AC Drain Wiz products, drain ports, standard setup, best practices, and when to use each approach for condensate and water damage prevention.',
-  tags: ['installation', 'scenarios', 'setup', 'drain', 'configure', 'how to'],
+    'Good, Better, and Best installation configurations for AC Drain Wiz Standard Sensor Switch, WiFi Sensor Switch, and Mini on dual drain lines—when to use each setup for overflow protection and maintenance access.',
+  tags: ['installation', 'scenarios', 'setup', 'drain', 'configure', 'how to', 'good better best'],
   href: '/support/installation-scenarios',
 }

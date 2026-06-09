@@ -271,7 +271,7 @@ export function InstallationSetupPage() {
               <DocumentTextIcon className="install-also-icon" />
               <div>
                 <h3 className="install-also-card-title">Recommended Installation Scenarios</h3>
-                <p className="install-also-card-desc">Standard vs. best-practice configurations and when to use them.</p>
+                <p className="install-also-card-desc">Good, Better, and Best configurations for dual drain-line setups.</p>
               </div>
               <ArrowRightIcon className="install-also-arrow" />
             </Link>
