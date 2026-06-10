@@ -9,6 +9,7 @@
  *
  * When `false`, every customer-facing purchase entry point — "Buy Now",
  * "Add to Cart", and "Checkout" — is hidden and replaced with a disabled
- * "Coming Soon" placeholder. Flip to `true` to go live with Stripe checkout.
+ * "Coming Soon" placeholder. Set `VITE_PURCHASING_ENABLED=true` in the
+ * deployment environment to go live with Stripe checkout.
  */
-export const PURCHASING_ENABLED: boolean = false
+export const PURCHASING_ENABLED: boolean = import.meta.env.VITE_PURCHASING_ENABLED === 'true'
