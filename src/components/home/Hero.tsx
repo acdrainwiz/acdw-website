@@ -8,6 +8,7 @@ import { CustomerTypeSelector } from './CustomerTypeSelector'
 import { isValidEmail } from '../../utils/emailValidation'
 import { useRecaptcha } from '../../hooks/useRecaptcha'
 import { MINI_MANIFOLD_DIMENSIONS_LHD, SENSOR_STANDARD_SHORT, SENSOR_WIFI_SHORT, SUPPORT_CONTACT } from '../../config/acdwKnowledge'
+import { MiniDiscoveryCTA, MiniPriceText } from '../products/MiniDiscoveryCTA'
 
 export function Hero() {
   const navigate = useNavigate()
@@ -157,7 +158,7 @@ export function Hero() {
     },
     {
       question: "What's the difference between Mini and Sensor?",
-      answer: "Mini is our flagship compact solution for proactive drain line cleaning—available through authorized distributors and HVAC contractors. Sensor adds smart monitoring and 24/7 alerts, and is also available through authorized HVAC contractors. See our product comparison table above for details."
+      answer: "Mini is our flagship compact solution for proactive drain line cleaning—available to purchase online at list price on acdrainwiz.com. Sensor adds smart monitoring and 24/7 alerts, and is available through authorized HVAC contractors. See our product comparison table above for details."
     },
     {
       question: "Can homeowners purchase the Sensor?",
@@ -191,7 +192,7 @@ export function Hero() {
     },
     {
       question: "What if I'm not satisfied with my purchase?",
-      answer: "AC Drain Wiz products are sold through authorized distributors and resellers. Returns and refunds are handled by the distributor or retailer where you purchased the product. Contact your point of purchase for their return policy."
+      answer: "If you purchased the Mini on acdrainwiz.com, contact support with your order number for return assistance. If you purchased from a distributor or contractor, returns and refunds are handled by your point of purchase. See our Return & Refund Policy for details."
     }
   ]
 
@@ -594,7 +595,9 @@ export function Hero() {
                 </tr>
                 <tr>
                   <td className="product-comparison-td sticky left-0 bg-white">Price (MSRP)</td>
-                  <td className="product-comparison-td text-sm text-gray-600 italic">Contact us for pricing</td>
+                  <td className="product-comparison-td text-sm font-semibold text-gray-900">
+                    <MiniPriceText />
+                  </td>
                   <td className="product-comparison-td text-sm text-gray-600 italic">Contact us for pricing</td>
                   <td className="product-comparison-td text-sm text-gray-600 italic">Contact us for pricing</td>
                   <td className="product-comparison-td text-sm text-gray-600 italic">Contact us for pricing</td>
@@ -602,9 +605,7 @@ export function Hero() {
                 <tr className="product-comparison-action-row">
                   <td className="product-comparison-td sticky left-0 bg-white"></td>
                   <td className="product-comparison-td">
-                    <button onClick={() => navigate('/products/mini')} className="product-comparison-btn-primary">
-                      Learn More
-                    </button>
+                    <MiniDiscoveryCTA className="product-comparison-btn-primary" />
                   </td>
                   <td className="product-comparison-td">
                     <button onClick={() => navigate('/products/sensor#sensor-variant-standard')} className="product-comparison-btn-primary">
@@ -635,13 +636,11 @@ export function Hero() {
                   <h3 className="text-2xl font-bold text-gray-900">Mini</h3>
                   <span className="text-sm text-blue-600">Most Popular</span>
                 </div>
-                <button onClick={() => navigate('/products/mini')} className="product-comparison-btn-primary">
-                  Learn More
-                </button>
+                <MiniDiscoveryCTA className="product-comparison-btn-primary" label="Shop Mini" />
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between"><span className="font-medium">Status:</span> <span className="text-green-600">Available Now</span></div>
-                <div className="flex justify-between"><span className="font-medium">Price:</span> <span className="text-gray-600 italic">Contact us for pricing</span></div>
+                <div className="flex justify-between"><span className="font-medium">Price:</span> <MiniPriceText className="font-semibold text-gray-900" /></div>
                 <div className="flex justify-between"><span className="font-medium">Size:</span> <span>{MINI_MANIFOLD_DIMENSIONS_LHD}</span></div>
                 <div className="flex justify-between"><span className="font-medium">Best For:</span> <span className="text-right">Space-constrained</span></div>
               </div>
@@ -881,7 +880,7 @@ export function Hero() {
               </div>
               <h3 className="risk-reversal-card-title">Industry-Leading Warranty</h3>
               <p className="risk-reversal-card-description">
-                All AC Drain Wiz products come with our industry-leading warranty against defects in materials and workmanship. Returns and refunds are handled by your authorized distributor or retailer.
+                All AC Drain Wiz products come with our industry-leading warranty against defects in materials and workmanship. For Mini orders placed on acdrainwiz.com, contact support for warranty and return assistance; for distributor purchases, contact your point of purchase.
               </p>
               <button onClick={() => navigate('/support#warranty-returns')} className="risk-reversal-card-link">
                 See full warranty terms →
@@ -913,7 +912,7 @@ export function Hero() {
               </div>
               <h3 className="risk-reversal-card-title">Returns & Refunds</h3>
               <p className="risk-reversal-card-description">
-                AC Drain Wiz products are sold through authorized distributors and resellers. Returns and refunds are handled by the distributor or retailer where you purchased. Contact your point of purchase for their return policy.
+                For Mini orders placed on acdrainwiz.com, contact support with your order number. For products purchased from a distributor or contractor, contact your point of purchase for their return policy.
               </p>
               <button onClick={() => navigate('/support#warranty-returns')} className="risk-reversal-card-link">
                 View warranty & returns info →

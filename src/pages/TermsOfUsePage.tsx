@@ -63,16 +63,16 @@ export function TermsOfUsePage() {
             <h2 className="heading-2 mb-4">1. Website Purpose and Distribution Model</h2>
             <div className="space-y-4">
               <p className="text-gray-700 leading-relaxed">
-                The Site provides information about AC Drain Wiz products and related services.
+                The Site provides information about AC Drain Wiz products and related services, and enables direct online purchase of select products.
               </p>
               <p className="text-gray-700 leading-relaxed">
-                AC Drain Wiz products are sold exclusively through authorized independent distributors.
+                The <strong>AC Drain Wiz Mini</strong> may be purchased directly through this Site. For Mini orders placed on acdrainwiz.com, AC DRAIN WIZ (50 50 Holdings, Inc.) is the seller of record, processes payment through third-party payment processors, and fulfills orders according to our shipping and return policies.
               </p>
               <p className="text-gray-700 leading-relaxed">
-                The Company does not sell products directly through this Site, does not process payments, and is not the seller of record for transactions between distributors and contractors or other purchasers.
+                <strong>Sensor Switches</strong>, <strong>Mini + Sensor bundles</strong>, and <strong>volume or contractor-tier orders</strong> are also sold through authorized independent distributors and HVAC contractors. For those channels, pricing, payment terms, delivery, and installation services are handled by the applicable distributor or contractor unless otherwise stated in a separate agreement.
               </p>
               <p className="text-gray-700 leading-relaxed">
-                Any disputes regarding pricing, payment terms, delivery, or installation services must be directed to the applicable distributor or contractor.
+                Disputes regarding Mini web orders should be directed to AC DRAIN WIZ using the contact information in Section 21. Disputes regarding distributor or contractor purchases should be directed to the applicable distributor or contractor.
               </p>
             </div>
           </div>
@@ -115,7 +115,7 @@ export function TermsOfUsePage() {
                 </p>
                 <p className="text-gray-700 mt-2">
                   <EnvelopeIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />
-                  Email: <a href="mailto:info@acdrainwiz.com" className="text-primary-600 hover:text-primary-700 underline">info@acdrainwiz.com</a>
+                  Email: <a href={`mailto:${SUPPORT_CONTACT.supportEmail}`} className="text-primary-600 hover:text-primary-700 underline">{SUPPORT_CONTACT.supportEmail}</a>
                 </p>
               </div>
             </div>
@@ -470,7 +470,7 @@ export function TermsOfUsePage() {
                   </address>
                 </p>
                 <p><PhoneIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />Phone: <a href={SUPPORT_CONTACT.telHref} className="text-primary-600 hover:text-primary-700 underline">{SUPPORT_CONTACT.phoneDisplay}</a></p>
-                <p><EnvelopeIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />Email: <a href="mailto:info@acdrainwiz.com" className="text-primary-600 hover:text-primary-700 underline">info@acdrainwiz.com</a></p>
+                <p><EnvelopeIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />Email: <a href={`mailto:${SUPPORT_CONTACT.supportEmail}`} className="text-primary-600 hover:text-primary-700 underline">{SUPPORT_CONTACT.supportEmail}</a></p>
               </div>
             </div>
           </div>

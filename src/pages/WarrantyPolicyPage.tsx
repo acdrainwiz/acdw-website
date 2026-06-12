@@ -151,7 +151,7 @@ export function WarrantyPolicyPage() {
                 <li>
                   <strong>Provide Information:</strong> Include the following information:
                   <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li>Order number or proof of purchase</li>
+                    <li>Order number or proof of purchase (for acdrainwiz.com orders, your order confirmation email qualifies)</li>
                     <li>Product model and serial number (if applicable)</li>
                     <li>Date of purchase</li>
                     <li>Description of the defect or issue</li>

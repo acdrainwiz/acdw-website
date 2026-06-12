@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop';
 import { SUPPORT_CONTACT } from '../config/acdwKnowledge';
+import { MiniDiscoveryCTA } from '../components/products/MiniDiscoveryCTA';
 
 export function HVACProsPage() {
   const navigate = useNavigate();
@@ -175,6 +176,11 @@ export function HVACProsPage() {
               >
                 Learn More
               </button>
+              <MiniDiscoveryCTA
+                className="hvac-product-cta hvac-product-cta-outline"
+                label="Shop at MSRP online"
+                showPrice={false}
+              />
             </div>
 
             {/* Mini + Sensor Combo */}

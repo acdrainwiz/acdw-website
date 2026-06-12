@@ -7,7 +7,7 @@ export const PAGE_SEARCH_META: PageSearchMeta = {
   kind: 'site',
   title: 'Shipping Policy',
   body:
-    'Shipping and delivery: distributor sales model, contact sales for methods and timeframes, tracking, no direct end-customer online shipping from this site.',
+    'Shipping and delivery: Mini orders ship direct to US and Canada customers from acdrainwiz.com; shipping calculated at checkout. Distributor bulk shipping; tracking.',
   tags: ['shipping', 'delivery', 'distributor', 'tracking'],
   href: '/shipping-policy',
 }

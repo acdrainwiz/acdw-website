@@ -127,7 +127,7 @@ export function Footer() {
           <div className="footer-contact-info">
             <div className="footer-contact-item">
               <EnvelopeIcon className="footer-contact-icon" />
-              <span>info@acdrainwiz.com</span>
+              <a href={`mailto:${SUPPORT_CONTACT.supportEmail}`} className="footer-contact-link">{SUPPORT_CONTACT.supportEmail}</a>
             </div>
             <div className="footer-contact-item">
               <PhoneIcon className="footer-contact-icon" />

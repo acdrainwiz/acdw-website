@@ -704,7 +704,7 @@ export function ComboProductPage() {
             </div>
             <div className="combo-product-trust-indicator">
               <CheckIcon className="combo-product-trust-icon" />
-              <span>2-Year Warranty</span>
+              <span>Manufacturer Warranty</span>
             </div>
             <div className="combo-product-trust-indicator">
               <CheckIcon className="combo-product-trust-icon" />
