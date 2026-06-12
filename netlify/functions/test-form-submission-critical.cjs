@@ -59,7 +59,7 @@ function makeEvent(bodyParams) {
     httpMethod: 'POST',
     path: '/.netlify/functions/validate-form-submission',
     headers: {
-      origin: 'http://localhost:5173',
+      origin: 'https://www.acdrainwiz.com',
       'user-agent': 'Mozilla/5.0',
       'content-type': 'application/x-www-form-urlencoded',
       'x-forwarded-for': '198.51.100.10',
