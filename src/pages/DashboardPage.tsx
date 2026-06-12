@@ -117,7 +117,7 @@ function DashboardContent() {
                         Register Product
                       </button>
                       <button
-                        onClick={() => navigate('/products?product=mini')}
+                        onClick={() => navigate('/products/mini')}
                         className="dashboard-homeowner-product-button-primary"
                       >
                         Buy Another
@@ -164,7 +164,7 @@ function DashboardContent() {
                           <span className="dashboard-order-product">AC Drain Wiz Mini × 1</span>
                           <div className="dashboard-order-actions">
                             <button
-                              onClick={() => navigate('/products?product=mini')}
+                              onClick={() => navigate('/products/mini')}
                               className="dashboard-order-action-link"
                             >
                               View Product
@@ -193,7 +193,7 @@ function DashboardContent() {
                         You'll be able to track orders, download invoices, and reorder products.
                       </p>
                       <button
-                        onClick={() => navigate('/products?product=mini')}
+                        onClick={() => navigate('/products/mini')}
                         className="dashboard-order-empty-cta"
                       >
                         <ShoppingCartIcon className="dashboard-order-empty-cta-icon" />

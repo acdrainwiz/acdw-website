@@ -350,7 +350,7 @@ export function SupportPage() {
                       <div className="border border-gray-200 rounded-lg p-4">
                         <h4 className="font-semibold text-gray-900 mb-2">Returns & Refunds</h4>
                         <p className="text-sm text-gray-600">
-                          AC Drain Wiz products are sold through authorized distributors and resellers. Returns and refunds are handled by the distributor or retailer where you purchased the product. Please contact your point of purchase directly for their return policy and process.
+                          For Mini orders placed on acdrainwiz.com, contact support with your order number for return assistance. For products purchased from a distributor or contractor, contact your point of purchase. See our Return &amp; Refund Policy for details.
                         </p>
                       </div>
                     </div>
@@ -484,8 +484,8 @@ export function SupportPage() {
                         <EnvelopeIcon className="support-contact-icon" />
                         <h4 className="support-contact-title">Email Support</h4>
                         <p className="support-contact-details">We respond within 24 hours</p>
-                        <a href="mailto:info@acdrainwiz.com" className="support-contact-link">
-                          info@acdrainwiz.com
+                        <a href={`mailto:${SUPPORT_CONTACT.supportEmail}`} className="support-contact-link">
+                          {SUPPORT_CONTACT.supportEmail}
                         </a>
                       </div>
                     </div>

@@ -17,6 +17,7 @@ import {
   ArrowRightIcon
 } from '@heroicons/react/24/outline';
 import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop';
+import { MiniDiscoveryCTA } from '../components/products/MiniDiscoveryCTA';
 
 export function HomeownerHomePage() {
   const navigate = useNavigate();
@@ -88,9 +89,10 @@ export function HomeownerHomePage() {
             </div>
 
             <div className="homeowner-hero-ctas">
+              <MiniDiscoveryCTA className="homeowner-hero-cta-primary" />
               <button 
                 onClick={() => navigate('/products/mini')}
-                className="homeowner-hero-cta-primary"
+                className="homeowner-hero-cta-secondary"
               >
                 Product Details
                 <ArrowRightIcon className="hero-button-icon" />
@@ -491,7 +493,7 @@ export function HomeownerHomePage() {
             </summary>
             <div className="homeowner-faq-answer">
               <p>
-                AC Drain Wiz products are sold through authorized distributors and resellers. Returns and refunds are handled by the distributor or retailer where you purchased the product. Contact your point of purchase for their return policy. If you have questions about product compatibility, our support team can help—reach out through our contact form.
+                If you purchased the Mini on acdrainwiz.com, contact support with your order number for return assistance. If you purchased from a distributor or contractor, contact your point of purchase for their return policy. If you have questions about product compatibility, our support team can help—reach out through our contact form.
               </p>
             </div>
           </details>
@@ -529,9 +531,10 @@ export function HomeownerHomePage() {
           </p>
           
           <div className="homeowner-final-cta-buttons">
+            <MiniDiscoveryCTA className="homeowner-final-cta-primary" />
             <button 
               onClick={() => navigate('/contact?type=installer')}
-              className="homeowner-final-cta-primary"
+              className="homeowner-final-cta-secondary"
             >
               Find an Installer Near Me
             </button>

@@ -17,8 +17,7 @@ export function ShippingPolicyPage() {
               Delivery information and shipping terms
             </p>
             <div className="support-hero-badge-row">
-              <span className="support-hero-badge">Delivery Times</span>
-              <span className="support-hero-badge">Contact for Pricing</span>
+              <span className="support-hero-badge">Direct Mini Shipping</span>
               <span className="support-hero-badge">Tracking</span>
             </div>
           </div>
@@ -32,9 +31,10 @@ export function ShippingPolicyPage() {
             <div className="flex items-start">
               <ExclamationTriangleIcon className="h-6 w-6 text-orange-600 mr-3 flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-semibold text-orange-900 mb-2">Shipping details</h3>
+                <h3 className="font-semibold text-orange-900 mb-2">Shipping overview</h3>
                 <p className="text-sm text-orange-800">
-                  AC Drain Wiz sells through distributors and does not currently ship to end customers online. For shipping methods, timeframes, and pricing, contact our sales team at <strong>{SUPPORT_CONTACT.phoneDisplay}</strong>.
+                  The <strong>AC Drain Wiz Mini</strong> ships directly to customers in the United States and Canada when ordered on acdrainwiz.com.
+                  Shipping cost is calculated at checkout. Sensor Switches, bundles, and bulk distributor orders follow separate fulfillment channels—contact our sales team at <strong>{SUPPORT_CONTACT.phoneDisplay}</strong> for those options.
                 </p>
               </div>
             </div>
@@ -43,12 +43,10 @@ export function ShippingPolicyPage() {
           {/* Introduction */}
           <div className="prose prose-lg max-w-none mb-12">
             <p className="text-gray-700 leading-relaxed">
-              This Shipping Policy outlines our shipping methods, delivery timeframes, and terms for orders through our distribution channel. 
-              We sell directly to distributors rather than to end customers online. For shipping and pricing information, please contact our sales team at <strong>{SUPPORT_CONTACT.phoneDisplay}</strong>.
+              This Shipping Policy outlines shipping methods, delivery timeframes, and terms for orders placed on acdrainwiz.com and for our distributor channel.
             </p>
             <p className="text-gray-700 leading-relaxed">
-              Orders are processed and shipped from our fulfillment center. We strive to ship orders quickly 
-              and deliver them safely.
+              Mini orders are processed and shipped from our fulfillment center. We strive to ship orders quickly and deliver them safely.
             </p>
           </div>
 
@@ -90,9 +88,10 @@ export function ShippingPolicyPage() {
               </div>
 
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                <h3 className="font-semibold text-blue-900 mb-3">💡 Shipping &amp; pricing</h3>
+                <h3 className="font-semibold text-blue-900 mb-3">Mini web orders</h3>
                 <p className="text-gray-700 text-sm">
-                  For shipping costs and pricing, contact our sales team at <strong>{SUPPORT_CONTACT.phoneDisplay}</strong>.
+                  Shipping cost for Mini orders on acdrainwiz.com is calculated at checkout based on your delivery address.
+                  For bulk, Sensor, or distributor shipping inquiries, contact our sales team at <strong>{SUPPORT_CONTACT.phoneDisplay}</strong>.
                 </p>
               </div>
             </div>
@@ -103,8 +102,10 @@ export function ShippingPolicyPage() {
             <h2 className="legal-section-title">3. Shipping Costs &amp; Pricing</h2>
             <div className="prose max-w-none">
               <p className="text-gray-700 mb-4">
-                AC Drain Wiz does not currently ship to end customers online; we sell directly to distributors. 
-                For shipping costs, pricing, and availability, please contact our sales team.
+                For <strong>Mini orders placed on acdrainwiz.com</strong>, shipping cost is calculated at checkout and displayed before you complete payment.
+              </p>
+              <p className="text-gray-700 mb-4">
+                For <strong>distributor and bulk orders</strong> (Sensor Switches, bundles, volume pricing), contact our sales team for shipping costs and availability.
               </p>
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
                 <p className="text-gray-700 mb-0">
@@ -119,8 +120,10 @@ export function ShippingPolicyPage() {
             <h2 className="legal-section-title">4. Shipping Destinations</h2>
             <div className="prose max-w-none">
               <p className="text-gray-700 mb-4">
-                We ship to distributors in the <strong>United States</strong> (all 50 states, including Alaska and Hawaii) and <strong>Canada</strong> (all provinces and territories). 
-                For pricing and shipping to your location, contact our sales team at <strong>{SUPPORT_CONTACT.phoneDisplay}</strong>.
+                <strong>Mini web orders:</strong> We ship to customers in the <strong>United States</strong> (all 50 states, including Alaska and Hawaii) and <strong>Canada</strong> (all provinces and territories).
+              </p>
+              <p className="text-gray-700 mb-4">
+                <strong>Distributor channel:</strong> We also ship to authorized distributors in the United States and Canada. For distributor shipping and pricing, contact our sales team at <strong>{SUPPORT_CONTACT.phoneDisplay}</strong>.
               </p>
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mt-4">
                 <p className="text-sm text-gray-700">

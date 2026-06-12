@@ -213,13 +213,26 @@ export function MiniProductPage() {
     },
     {
       question: 'Can I buy the Mini online, and do you offer bulk pricing?',
-      answer:
-        'Yes — the AC Drain Wiz Mini is available to buy directly on this page at list price, in any quantity, with secure Stripe checkout, shipping, and tracking. There\'s no online order cap: order one or stock up by the case. Contractors, distributors, and property managers also qualify for volume pricing — order online at list price now, or contact our sales team for a volume quote on larger runs. (Note: the AC Drain Wiz Sensor isn\'t available for online purchase yet — reach out to sales for the Sensor.)'
+      answer: (
+        <p>
+          Yes — you can{' '}
+          <a href="#order" className="product-faq-contact-link">
+            buy the AC Drain Wiz Mini on this page
+          </a>{' '}
+          at list price, in any quantity, with secure checkout, shipping, and tracking. There&apos;s no online order
+          cap: order one or stock up by the case. Contractors, distributors, and property managers can{' '}
+          <Link to="/contact?type=sales" className="product-faq-contact-link">
+            contact our sales team
+          </Link>{' '}
+          for volume pricing on larger runs. The AC Drain Wiz Sensor isn&apos;t available for online purchase yet —
+          sales can help with Sensor pricing and availability.
+        </p>
+      ),
     },
     {
       question: 'How is warranty handled for stocked inventory?',
       answer:
-        'AC Drain Wiz Mini ships with our standard manufacturer warranty against defects in materials and workmanship. For distributor stock and contractor accounts, returns and warranty replacements are coordinated through your purchase channel. Contact our team for account-specific handling, or see our warranty policy page for full terms.'
+        'AC Drain Wiz Mini ships with our standard manufacturer warranty against defects in materials and workmanship. For orders placed on acdrainwiz.com, contact support with your order number for warranty claims. For distributor stock and contractor accounts, returns and warranty replacements are coordinated through your purchase channel. See our warranty policy page for full terms.'
     }
   ]
 
@@ -413,7 +426,7 @@ export function MiniProductPage() {
             <motion.div className="mini-hero-v2-buy" variants={fadeUp}>
               <div className="mini-hero-v2-buy-price">
                 <span className="mini-hero-v2-buy-amount">${unitPrice.toFixed(2)}</span>
-                <span className="mini-hero-v2-buy-ship">Ships in 1–2 days · Free returns</span>
+                <span className="mini-hero-v2-buy-ship">Ships in 1–2 days · Easy returns</span>
               </div>
               <div className="mini-hero-v2-buy-actions">
                 <div className="mini-hero-v2-qty" role="group" aria-label="Quantity">
@@ -876,7 +889,7 @@ export function MiniProductPage() {
                 </button>
                 {openFaq === index && (
                   <div className="product-faq-answer">
-                    <p>{faq.answer}</p>
+                    {typeof faq.answer === 'string' ? <p>{faq.answer}</p> : faq.answer}
                   </div>
                 )}
               </motion.div>
@@ -902,7 +915,7 @@ export function MiniProductPage() {
           secondary link for contractor/distributor volume pricing — optional,
           not a gate. Trust badges and the MiniFlowWaveBackdrop are unchanged.
           The hero carries a compact price + Buy Now mirror of this module. */}
-      <section ref={miniPurchaseCtaSectionRef} className="mini-purchase-cta-band" aria-labelledby="mini-purchase-heading">
+      <section id="order" ref={miniPurchaseCtaSectionRef} className="mini-purchase-cta-band" aria-labelledby="mini-purchase-heading">
         <MiniFlowWaveBackdrop sectionRef={miniPurchaseCtaSectionRef} />
         <div className="mini-purchase-cta-inner">
           <motion.div
@@ -912,7 +925,7 @@ export function MiniProductPage() {
             viewport={mhViewport}
             transition={tr(1.05)}
           >
-            <p className="mini-purchase-cta-kicker">Order online</p>
+            <p className="mini-purchase-cta-kicker">Shop online</p>
             <div className="mini-purchase-cta-card">
               <div className="mini-product-purchase-card-content mini-buy-card">
                 <h2 id="mini-purchase-heading" className="sensor-product-purchase-title">

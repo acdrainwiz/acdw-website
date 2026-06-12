@@ -30,9 +30,14 @@ export interface ProductPricing {
   }
 }
 
+/** Format a USD amount for display (e.g. $49.99). */
+export function formatUsdPrice(amount: number): string {
+  return `$${amount.toFixed(2)}`
+}
+
 // Base MSRP Prices
 export const MSRP_PRICES = {
-  mini: 99.99,
+  mini: 49.99,
   sensor: 69.99,
   bundle: 179.99,
 } as const

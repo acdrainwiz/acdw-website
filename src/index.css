@@ -6209,6 +6209,11 @@
   width: calc(100% - 3rem);
 }
 
+.hvac-product-cta-outline {
+  @apply bg-white text-primary-600 border-2 border-primary-600 hover:bg-primary-50;
+  margin-top: -0.5rem;
+}
+
 .hvac-products-grid .homeowner-product-image {
   @apply rounded-xl;
 }
@@ -7217,6 +7222,10 @@
 
 .products-showcase-cta {
   margin-top: 0.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
 }
 
 .products-showcase-cta-button {
@@ -7249,6 +7258,18 @@
 .products-showcase-cta-icon {
   width: 1rem;
   height: 1rem;
+}
+
+.products-showcase-cta-button-secondary {
+  color: #2563eb;
+  background: white;
+  border: 2px solid #2563eb;
+  box-shadow: none;
+}
+
+.products-showcase-cta-button-secondary:hover {
+  background: #eff6ff;
+  box-shadow: none;
 }
 
 /* Products Card Grid Layout - Modern asymmetric layout */
@@ -14360,6 +14381,7 @@
   position: relative;
   z-index: 2;
   isolation: isolate;
+  scroll-margin-top: 5.5rem;
   /* Clip wave SVG (+ overflow:visible paths) so nothing paints over the footer */
   overflow: hidden;
   /* Light band under the dark hero: single surface so the card reads clearly */

@@ -33,6 +33,9 @@ import { miniHotspots } from '../components/products/miniHotspots'
 import { SensorWaterGaugeInline } from '../components/products/SensorWaterGauge'
 import { ComboWorkflowShowcase } from '../components/products/ComboWorkflowShowcase'
 import { ProductsLineupComparison } from '../components/products/ProductsLineupComparison'
+import { MiniDiscoveryCTA } from '../components/products/MiniDiscoveryCTA'
+import { useProductPrice } from '../hooks/useProductPrice'
+import { formatUsdPrice } from '../config/pricing'
 import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 
 /** Viewport: reveal once, trigger a bit before fully centered */
@@ -66,6 +69,7 @@ export function ProductsPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const reduceMotion = useReducedMotion()
   const calibrateHotspots = useCalibrateHotspotsFlag()
+  const { price: miniPrice } = useProductPrice('mini')
 
   const introStagger = useMemo(
     () => ({
@@ -264,12 +268,12 @@ export function ProductsPage() {
       installationTime: '5 minutes or less',
       size: MINI_MANIFOLD_DIMENSIONS_LHD,
       pricing: {
-        msrp: 'Contact us for pricing',
-        contractor: 'Contact us for pricing',
+        msrp: `${formatUsdPrice(miniPrice)} MSRP`,
+        contractor: 'Volume pricing available',
         'property-manager': 'Contact for pricing'
       },
       compliance: ['IMC 307.2.5', 'IMC 307.2.2', 'IMC 307.2.1.1'],
-      contractorOnly: true
+      contractorOnly: false
     },
     {
       id: 'sensor',
@@ -430,7 +434,7 @@ export function ProductsPage() {
     {
       question: "What products does AC Drain Wiz offer?",
       answer:
-        "We offer the AC Drain Wiz Mini, two Sensor Switch models—the Standard (Non-WiFi) Sensor Switch and the WiFi Sensor Switch—and the Mini + Sensor bundle. All are sold through authorized distributors and HVAC contractors for different needs and use cases.",
+        "We offer the AC Drain Wiz Mini, two Sensor Switch models—the Standard (Non-WiFi) Sensor Switch and the WiFi Sensor Switch—and the Mini + Sensor bundle. The Mini is available to purchase online at list price on acdrainwiz.com. Sensor Switches and bundles are available through authorized HVAC contractors.",
     },
     {
       question: "Can homeowners purchase the Sensor?",
@@ -441,7 +445,7 @@ export function ProductsPage() {
     {
       question: "What's the difference between Mini and Sensor?",
       answer:
-        "Mini is our compact solution for proactive drain line maintenance access—sold through authorized distributors and HVAC contractors. Sensor Switches add capacitive overflow protection with automatic AC shutoff at high water. The WiFi Sensor Switch adds remote monitoring, email/SMS alerts, and the contractor monitoring experience on 2.4 GHz Wi‑Fi; the Standard (Non-WiFi) model provides local protection without Wi‑Fi. See the product sections above for details.",
+        "Mini is our compact solution for proactive drain line maintenance access—available to purchase online at list price on acdrainwiz.com. Sensor Switches add capacitive overflow protection with automatic AC shutoff at high water. The WiFi Sensor Switch adds remote monitoring, email/SMS alerts, and the contractor monitoring experience on 2.4 GHz Wi‑Fi; the Standard (Non-WiFi) model provides local protection without Wi‑Fi. See the product sections above for details.",
     },
     {
       question: "Do I need both Mini and Sensor, or can I use them separately?",
@@ -659,17 +663,34 @@ export function ProductsPage() {
                 </div>
               </div>
               <div className="products-showcase-cta">
-                <motion.button
-                  type="button"
-                  onClick={() => handleProductCTA(product.id)}
-                  className="products-showcase-cta-button"
-                  whileHover={reduceMotion ? undefined : { scale: 1.03, y: -1 }}
-                  whileTap={reduceMotion ? undefined : { scale: 0.98 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 22 }}
-                >
-                  View details
-                  <ArrowRightIcon className="products-showcase-cta-icon" aria-hidden />
-                </motion.button>
+                {product.id === 'mini' ? (
+                  <>
+                    <MiniDiscoveryCTA className="products-showcase-cta-button" />
+                    <motion.button
+                      type="button"
+                      onClick={() => handleProductCTA(product.id)}
+                      className="products-showcase-cta-button products-showcase-cta-button-secondary"
+                      whileHover={reduceMotion ? undefined : { scale: 1.03, y: -1 }}
+                      whileTap={reduceMotion ? undefined : { scale: 0.98 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+                    >
+                      View details
+                      <ArrowRightIcon className="products-showcase-cta-icon" aria-hidden />
+                    </motion.button>
+                  </>
+                ) : (
+                  <motion.button
+                    type="button"
+                    onClick={() => handleProductCTA(product.id)}
+                    className="products-showcase-cta-button"
+                    whileHover={reduceMotion ? undefined : { scale: 1.03, y: -1 }}
+                    whileTap={reduceMotion ? undefined : { scale: 0.98 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+                  >
+                    View details
+                    <ArrowRightIcon className="products-showcase-cta-icon" aria-hidden />
+                  </motion.button>
+                )}
               </div>
             </motion.div>
           </motion.article>
@@ -696,6 +717,7 @@ export function ProductsPage() {
             <motion.p className="unified-products-hero-subtitle" variants={fadeUpLineup}>
               Professional-grade solutions that prevent costly water damage and streamline HVAC service
               operations—from maintenance access to overflow protection and optional Wi‑Fi monitoring.
+              The AC Drain Wiz Mini is available online at list price ({formatUsdPrice(miniPrice)} MSRP).
             </motion.p>
           </motion.div>
         </div>

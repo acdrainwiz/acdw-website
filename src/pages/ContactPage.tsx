@@ -1902,7 +1902,7 @@ export function ContactPage() {
                 <div className="contact-quick-info-section">
                   <h3 className="contact-quick-info-title">Quick Contact</h3>
                   <div className="contact-quick-info-list">
-                    <p><strong>Email:</strong> info@acdrainwiz.com</p>
+                    <p><strong>Email:</strong> <a href={`mailto:${SUPPORT_CONTACT.supportEmail}`} className="text-blue-600 hover:text-blue-700 underline">{SUPPORT_CONTACT.supportEmail}</a></p>
                     <p>
                       <strong>Phone:</strong>{' '}
                       <a href={SUPPORT_CONTACT.telHref} className="text-blue-600 hover:text-blue-700 underline">

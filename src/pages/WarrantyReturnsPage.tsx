@@ -84,7 +84,9 @@ export function WarrantyReturnsPage() {
             <div className="support-section-returns-card">
               <h3 className="support-section-returns-card-title">Returns & Refunds</h3>
               <p className="support-section-returns-card-text">
-                AC Drain Wiz products are sold through authorized distributors and resellers. Returns and refunds are handled by the distributor or retailer where you purchased the product. Please contact your point of purchase directly for their return policy and process.
+                For Mini orders placed on acdrainwiz.com, contact support with your order number for return assistance. For products purchased from a distributor or contractor, returns and refunds are handled by your point of purchase. See our{' '}
+                <Link to="/return-refund-policy" className="text-orange-600 hover:text-orange-700">Return &amp; Refund Policy</Link>{' '}
+                for details.
               </p>
             </div>
           </div>

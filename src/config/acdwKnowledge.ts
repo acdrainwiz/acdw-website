@@ -68,7 +68,7 @@ export const WARRANTY_RETURNS = {
     status: 'unstated' as const,
     value: null as string | null,
     safeCopy:
-      'For our current return policy, please contact support or your point of purchase.',
+      'If you purchased on acdrainwiz.com, contact support with your order number for return assistance. If you purchased from a distributor or contractor, contact your point of purchase. See our Return & Refund Policy for details.',
   },
 } as const
 
@@ -355,6 +355,30 @@ export const FAQ = [
     answer:
       'Installation is a simple, one-time setup in under 30 minutes with no specialized tools required. The Mini uses PVC solvent weld installation with Oatey All-Purpose Cement and must be installed horizontally. Apply primer and all-purpose cement only to the AC condensate drain line—the two cut pipe ends—then fit and slide those ends into the T manifold horizontal openings. Do not apply primer or cement to the T manifold openings or the vertical bayonet port.',
     tags: ['installation', 'contractor'],
+    tabs: ['mini'] as const,
+  },
+  {
+    id: 'mini_buy_online',
+    question: 'Can I buy the AC Drain Wiz Mini online?',
+    answer:
+      'Yes. The AC Drain Wiz Mini is available on acdrainwiz.com at list price with secure checkout, shipping, and order tracking. Sensor Switches and bundles are available through authorized HVAC contractors—contact sales for pricing.',
+    tags: ['mini', 'purchase', 'pricing'],
+    tabs: ['mini'] as const,
+  },
+  {
+    id: 'mini_list_price',
+    question: 'What is the Mini list price?',
+    answer:
+      'The AC Drain Wiz Mini list price (MSRP) is shown on the Mini product page and at checkout. Contractors, distributors, and property managers ordering larger quantities may qualify for volume pricing—contact our sales team for a quote.',
+    tags: ['mini', 'purchase', 'pricing'],
+    tabs: ['mini'] as const,
+  },
+  {
+    id: 'web_order_returns',
+    question: 'How do returns work for orders placed on acdrainwiz.com?',
+    answer:
+      'For orders placed on acdrainwiz.com, contact support with your order number for return assistance. For products purchased from a distributor or contractor, contact your point of purchase. See our Return & Refund Policy for full details.',
+    tags: ['mini', 'purchase', 'returns'],
     tabs: ['mini'] as const,
   },
 ] as const

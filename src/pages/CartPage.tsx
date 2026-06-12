@@ -342,7 +342,7 @@ export function CartPage() {
               </div>
               <div className="cart-trust-item">
                 <ShieldCheckIcon className="cart-trust-icon" />
-                <span>2-year warranty</span>
+                <span>Manufacturer warranty</span>
               </div>
             </div>
           </div>
