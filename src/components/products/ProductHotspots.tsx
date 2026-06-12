@@ -48,6 +48,8 @@ export type ProductHotspotsProps = {
    * `import.meta.env.DEV` at the call site so it never ships to production.
    */
   calibrate?: boolean
+  /** Shown on the calibrate toolbar — which file to paste JSON into. */
+  calibrateExportFile?: string
 }
 
 const MOBILE_MAX_PX = 767
@@ -64,6 +66,7 @@ export function ProductHotspots({
   loading = 'lazy',
   showHint = true,
   calibrate = false,
+  calibrateExportFile,
 }: ProductHotspotsProps) {
   const reduceMotion = useReducedMotion()
   const baseId = useId()
@@ -527,7 +530,13 @@ export function ProductHotspots({
             Calibrate
           </span>
           <span className="hidden sm:inline text-slate-200">
-            Drag dots · pink center lines = 50/50
+            Drag fuchsia dots · cyan grid · pink cross = 50/50
+            {calibrateExportFile ? (
+              <>
+                {' '}
+                → paste into <span className="font-mono text-fuchsia-200">{calibrateExportFile}</span>
+              </>
+            ) : null}
           </span>
           <button
             type="button"

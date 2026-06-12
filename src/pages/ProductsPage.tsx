@@ -1,5 +1,4 @@
 import {
-  useEffect,
   useMemo,
   useState,
   type CSSProperties,
@@ -37,32 +36,13 @@ import { MiniDiscoveryCTA } from '../components/products/MiniDiscoveryCTA'
 import { useProductPrice } from '../hooks/useProductPrice'
 import { formatUsdPrice } from '../config/pricing'
 import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
+import { useCalibrateHotspotsFlag } from '../hooks/useCalibrateHotspotsFlag'
 
 /** Viewport: reveal once, trigger a bit before fully centered */
 const lineupMotionViewport = { once: true, amount: 0.28, margin: '0px 0px -12% 0px' } as const
 
 /** Below product showcases — sections animate in on scroll */
 const lowerPageViewport = { once: true, amount: 0.22, margin: '0px 0px -10% 0px' } as const
-
-/**
- * Dev-only: enable the hotspot calibration overlay when `?calibrate=hotspots`
- * is present in the URL AND we're running a dev build. Double-guarded so it
- * can't activate in production even if the query param leaks in.
- */
-const useCalibrateHotspotsFlag = () => {
-  const [enabled, setEnabled] = useState(false)
-  useEffect(() => {
-    if (!import.meta.env.DEV) return
-    if (typeof window === 'undefined') return
-    const read = () =>
-      new URLSearchParams(window.location.search).get('calibrate') === 'hotspots'
-    setEnabled(read())
-    const onPopState = () => setEnabled(read())
-    window.addEventListener('popstate', onPopState)
-    return () => window.removeEventListener('popstate', onPopState)
-  }, [])
-  return enabled
-}
 
 export function ProductsPage() {
   const navigate = useNavigate()
