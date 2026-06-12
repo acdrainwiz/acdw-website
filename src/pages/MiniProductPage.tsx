@@ -39,6 +39,14 @@ import { StripeCheckout } from '../components/checkout/StripeCheckout'
 import { useCart } from '../contexts/CartContext'
 import { useProductPrice } from '../hooks/useProductPrice'
 import { PURCHASING_ENABLED } from '../config/features'
+import { HotspotCalibrateDevBanner } from '../components/products/HotspotCalibrateDevBanner'
+import { MiniAnatomyBand } from '../components/products/MiniAnatomyBand'
+import { useCalibrateHotspotsFlag } from '../hooks/useCalibrateHotspotsFlag'
+import {
+  MINI_NARRATIVE_ZONES,
+  MINI_PRODUCT_HERO,
+  MINI_PRODUCT_HOW_STEPS,
+} from '../config/miniNarrative'
 
 const MINI_HERO_HEADLINES = [
   'Stop Water Damage Before It Starts',
@@ -49,6 +57,7 @@ const MINI_HERO_HEADLINES = [
 
 export function MiniProductPage() {
   const navigate = useNavigate()
+  const calibrateHotspots = useCalibrateHotspotsFlag()
   const heroRef = useRef<HTMLElement>(null)
   const miniHowWorksSectionRef = useRef<HTMLElement>(null)
   const miniVsOldSectionRef = useRef<HTMLElement>(null)
@@ -93,6 +102,17 @@ export function MiniProductPage() {
     })
     setAddedToCart(true)
   }
+
+  useEffect(() => {
+    if (!calibrateHotspots) return
+    const timer = window.setTimeout(() => {
+      document.getElementById('mini-product-anatomy-hotspots')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      })
+    }, 500)
+    return () => window.clearTimeout(timer)
+  }, [calibrateHotspots])
 
   // Key specifications
   const specifications = [
@@ -163,31 +183,11 @@ export function MiniProductPage() {
     }
   ]
 
-  // How It Works steps — Tier 1 content pass (2026-05-01):
-  // Trimmed from 4 to 3 strictly action-oriented steps. The original 4-step list
-  // padded with two outcomes ("Monitor Water Flow", "Prevent Water Damage") that
-  // duplicated content already implied by Inspect/Clean. Three steps reads as a
-  // real install/use loop and keeps the section tight.
-  const howItWorksSteps = [
-    {
-      number: 1,
-      title: 'Install in 5 minutes',
-      description: 'Solvent-weld the Mini into your 3/4" PVC condensate line. PVC cutter, Oatey primer + cement, done. Cut once at install — never cut for maintenance again.',
-      icon: WrenchScrewdriverIcon
-    },
-    {
-      number: 2,
-      title: 'Inspect anytime',
-      description: 'The clear body gives a direct line of sight into the drain. Verify a clean was successful, or spot rising water and biofilm before they become a backup.',
-      icon: CheckIcon
-    },
-    {
-      number: 3,
-      title: 'Clean when needed',
-      description: 'Snap on the bayonet attachment to flush, blow, or vacuum the line in seconds. No cutting, no PVC repair, no emergency call.',
-      icon: ClockIcon
-    }
-  ]
+  // How It Works — process only; part-level detail lives in anatomy band above.
+  const howItWorksSteps = MINI_PRODUCT_HOW_STEPS.map((step) => ({
+    ...step,
+    icon: step.number === 1 ? WrenchScrewdriverIcon : step.number === 2 ? CheckIcon : ClockIcon,
+  }))
 
   // FAQ data — Tier 1 content pass (2026-05-01):
   // Trimmed from 10 → 5 questions, re-keyed for the distributor / contractor
@@ -342,6 +342,14 @@ export function MiniProductPage() {
 
   return (
     <div className="mini-product-page">
+      {calibrateHotspots ? (
+        <HotspotCalibrateDevBanner
+          exportFile="src/components/products/miniFullStackHotspots.ts"
+          scrollTargetId="mini-product-anatomy-hotspots"
+          imageLabel="full-stack Mini anatomy image"
+        />
+      ) : null}
+
       {/* Back Navigation */}
       <div className="mini-product-back-nav">
         <button
@@ -414,8 +422,7 @@ export function MiniProductPage() {
             </motion.div>
 
             <motion.p className="mini-hero-v2-subtitle" variants={fadeUp}>
-              AC drain clogs cause thousands in water damage. The Mini gives you instant access to clear
-              blockages in about five minutes—no cutting required for maintenance, no mess, no emergency calls.
+              {MINI_PRODUCT_HERO.subtitle}
             </motion.p>
 
             <motion.div className="mini-hero-v2-trust" variants={fadeUp}>
@@ -474,6 +481,8 @@ export function MiniProductPage() {
         </div>
       </section>
 
+      <MiniAnatomyBand context="product" calibrateHotspots={calibrateHotspots} />
+
       {/* How It Works Section
           Tier 1 content pass (2026-05-01): subtitle changed from "four" → "three"
           to match the trimmed howItWorksSteps array.
@@ -492,16 +501,16 @@ export function MiniProductPage() {
             viewport={mhViewport}
             transition={tr(1.02)}
           >
-            <p className="mini-section-eyebrow">How it installs</p>
+            <p className="mini-section-eyebrow">{MINI_NARRATIVE_ZONES.process.eyebrow}</p>
             <h2 className="product-section-title mini-section-title-promote">
-              Install once. Inspect anytime. Clean in seconds.
+              {MINI_NARRATIVE_ZONES.process.title}
             </h2>
             <p className="mini-section-dek">
-              No cutting required for maintenance — ever.
+              {MINI_NARRATIVE_ZONES.process.dek}
             </p>
           </motion.header>
           <p className="product-how-it-works-subtitle">
-            Install once. Inspect anytime. Clean in seconds — no cutting required.
+            {MINI_NARRATIVE_ZONES.process.legacySubtitle}
           </p>
 
           <div className="mini-product-how-it-works-steps mini-how-steps-pulse-grid">
@@ -601,12 +610,12 @@ export function MiniProductPage() {
             viewport={mhViewport}
             transition={tr(0.98)}
           >
-            <p className="mini-section-eyebrow">Why the Mini</p>
+            <p className="mini-section-eyebrow">{MINI_NARRATIVE_ZONES.contrast.eyebrow}</p>
             <h2
               id="mini-vs-old-heading"
               className="product-section-title mini-section-title-promote"
             >
-              The old way vs. the Mini
+              {MINI_NARRATIVE_ZONES.contrast.title}
             </h2>
           </motion.header>
 

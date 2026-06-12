@@ -9,11 +9,17 @@ import { isValidEmail } from '../../utils/emailValidation'
 import { useRecaptcha } from '../../hooks/useRecaptcha'
 import { MINI_MANIFOLD_DIMENSIONS_LHD, SENSOR_STANDARD_SHORT, SENSOR_WIFI_SHORT, SUPPORT_CONTACT } from '../../config/acdwKnowledge'
 import { MiniDiscoveryCTA, MiniPriceText } from '../products/MiniDiscoveryCTA'
+import { MINI_HOME_CARD, MINI_HOME_INTRO } from '../../config/miniHomeCopy'
+import { MiniConfigShowcase } from './MiniConfigShowcase'
+import { MiniAnatomyBand } from '../products/MiniAnatomyBand'
+import { useCalibrateHotspotsFlag } from '../../hooks/useCalibrateHotspotsFlag'
+import { HotspotCalibrateDevBanner } from '../products/HotspotCalibrateDevBanner'
 
 export function Hero() {
   const navigate = useNavigate()
   const { user, isAuthenticated } = useAuth()
   const { getRecaptchaToken } = useRecaptcha()
+  const calibrateHotspots = useCalibrateHotspotsFlag()
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false)
@@ -27,6 +33,17 @@ export function Hero() {
   
   // Check if user is a contractor
   const isContractor = isAuthenticated && user?.role === 'hvac_pro'
+
+  useEffect(() => {
+    if (!calibrateHotspots) return
+    const timer = window.setTimeout(() => {
+      document.getElementById('mini-anatomy-hotspots')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      })
+    }, 500)
+    return () => window.clearTimeout(timer)
+  }, [calibrateHotspots])
 
   // Testimonials from Mini Product Page
   const testimonials = [
@@ -198,6 +215,13 @@ export function Hero() {
 
   return (
     <>
+      {calibrateHotspots ? (
+        <HotspotCalibrateDevBanner
+          exportFile="src/components/products/miniFullStackHotspots.ts"
+          scrollTargetId="mini-anatomy-hotspots"
+          imageLabel="full-stack Mini anatomy image"
+        />
+      ) : null}
 
       {/* Hero Section - Mini Focus */}
       <div className="hero-main-container">
@@ -272,17 +296,15 @@ export function Hero() {
       {/* Mini Product Intro Header */}
       <div className="product-showcase-container product-showcase-container-mini">
         <div className="product-showcase-header">
-          <h2 className="product-showcase-title">Meet the AC Drain Wiz Mini</h2>
-          <p className="product-showcase-subtitle">
-            The fastest way to protect your AC system from drain line clogs. A permanent access point that installs in 5 minutes—so you can flush, clean, and maintain the drain line anytime, without cutting PVC or calling a tech.
-          </p>
+          <h2 className="product-showcase-title">{MINI_HOME_INTRO.title}</h2>
+          <p className="product-showcase-subtitle">{MINI_HOME_INTRO.subtitle}</p>
         </div>
       </div>
 
       {/* ACDW Mini Card - Full Width (second product spot) */}
       <div className="product-showcase-card product-showcase-card-mini product-showcase-card-full-width">
         <div className="product-showcase-card-background">
-          {/* ACDW Mini product image background */}
+          <MiniConfigShowcase calibrateHotspots={calibrateHotspots} />
         </div>
         
         <div className="product-showcase-card-content">
@@ -291,11 +313,9 @@ export function Hero() {
             <span className="product-showcase-card-status">Drain Line Protection</span>
           </div>
           
-          <h4 className="product-showcase-card-headline">Install Once. Clean Anytime.</h4>
+          <h4 className="product-showcase-card-headline">{MINI_HOME_CARD.headline}</h4>
           
-          <p className="product-showcase-card-description">
-            The AC Drain Wiz Mini gives you permanent, on-demand access to your AC drain line. Install in 5 minutes or less—then flush the line anytime without cutting into PVC or disassembling fittings. Keep drain lines clear, prevent costly backups, and reduce service callbacks. The clear body gives a direct view into the line so you can verify that cleaning worked and spot issues before they become backups.
-          </p>
+          <p className="product-showcase-card-description">{MINI_HOME_CARD.body}</p>
           
           <div className="product-showcase-card-ctas">
             {isContractor ? (
@@ -326,6 +346,9 @@ export function Hero() {
           </div>
         </div>
       </div>
+
+      {/* Mini full-stack anatomy — interactive hotspot band below the marquee card */}
+      <MiniAnatomyBand context="home" calibrateHotspots={calibrateHotspots} />
 
       {/* Sensor Product Intro Header */}
       <div ref={productShowcaseRef} className="product-showcase-container product-showcase-container-sensor">
