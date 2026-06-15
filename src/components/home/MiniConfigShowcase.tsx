@@ -106,7 +106,6 @@ export function MiniConfigShowcase(_props: MiniConfigShowcaseProps) {
   const slide = SLIDES[activeIndex]
   const slideVariants = getSlideVariants(transitionMode, reduceMotion)
   const slideTransition = getMotionTransition(transitionMode, reduceMotion)
-  const presenceMode = transitionMode === 'fade' ? undefined : 'wait'
 
   const clearAutoInterval = useCallback(() => {
     if (autoIntervalRef.current) {
@@ -260,7 +259,7 @@ export function MiniConfigShowcase(_props: MiniConfigShowcaseProps) {
         </button>
 
         <div className="mini-config-showcase-stage">
-          <AnimatePresence initial={false} custom={direction} mode={presenceMode}>
+          <AnimatePresence initial={false} custom={direction}>
             <motion.figure
               key={slide.id}
               id={`mini-config-panel-${slide.id}`}
@@ -272,6 +271,7 @@ export function MiniConfigShowcase(_props: MiniConfigShowcaseProps) {
               animate="center"
               exit="exit"
               transition={slideTransition}
+              layout={false}
               className="mini-config-showcase-slide"
             >
               <div className="mini-config-showcase-slide-media">
