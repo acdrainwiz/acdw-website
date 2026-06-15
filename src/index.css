@@ -1117,7 +1117,7 @@
     }
   }
 
-  /* Mini configuration showcase — continuous edge-to-edge marquee */
+  /* Mini configuration showcase — content-width slider */
   .mini-config-showcase {
     display: flex;
     flex-direction: column;
@@ -1126,271 +1126,9 @@
     padding: clamp(0.25rem, 0.75vw, 0.5rem) 0 0;
   }
 
-  .mini-config-showcase--marquee {
+  .mini-config-showcase--slider {
     padding-left: 0;
     padding-right: 0;
-  }
-
-  .mini-config-marquee-controls {
-    position: relative;
-    z-index: 12;
-    flex-shrink: 0;
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
-    padding: clamp(0.35rem, 1vw, 0.65rem) clamp(0.75rem, 2vw, 1.25rem)
-      clamp(0.5rem, 1.25vw, 0.75rem);
-  }
-
-  .mini-config-marquee-track--focused {
-    will-change: transform;
-  }
-
-  .mini-config-marquee-item--focused {
-    opacity: 1;
-  }
-
-  .mini-config-marquee-item--focused .mini-config-marquee-label {
-    color: rgba(248, 250, 252, 0.98);
-  }
-
-  .mini-config-marquee-item--focused .mini-config-marquee-caption {
-    color: rgba(248, 250, 252, 0.72);
-  }
-
-  .mini-config-marquee-viewport {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    flex: 0 1 auto;
-    min-height: 0;
-    isolation: isolate;
-    margin-bottom: 70px;
-  }
-
-  .mini-config-marquee-track {
-    display: flex;
-    align-items: flex-end;
-    width: max-content;
-    gap: clamp(1.75rem, 4vw, 3.25rem);
-    padding: 0;
-    will-change: transform;
-    animation: mini-config-marquee-ltr 44s linear infinite;
-  }
-
-  @keyframes mini-config-marquee-ltr {
-    from {
-      transform: translateX(-50%);
-    }
-    to {
-      transform: translateX(0);
-    }
-  }
-
-  .mini-config-marquee-track--reduced-motion {
-    animation: none;
-    overflow-x: auto;
-    overflow-y: hidden;
-    width: 100%;
-    max-width: 100%;
-    padding-inline: clamp(1rem, 3vw, 1.5rem);
-    scroll-snap-type: x mandatory;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(148, 163, 184, 0.45) transparent;
-  }
-
-  .mini-config-marquee-item {
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.2rem;
-    margin: 0;
-    scroll-snap-align: center;
-  }
-
-  .mini-config-marquee-item-media {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    width: auto;
-    height: auto;
-    min-width: 0;
-  }
-
-  .mini-config-marquee-img {
-    display: block;
-    width: auto;
-    height: auto;
-    max-width: clamp(20rem, 52vw, 42rem);
-    max-height: clamp(18rem, 58vh, 46rem);
-    object-fit: contain;
-    object-position: center bottom;
-    user-select: none;
-    pointer-events: none;
-  }
-
-  .mini-config-marquee-caption-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.15rem;
-    max-width: clamp(14rem, 42vw, 28rem);
-    text-align: center;
-  }
-
-  .mini-config-marquee-label {
-    margin: 0;
-    padding-top: 0.1rem;
-    font-size: 0.82rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: rgba(248, 250, 252, 0.82);
-    white-space: nowrap;
-  }
-
-  .mini-config-marquee-caption {
-    margin: 0;
-    font-size: 0.75rem;
-    font-weight: 400;
-    line-height: 1.35;
-    letter-spacing: 0.01em;
-    text-transform: none;
-    color: rgba(248, 250, 252, 0.55);
-  }
-
-  @media (min-width: 768px) {
-    .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-background {
-      min-height: 0;
-    }
-
-    .mini-config-marquee-track {
-      gap: clamp(2.5rem, 6vw, 4.875rem);
-    }
-
-    .mini-config-marquee-img {
-      max-width: clamp(36rem, 69vw, 66rem);
-      max-height: clamp(28rem, 62vh, 58rem);
-    }
-
-    .mini-config-marquee-label {
-      font-size: 0.95rem;
-    }
-
-    .mini-config-marquee-caption {
-      font-size: 0.8125rem;
-    }
-  }
-
-  @media (max-width: 767px) {
-    .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-background {
-      min-height: 0;
-    }
-
-    .mini-config-marquee-img {
-      max-width: clamp(16rem, 78vw, 26rem);
-      max-height: clamp(14rem, 50vh, 32rem);
-    }
-  }
-
-  /* Legacy carousel rules kept for reference if we switch modes again */
-  .mini-config-showcase-media {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 1 1 auto;
-    min-height: clamp(16rem, 58vh, 40rem);
-    padding: 0 2.75rem;
-  }
-
-  .mini-config-showcase-stage {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: min(72rem, 96vw);
-    min-height: clamp(14rem, 54vh, 38rem);
-    margin: 0 auto;
-  }
-
-  .mini-config-showcase-slide {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .mini-config-showcase-slide--hotspots {
-    align-items: stretch;
-  }
-
-  .mini-config-showcase-img {
-    display: block;
-    width: auto;
-    max-width: min(100%, 68rem);
-    height: auto;
-    max-height: clamp(14rem, 54vh, 38rem);
-    margin: 0 auto;
-    object-fit: contain;
-    object-position: center;
-    user-select: none;
-  }
-
-  .mini-config-showcase-img--stack {
-    max-height: clamp(15rem, 56vh, 40rem);
-  }
-
-  .mini-config-showcase-hotspots {
-    width: 100%;
-    cursor: default;
-  }
-
-  .mini-config-showcase-hotspots figure {
-    margin: 0 auto;
-    max-width: min(40rem, 94%);
-  }
-
-  .mini-config-showcase-nav {
-    position: absolute;
-    top: 50%;
-    z-index: 15;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 9999px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background: rgba(15, 23, 42, 0.72);
-    color: #f8fafc;
-    transform: translateY(-50%);
-    transition: background-color 0.2s ease, border-color 0.2s ease;
-  }
-
-  .mini-config-showcase-nav:hover {
-    background: rgba(30, 41, 59, 0.88);
-    border-color: rgba(255, 255, 255, 0.28);
-  }
-
-  .mini-config-showcase-nav:focus-visible {
-    outline: 2px solid #60a5fa;
-    outline-offset: 2px;
-  }
-
-  .mini-config-showcase-nav-prev {
-    left: 0.25rem;
-  }
-
-  .mini-config-showcase-nav-next {
-    right: 0.25rem;
-  }
-
-  .mini-config-showcase-nav-icon {
-    width: 1.25rem;
-    height: 1.25rem;
   }
 
   .mini-config-showcase-controls {
@@ -1400,8 +1138,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 0.625rem;
-    padding: 0.75rem 0.5rem 1rem;
+    margin-top: 50px;
+    padding: clamp(0.35rem, 1vw, 0.65rem) clamp(0.75rem, 2vw, 1.25rem)
+      clamp(0.5rem, 1.25vw, 0.75rem);
   }
 
   .mini-config-showcase-pills {
@@ -1438,10 +1179,262 @@
     outline-offset: 2px;
   }
 
-  .mini-config-showcase-pill-active {
+  .mini-config-showcase-pill-active,
+  .mini-config-showcase-pill-active:hover {
     background: linear-gradient(135deg, rgba(249, 115, 22, 0.95) 0%, rgba(234, 88, 12, 0.95) 100%);
     border-color: rgba(253, 186, 116, 0.55);
     color: #fff;
+  }
+
+  .mini-config-showcase-nav {
+    position: absolute;
+    top: 42%;
+    z-index: 15;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(15, 23, 42, 0.72);
+    color: #f8fafc;
+    transform: translateY(-50%);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .mini-config-showcase-nav:hover {
+    background: rgba(30, 41, 59, 0.88);
+    border-color: rgba(255, 255, 255, 0.28);
+  }
+
+  .mini-config-showcase-nav:focus-visible {
+    outline: 2px solid #60a5fa;
+    outline-offset: 2px;
+  }
+
+  .mini-config-showcase-nav-prev {
+    left: 0.15rem;
+  }
+
+  .mini-config-showcase-nav-next {
+    right: 0.15rem;
+  }
+
+  .mini-config-showcase-nav-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .mini-config-showcase-media {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 1 auto;
+    width: 100%;
+    max-width: min(76rem, 94vw);
+    margin: 0 auto;
+    min-height: clamp(16rem, 58vh, 40rem);
+    padding: 0 clamp(2.75rem, 5vw, 3.25rem);
+    box-sizing: border-box;
+  }
+
+  .mini-config-showcase-stage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: clamp(14rem, 54vh, 38rem);
+    overflow: hidden;
+  }
+
+  .mini-config-showcase-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    width: 100%;
+    margin: 0;
+    will-change: transform, opacity;
+  }
+
+  .mini-config-showcase-slide-media {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .mini-config-showcase-img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: clamp(20rem, 52vw, 42rem);
+    max-height: clamp(18rem, 58vh, 46rem);
+    margin: 0 auto;
+    object-fit: contain;
+    object-position: center bottom;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .mini-config-showcase-slide-caption {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    max-width: clamp(14rem, 42vw, 28rem);
+    text-align: center;
+  }
+
+  .mini-config-showcase-slide-label {
+    margin: 0;
+    padding-top: 0.1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(248, 250, 252, 0.98);
+    white-space: nowrap;
+  }
+
+  .mini-config-showcase-slide-caption-text {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.35;
+    letter-spacing: 0.01em;
+    text-transform: none;
+    color: rgba(248, 250, 252, 0.72);
+  }
+
+  .mini-config-showcase-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: clamp(0.65rem, 1.5vw, 0.85rem) auto clamp(2.75rem, 5vw, 4.25rem);
+    padding: 0 clamp(0.75rem, 2vw, 1.25rem);
+  }
+
+  .mini-config-showcase-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: rgba(15, 23, 42, 0.55);
+    padding: 0;
+    cursor: pointer;
+    transition:
+      transform 0.2s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .mini-config-showcase-dot:hover {
+    border-color: rgba(255, 255, 255, 0.42);
+    background: rgba(30, 41, 59, 0.78);
+  }
+
+  .mini-config-showcase-dot:focus-visible {
+    outline: 2px solid #60a5fa;
+    outline-offset: 2px;
+  }
+
+  .mini-config-showcase-dot-active,
+  .mini-config-showcase-dot-active:hover {
+    transform: scale(1.15);
+    border-color: rgba(253, 186, 116, 0.65);
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.95) 0%, rgba(234, 88, 12, 0.95) 100%);
+  }
+
+  @media (min-width: 768px) {
+    .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-background {
+      min-height: 0;
+    }
+
+    .mini-config-showcase-media {
+      max-width: min(80rem, 94vw);
+      min-height: clamp(18rem, 60vh, 42rem);
+      padding-inline: clamp(3rem, 5vw, 3.75rem);
+    }
+
+    .mini-config-showcase-stage {
+      min-height: clamp(16rem, 58vh, 42rem);
+    }
+
+    .mini-config-showcase-img {
+      max-width: clamp(36rem, 69vw, 66rem);
+      max-height: clamp(28rem, 62vh, 58rem);
+    }
+
+    .mini-config-showcase-slide-label {
+      font-size: 0.95rem;
+    }
+
+    .mini-config-showcase-slide-caption-text {
+      font-size: 0.8125rem;
+    }
+
+    .mini-config-showcase-nav {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .mini-config-showcase-nav-prev {
+      left: 0.25rem;
+    }
+
+    .mini-config-showcase-nav-next {
+      right: 0.25rem;
+    }
+
+    .mini-config-showcase-pill {
+      font-size: 0.78rem;
+      padding: 0.48rem 0.85rem;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-background {
+      min-height: 0;
+    }
+
+    .mini-config-showcase-media {
+      min-height: clamp(14rem, 50vh, 30rem);
+      padding-inline: clamp(2rem, 6vw, 2.5rem);
+    }
+
+    .mini-config-showcase-stage {
+      min-height: clamp(12rem, 48vh, 28rem);
+    }
+
+    .mini-config-showcase-img {
+      max-width: clamp(16rem, 78vw, 26rem);
+      max-height: clamp(14rem, 50vh, 32rem);
+    }
+  }
+
+  /* Hotspot / anatomy variants (legacy carousel path) */
+  .mini-config-showcase-slide--hotspots {
+    align-items: stretch;
+  }
+
+  .mini-config-showcase-img--stack {
+    max-height: clamp(15rem, 56vh, 40rem);
+  }
+
+  .mini-config-showcase-hotspots {
+    width: 100%;
+    cursor: default;
+  }
+
+  .mini-config-showcase-hotspots figure {
+    margin: 0 auto;
+    max-width: min(40rem, 94%);
   }
 
   .mini-config-showcase-caption {
@@ -1454,18 +1447,6 @@
   }
 
   @media (min-width: 768px) {
-    .mini-config-showcase-media {
-      padding: 0 3.25rem;
-    }
-
-    .mini-config-showcase-stage {
-      max-width: min(76rem, 94vw);
-    }
-
-    .mini-config-showcase-img {
-      max-height: clamp(16rem, 58vh, 42rem);
-    }
-
     .mini-config-showcase-img--stack {
       max-height: clamp(17rem, 60vh, 44rem);
     }
@@ -1474,45 +1455,12 @@
       max-width: min(44rem, 92%);
     }
 
-    .mini-config-showcase-nav {
-      width: 2.5rem;
-      height: 2.5rem;
-    }
-
-    .mini-config-showcase-nav-prev {
-      left: 0.5rem;
-    }
-
-    .mini-config-showcase-nav-next {
-      right: 0.5rem;
-    }
-
-    .mini-config-showcase-pill {
-      font-size: 0.78rem;
-      padding: 0.48rem 0.85rem;
-    }
-
     .mini-config-showcase-caption {
       font-size: 0.9375rem;
     }
   }
 
   @media (max-width: 767px) {
-    .mini-config-showcase-media {
-      min-height: clamp(14rem, 50vh, 30rem);
-      padding: 0 2rem;
-    }
-
-    .mini-config-showcase-stage {
-      max-width: 100%;
-      min-height: clamp(12rem, 48vh, 28rem);
-    }
-
-    .mini-config-showcase-img {
-      max-width: 100%;
-      max-height: clamp(12rem, 48vh, 28rem);
-    }
-
     .mini-config-showcase-img--stack {
       max-height: clamp(13rem, 50vh, 30rem);
     }

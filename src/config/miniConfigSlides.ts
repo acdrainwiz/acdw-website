@@ -1,8 +1,25 @@
 /**
  * AC Drain Wiz Mini configuration content for the home page.
- * Marquee: four bayonet attachments in display order.
+ * Slider: four bayonet attachments in display order.
  * Anatomy: full-stack interactive diagram (separate section below the card).
  */
+
+/** Slide transition presets for the home Mini configuration slider. */
+export type MiniConfigSliderTransition = 'slide-soft' | 'slide' | 'fade'
+
+/**
+ * Active transition for `MiniConfigShowcase`.
+ * - `slide-soft` — gentle horizontal drift + fade (default)
+ * - `slide` — full horizontal slide
+ * - `fade` — crossfade only
+ */
+export const MINI_CONFIG_SLIDER_TRANSITION: MiniConfigSliderTransition = 'slide-soft'
+
+/** Auto-advance interval — 6s fits label + caption reading time without feeling sluggish. */
+export const MINI_CONFIG_SLIDER_AUTO_MS = 6_000
+
+/** Idle time after manual navigation before auto-advance resumes. */
+export const MINI_CONFIG_SLIDER_AUTO_RESUME_MS = 10_000
 export type MiniConfigSlide = {
   id: string
   src: string
@@ -12,7 +29,7 @@ export type MiniConfigSlide = {
   hasHotspots?: boolean
 }
 
-/** Continuous marquee — four configurations, left-to-right. */
+/** Home Mini slider — four configurations in display order. */
 export const MINI_MARQUEE_SLIDES: MiniConfigSlide[] = [
   {
     id: 'storage-cap',

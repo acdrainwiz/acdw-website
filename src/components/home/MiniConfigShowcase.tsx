@@ -1,173 +1,322 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useReducedMotion } from 'framer-motion'
-import { MINI_MARQUEE_SLIDES } from '../../config/miniConfigSlides'
+import { AnimatePresence, motion, useReducedMotion, type Transition, type Variants } from 'framer-motion'
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
+import {
+  MINI_CONFIG_SLIDER_AUTO_MS,
+  MINI_CONFIG_SLIDER_AUTO_RESUME_MS,
+  MINI_CONFIG_SLIDER_TRANSITION,
+  MINI_MARQUEE_SLIDES,
+  type MiniConfigSliderTransition,
+} from '../../config/miniConfigSlides'
 import { cn } from '@/lib/utils'
 
 export type MiniConfigShowcaseProps = {
   calibrateHotspots?: boolean
 }
 
-const MARQUEE_SLIDES = [...MINI_MARQUEE_SLIDES, ...MINI_MARQUEE_SLIDES]
-const MARQUEE_DURATION_S = 44
-const RESUME_AFTER_MS = 10_000
+const SLIDES = MINI_MARQUEE_SLIDES
+const SLIDE_COUNT = SLIDES.length
 
-function getTranslateX(el: HTMLElement): number {
-  const matrix = new DOMMatrixReadOnly(window.getComputedStyle(el).transform)
-  return matrix.m41
+function wrapIndex(index: number): number {
+  return ((index % SLIDE_COUNT) + SLIDE_COUNT) % SLIDE_COUNT
+}
+
+function getDirection(from: number, to: number): 1 | -1 {
+  if (from === to) return 1
+  const forward = (to - from + SLIDE_COUNT) % SLIDE_COUNT
+  const backward = (from - to + SLIDE_COUNT) % SLIDE_COUNT
+  return forward <= backward ? 1 : -1
+}
+
+function getMotionTransition(
+  mode: MiniConfigSliderTransition,
+  reduceMotion: boolean | null
+): Transition {
+  if (reduceMotion) return { duration: 0.01 }
+
+  switch (mode) {
+    case 'fade':
+      return { duration: 0.42, ease: [0.4, 0, 0.2, 1] }
+    case 'slide':
+      return { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
+    case 'slide-soft':
+    default:
+      return { duration: 0.55, ease: [0.22, 1, 0.36, 1] }
+  }
+}
+
+function getSlideVariants(
+  mode: MiniConfigSliderTransition,
+  reduceMotion: boolean | null
+): Variants {
+  if (reduceMotion) {
+    return {
+      enter: { opacity: 1 },
+      center: { opacity: 1 },
+      exit: { opacity: 1 },
+    }
+  }
+
+  switch (mode) {
+    case 'fade':
+      return {
+        enter: { opacity: 0 },
+        center: { opacity: 1 },
+        exit: { opacity: 0 },
+      }
+    case 'slide':
+      return {
+        enter: (direction: number) => ({
+          x: direction > 0 ? '100%' : '-100%',
+          opacity: 1,
+        }),
+        center: { x: 0, opacity: 1 },
+        exit: (direction: number) => ({
+          x: direction > 0 ? '-100%' : '100%',
+          opacity: 1,
+        }),
+      }
+    case 'slide-soft':
+    default:
+      return {
+        enter: (direction: number) => ({
+          x: direction > 0 ? 56 : -56,
+          opacity: 0,
+          scale: 0.985,
+        }),
+        center: { x: 0, opacity: 1, scale: 1 },
+        exit: (direction: number) => ({
+          x: direction > 0 ? -36 : 36,
+          opacity: 0,
+          scale: 0.985,
+        }),
+      }
+  }
 }
 
 export function MiniConfigShowcase(_props: MiniConfigShowcaseProps) {
   const reduceMotion = useReducedMotion()
-  const viewportRef = useRef<HTMLDivElement>(null)
-  const trackRef = useRef<HTMLDivElement>(null)
-  const itemRefs = useRef<(HTMLElement | null)[]>([])
-  const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null)
+  const transitionMode = MINI_CONFIG_SLIDER_TRANSITION
+  const showcaseRef = useRef<HTMLDivElement>(null)
+  const autoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const resumeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [direction, setDirection] = useState<1 | -1>(1)
 
-  const clearResumeTimer = useCallback(() => {
-    if (resumeTimerRef.current) {
-      window.clearTimeout(resumeTimerRef.current)
-      resumeTimerRef.current = null
+  const slide = SLIDES[activeIndex]
+  const slideVariants = getSlideVariants(transitionMode, reduceMotion)
+  const slideTransition = getMotionTransition(transitionMode, reduceMotion)
+  const presenceMode = transitionMode === 'fade' ? undefined : 'wait'
+
+  const clearAutoInterval = useCallback(() => {
+    if (autoIntervalRef.current) {
+      window.clearInterval(autoIntervalRef.current)
+      autoIntervalRef.current = null
     }
   }, [])
 
-  const resumeMarquee = useCallback(() => {
-    const track = trackRef.current
-    if (!track || reduceMotion) return
+  const clearResumeTimeout = useCallback(() => {
+    if (resumeTimeoutRef.current) {
+      window.clearTimeout(resumeTimeoutRef.current)
+      resumeTimeoutRef.current = null
+    }
+  }, [])
 
-    const half = track.scrollWidth / 2
-    let x = getTranslateX(track)
+  const advanceAuto = useCallback(() => {
+    if (document.hidden) return
+    setDirection(1)
+    setActiveIndex((current) => wrapIndex(current + 1))
+  }, [])
 
-    while (x > 0) x -= half
-    while (x < -half) x += half
+  const startAutoAdvance = useCallback(() => {
+    if (reduceMotion) return
+    clearAutoInterval()
+    autoIntervalRef.current = window.setInterval(advanceAuto, MINI_CONFIG_SLIDER_AUTO_MS)
+  }, [advanceAuto, clearAutoInterval, reduceMotion])
 
-    const progress = (x + half) / half
-    const elapsed = progress * MARQUEE_DURATION_S
+  const pauseAutoAdvance = useCallback(() => {
+    if (reduceMotion) return
+    clearAutoInterval()
+    clearResumeTimeout()
+    resumeTimeoutRef.current = window.setTimeout(() => {
+      resumeTimeoutRef.current = null
+      startAutoAdvance()
+    }, MINI_CONFIG_SLIDER_AUTO_RESUME_MS)
+  }, [clearAutoInterval, clearResumeTimeout, reduceMotion, startAutoAdvance])
 
-    track.style.transition = ''
-    track.style.animation = 'none'
-    void track.offsetHeight
-    track.style.transform = ''
-    track.style.animation = `mini-config-marquee-ltr ${MARQUEE_DURATION_S}s linear infinite`
-    track.style.animationDelay = `-${elapsed}s`
-
-    setFocusedIndex(null)
-    clearResumeTimer()
-  }, [clearResumeTimer, reduceMotion])
-
-  const focusSlide = useCallback(
+  const goTo = useCallback(
     (index: number) => {
-      const track = trackRef.current
-      const viewport = viewportRef.current
-      if (!track || !viewport) return
-
-      clearResumeTimer()
-
-      if (reduceMotion) {
-        itemRefs.current[index]?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
-        setFocusedIndex(index)
-        resumeTimerRef.current = window.setTimeout(() => setFocusedIndex(null), RESUME_AFTER_MS)
-        return
-      }
-
-      const item = itemRefs.current[index]
-      if (!item) return
-
-      const currentX = getTranslateX(track)
-      track.style.animation = 'none'
-      track.style.transform = `translate3d(${currentX}px, 0, 0)`
-
-      const viewportCenter = viewport.clientWidth / 2
-      const targetX = viewportCenter - (item.offsetLeft + item.offsetWidth / 2)
-
-      track.style.transition = 'transform 0.55s cubic-bezier(0.16, 1, 0.3, 1)'
-      requestAnimationFrame(() => {
-        track.style.transform = `translate3d(${targetX}px, 0, 0)`
+      pauseAutoAdvance()
+      setActiveIndex((current) => {
+        const next = wrapIndex(index)
+        if (next === current) return current
+        setDirection(getDirection(current, next))
+        return next
       })
-
-      setFocusedIndex(index)
-
-      resumeTimerRef.current = window.setTimeout(() => {
-        resumeMarquee()
-      }, RESUME_AFTER_MS)
     },
-    [clearResumeTimer, reduceMotion, resumeMarquee]
+    [pauseAutoAdvance]
   )
 
-  useEffect(() => () => clearResumeTimer(), [clearResumeTimer])
+  const goPrev = useCallback(() => {
+    pauseAutoAdvance()
+    setDirection(-1)
+    setActiveIndex((current) => wrapIndex(current - 1))
+  }, [pauseAutoAdvance])
+
+  const goNext = useCallback(() => {
+    pauseAutoAdvance()
+    setDirection(1)
+    setActiveIndex((current) => wrapIndex(current + 1))
+  }, [pauseAutoAdvance])
+
+  useEffect(() => {
+    startAutoAdvance()
+    return () => {
+      clearAutoInterval()
+      clearResumeTimeout()
+    }
+  }, [clearAutoInterval, clearResumeTimeout, startAutoAdvance])
+
+  useEffect(() => {
+    if (reduceMotion) {
+      clearAutoInterval()
+      clearResumeTimeout()
+    }
+  }, [clearAutoInterval, clearResumeTimeout, reduceMotion])
+
+  useEffect(() => {
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        clearAutoInterval()
+        return
+      }
+      if (!resumeTimeoutRef.current) {
+        startAutoAdvance()
+      }
+    }
+
+    document.addEventListener('visibilitychange', onVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', onVisibilityChange)
+  }, [clearAutoInterval, startAutoAdvance])
+
+  useEffect(() => {
+    const root = showcaseRef.current
+    if (!root) return
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
+      if (!root.contains(document.activeElement)) return
+
+      event.preventDefault()
+      if (event.key === 'ArrowLeft') goPrev()
+      else goNext()
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [goNext, goPrev])
 
   return (
-    <div className="mini-config-showcase mini-config-showcase--marquee">
-      <div className="mini-config-marquee-controls">
+    <div ref={showcaseRef} className="mini-config-showcase mini-config-showcase--slider">
+      <div className="mini-config-showcase-controls">
         <div
           className="mini-config-showcase-pills"
-          role="group"
-          aria-label="Focus a Mini configuration"
+          role="tablist"
+          aria-label="Mini configuration quick select"
         >
-          {MINI_MARQUEE_SLIDES.map((slide, index) => (
+          {SLIDES.map((item, index) => (
             <button
-              key={slide.id}
+              key={item.id}
               type="button"
+              role="tab"
+              id={`mini-config-tab-${item.id}`}
+              aria-selected={activeIndex === index}
+              aria-controls={`mini-config-panel-${item.id}`}
               className={cn(
                 'mini-config-showcase-pill',
-                focusedIndex === index && 'mini-config-showcase-pill-active'
+                activeIndex === index && 'mini-config-showcase-pill-active'
               )}
-              aria-pressed={focusedIndex === index}
-              onClick={() => focusSlide(index)}
+              onClick={() => goTo(index)}
             >
-              {slide.label}
+              {item.label}
             </button>
           ))}
         </div>
       </div>
 
       <div
-        ref={viewportRef}
-        className="mini-config-marquee-viewport"
-        aria-label="AC Drain Wiz Mini bayonet configurations scrolling showcase"
+        className="mini-config-showcase-media"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="AC Drain Wiz Mini bayonet configurations"
       >
-        <div
-          ref={trackRef}
-          className={cn(
-            'mini-config-marquee-track',
-            reduceMotion && 'mini-config-marquee-track--reduced-motion',
-            focusedIndex !== null && 'mini-config-marquee-track--focused'
-          )}
+        <button
+          type="button"
+          className="mini-config-showcase-nav mini-config-showcase-nav-prev"
+          aria-label="Previous configuration"
+          onClick={goPrev}
         >
-          {MARQUEE_SLIDES.map((slide, index) => {
-            const setIndex = index % MINI_MARQUEE_SLIDES.length
-            const isFirstSet = index < MINI_MARQUEE_SLIDES.length
+          <ChevronLeftIcon className="mini-config-showcase-nav-icon" aria-hidden />
+        </button>
 
-            return (
-              <figure
-                key={`${slide.id}-${index}`}
-                ref={(el) => {
-                  if (isFirstSet) itemRefs.current[setIndex] = el
-                }}
-                className={cn(
-                  'mini-config-marquee-item',
-                  focusedIndex === setIndex && 'mini-config-marquee-item--focused'
-                )}
-                aria-hidden={index >= MINI_MARQUEE_SLIDES.length}
-              >
-                <div className="mini-config-marquee-item-media">
-                  <img
-                    src={slide.src}
-                    alt={index < MINI_MARQUEE_SLIDES.length ? slide.alt : ''}
-                    className="mini-config-marquee-img"
-                    loading={index < 2 ? 'eager' : 'lazy'}
-                    decoding="async"
-                    draggable={false}
-                  />
-                </div>
-                <figcaption className="mini-config-marquee-caption-wrap">
-                  <span className="mini-config-marquee-label">{slide.label}</span>
-                  <span className="mini-config-marquee-caption">{slide.caption}</span>
-                </figcaption>
-              </figure>
-            )
-          })}
+        <div className="mini-config-showcase-stage">
+          <AnimatePresence initial={false} custom={direction} mode={presenceMode}>
+            <motion.figure
+              key={slide.id}
+              id={`mini-config-panel-${slide.id}`}
+              role="tabpanel"
+              aria-labelledby={`mini-config-tab-${slide.id}`}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={slideTransition}
+              className="mini-config-showcase-slide"
+            >
+              <div className="mini-config-showcase-slide-media">
+                <img
+                  src={slide.src}
+                  alt={slide.alt}
+                  className="mini-config-showcase-img"
+                  loading={activeIndex <= 1 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  draggable={false}
+                />
+              </div>
+              <figcaption className="mini-config-showcase-slide-caption">
+                <span className="mini-config-showcase-slide-label">{slide.label}</span>
+                <span className="mini-config-showcase-slide-caption-text">{slide.caption}</span>
+              </figcaption>
+            </motion.figure>
+          </AnimatePresence>
         </div>
+
+        <button
+          type="button"
+          className="mini-config-showcase-nav mini-config-showcase-nav-next"
+          aria-label="Next configuration"
+          onClick={goNext}
+        >
+          <ChevronRightIcon className="mini-config-showcase-nav-icon" aria-hidden />
+        </button>
+      </div>
+
+      <div className="mini-config-showcase-dots" role="tablist" aria-label="Configuration slides">
+        {SLIDES.map((item, index) => (
+          <button
+            key={item.id}
+            type="button"
+            role="tab"
+            aria-selected={activeIndex === index}
+            aria-label={`${item.label}: ${item.caption}`}
+            className={cn(
+              'mini-config-showcase-dot',
+              activeIndex === index && 'mini-config-showcase-dot-active'
+            )}
+            onClick={() => goTo(index)}
+          />
+        ))}
       </div>
     </div>
   )
