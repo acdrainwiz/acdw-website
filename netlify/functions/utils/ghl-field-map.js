@@ -386,16 +386,15 @@ const formConfigs = {
   },
 
   // Complimentary Mini — mailing address confirmation after conference or event.
-  // Lands in the "COAA Convention Partner Development" pipeline via the GHL_MUNI_PIPELINE_*
-  // env vars (reassigned from the now-retired municipal-intake form); GHL_MUNI_PIPELINE_STAGE_ID
-  // points at the "Sample Requested" stage. `dedupeOpportunityByContact` moves the contact's
+  // Lands in the complimentary Mini quick-intake pipeline via the documented GHL_QUICK_*
+  // env vars. `dedupeOpportunityByContact` moves the contact's
   // existing open card in this pipeline to that stage on submit (advancing it from stage 0)
   // instead of creating a duplicate — and only ever advances, never drags a further-along
   // card backward. A new card is created only when the contact has none.
   'complimentary-mini-request': {
     target: 'opportunity',
-    pipelineIdEnvVar: 'GHL_MUNI_PIPELINE_ID',
-    pipelineStageIdEnvVar: 'GHL_MUNI_PIPELINE_STAGE_ID',
+    pipelineIdEnvVar: 'GHL_QUICK_PIPELINE_ID',
+    pipelineStageIdEnvVar: 'GHL_QUICK_PIPELINE_STAGE_ID',
     dedupeOpportunityByContact: true,
     opportunityNameTemplate: '{firstName} {lastName} — Complimentary Mini',
     contactStandardFields: [
