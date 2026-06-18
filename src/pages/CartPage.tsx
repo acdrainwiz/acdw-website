@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../contexts/CartContext'
-import { useAuth } from '../contexts/AuthContext'
 import { PURCHASING_ENABLED } from '../config/features'
 import { 
   TrashIcon,
@@ -14,7 +13,6 @@ import {
 
 export function CartPage() {
   const navigate = useNavigate()
-  const { user } = useAuth()
   const { 
     items, 
     removeItem, 
@@ -77,9 +75,6 @@ export function CartPage() {
         return
       }
 
-      // Get user role (default to homeowner for guests)
-      const userRole = user?.role || 'homeowner'
-
       // Check if running in development mode
       const isDevelopment = window.location.hostname === 'localhost' || window.location.port === '5173'
 
@@ -102,7 +97,7 @@ export function CartPage() {
           body: JSON.stringify({
             product: 'mini',
             quantity: miniItem.quantity,
-            role: userRole,
+            role: 'homeowner',
           }),
         })
 
