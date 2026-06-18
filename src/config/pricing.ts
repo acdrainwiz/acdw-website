@@ -42,6 +42,14 @@ export const MSRP_PRICES = {
   bundle: 179.99,
 } as const
 
+// Products sold online only at list price. Volume pricing, if available, is
+// handled through sales rather than automated role-based checkout tiers.
+export const LIST_PRICE_ONLINE_PRODUCTS: readonly ProductType[] = ['mini'] as const
+
+export function isListPriceOnlineProduct(product: ProductType): boolean {
+  return LIST_PRICE_ONLINE_PRODUCTS.includes(product)
+}
+
 // HVAC Pro Pricing (per product, per tier)
 export const HVAC_PRO_PRICING: Record<ProductType, ProductPricing['hvac_pro']> = {
   mini: {
@@ -118,7 +126,7 @@ export function getDisplayPrice(
   role: UserRole,
   tier: PricingTier
 ): number {
-  if (role === 'homeowner' || tier === 'msrp') {
+  if (role === 'homeowner' || tier === 'msrp' || isListPriceOnlineProduct(product)) {
     return MSRP_PRICES[product]
   }
 
@@ -150,23 +158,21 @@ export function getProductPricingTable(
     ]
   }
 
-  const pricing = role === 'hvac_pro' ? HVAC_PRO_PRICING : PROPERTY_MANAGER_PRICING
-
   return [
     {
       tier: 'tier_1',
       quantity: '1-20',
-      price: pricing[product].tier_1,
+      price: getDisplayPrice(product, role, 'tier_1'),
     },
     {
       tier: 'tier_2',
       quantity: '21-100',
-      price: pricing[product].tier_2,
+      price: getDisplayPrice(product, role, 'tier_2'),
     },
     {
       tier: 'tier_3',
       quantity: '101-500',
-      price: pricing[product].tier_3,
+      price: getDisplayPrice(product, role, 'tier_3'),
     },
   ]
 }
