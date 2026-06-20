@@ -5,6 +5,15 @@ const originalLoad = Module._load
 const retrievedPriceIds = []
 
 Module._load = function patchedLoad(request, parent, isMain) {
+  if (request === '@netlify/blobs') {
+    return {
+      getStore: () => ({
+        get: async () => null,
+        setJSON: async () => undefined,
+      }),
+    }
+  }
+
   if (request === 'stripe') {
     return function stripeMock() {
       return {
