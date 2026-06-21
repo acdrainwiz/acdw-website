@@ -41,6 +41,14 @@ Module._load = function patchedLoad(request, parent, isMain) {
       },
     })
   }
+  if (request === '@netlify/blobs') {
+    return {
+      getStore: () => ({
+        get: async () => null,
+        setJSON: async () => undefined,
+      }),
+    }
+  }
 
   return originalLoad.call(this, request, parent, isMain)
 }
