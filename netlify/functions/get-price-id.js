@@ -65,6 +65,12 @@ function calculateTier(quantity) {
  * Get Price ID key based on product, role, and tier
  */
 function getPriceIdKey(product, role, tier) {
+  // Mini is now sold online at list price for every role. Authenticated
+  // contractor/PM sessions must not route to legacy professional Mini Price IDs.
+  if (product === 'mini') {
+    return 'mini_homeowner'
+  }
+
   if (role === 'homeowner') {
     return `${product}_homeowner`
   }
@@ -168,6 +174,8 @@ exports.handler = async (event, context) => {
       }
     }
 
+    const pricingRole = product === 'mini' ? 'homeowner' : userRole
+
     // Validate quantity
     const qty = parseInt(quantity)
     if (isNaN(qty) || qty < 1) {
@@ -182,7 +190,7 @@ exports.handler = async (event, context) => {
     // Contractor / property-manager pricing tiers top out at 500 units; above that we
     // route to sales for a custom volume quote. Homeowners buy at flat MSRP, so any
     // quantity is allowed online (only Stripe's per-line-item max of 999,999 guards it).
-    if (userRole !== 'homeowner' && qty > 500) {
+    if (pricingRole !== 'homeowner' && qty > 500) {
       return {
         statusCode: 400,
         headers,
@@ -202,7 +210,7 @@ exports.handler = async (event, context) => {
 
     // Calculate tier
     let tier = 'msrp'
-    if (userRole !== 'homeowner') {
+    if (pricingRole !== 'homeowner') {
       tier = calculateTier(qty)
       if (!tier) {
         return {
@@ -217,7 +225,7 @@ exports.handler = async (event, context) => {
     }
 
     // Get Price ID
-    const priceIdKey = getPriceIdKey(product, userRole, tier)
+    const priceIdKey = getPriceIdKey(product, pricingRole, tier)
     const priceId = PRICE_IDS[priceIdKey]
 
     if (!priceId) {
