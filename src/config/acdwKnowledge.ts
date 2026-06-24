@@ -31,7 +31,7 @@ export const SUPPORT_CONTACT = {
 // ─── Monitoring portal (approved) ────────────────────────────────────────
 export const MONITORING = {
   applicationName: 'ACDW Sensor Monitoring Web Application',
-  portalUrl: 'https://monitor.acdrainwiz.com/login',
+  portalUrl: 'https://monitor.acdrainwiz.com/',
   signUpUrl: 'https://monitor.acdrainwiz.com/sign-up',
   portalUrlStatus: 'approved' as const,
 } as const
