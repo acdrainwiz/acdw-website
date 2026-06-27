@@ -28,14 +28,14 @@ export function PropertyManagerCatalogPage() {
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
 
   const pricingTable = getProductPricingTable(selectedProduct, 'property_manager')
-  const currentTier = calculateTier(quantity) as PricingTier
+  const currentTier = selectedProduct === 'mini' ? 'msrp' : calculateTier(quantity) as PricingTier
   const currentPrice = getDisplayPrice(selectedProduct, 'property_manager', currentTier)
   const totalPrice = currentPrice * quantity
 
   // Calculate savings for each product (MSRP vs Tier 1 property manager pricing)
   const getProductSavings = (product: ProductType) => {
     const msrp = MSRP_PRICES[product]
-    const pmPrice = PROPERTY_MANAGER_PRICING[product].tier_1
+    const pmPrice = product === 'mini' ? msrp : PROPERTY_MANAGER_PRICING[product].tier_1
     const savings = msrp - pmPrice
     const savingsPercent = Math.round((savings / msrp) * 100)
     return { msrp, pmPrice, savings, savingsPercent }
@@ -91,12 +91,16 @@ export function PropertyManagerCatalogPage() {
                       <span className="hvac-pro-product-msrp-label">MSRP:</span>
                       <span className="hvac-pro-product-msrp-price">${msrp.toFixed(2)}</span>
                     </div>
-                    <div className="hvac-pro-product-savings">
-                      <span className="hvac-pro-product-savings-amount">Save ${savings.toFixed(2)}</span>
-                      <span className="hvac-pro-product-savings-percent">({savingsPercent}% off)</span>
-                    </div>
+                    {savings > 0 && (
+                      <div className="hvac-pro-product-savings">
+                        <span className="hvac-pro-product-savings-amount">Save ${savings.toFixed(2)}</span>
+                        <span className="hvac-pro-product-savings-percent">({savingsPercent}% off)</span>
+                      </div>
+                    )}
                     <div className="hvac-pro-product-contractor-price">
-                      <span className="hvac-pro-product-contractor-price-label">From:</span>
+                      <span className="hvac-pro-product-contractor-price-label">
+                        {product.id === 'mini' ? 'Price:' : 'From:'}
+                      </span>
                       <span className="hvac-pro-product-contractor-price-value">${pmPrice.toFixed(2)}</span>
                     </div>
                   </div>
