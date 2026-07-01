@@ -15838,7 +15838,177 @@
   @apply h-5 w-5;
 }
 
-/* Hero Section */
+/* Sensor hero v2 — extends Mini product hero layout (mesh, stage, rotator) */
+.sensor-hero-v2 {
+  min-height: min(86vh, 900px);
+}
+
+/* Drop product render to reveal more of the wordmark behind it (desktop cap 130px) */
+.sensor-hero-v2 .mini-hero-v2-product-float {
+  margin-top: clamp(3.5rem, 12vw, 130px);
+}
+
+/* Keep hero copy from pulling up into the lowered product */
+.sensor-hero-v2 .sensor-hero-v2-content {
+  --stage-content-overlap: 0;
+}
+
+/* Wordmark — 2752×550 desktop, 1800×360 mobile (behind hero product) */
+.sensor-hero-v2-wordmark-anchor {
+  --wm-top: 10%;
+  --wm-left: 48%;
+  --wm-width: 118%;
+  position: absolute;
+  top: var(--wm-top);
+  left: var(--wm-left);
+  transform: translate(-50%, -50%);
+  width: var(--wm-width);
+  aspect-ratio: 2752 / 550;
+  max-width: none;
+  pointer-events: none;
+  z-index: 1;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 8%,
+    rgba(0, 0, 0, 1) 92%,
+    rgba(0, 0, 0, 0) 100%
+  );
+          mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 8%,
+    rgba(0, 0, 0, 1) 92%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.sensor-hero-v2-wordmark-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/acdw-sensor-wordmark.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: drop-shadow(0 4px 24px rgba(0, 0, 0, 0.35));
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .sensor-hero-v2-wordmark-anchor {
+    --wm-top: 14%;
+    --wm-left: 50%;
+    --wm-width: 114%;
+  }
+}
+
+@media (max-width: 767px) {
+  .sensor-hero-v2-wordmark-anchor {
+    --wm-top: 14%;
+    --wm-left: 50%;
+    --wm-width: 110%;
+  }
+
+  .sensor-hero-v2-wordmark-img {
+    background-image: url('/images/acdw-sensor-wordmark-mobile.png');
+    filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.4));
+  }
+}
+
+@media (max-width: 767px) {
+  .sensor-hero-v2 {
+    min-height: auto;
+    padding-bottom: clamp(2.5rem, 8vw, 3.5rem);
+  }
+
+  .sensor-hero-v2 .mini-hero-v2-product-col {
+    min-height: 18rem;
+  }
+}
+
+.sensor-hero-v2-cta-wrap {
+  width: 100%;
+  max-width: 28rem;
+  margin-top: 0.5rem;
+}
+
+.sensor-hero-v2-cta-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.85rem;
+  width: 100%;
+  padding: 1.25rem 1.35rem;
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  box-shadow:
+    0 24px 48px rgba(2, 6, 23, 0.28),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  text-align: left;
+}
+
+.sensor-hero-v2-cta-message {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: rgb(71 85 105);
+}
+
+.sensor-hero-v2-cta-button-primary {
+  @apply inline-flex w-full items-center justify-center py-3 px-6 bg-primary-600 text-white font-semibold rounded-full;
+  @apply hover:bg-primary-700 transition-colors;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary-500;
+}
+
+.sensor-hero-v2-cta-button-secondary {
+  @apply inline-flex w-full items-center justify-center py-3 px-6 bg-white border-2 border-primary-600 text-primary-600 font-semibold rounded-full;
+  @apply hover:bg-primary-50 transition-colors;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary-500;
+}
+
+.sensor-hero-v2-phone-badge {
+  @apply hidden md:flex items-center gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3;
+}
+
+.sensor-hero-v2-phone-badge-icon {
+  @apply h-5 w-5 text-primary-600 flex-shrink-0;
+}
+
+.sensor-hero-v2-phone-vanity {
+  @apply text-base font-bold text-gray-900 leading-tight;
+}
+
+.sensor-hero-v2-phone-numeric {
+  @apply text-sm text-gray-600;
+}
+
+.sensor-hero-v2-trust-badges {
+  @apply flex flex-wrap gap-2 pt-2 border-t border-gray-200;
+}
+
+.sensor-hero-v2-trust-badge {
+  @apply inline-flex items-center gap-1.5 text-xs text-gray-600;
+}
+
+.sensor-hero-v2-trust-badge-icon {
+  @apply h-3.5 w-3.5 text-primary-600 flex-shrink-0;
+}
+
+.sensor-product-variant-compare-inner .mini-section-header {
+  margin-bottom: 2.5rem;
+}
+
+.sensor-product-how-it-works .mini-section-header {
+  margin-bottom: 2.5rem;
+}
+
+.sensor-product-variant-compare-intro {
+  max-width: 42rem;
+  margin-inline: auto;
+}
+
+/* Legacy hero (pre-v2) — retained for reference; superseded by .sensor-hero-v2 */
 .sensor-product-hero-fullwidth {
   @apply relative bg-black flex flex-col;
 }
@@ -19775,6 +19945,7 @@
 /* Hide clickable phone buttons on desktop (md and up) */
 @media (min-width: 768px) {
   .sensor-product-purchase-button-primary.md\:hidden,
+  .sensor-hero-v2-cta-button-primary.md\:hidden,
   .combo-product-cta-primary.md\:hidden {
     display: none !important;
   }
@@ -19783,6 +19954,7 @@
 /* Hide phone badges on mobile (below md) */
 @media (max-width: 767px) {
   .sensor-product-phone-badge,
+  .sensor-hero-v2-phone-badge,
   .combo-product-phone-badge {
     display: none !important;
   }
