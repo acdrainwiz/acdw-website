@@ -14,8 +14,18 @@
  * - CTAs based on user type (no direct purchase for homeowners)
  */
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { MiniHeroV2MeshBackground } from '../components/layout/MiniHeroV2MeshBackground'
+import { HeroTitleRotator } from '../components/products/HeroTitleRotator'
+import { SensorHeroCtaPanel } from '../components/products/SensorHeroCtaPanel'
+import { usePageHeroIntro } from '../hooks/usePageHeroIntro'
+import {
+  SENSOR_HERO_HEADLINES,
+  SENSOR_NARRATIVE_ZONES,
+  SENSOR_PRODUCT_HERO,
+} from '../config/sensorNarrative'
 import { buildProductSupportHubHref } from '../utils/supportFaqSearch'
 import { useAuth } from '../contexts/AuthContext'
 import {
@@ -37,12 +47,10 @@ import {
   ClipboardDocumentListIcon,
   Cog6ToothIcon,
   //PlayIcon,
-  PhoneIcon,
   BookOpenIcon,
   ArrowRightIcon
 } from '@heroicons/react/24/outline'
 import {
-  SUPPORT_CONTACT,
   SENSOR_STANDARD_SHORT,
   SENSOR_WIFI_SHORT,
   SENSOR_STANDARD_DISPLAY,
@@ -55,6 +63,15 @@ import { SensorWireHarnessDiagram } from '../components/products/SensorWireHarne
 
 export function SensorProductPage() {
   const navigate = useNavigate()
+  const heroRef = useRef<HTMLElement>(null)
+  const reduceMotion = useReducedMotion()
+  const { introStagger, fadeUp } = usePageHeroIntro()
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  })
+  const productParallaxY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : -100])
+  const wordmarkParallaxY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 22])
   const { user, isAuthenticated } = useAuth()
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
@@ -293,9 +310,6 @@ export function SensorProductPage() {
     { label: 'Compliance', standard: 'IMC 307.2.3', wifi: 'IMC 307.2.3' }
   ]
 
-  // Launch Button Redirect: pause pro/pm account creation during launch
-  const salesPhone = SUPPORT_CONTACT.telHref
-
   return (
     <div className="sensor-product-page">
       {/* Back Navigation */}
@@ -309,180 +323,105 @@ export function SensorProductPage() {
         </button>
       </div>
 
-      {/* Hero Section */}
-      <section className="sensor-product-hero-fullwidth">
-        <div className="sensor-product-hero-image-container">
-          <img
-            src="/images/acdw-sensor-hero2-background.png"
-            alt="AC Drain Wiz Sensor"
-            className="sensor-product-hero-image"
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-          />
-        </div>
-        
-        <div className="sensor-product-hero-overlay">
-          <div className="sensor-product-hero-content-wrapper">
-            <div className="sensor-product-hero-info">
-              <h1 className="sensor-product-hero-title">
-                Stop Overflows: Standard or WiFi Sensor Switch
-              </h1>
-              <p className="sensor-product-hero-subtitle">
-                Two sensor models share the same capacitive overflow protection—automatic AC shutdown at 80% water level. The WiFi Sensor Switch adds remote monitoring, alerts, and contractor dashboard tools on a {WIFI_REQUIREMENT} network. Professional installation required—contact us for a local HVAC Pro or contractor pricing.
-              </p>
-            </div>
+      {/* Hero — mesh + floating product + rotating headline (aligned with Mini product page) */}
+      <section
+        ref={heroRef}
+        className="mini-hero-v2 sensor-hero-v2"
+        aria-labelledby="sensor-hero-heading"
+      >
+        <MiniHeroV2MeshBackground />
 
-            {/* Purchase Card - Different CTAs based on user type */}
-            <div className="sensor-product-purchase-card-hero">
-              <div className="sensor-product-purchase-card-content">
-                <h2 className="sensor-product-purchase-title">Get Started</h2>
-                
-                {!isAuthenticated ? (
-                  <div className="sensor-product-purchase-cta-section">
-                    <p className="sensor-product-purchase-message">
-                      Contractor pricing and purchase are available by request. Homeowners: Contact us and we'll connect you with a local HVAC professional for installation.
-                    </p>
-                    {/* Launch Button Redirect */}
-                    {/* Mobile: Clickable phone button */}
-                    <a
-                      href={salesPhone}
-                      className="sensor-product-purchase-button-primary md:hidden"
-                    >
-                      Call {SUPPORT_CONTACT.phoneDisplay}
-                    </a>
-                    {/* Desktop: Phone badge (non-clickable) */}
-                    <div className="sensor-product-phone-badge hidden md:flex">
-                      <PhoneIcon className="sensor-product-phone-badge-icon" />
-                      <div className="sensor-product-phone-badge-text">
-                        <div className="sensor-product-phone-vanity">{SUPPORT_CONTACT.phoneDisplay}</div>
-                                      <div className="sensor-product-phone-numeric">{SUPPORT_CONTACT.phoneNumeric}</div>
-                      </div>
-                    </div>
-                    {/* Launch Button Redirect */}
-                    <button
-                      onClick={() => navigate('/contact?type=sales')}
-                      className="sensor-product-purchase-button-secondary"
-                    >
-                      Contact Sales
-                    </button>
-                  </div>
-                ) : isHomeowner ? (
-                  <div className="sensor-product-purchase-cta-section">
-                    <p className="sensor-product-purchase-message">
-                      Sensor requires professional installation. Find a certified HVAC professional in your area.
-                    </p>
-                    {/* Launch Button Redirect */}
-                    {/* Mobile: Clickable phone button */}
-                    <a
-                      href={salesPhone}
-                      className="sensor-product-purchase-button-primary md:hidden"
-                    >
-                      Call {SUPPORT_CONTACT.phoneDisplay}
-                    </a>
-                    {/* Desktop: Phone badge (non-clickable) */}
-                    <div className="sensor-product-phone-badge hidden md:flex">
-                      <PhoneIcon className="sensor-product-phone-badge-icon" />
-                      <div className="sensor-product-phone-badge-text">
-                        <div className="sensor-product-phone-vanity">{SUPPORT_CONTACT.phoneDisplay}</div>
-                                      <div className="sensor-product-phone-numeric">{SUPPORT_CONTACT.phoneNumeric}</div>
-                      </div>
-                    </div>
-                    {/* Launch Button Redirect */}
-                    <button
-                      onClick={() => navigate('/contact?type=sales')}
-                      className="sensor-product-purchase-button-secondary"
-                    >
-                      Contact Sales
-                    </button>
-                  </div>
-                ) : isHVACPro ? (
-                  <div className="sensor-product-purchase-cta-section">
-                    <p className="sensor-product-purchase-message">
-                      Access bulk pricing, fleet management tools, and exclusive contractor features by request.
-                    </p>
-                    {/* Launch Button Redirect */}
-                    {/* Mobile: Clickable phone button */}
-                    <a
-                      href={salesPhone}
-                      className="sensor-product-purchase-button-primary md:hidden"
-                    >
-                      Call {SUPPORT_CONTACT.phoneDisplay}
-                    </a>
-                    {/* Desktop: Phone badge (non-clickable) */}
-                    <div className="sensor-product-phone-badge hidden md:flex">
-                      <PhoneIcon className="sensor-product-phone-badge-icon" />
-                      <div className="sensor-product-phone-badge-text">
-                        <div className="sensor-product-phone-vanity">{SUPPORT_CONTACT.phoneDisplay}</div>
-                                      <div className="sensor-product-phone-numeric">{SUPPORT_CONTACT.phoneNumeric}</div>
-                      </div>
-                    </div>
-                    {/* Launch Button Redirect */}
-                    <button
-                      onClick={() => navigate('/contact?type=sales')}
-                      className="sensor-product-purchase-button-secondary"
-                    >
-                      Contact Sales
-                    </button>
-                  </div>
-                ) : isPropertyManager ? (
-                  <div className="sensor-product-purchase-cta-section">
-                    <p className="sensor-product-purchase-message">
-                      Bulk pricing available for multi-property deployments.
-                    </p>
-                    {/* Launch Button Redirect */}
-                    {/* Mobile: Clickable phone button */}
-                    <a
-                      href={salesPhone}
-                      className="sensor-product-purchase-button-primary md:hidden"
-                    >
-                      Call {SUPPORT_CONTACT.phoneDisplay}
-                    </a>
-                    {/* Desktop: Phone badge (non-clickable) */}
-                    <div className="sensor-product-phone-badge hidden md:flex">
-                      <PhoneIcon className="sensor-product-phone-badge-icon" />
-                      <div className="sensor-product-phone-badge-text">
-                        <div className="sensor-product-phone-vanity">{SUPPORT_CONTACT.phoneDisplay}</div>
-                                      <div className="sensor-product-phone-numeric">{SUPPORT_CONTACT.phoneNumeric}</div>
-                      </div>
-                    </div>
-                    {/* Launch Button Redirect */}
-                    <button
-                      onClick={() => navigate('/contact?type=sales')}
-                      className="sensor-product-purchase-button-secondary"
-                    >
-                      Contact Sales
-                    </button>
-                  </div>
-                ) : null}
-
-                <div className="sensor-product-trust-section-inline">
-                  <div className="sensor-product-trust-badge">
-                    <ShieldCheckIcon className="sensor-product-trust-icon" />
-                    <span>Professional Installation</span>
-                  </div>
-                  <div className="sensor-product-trust-badge">
-                    <CheckIcon className="sensor-product-trust-icon" />
-                    <span>Standard &amp; WiFi models</span>
-                  </div>
-                  <div className="sensor-product-trust-badge">
-                    <BoltIcon className="sensor-product-trust-icon" />
-                    <span>WiFi adds remote tools</span>
-                  </div>
-                </div>
+        <div className="mini-hero-v2-inner">
+          <div className="mini-hero-v2-product-col">
+            <div className="mini-hero-v2-stage">
+              <div className="sensor-hero-v2-wordmark-anchor" aria-hidden>
+                <motion.div
+                  className="mini-hero-v2-wordmark"
+                  style={{ y: wordmarkParallaxY }}
+                  initial={reduceMotion ? false : { opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
+                >
+                  <span className="sensor-hero-v2-wordmark-img" />
+                </motion.div>
               </div>
+
+              <motion.div
+                className="mini-hero-v2-product-wrap"
+                style={{ y: productParallaxY }}
+                initial={reduceMotion ? false : { opacity: 0, y: 56 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.45 }}
+              >
+                <span className="mini-hero-v2-product-glow" aria-hidden />
+                <div className="mini-hero-v2-product-float">
+                  <picture>
+                    <source
+                      media="(max-width: 767px)"
+                      srcSet="/images/acdw-sensor-hero2-product-mobile.png"
+                    />
+                    <img
+                      src="/images/acdw-sensor-hero2-product.png"
+                      alt="AC Drain Wiz Sensor Switch on Transparent T-Manifold"
+                      className="mini-hero-v2-product-img"
+                      width={2752}
+                      height={2000}
+                      loading="eager"
+                      fetchPriority="high"
+                      decoding="async"
+                    />
+                  </picture>
+                </div>
+              </motion.div>
             </div>
           </div>
+
+          <motion.div
+            className="mini-hero-v2-content sensor-hero-v2-content"
+            variants={introStagger}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.div className="mini-hero-v2-title" variants={fadeUp}>
+              <HeroTitleRotator
+                titles={[...SENSOR_HERO_HEADLINES]}
+                headingId="sensor-hero-heading"
+              />
+            </motion.div>
+
+            <motion.p className="mini-hero-v2-subtitle" variants={fadeUp}>
+              {SENSOR_PRODUCT_HERO.subtitle}
+            </motion.p>
+
+            <motion.div className="mini-hero-v2-trust" variants={fadeUp}>
+              <span className="mini-hero-v2-trust-dot" aria-hidden />
+              {SENSOR_PRODUCT_HERO.trustLine}
+            </motion.div>
+
+            <motion.div className="sensor-hero-v2-cta-wrap" variants={fadeUp}>
+              <SensorHeroCtaPanel
+                isAuthenticated={isAuthenticated}
+                isHomeowner={isHomeowner}
+                isHVACPro={isHVACPro}
+                isPropertyManager={isPropertyManager}
+              />
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* Standard vs WiFi — comparison */}
       <section className="sensor-product-variant-compare">
         <div className="sensor-product-variant-compare-inner">
-          <h2 className="product-section-title">Choose your Sensor model</h2>
-          <p className="sensor-product-section-subtitle sensor-product-variant-compare-intro">
-            Both include a Transparent T Manifold for install—you do not need the AC Drain Wiz Mini first. Pick the model that matches how you want to service and monitor the home.
-          </p>
+          <header className="mini-section-header">
+            <p className="mini-section-eyebrow">{SENSOR_NARRATIVE_ZONES.variantCompare.eyebrow}</p>
+            <h2 className="product-section-title mini-section-title-promote">
+              {SENSOR_NARRATIVE_ZONES.variantCompare.title}
+            </h2>
+            <p className="mini-section-dek sensor-product-variant-compare-intro">
+              {SENSOR_NARRATIVE_ZONES.variantCompare.dek}
+            </p>
+          </header>
           <div className="sensor-product-variant-compare-grid">
             <div className="sensor-product-variant-card" id="sensor-variant-standard">
               <div className="sensor-product-variant-card-head">
@@ -695,12 +634,17 @@ export function SensorProductPage() {
       </section>
 
       {/* How It Works */}
-      <section className="product-how-it-works">
+      <section className="product-how-it-works sensor-product-how-it-works">
         <div className="product-how-it-works-content">
-          <h2 className="product-section-title">How It Works</h2>
-          <p className="sensor-product-section-subtitle">
-            From installation to proactive service, the Sensor integrates seamlessly into your workflow.
-          </p>
+          <header className="mini-section-header">
+            <p className="mini-section-eyebrow">{SENSOR_NARRATIVE_ZONES.howItWorks.eyebrow}</p>
+            <h2 className="product-section-title mini-section-title-promote">
+              {SENSOR_NARRATIVE_ZONES.howItWorks.title}
+            </h2>
+            <p className="mini-section-dek">
+              {SENSOR_NARRATIVE_ZONES.howItWorks.dek}
+            </p>
+          </header>
           
           <div className="product-how-it-works-steps">
             {howItWorksSteps.map((step, index) => (
