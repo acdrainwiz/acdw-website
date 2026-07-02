@@ -16,8 +16,9 @@
 
 import { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { motion, useReducedMotion, useScroll, useTransform, type Variants } from 'framer-motion'
 import { MiniHeroV2MeshBackground } from '../components/layout/MiniHeroV2MeshBackground'
+import { MiniFlowWaveBackdrop } from '../components/products/MiniFlowWaveBackdrop'
 import { HeroTitleRotator } from '../components/products/HeroTitleRotator'
 import { SensorHeroCtaPanel } from '../components/products/SensorHeroCtaPanel'
 import { usePageHeroIntro } from '../hooks/usePageHeroIntro'
@@ -25,6 +26,7 @@ import {
   SENSOR_HERO_HEADLINES,
   SENSOR_NARRATIVE_ZONES,
   SENSOR_PRODUCT_HERO,
+  SENSOR_VARIANT_COMPARE,
 } from '../config/sensorNarrative'
 import { buildProductSupportHubHref } from '../utils/supportFaqSearch'
 import { useAuth } from '../contexts/AuthContext'
@@ -48,7 +50,8 @@ import {
   Cog6ToothIcon,
   //PlayIcon,
   BookOpenIcon,
-  ArrowRightIcon
+  ArrowRightIcon,
+  WifiIcon,
 } from '@heroicons/react/24/outline'
 import {
   SENSOR_STANDARD_SHORT,
@@ -59,11 +62,18 @@ import {
   buildSensorSetupHref,
 } from '../config/acdwKnowledge'
 import { CompareChip } from '../components/products/CompareChip'
+import { LINEUP_COLUMN_META } from '../components/products/lineupCompareData'
 import { SensorWireHarnessDiagram } from '../components/products/SensorWireHarnessDiagram'
+
+const SENSOR_MANIFOLD_HERO_IMAGE = '/images/acdw-sensor-standard-on-manifold.png'
 
 export function SensorProductPage() {
   const navigate = useNavigate()
   const heroRef = useRef<HTMLElement>(null)
+  const variantCompareSectionRef = useRef<HTMLElement>(null)
+  const valuePropsSectionRef = useRef<HTMLElement>(null)
+  const fleetSectionRef = useRef<HTMLElement>(null)
+  const howItWorksSectionRef = useRef<HTMLElement>(null)
   const reduceMotion = useReducedMotion()
   const { introStagger, fadeUp } = usePageHeroIntro()
   const { scrollYProgress } = useScroll({
@@ -297,6 +307,61 @@ export function SensorProductPage() {
     },
   ]
 
+  // Below-hero scroll choreography — mirrors the Mini product page cadence so
+  // the two product pages share one motion feel (prefers-reduced-motion safe).
+  const mhEase = [0.16, 1, 0.3, 1] as const
+  const mhViewport = {
+    once: true,
+    amount: 0.2,
+    margin: '-96px 0px -140px 0px',
+  } as const
+  const tr = (dur: number, delay = 0) =>
+    reduceMotion ? ({ duration: 0.22 } as const) : ({ duration: dur, delay, ease: mhEase } as const)
+
+  const gridContainerVariants: Variants = reduceMotion
+    ? { hidden: { opacity: 1 }, visible: { opacity: 1 } }
+    : {
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { staggerChildren: 0.1, delayChildren: 0.04, when: 'beforeChildren' },
+        },
+      }
+  const gridItemVariants: Variants = reduceMotion
+    ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } }
+    : {
+        hidden: { opacity: 0, y: 28 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.68, ease: mhEase } },
+      }
+
+  /** Variant compare — hero + list stagger (cards use directional split inline). */
+  const variantHeroVariants = (delay = 0): Variants =>
+    reduceMotion
+      ? { hidden: { opacity: 1, scale: 1 }, visible: { opacity: 1, scale: 1 } }
+      : {
+          hidden: { opacity: 0, scale: 0.96 },
+          visible: {
+            opacity: 1,
+            scale: 1,
+            transition: { duration: 0.62, ease: mhEase, delay },
+          },
+        }
+  const variantListContainerVariants: Variants = reduceMotion
+    ? { hidden: { opacity: 1 }, visible: { opacity: 1 } }
+    : {
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { staggerChildren: 0.06, delayChildren: 0.08 },
+        },
+      }
+  const variantListItemVariants: Variants = reduceMotion
+    ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } }
+    : {
+        hidden: { opacity: 0, y: 12 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: mhEase } },
+      }
+
   const specificationCompareRows = [
     { label: 'Dimensions', standard: '2" × 3" × 1.5"', wifi: '2" × 3" × 1.5"' },
     { label: 'Power', standard: '24V from air handler', wifi: '24V recommended; Li-ion backup (~2 years) or battery-only supported' },
@@ -410,63 +475,214 @@ export function SensorProductPage() {
         </div>
       </section>
 
-      {/* Standard vs WiFi — comparison */}
-      <section className="sensor-product-variant-compare">
+      {/* Standard vs WiFi — comparison (decision moment) */}
+      <section
+        ref={variantCompareSectionRef}
+        className="sensor-product-variant-compare sensor-wave-host"
+        aria-labelledby="sensor-variant-compare-heading"
+      >
+        <MiniFlowWaveBackdrop sectionRef={variantCompareSectionRef} />
         <div className="sensor-product-variant-compare-inner">
-          <header className="mini-section-header">
-            <p className="mini-section-eyebrow">{SENSOR_NARRATIVE_ZONES.variantCompare.eyebrow}</p>
-            <h2 className="product-section-title mini-section-title-promote">
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 44 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(0.9)}
+          >
+            <p className="mini-section-eyebrow">
+              {SENSOR_NARRATIVE_ZONES.variantCompare.eyebrow}
+            </p>
+            <h2
+              id="sensor-variant-compare-heading"
+              className="product-section-title mini-section-title-promote"
+            >
               {SENSOR_NARRATIVE_ZONES.variantCompare.title}
             </h2>
             <p className="mini-section-dek sensor-product-variant-compare-intro">
               {SENSOR_NARRATIVE_ZONES.variantCompare.dek}
             </p>
-          </header>
+          </motion.header>
+
           <div className="sensor-product-variant-compare-grid">
-            <div className="sensor-product-variant-card" id="sensor-variant-standard">
-              <div className="sensor-product-variant-card-head">
-                <h3 className="sensor-product-variant-card-title">{SENSOR_STANDARD_SHORT}</h3>
-                <CompareChip variant="standard" shortLabel />
+            <motion.div
+              className="sensor-variant-manifold-connector sensor-variant-manifold-connector--mobile"
+              initial={reduceMotion ? false : { opacity: 0, scale: 0.92 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={mhViewport}
+              transition={tr(0.55, 0.06)}
+            >
+              <span className="sensor-variant-manifold-connector-pill">
+                {SENSOR_VARIANT_COMPARE.manifoldConnector}
+              </span>
+            </motion.div>
+
+            <motion.article
+              className="sensor-product-variant-card sensor-card"
+              id="sensor-variant-standard"
+              initial={reduceMotion ? false : { opacity: 0, x: -48, y: 24 }}
+              whileInView={{ opacity: 1, x: 0, y: 0 }}
+              viewport={mhViewport}
+              transition={tr(0.78)}
+            >
+              <motion.div
+                className="sensor-variant-card-hero"
+                variants={variantHeroVariants(0)}
+                initial="hidden"
+                whileInView="visible"
+                viewport={mhViewport}
+              >
+                <div className="sensor-variant-card-hero-plate">
+                  <img
+                    src={SENSOR_MANIFOLD_HERO_IMAGE}
+                    alt="AC Drain Wiz Standard Sensor Switch on Transparent T-Manifold"
+                    className="sensor-variant-card-hero-img"
+                    width={1672}
+                    height={941}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <p className="sensor-variant-card-hero-label">{LINEUP_COLUMN_META.standard.subtitle}</p>
+              </motion.div>
+
+              <div className="sensor-product-variant-card-body">
+                <header className="sensor-product-variant-card-head">
+                  <h3 className="sensor-product-variant-card-title">{SENSOR_STANDARD_SHORT}</h3>
+                </header>
+                <p className="sensor-product-variant-card-desc">{SENSOR_VARIANT_COMPARE.standard.description}</p>
+                <motion.ul
+                  className="sensor-product-variant-card-list"
+                  variants={variantListContainerVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={mhViewport}
+                >
+                  {SENSOR_VARIANT_COMPARE.standard.bullets.map((bullet) => (
+                    <motion.li key={bullet} variants={variantListItemVariants}>
+                      <CheckIcon className="sensor-product-variant-card-check" aria-hidden />
+                      <span>{bullet}</span>
+                    </motion.li>
+                  ))}
+                </motion.ul>
+                <footer className="sensor-product-variant-card-footer">
+                  <Link
+                    to={buildSensorSetupHref({ model: 'standard', step: 1 })}
+                    className="sensor-product-variant-card-cta"
+                  >
+                    <BookOpenIcon className="sensor-product-variant-card-cta-icon" aria-hidden />
+                    {SENSOR_STANDARD_SHORT} guide
+                  </Link>
+                  <div className="sensor-product-variant-card-compare">
+                    <CompareChip variant="standard" shortLabel />
+                  </div>
+                </footer>
               </div>
-              <p className="sensor-product-variant-card-desc">
-                Local overflow protection: capacitive sensing, automatic AC shutdown at 80%, no moving parts, fail-safe on power loss. No Wi‑Fi setup and no remote dashboard requirement.
-              </p>
-              <ul className="sensor-product-variant-card-list">
-                <li>
-                  <CheckIcon className="sensor-product-variant-card-check" />
-                  Ideal when remote monitoring is not required
-                </li>
-                <li>
-                  <CheckIcon className="sensor-product-variant-card-check" />
-                  LED: green = active; solid red = touch test or ~80% shutdown
-                </li>
-              </ul>
-            </div>
-            <div className="sensor-product-variant-card sensor-product-variant-card-wifi" id="sensor-variant-wifi">
-              <div className="sensor-product-variant-card-head">
-                <h3 className="sensor-product-variant-card-title">{SENSOR_WIFI_SHORT}</h3>
-                <CompareChip variant="wifi" shortLabel />
+            </motion.article>
+
+            <motion.div
+              className="sensor-variant-manifold-connector sensor-variant-manifold-connector--desktop"
+              initial={reduceMotion ? false : { opacity: 0, scale: 0.92 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={mhViewport}
+              transition={tr(0.55, 0.12)}
+              aria-hidden
+            >
+              <span className="sensor-variant-manifold-connector-divider" />
+              <span className="sensor-variant-manifold-connector-pill">
+                {SENSOR_VARIANT_COMPARE.manifoldConnector}
+              </span>
+              <span className="sensor-variant-manifold-connector-divider" />
+            </motion.div>
+
+            <div className="sensor-product-variant-card-wifi-lift">
+            <motion.article
+              className="sensor-product-variant-card sensor-product-variant-card-wifi sensor-card sensor-card--featured"
+              id="sensor-variant-wifi"
+              initial={reduceMotion ? false : { opacity: 0, x: 48, y: 24 }}
+              whileInView={{ opacity: 1, x: 0, y: 0 }}
+              viewport={mhViewport}
+              transition={tr(0.78, 0.1)}
+            >
+              <span className="sensor-variant-card-wifi-badge">
+                <WifiIcon aria-hidden />
+                <span className="sensor-variant-card-wifi-badge-text">
+                  <span className="sensor-variant-card-wifi-badge-line sensor-variant-card-wifi-badge-line--primary">
+                    WiFi monitoring
+                  </span>
+                  <span className="sensor-variant-card-wifi-badge-line sensor-variant-card-wifi-badge-line--secondary">
+                    {WIFI_REQUIREMENT} · Remote alerts
+                  </span>
+                </span>
+              </span>
+              <motion.div
+                className="sensor-variant-card-hero"
+                variants={variantHeroVariants(0.08)}
+                initial="hidden"
+                whileInView="visible"
+                viewport={mhViewport}
+              >
+                <div className="sensor-variant-card-hero-plate">
+                  <img
+                    src={SENSOR_MANIFOLD_HERO_IMAGE}
+                    alt="AC Drain Wiz WiFi Sensor Switch on Transparent T-Manifold"
+                    className="sensor-variant-card-hero-img"
+                    width={1672}
+                    height={941}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              </motion.div>
+
+              <div className="sensor-product-variant-card-body">
+                <header className="sensor-product-variant-card-head">
+                  <h3 className="sensor-product-variant-card-title">{SENSOR_WIFI_SHORT}</h3>
+                </header>
+                <p className="sensor-product-variant-card-plus-lead">{SENSOR_VARIANT_COMPARE.wifi.plusLead}</p>
+                <motion.ul
+                  className="sensor-product-variant-card-list"
+                  variants={variantListContainerVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={mhViewport}
+                >
+                  {SENSOR_VARIANT_COMPARE.wifi.bullets.map((bullet) => (
+                    <motion.li key={bullet} variants={variantListItemVariants}>
+                      <CheckIcon className="sensor-product-variant-card-check" aria-hidden />
+                      <span>{bullet}</span>
+                    </motion.li>
+                  ))}
+                </motion.ul>
+                <footer className="sensor-product-variant-card-footer">
+                  <Link
+                    to={buildSensorSetupHref({ model: 'wifi', step: 1 })}
+                    className="sensor-product-variant-card-cta"
+                  >
+                    <BookOpenIcon className="sensor-product-variant-card-cta-icon" aria-hidden />
+                    {SENSOR_WIFI_SHORT} guide
+                  </Link>
+                  <div className="sensor-product-variant-card-compare">
+                    <CompareChip variant="wifi" shortLabel />
+                  </div>
+                </footer>
               </div>
-              <p className="sensor-product-variant-card-desc">
-                Everything the Standard model does on site, plus remote water-level monitoring, email/SMS alerts, contractor app, and service alerts between 50–79% (shutdown at 80%). 24V HVAC power is strongly recommended; Li-ion backup (~2 years) or battery-only operation is supported with different LED behavior.
-              </p>
-              <ul className="sensor-product-variant-card-list">
-                <li>
-                  <CheckIcon className="sensor-product-variant-card-check" />
-                  Requires {WIFI_REQUIREMENT} Wi‑Fi for the monitoring dashboard (5 GHz not supported)
-                </li>
-                <li>
-                  <CheckIcon className="sensor-product-variant-card-check" />
-                  LED (24V): flashing red = pairing; flashing green = setup; solid green = connected; solid red = high water shutdown —
-                  battery-only mode limits LED visibility (see Product Support)
-                </li>
-                <li>
-                  <CheckIcon className="sensor-product-variant-card-check" />
-                  Connectivity is Wi‑Fi only—no Bluetooth pairing
-                </li>
-              </ul>
+            </motion.article>
             </div>
           </div>
+
+          <motion.p
+            className="sensor-product-variant-specs-bridge"
+            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(0.65, 0.15)}
+          >
+            <a href="#sensor-specs-heading" className="sensor-product-variant-specs-bridge-link">
+              {SENSOR_VARIANT_COMPARE.specsBridge}
+              <ArrowRightIcon className="sensor-product-variant-card-cta-icon" aria-hidden />
+            </a>
+          </motion.p>
         </div>
       </section>
 
@@ -474,16 +690,32 @@ export function SensorProductPage() {
       <SensorWireHarnessDiagram />
 
       {/* Value Proposition by Customer Type */}
-      <section className="sensor-product-value-props">
+      <section ref={valuePropsSectionRef} className="sensor-product-value-props sensor-wave-host">
+        <MiniFlowWaveBackdrop sectionRef={valuePropsSectionRef} />
         <div className="sensor-product-value-props-content">
-          <h2 className="product-section-title">Built for Everyone</h2>
-          <p className="sensor-product-section-subtitle">
-            Whether you're a homeowner, HVAC professional, or property manager, the Sensor family delivers overflow protection—with optional remote monitoring and fleet tools on the WiFi Sensor Switch.
-          </p>
-          
-          <div className="sensor-product-value-props-grid">
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 44 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(0.9)}
+          >
+            <p className="mini-section-eyebrow">{SENSOR_NARRATIVE_ZONES.valueProps.eyebrow}</p>
+            <h2 className="product-section-title mini-section-title-promote">
+              {SENSOR_NARRATIVE_ZONES.valueProps.title}
+            </h2>
+            <p className="mini-section-dek">{SENSOR_NARRATIVE_ZONES.valueProps.dek}</p>
+          </motion.header>
+
+          <motion.div
+            className="sensor-product-value-props-grid"
+            variants={gridContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={mhViewport}
+          >
             {customerValueProps.map((prop, index) => (
-              <div key={index} className="sensor-product-value-prop-card">
+              <motion.div key={index} className="sensor-product-value-prop-card sensor-card" variants={gridItemVariants}>
                 <div className="sensor-product-value-prop-icon-wrapper">
                   <prop.icon className="sensor-product-value-prop-icon" />
                 </div>
@@ -503,78 +735,149 @@ export function SensorProductPage() {
                 >
                   {prop.cta}
                 </button>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Real-Time System Visibility */}
       <section className="sensor-product-visibility">
         <div className="sensor-product-visibility-content">
-          <h2 className="product-section-title">See What's Happening, When It's Happening</h2>
-          <p className="sensor-product-section-subtitle">
-            With the WiFi Sensor Switch, the monitoring dashboard reflects sensor state in real time. The Standard Sensor Switch (Non-WiFi) focuses on reliable on-site shutdown protection without remote connectivity.
-          </p>
-          
-          <div className="sensor-product-visibility-grid">
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 44 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(0.9)}
+          >
+            <p className="mini-section-eyebrow">{SENSOR_NARRATIVE_ZONES.visibility.eyebrow}</p>
+            <h2 className="product-section-title mini-section-title-promote">
+              {SENSOR_NARRATIVE_ZONES.visibility.title}
+            </h2>
+            <p className="mini-section-dek">{SENSOR_NARRATIVE_ZONES.visibility.dek}</p>
+          </motion.header>
+
+          <motion.div
+            className="sensor-product-visibility-grid"
+            variants={gridContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={mhViewport}
+          >
             {visibilityFeatures.map((feature, index) => (
-              <div key={index} className="sensor-product-visibility-card">
+              <motion.div key={index} className="sensor-product-visibility-card sensor-card" variants={gridItemVariants}>
                 <feature.icon className="sensor-product-visibility-icon" />
                 <h3 className="sensor-product-visibility-title">{feature.title}</h3>
                 <p className="sensor-product-visibility-description">{feature.description}</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Smart Alerts & Notifications */}
       <section className="sensor-product-alerts">
         <div className="sensor-product-alerts-content">
-          <h2 className="product-section-title">Stop Problems Before They Start</h2>
-          <p className="sensor-product-section-subtitle">
-            On the WiFi Sensor Switch, proactive service alerts and notifications help you schedule maintenance before shutdown. Both models protect against overflow with automatic AC shutdown at 80% water level.
-          </p>
-          
-          <div className="sensor-product-alerts-grid">
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 44 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(0.9)}
+          >
+            <p className="mini-section-eyebrow sensor-section-eyebrow--alert">{SENSOR_NARRATIVE_ZONES.alerts.eyebrow}</p>
+            <h2 className="product-section-title mini-section-title-promote">
+              {SENSOR_NARRATIVE_ZONES.alerts.title}
+            </h2>
+            <p className="mini-section-dek">{SENSOR_NARRATIVE_ZONES.alerts.dek}</p>
+          </motion.header>
+
+          <motion.div
+            className="sensor-product-alerts-grid"
+            variants={gridContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={mhViewport}
+          >
             {alertTypes.map((alert, index) => (
-              <div key={index} className="sensor-product-alert-card">
+              <motion.div key={index} className="sensor-product-alert-card sensor-card sensor-card--alert" variants={gridItemVariants}>
                 <alert.icon className="sensor-product-alert-icon" />
                 <h3 className="sensor-product-alert-title">{alert.title}</h3>
                 <p className="sensor-product-alert-description">{alert.description}</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Fleet Monitoring for Contractors */}
-      <section className="sensor-product-fleet">
+      {/* Fleet Monitoring for Contractors — mid-page dark mesh anchor */}
+      <section ref={fleetSectionRef} className="sensor-product-fleet">
+        <div className="sensor-fleet-mesh" aria-hidden>
+          <div className="sensor-fleet-mesh-blob sensor-fleet-mesh-blob--a" />
+          <div className="sensor-fleet-mesh-blob sensor-fleet-mesh-blob--b" />
+          <div className="sensor-fleet-mesh-blob sensor-fleet-mesh-blob--c" />
+          <div className="sensor-fleet-mesh-grid" />
+        </div>
         <div className="sensor-product-fleet-content">
-          <h2 className="product-section-title">Manage Every Installation From One Dashboard</h2>
-          <p className="sensor-product-section-subtitle">
-            WiFi Sensor Switch: turn every install into a recurring touchpoint—monitor sites, schedule service, and review alerts from one dashboard. Standard Sensor Switch installs remain ideal when remote monitoring is not required.
-          </p>
-          
-          <div className="sensor-product-fleet-grid">
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 44 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(0.9)}
+          >
+            <p className="mini-section-eyebrow mini-section-eyebrow--dark">
+              {SENSOR_NARRATIVE_ZONES.fleet.eyebrow}
+            </p>
+            <h2 className="product-section-title mini-section-title-promote mini-section-title-promote--dark">
+              {SENSOR_NARRATIVE_ZONES.fleet.title}
+            </h2>
+            <p className="mini-section-dek mini-section-dek--dark">{SENSOR_NARRATIVE_ZONES.fleet.dek}</p>
+          </motion.header>
+
+          <motion.div
+            className="sensor-product-fleet-grid"
+            variants={gridContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={mhViewport}
+          >
             {fleetFeatures.map((feature, index) => (
-              <div key={index} className="sensor-product-fleet-card">
+              <motion.div key={index} className="sensor-product-fleet-card sensor-card" variants={gridItemVariants}>
                 <feature.icon className="sensor-product-fleet-icon" />
                 <h3 className="sensor-product-fleet-title">{feature.title}</h3>
                 <p className="sensor-product-fleet-description">{feature.description}</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Service Call Creation & Alerts Management */}
       <section className="sensor-product-service">
         <div className="sensor-product-service-content">
-          <h2 className="product-section-title">Streamline Your Service Operations</h2>
-          <div className="sensor-product-service-grid">
-            <div className="sensor-product-service-card">
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 44 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(0.9)}
+          >
+            <p className="mini-section-eyebrow">{SENSOR_NARRATIVE_ZONES.service.eyebrow}</p>
+            <h2 className="product-section-title mini-section-title-promote">
+              {SENSOR_NARRATIVE_ZONES.service.title}
+            </h2>
+            <p className="mini-section-dek">{SENSOR_NARRATIVE_ZONES.service.dek}</p>
+          </motion.header>
+          <motion.div
+            className="sensor-product-service-grid"
+            variants={gridContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={mhViewport}
+          >
+            <motion.div className="sensor-product-service-card sensor-card" variants={gridItemVariants}>
               <ClipboardDocumentListIcon className="sensor-product-service-icon" />
               <h3 className="sensor-product-service-title">Service Call Creation</h3>
               <ul className="sensor-product-service-list">
@@ -584,8 +887,8 @@ export function SensorProductPage() {
                 <li>Track service call progress and completion</li>
                 <li>Automated customer notifications</li>
               </ul>
-            </div>
-            <div className="sensor-product-service-card">
+            </motion.div>
+            <motion.div className="sensor-product-service-card sensor-card" variants={gridItemVariants}>
               <BellAlertIcon className="sensor-product-service-icon" />
               <h3 className="sensor-product-service-title">Alerts Management</h3>
               <ul className="sensor-product-service-list">
@@ -595,48 +898,62 @@ export function SensorProductPage() {
                 <li>Custom thresholds per customer</li>
                 <li>Configure SMS and email notifications</li>
               </ul>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* Maintenance Optimization */}
       <section className="sensor-product-maintenance">
         <div className="sensor-product-maintenance-content">
-          <h2 className="product-section-title">35% Faster Service Calls</h2>
-          <p className="sensor-product-section-subtitle">
-            Pre-visit diagnostics and visual confirmation tools reduce service time and improve efficiency.
-          </p>
-          
-          <div className="sensor-product-maintenance-features">
-            <div className="sensor-product-maintenance-feature">
-              <CheckIcon className="sensor-product-maintenance-check" />
-              <span>Pre-visit diagnostics: Know exact status before arriving</span>
-            </div>
-            <div className="sensor-product-maintenance-feature">
-              <CheckIcon className="sensor-product-maintenance-check" />
-              <span>Visual confirmation: Dashboard shows water level and flow status</span>
-            </div>
-            <div className="sensor-product-maintenance-feature">
-              <CheckIcon className="sensor-product-maintenance-check" />
-              <span>No tools re-entry: No need to cut or reattach drain lines</span>
-            </div>
-            <div className="sensor-product-maintenance-feature">
-              <CheckIcon className="sensor-product-maintenance-check" />
-              <span>Faster clean-outs: Exact problem identification reduces service time</span>
-            </div>
-            <div className="sensor-product-maintenance-feature">
-              <CheckIcon className="sensor-product-maintenance-check" />
-              <span>Predictive maintenance: System flags issues before they become emergencies</span>
-            </div>
-          </div>
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 44 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(0.9)}
+          >
+            <p className="mini-section-eyebrow">{SENSOR_NARRATIVE_ZONES.maintenance.eyebrow}</p>
+            <h2 className="product-section-title mini-section-title-promote">
+              {SENSOR_NARRATIVE_ZONES.maintenance.title}
+            </h2>
+            <p className="mini-section-dek">{SENSOR_NARRATIVE_ZONES.maintenance.dek}</p>
+          </motion.header>
+
+          <motion.div
+            className="sensor-product-maintenance-features"
+            variants={gridContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={mhViewport}
+          >
+            {[
+              'Pre-visit diagnostics: Know exact status before arriving',
+              'Visual confirmation: Dashboard shows water level and flow status',
+              'No tools re-entry: No need to cut or reattach drain lines',
+              'Faster clean-outs: Exact problem identification reduces service time',
+              'Predictive maintenance: System flags issues before they become emergencies',
+            ].map((feature) => (
+              <motion.div key={feature} className="sensor-product-maintenance-feature" variants={gridItemVariants}>
+                <CheckIcon className="sensor-product-maintenance-check" />
+                <span>{feature}</span>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
       {/* How It Works */}
-      <section className="product-how-it-works sensor-product-how-it-works">
+      <section ref={howItWorksSectionRef} className="product-how-it-works sensor-product-how-it-works sensor-wave-host">
+        <MiniFlowWaveBackdrop sectionRef={howItWorksSectionRef} />
         <div className="product-how-it-works-content">
-          <header className="mini-section-header">
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 44 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(0.9)}
+          >
             <p className="mini-section-eyebrow">{SENSOR_NARRATIVE_ZONES.howItWorks.eyebrow}</p>
             <h2 className="product-section-title mini-section-title-promote">
               {SENSOR_NARRATIVE_ZONES.howItWorks.title}
@@ -644,11 +961,17 @@ export function SensorProductPage() {
             <p className="mini-section-dek">
               {SENSOR_NARRATIVE_ZONES.howItWorks.dek}
             </p>
-          </header>
-          
-          <div className="product-how-it-works-steps">
+          </motion.header>
+
+          <motion.div
+            className="product-how-it-works-steps"
+            variants={gridContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={mhViewport}
+          >
             {howItWorksSteps.map((step, index) => (
-              <div key={index} className="sensor-product-how-it-works-step">
+              <motion.div key={index} className="sensor-product-how-it-works-step sensor-card" variants={gridItemVariants}>
                 <div className="sensor-product-how-it-works-step-number">
                   {step.number}
                 </div>
@@ -657,9 +980,9 @@ export function SensorProductPage() {
                   <h3 className="product-how-it-works-step-title">{step.title}</h3>
                   <p className="product-how-it-works-step-description">{step.description}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           <div className="sensor-product-install-guides">
             <p className="sensor-product-install-guides-eyebrow">Installation resources</p>
@@ -701,14 +1024,42 @@ export function SensorProductPage() {
         </div>
       </section>
 
-      {/* Specifications */}
-      <section className="product-specs">
-        <div className="product-specs-content">
-          <h2 className="product-section-title">Specifications</h2>
-          <p className="sensor-product-spec-compare-lead">
-            Side-by-side reference for {SENSOR_STANDARD_SHORT} and {SENSOR_WIFI_SHORT}.
-          </p>
-          <div className="sensor-product-spec-compare" role="table" aria-label="Sensor specifications by model">
+      {/* Specifications — dark mesh anchor (mid-page brand moment) */}
+      <section
+        id="sensor-specs-heading"
+        className="product-specs sensor-specs-anchor"
+        aria-labelledby="sensor-specs-title"
+      >
+        <div className="sensor-specs-anchor-mesh" aria-hidden>
+          <div className="sensor-specs-anchor-mesh-blob sensor-specs-anchor-mesh-blob--a" />
+          <div className="sensor-specs-anchor-mesh-blob sensor-specs-anchor-mesh-blob--b" />
+          <div className="sensor-specs-anchor-mesh-blob sensor-specs-anchor-mesh-blob--c" />
+          <div className="sensor-specs-anchor-mesh-grid" />
+        </div>
+        <div className="product-specs-content sensor-specs-anchor-inner">
+          <header className="mini-section-header">
+            <p className="mini-section-eyebrow mini-section-eyebrow--dark">
+              {SENSOR_NARRATIVE_ZONES.specs.eyebrow}
+            </p>
+            <h2
+              id="sensor-specs-title"
+              className="product-section-title mini-section-title-promote mini-section-title-promote--dark"
+            >
+              {SENSOR_NARRATIVE_ZONES.specs.title}
+            </h2>
+            <p className="mini-section-dek mini-section-dek--dark">
+              {SENSOR_NARRATIVE_ZONES.specs.dek}
+            </p>
+          </header>
+          <motion.div
+            className="sensor-product-spec-compare"
+            role="table"
+            aria-label="Sensor specifications by model"
+            initial={reduceMotion ? false : { opacity: 0, y: 34 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(0.95, 0.08)}
+          >
             <div className="sensor-product-spec-compare-row sensor-product-spec-compare-row-head" role="row">
               <div className="sensor-product-spec-compare-cell" role="columnheader">
                 {' '}
@@ -733,17 +1084,36 @@ export function SensorProductPage() {
                 </div>
               </div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section className="product-faq">
+      <section className="product-faq sensor-product-faq">
         <div className="product-faq-content">
-          <h2 className="product-section-title">Frequently Asked Questions</h2>
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 44 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(0.9)}
+          >
+            <p className="mini-section-eyebrow">{SENSOR_NARRATIVE_ZONES.faq.eyebrow}</p>
+            <h2 className="product-section-title mini-section-title-promote">
+              {SENSOR_NARRATIVE_ZONES.faq.title}
+            </h2>
+            <p className="mini-section-dek">{SENSOR_NARRATIVE_ZONES.faq.dek}</p>
+          </motion.header>
           <div className="product-faq-list">
             {faqs.map((faq, index) => (
-              <div key={index} className="product-faq-item">
+              <motion.div
+                key={index}
+                className="product-faq-item"
+                initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={mhViewport}
+                transition={tr(0.68, Math.min(index, 8) * 0.06)}
+              >
                 <button
                   onClick={() => setOpenFaq(openFaq === index ? null : index)}
                   className="product-faq-question"
@@ -761,7 +1131,7 @@ export function SensorProductPage() {
                     <p>{faq.answer}</p>
                   </div>
                 )}
-              </div>
+              </motion.div>
             ))}
           </div>
           <p className="product-faq-subtitle">
