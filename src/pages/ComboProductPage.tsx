@@ -552,6 +552,16 @@ export function ComboProductPage() {
             View Installation & Setup Guide
             <ArrowRightIcon className="combo-product-installation-link-btn-icon" />
           </button>
+          <p className="combo-product-installation-scenarios-note">
+            Dual drain-line unit? See which port gets the Mini, Standard Sensor, or WiFi Sensor before you start.
+          </p>
+          <Link
+            to="/support/installation-scenarios"
+            className="combo-product-installation-scenarios-link"
+          >
+            Compare Good, Better &amp; Best setups
+            <ArrowRightIcon className="combo-product-installation-link-btn-icon" aria-hidden />
+          </Link>
         </div>
       </section>
 

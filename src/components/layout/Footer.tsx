@@ -75,6 +75,7 @@ export function Footer() {
               <ul className="footer-link-list">
                 <li><Link to="/support" className="footer-link">Support Center</Link></li>
                 <li><Link to="/support/installation-setup" className="footer-link">Installation & Setup</Link></li>
+                <li><Link to="/support/installation-scenarios" className="footer-link">Installation Scenarios</Link></li>
                 <li><Link to="/support/product-support" className="footer-link">Product Support</Link></li>
                 <li><Link to="/support/warranty-returns" className="footer-link">Warranty & Returns</Link></li>
                 <li><Link to="/contact?type=support" className="footer-link">Contact Support</Link></li>

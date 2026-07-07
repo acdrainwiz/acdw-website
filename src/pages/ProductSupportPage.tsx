@@ -553,6 +553,25 @@ export function ProductSupportPage() {
             </div>
           )}
 
+          {/* Mini Resources (Mini tab only) */}
+          {activeTab === 'mini' && (
+            <div className="support-section-related">
+              <h2 className="support-section-section-title">Mini Resources</h2>
+              <p className="support-section-section-description">Installation guides and configuration references for the AC Drain Wiz Mini.</p>
+              <div className="support-section-related-links">
+                <Link to="/support/installation-setup" className="support-section-related-link">
+                  Installation &amp; Setup →
+                </Link>
+                <Link to="/mini-setup?step=1" className="support-section-related-link">
+                  Mini Setup Guide →
+                </Link>
+                <Link to="/support/installation-scenarios" className="support-section-related-link">
+                  Installation Scenarios →
+                </Link>
+              </div>
+            </div>
+          )}
+
           {/* Contact Support CTA */}
           <div className="support-section-cta-box">
             <p className="support-section-cta-text">
@@ -582,6 +601,9 @@ export function ProductSupportPage() {
             <div className="support-section-related-links">
               <Link to="/support/installation-setup" className="support-section-related-link">
                 Installation Guides →
+              </Link>
+              <Link to="/support/installation-scenarios" className="support-section-related-link">
+                Installation Scenarios →
               </Link>
               <Link to="/support/warranty-returns" className="support-section-related-link">
                 Warranty Information →

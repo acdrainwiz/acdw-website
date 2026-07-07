@@ -3335,6 +3335,10 @@
     @apply bg-white border-2 border-gray-200 rounded-lg p-6;
   }
 
+  .product-comparison-scenarios-link {
+    @apply mt-4 block text-sm font-semibold text-primary-600 hover:text-primary-700 underline-offset-2 hover:underline;
+  }
+
   .product-comparison-footer {
     @apply space-y-2;
   }
@@ -3793,6 +3797,10 @@
 
   .faq-answer p {
     @apply text-gray-700 leading-relaxed;
+  }
+
+  .faq-inline-link {
+    @apply text-blue-600 hover:text-blue-700 font-medium underline-offset-2 hover:underline;
   }
 
   .faq-footer {
@@ -6365,7 +6373,14 @@
   width: calc(100% - 3rem);
 }
 
-.hvac-product-cta-outline {
+a.hvac-product-cta,
+a.property-manager-product-cta,
+a.code-official-product-cta {
+  @apply block text-center no-underline;
+}
+
+.hvac-product-cta-outline,
+.property-manager-product-cta-outline {
   @apply bg-white text-primary-600 border-2 border-primary-600 hover:bg-primary-50;
   margin-top: -0.5rem;
 }
@@ -6442,6 +6457,10 @@
 
 .homeowner-faq-answer {
   @apply px-6 pb-4 text-gray-600;
+}
+
+.homeowner-faq-inline-link {
+  @apply text-primary-600 hover:text-primary-700 font-medium underline-offset-2 hover:underline;
 }
 
 /* Final CTA Section - matches cta-band-sales gradient */
@@ -7108,6 +7127,19 @@
     font-size: 1.125rem;
     line-height: 1.65;
   }
+}
+
+.products-showcase-subhead-link-wrap {
+  margin: 1rem auto 0;
+  max-width: 48rem;
+}
+
+.products-showcase-subhead-link {
+  @apply inline-flex items-center gap-1.5 text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors;
+}
+
+.products-showcase-subhead-link-icon {
+  @apply h-4 w-4 shrink-0;
 }
 
 /* Products — inline Sensor demo section (live Standard / WiFi toggle) */
@@ -8120,6 +8152,10 @@
 
 .unified-faq-answer {
   @apply px-6 pb-6 text-gray-600 leading-relaxed;
+}
+
+.unified-faq-inline-link {
+  @apply text-blue-600 hover:text-blue-700 font-medium underline-offset-2 hover:underline;
 }
 
 .unified-faq-footer {
@@ -9462,6 +9498,22 @@
 /* Mini section — title + subtitle align with sensor family block below */
 .install-mini-family {
   @apply mb-10;
+}
+
+.install-setup-scenarios-callout {
+  @apply mb-10 flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50 px-5 py-4;
+}
+
+.install-setup-scenarios-callout-icon {
+  @apply h-6 w-6 shrink-0 text-blue-600 mt-0.5;
+}
+
+.install-setup-scenarios-callout-text {
+  @apply text-sm sm:text-base text-gray-700 leading-relaxed;
+}
+
+.install-setup-scenarios-callout-link {
+  @apply font-semibold text-blue-700 hover:text-blue-800 underline-offset-2 hover:underline;
 }
 
 .install-mini-family .install-picker-grid {
@@ -13075,6 +13127,22 @@
 
 .checkout-success-step-icon {
   @apply h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0;
+}
+
+.checkout-success-resources {
+  @apply text-left mb-8 rounded-xl border border-blue-200 bg-blue-50 px-5 py-4;
+}
+
+.checkout-success-resources-title {
+  @apply text-lg font-semibold text-gray-900 mb-2;
+}
+
+.checkout-success-resources-text {
+  @apply text-sm text-gray-700 leading-relaxed mb-3;
+}
+
+.checkout-success-resources-link {
+  @apply inline-flex items-center gap-2 text-sm font-semibold text-blue-700 hover:text-blue-800;
 }
 
 .checkout-success-actions {
@@ -17200,6 +17268,14 @@
   @apply h-5 w-5 shrink-0;
 }
 
+.sensor-product-install-guide-button--secondary {
+  @apply bg-white text-primary-700 border-2 border-primary-200 shadow-sm hover:bg-primary-50 hover:border-primary-300 hover:shadow-md;
+}
+
+.sensor-product-install-scenarios-note {
+  @apply mt-4 text-sm text-gray-500 leading-relaxed;
+}
+
 .sensor-product-install-guide-button-arrow {
   @apply h-5 w-5 shrink-0 opacity-90;
 }
@@ -20020,6 +20096,14 @@
   @apply h-5 w-5;
 }
 
+.combo-product-installation-scenarios-note {
+  @apply mt-6 text-sm text-gray-600 max-w-xl leading-relaxed;
+}
+
+.combo-product-installation-scenarios-link {
+  @apply mt-2 inline-flex items-center gap-2 font-semibold text-blue-600 hover:text-blue-700 transition-colors;
+}
+
 /* Dashboard Section */
 .combo-product-dashboard {
   @apply py-16 md:py-24 bg-white;
@@ -21482,6 +21566,17 @@
 
 .product-installation-video-guide-link-trail-icon {
     @apply h-5 w-5 shrink-0 text-white/90;
+}
+
+.product-installation-video-guide-link--secondary {
+    @apply bg-white text-primary-700 border-2 border-primary-200 shadow-sm;
+    @apply hover:bg-primary-50 hover:border-primary-300 hover:shadow-md;
+    @apply active:bg-primary-100;
+}
+
+.product-installation-video-guide-link--secondary .product-installation-video-guide-link-lead-icon,
+.product-installation-video-guide-link--secondary .product-installation-video-guide-link-trail-icon {
+    @apply text-primary-600;
 }
 
 .product-installation-video-placeholder {

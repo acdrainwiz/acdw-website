@@ -211,6 +211,13 @@ export function HVACProsPage() {
               >
                 View Complete System
               </button>
+              <Link
+                to="/support/installation-scenarios"
+                className="hvac-product-cta hvac-product-cta-outline"
+                aria-label="Match the setup to the job — see recommended installation scenarios"
+              >
+                See installation scenarios
+              </Link>
             </div>
           </div>
         </div>
@@ -230,7 +237,10 @@ export function HVACProsPage() {
           <div className="homeowner-faq-item">
             <h3 className="homeowner-faq-question">How long does installation take?</h3>
             <p className="homeowner-faq-answer">
-              The Mini installs in 5 minutes during any service call. The Sensor adds another 10-15 minutes for complete system installation.
+              The Mini installs in 5 minutes during any service call. The Sensor adds another 10-15 minutes for complete system installation.{' '}
+              <Link to="/support/installation-scenarios" className="homeowner-faq-inline-link">
+                See recommended Good, Better, and Best configurations for dual drain-line units.
+              </Link>
             </p>
           </div>
 
