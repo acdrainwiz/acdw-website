@@ -428,6 +428,13 @@ export function PropertyManagerPage() {
               >
                 View Complete System
               </button>
+              <Link
+                to="/support/installation-scenarios"
+                className="property-manager-product-cta property-manager-product-cta-outline"
+                aria-label="Best for portfolio monitoring — see recommended dual-line setups"
+              >
+                See installation scenarios
+              </Link>
             </div>
           </div>
         </div>

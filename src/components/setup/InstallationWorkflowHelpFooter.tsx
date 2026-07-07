@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { BookOpenIcon, PhoneIcon, WrenchScrewdriverIcon } from '@heroicons/react/24/outline'
+import { BookOpenIcon, PhoneIcon, WrenchScrewdriverIcon, Squares2X2Icon } from '@heroicons/react/24/outline'
 import { SUPPORT_CONTACT } from '../../config/acdwKnowledge'
 import { buildProductSupportHubHref } from '../../utils/supportFaqSearch'
 
@@ -59,6 +59,12 @@ export function InstallationWorkflowHelpFooter({
           <Link to="/support/installation-setup" className="install-workflow-help-footer-link">
             <BookOpenIcon className="install-workflow-help-footer-icon" aria-hidden />
             <span>Installation &amp; Setup</span>
+          </Link>
+        </li>
+        <li>
+          <Link to="/support/installation-scenarios" className="install-workflow-help-footer-link">
+            <Squares2X2Icon className="install-workflow-help-footer-icon" aria-hidden />
+            <span>Installation scenarios (dual-line setups)</span>
           </Link>
         </li>
         {showPhone && (

@@ -139,6 +139,13 @@ export function Step3MiniCompletion() {
               View Sensor Installation Guide
               <ArrowRightIcon className="mini-setup-sensor-upsell-link-icon" />
             </Link>
+            <Link
+              to="/support/installation-scenarios"
+              className="mini-setup-sensor-upsell-link mini-setup-sensor-upsell-link-secondary"
+            >
+              Planning the second port? See installation scenarios
+              <ArrowRightIcon className="mini-setup-sensor-upsell-link-icon" />
+            </Link>
           </div>
         </div>
       </div>

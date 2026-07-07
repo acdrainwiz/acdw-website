@@ -51,6 +51,17 @@ export function InstallationSetupPage() {
       </div>
 
       <div className="container py-12">
+        <div className="install-setup-scenarios-callout">
+          <DocumentTextIcon className="install-setup-scenarios-callout-icon" aria-hidden />
+          <p className="install-setup-scenarios-callout-text">
+            Installing on a dual drain-line AC unit?{' '}
+            <Link to="/support/installation-scenarios" className="install-setup-scenarios-callout-link">
+              Compare Good, Better, and Best configurations first
+            </Link>
+            .
+          </p>
+        </div>
+
         {/* ─── Mini (single card; sensor models are below) ─── */}
         <div className="install-mini-family">
           <h2 className="install-sensor-family-title">Drain line maintenance access</h2>

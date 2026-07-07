@@ -233,6 +233,10 @@ export function Step2StandardSensorComplete({
                 Mini installation guide
                 <ArrowRightIcon className="sensor-setup-mini-upsell-link-icon" aria-hidden />
               </Link>
+              <Link to="/support/installation-scenarios" className="sensor-setup-mini-upsell-link sensor-setup-mini-upsell-link-secondary">
+                Planning the second port? See installation scenarios
+                <ArrowRightIcon className="sensor-setup-mini-upsell-link-icon" aria-hidden />
+              </Link>
             </div>
           </div>
         </div>

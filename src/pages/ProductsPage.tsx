@@ -5,7 +5,7 @@ import {
   type KeyboardEvent,
   type ReactNode,
 } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { motion, useReducedMotion } from 'framer-motion'
 import { 
   CheckIcon, 
@@ -429,8 +429,14 @@ export function ProductsPage() {
     },
     {
       question: "Do I need both Mini and Sensor, or can I use them separately?",
-      answer:
-        "They work independently but are designed to work together. Mini handles proactive cleaning access; a Sensor Switch adds overflow protection on the line (WiFi model: remote alerts and dashboard). You can start with Mini and add a Sensor later, install a Sensor Switch with its included manifold without Mini first, or choose the bundle—through an authorized contractor.",
+      answer: (
+        <>
+          They work independently but are designed to work together. Mini handles proactive cleaning access; a Sensor Switch adds overflow protection on the line (WiFi model: remote alerts and dashboard). You can start with Mini and add a Sensor later, install a Sensor Switch with its included manifold without Mini first, or choose the bundle—through an authorized contractor.{' '}
+          <Link to="/support/installation-scenarios" className="unified-faq-inline-link">
+            For dual drain-line units, see recommended Good / Better / Best configurations.
+          </Link>
+        </>
+      ),
     },
     {
       question: "Will AC Drain Wiz work with my existing AC system?",
@@ -834,6 +840,12 @@ export function ProductsPage() {
             Pair permanent drain access with overflow protection—one coordinated install for contractors
             who want the full bayonet workflow: service through the Mini, monitoring with the Sensor.
           </motion.p>
+          <motion.p className="products-showcase-subhead-link-wrap" variants={subheadDesc}>
+            <Link to="/support/installation-scenarios" className="products-showcase-subhead-link">
+              Compare Good, Better &amp; Best dual-line setups
+              <ArrowRightIcon className="products-showcase-subhead-link-icon" aria-hidden />
+            </Link>
+          </motion.p>
         </div>
       </motion.section>
       {comboProduct
@@ -1216,7 +1228,7 @@ export function ProductsPage() {
                 </button>
                 {openFaq === index ? (
                   <div className="unified-faq-answer">
-                    <p>{faq.answer}</p>
+                    {typeof faq.answer === 'string' ? <p>{faq.answer}</p> : faq.answer}
                   </div>
                 ) : null}
               </motion.div>

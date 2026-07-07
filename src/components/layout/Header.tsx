@@ -20,7 +20,8 @@ import {
   DocumentTextIcon,
   CreditCardIcon,
   BellIcon,
-  ShieldCheckIcon
+  ShieldCheckIcon,
+  BookOpenIcon
 } from '@heroicons/react/24/outline'
 import { useAuth } from '../../contexts/AuthContext'
 import { useCart } from '../../contexts/CartContext'
@@ -68,6 +69,7 @@ const mobileNavigationSections = {
     items: [
       { name: 'Support Center', href: '/support', icon: QuestionMarkCircleIcon },
       { name: 'Installation & Setup', href: '/support/installation-setup', icon: DocumentTextIcon },
+      { name: 'Installation Scenarios', href: '/support/installation-scenarios', icon: BookOpenIcon },
       { name: 'Sensor Setup', href: SENSOR_SETUP_MODEL_CHOICE_HREF, icon: CpuChipIcon },
       { name: 'Product Support', href: '/support/product-support', icon: WrenchScrewdriverIcon },
       { name: 'Warranty & Returns', href: '/support/warranty-returns', icon: CreditCardIcon },

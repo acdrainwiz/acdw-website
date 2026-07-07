@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { CheckCircleIcon, ArrowRightIcon, DocumentTextIcon, TruckIcon } from '@heroicons/react/24/outline'
 import { useAuth } from '../contexts/AuthContext'
 
@@ -334,6 +334,17 @@ export function CheckoutSuccessPage() {
                 </li>
               )}
             </ul>
+          </div>
+
+          <div className="checkout-success-resources">
+            <h3 className="checkout-success-resources-title">Installation resources</h3>
+            <p className="checkout-success-resources-text">
+              Have a dual drain-line unit? See how to pair your Mini with a Sensor on the second port.
+            </p>
+            <Link to="/support/installation-scenarios" className="checkout-success-resources-link">
+              View recommended installation scenarios
+              <ArrowRightIcon className="checkout-success-button-icon" aria-hidden />
+            </Link>
           </div>
 
           {/* Action Buttons */}

@@ -1006,7 +1006,18 @@ export function SensorProductPage() {
                 <span>{SENSOR_WIFI_SHORT} guide</span>
                 <ArrowRightIcon className="sensor-product-install-guide-button-arrow" aria-hidden />
               </Link>
+              <Link
+                to="/support/installation-scenarios"
+                className="sensor-product-install-guide-button sensor-product-install-guide-button--secondary"
+              >
+                <BookOpenIcon className="sensor-product-install-guide-button-icon" aria-hidden />
+                <span>Recommended installation scenarios</span>
+                <ArrowRightIcon className="sensor-product-install-guide-button-arrow" aria-hidden />
+              </Link>
             </div>
+            <p className="sensor-product-install-scenarios-note">
+              Good, Better, and Best configurations for dual drain-line AC units.
+            </p>
           </div>
 
           {/* Installation Video Placeholder */}

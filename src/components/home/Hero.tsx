@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { IMaskInput } from 'react-imask'
 import { ArrowRightIcon, ChevronDownIcon, ChevronUpIcon, GiftIcon, CheckIcon, StarIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import { useAuth } from '../../contexts/AuthContext'
@@ -184,7 +184,14 @@ export function Hero() {
     },
     {
       question: "Do I need both Mini and Sensor, or can I use them separately?",
-      answer: "Each product works independently, but they're designed to work together for maximum protection. Mini handles proactive cleaning; Sensor adds 24/7 monitoring. You can start with Mini and add Sensor later through an authorized contractor."
+      answer: (
+        <>
+          Each product works independently, but they&apos;re designed to work together for maximum protection. Mini handles proactive cleaning; Sensor adds 24/7 monitoring. You can start with Mini and add Sensor later through an authorized contractor.{' '}
+          <Link to="/support/installation-scenarios" className="faq-inline-link">
+            Ask your installer about recommended dual-line configurations.
+          </Link>
+        </>
+      ),
     },
     {
       question: "How often do I need to clean my drain line with AC Drain Wiz?",
@@ -732,6 +739,9 @@ export function Hero() {
                 <div className="flex justify-between"><span className="font-medium">Size:</span> <span>{MINI_MANIFOLD_DIMENSIONS_LHD} + Sensor</span></div>
                 <div className="flex justify-between"><span className="font-medium">Best For:</span> <span className="text-right">Maximum protection</span></div>
               </div>
+              <Link to="/support/installation-scenarios" className="product-comparison-scenarios-link">
+                Compare Good, Better &amp; Best dual-line setups
+              </Link>
             </div>
           </div>
         </div>
@@ -1022,7 +1032,7 @@ export function Hero() {
                 </button>
                 {openFaq === index && (
                   <div className="faq-answer">
-                    <p>{faq.answer}</p>
+                    {typeof faq.answer === 'string' ? <p>{faq.answer}</p> : faq.answer}
                   </div>
                 )}
               </div>

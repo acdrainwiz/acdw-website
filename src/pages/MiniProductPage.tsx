@@ -582,6 +582,14 @@ export function MiniProductPage() {
                 <span>Step-by-step installation guide</span>
                 <ArrowRightIcon className="product-installation-video-guide-link-trail-icon" aria-hidden />
               </Link>
+              <Link
+                to="/support/installation-scenarios"
+                className="product-installation-video-guide-link product-installation-video-guide-link--secondary"
+              >
+                <BookOpenIcon className="product-installation-video-guide-link-lead-icon" aria-hidden />
+                <span>Planning Mini + Sensor on a dual-line unit? Compare recommended configurations</span>
+                <ArrowRightIcon className="product-installation-video-guide-link-trail-icon" aria-hidden />
+              </Link>
             </div>
           </motion.div>
         </div>
