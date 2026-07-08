@@ -33,12 +33,12 @@ function loadFormHandlerWithGhl(submitForm) {
     }
 
     if (request === './utils/request-fingerprint') {
-      return { validateRequestFingerprint: async () => ({ valid: true }) }
+      return { validateRequestFingerprint: () => ({ isBot: false }) }
     }
 
     if (request === './utils/ip-reputation') {
       return {
-        validateIP: async () => ({ valid: true }),
+        validateIP: async () => ({ allowed: true }),
         addToBlacklist: async () => {},
       }
     }
