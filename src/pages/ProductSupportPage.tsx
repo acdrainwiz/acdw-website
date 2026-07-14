@@ -527,52 +527,58 @@ export function ProductSupportPage() {
 
           </div>
 
-          {/* Sensor Resources (Sensor tab only) */}
-          {activeTab === 'sensor' && (
-            <div className="support-section-related">
-              <h2 className="support-section-section-title">Sensor Resources{sensorTypeLabel}</h2>
-              <p className="support-section-section-description">Essential guides and tools for your AC Drain Wiz Sensor.</p>
-              <div className="support-section-related-links">
-                <Link to={SENSOR_SETUP_MODEL_CHOICE_HREF} className="support-section-related-link">
-                  Sensor Setup Guide →
-                </Link>
-                {sensorVariant !== 'standard' && (
-                <a 
-                  href={MONITORING.portalUrl}
-                  className="support-section-related-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Sensor Monitoring Portal ↗
-                </a>
-                )}
-                <Link to="/support/installation-scenarios" className="support-section-related-link">
-                  Installation Scenarios →
-                </Link>
-              </div>
+          {/* Guides & resources (contextual by tab) */}
+          <div className="support-section-related">
+            <h2 className="support-section-section-title">Guides &amp; resources{sectionContextLabel}</h2>
+            <p className="support-section-section-description">
+              Installation guides, configuration references, and other support pages for your product.
+            </p>
+            <div className="support-section-related-links">
+              {activeTab === 'mini' ? (
+                <>
+                  <Link to="/support/installation-setup" className="support-section-related-link">
+                    Installation &amp; Setup →
+                  </Link>
+                  <Link to="/mini-setup?step=1" className="support-section-related-link">
+                    Mini Setup Guide →
+                  </Link>
+                  <Link to="/support/installation-scenarios" className="support-section-related-link">
+                    Installation Scenarios →
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link to={SENSOR_SETUP_MODEL_CHOICE_HREF} className="support-section-related-link">
+                    Sensor Setup Guide →
+                  </Link>
+                  {sensorVariant !== 'standard' && (
+                    <a
+                      href={MONITORING.portalUrl}
+                      className="support-section-related-link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Sensor Monitoring Portal ↗
+                    </a>
+                  )}
+                  <Link to="/support/installation-scenarios" className="support-section-related-link">
+                    Installation Scenarios →
+                  </Link>
+                  <Link to="/support/installation-setup" className="support-section-related-link">
+                    Installation &amp; Setup →
+                  </Link>
+                </>
+              )}
+              <Link to="/support/warranty-returns" className="support-section-related-link">
+                Warranty Information →
+              </Link>
+              <Link to="/support" className="support-section-related-link">
+                Support Center →
+              </Link>
             </div>
-          )}
+          </div>
 
-          {/* Mini Resources (Mini tab only) */}
-          {activeTab === 'mini' && (
-            <div className="support-section-related">
-              <h2 className="support-section-section-title">Mini Resources</h2>
-              <p className="support-section-section-description">Installation guides and configuration references for the AC Drain Wiz Mini.</p>
-              <div className="support-section-related-links">
-                <Link to="/support/installation-setup" className="support-section-related-link">
-                  Installation &amp; Setup →
-                </Link>
-                <Link to="/mini-setup?step=1" className="support-section-related-link">
-                  Mini Setup Guide →
-                </Link>
-                <Link to="/support/installation-scenarios" className="support-section-related-link">
-                  Installation Scenarios →
-                </Link>
-              </div>
-            </div>
-          )}
-
-          {/* Contact Support CTA */}
+          {/* Contact Support CTA — sole primary actions at page bottom */}
           <div className="support-section-cta-box">
             <p className="support-section-cta-text">
               <strong>Still need help?</strong> Our technical support team is available to assist you.
@@ -591,25 +597,6 @@ export function ProductSupportPage() {
               >
                 <EnvelopeIcon className="support-action-icon" />
                 Email Support
-              </Link>
-            </div>
-          </div>
-
-          {/* Related Resources */}
-          <div className="support-section-related">
-            <h2 className="support-section-section-title">Related Resources</h2>
-            <div className="support-section-related-links">
-              <Link to="/support/installation-setup" className="support-section-related-link">
-                Installation Guides →
-              </Link>
-              <Link to="/support/installation-scenarios" className="support-section-related-link">
-                Installation Scenarios →
-              </Link>
-              <Link to="/support/warranty-returns" className="support-section-related-link">
-                Warranty Information →
-              </Link>
-              <Link to="/contact?type=support" className="support-section-related-link">
-                Contact Support →
               </Link>
             </div>
           </div>

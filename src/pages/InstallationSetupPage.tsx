@@ -6,6 +6,7 @@ import {
   SENSOR_WIFI_SHORT,
   buildSensorSetupHref,
   PVC_SOLVENT_WELD_PLACEMENT,
+  WIFI_REQUIREMENT,
 } from '../config/acdwKnowledge'
 import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 import {
@@ -13,13 +14,14 @@ import {
   CheckCircleIcon,
   ClockIcon,
   WifiIcon,
-  UserCircleIcon,
   DocumentTextIcon,
   VideoCameraIcon,
   PhoneIcon,
   CheckIcon,
   ArrowRightIcon,
 } from '@heroicons/react/24/outline'
+
+const SENSOR_MANIFOLD_IMAGE = '/images/acdw-sensor-standard-on-manifold-darkbg.png'
 
 export function InstallationSetupPage() {
   return (
@@ -152,14 +154,23 @@ export function InstallationSetupPage() {
             <div className="install-product-card install-product-card-sensor-standard">
               <Link
                 to={buildSensorSetupHref({ model: 'standard', step: 1 })}
-                className="install-product-image-area"
+                className="install-product-image-area install-product-image-area-sensor install-product-image-area-sensor-standard"
                 aria-label={`Start ${SENSOR_STANDARD_SHORT} setup guide`}
               >
-                <img
-                  src="/images/setup/model-non-wifi.png"
-                  alt=""
-                  className="install-product-image install-product-image-contain"
-                />
+                <span className="install-product-sensor-mesh" aria-hidden>
+                  <span className="install-product-sensor-mesh-blob install-product-sensor-mesh-blob--a" />
+                  <span className="install-product-sensor-mesh-blob install-product-sensor-mesh-blob--b" />
+                  <span className="install-product-sensor-mesh-blob install-product-sensor-mesh-blob--c" />
+                  <span className="install-product-sensor-mesh-blob install-product-sensor-mesh-blob--d" />
+                  <span className="install-product-sensor-mesh-grid" />
+                </span>
+                <span className="install-product-sensor-image-stage">
+                  <img
+                    src={SENSOR_MANIFOLD_IMAGE}
+                    alt="AC Drain Wiz Standard Sensor Switch on Transparent T-Manifold"
+                    className="install-product-image install-product-image-contain"
+                  />
+                </span>
               </Link>
               <div className="install-product-card-body">
                 <span className="install-product-badge install-product-badge-physical">Overflow protection</span>
@@ -203,17 +214,37 @@ export function InstallationSetupPage() {
               </div>
             </div>
 
-            <div className="install-product-card">
+            <div className="install-product-card install-product-card-wifi">
               <Link
                 to={buildSensorSetupHref({ model: 'wifi', step: 1 })}
-                className="install-product-image-area"
+                className="install-product-image-area install-product-image-area-sensor install-product-image-area-sensor-wifi"
                 aria-label={`Start ${SENSOR_WIFI_SHORT} setup guide`}
               >
-                <img
-                  src="/images/setup/model-wifi.png"
-                  alt=""
-                  className="install-product-image install-product-image-contain"
-                />
+                <span className="install-product-sensor-mesh" aria-hidden>
+                  <span className="install-product-sensor-mesh-blob install-product-sensor-mesh-blob--a" />
+                  <span className="install-product-sensor-mesh-blob install-product-sensor-mesh-blob--b" />
+                  <span className="install-product-sensor-mesh-blob install-product-sensor-mesh-blob--c" />
+                  <span className="install-product-sensor-mesh-blob install-product-sensor-mesh-blob--d" />
+                  <span className="install-product-sensor-mesh-grid" />
+                </span>
+                <span className="sensor-variant-card-wifi-badge install-product-sensor-wifi-badge">
+                  <WifiIcon aria-hidden />
+                  <span className="sensor-variant-card-wifi-badge-text">
+                    <span className="sensor-variant-card-wifi-badge-line sensor-variant-card-wifi-badge-line--primary">
+                      WiFi monitoring
+                    </span>
+                    <span className="sensor-variant-card-wifi-badge-line sensor-variant-card-wifi-badge-line--secondary">
+                      {WIFI_REQUIREMENT} · Remote alerts
+                    </span>
+                  </span>
+                </span>
+                <span className="install-product-sensor-image-stage">
+                  <img
+                    src={SENSOR_MANIFOLD_IMAGE}
+                    alt="AC Drain Wiz WiFi Sensor Switch on Transparent T-Manifold"
+                    className="install-product-image install-product-image-contain"
+                  />
+                </span>
               </Link>
               <div className="install-product-card-body">
                 <span className="install-product-badge install-product-badge-smart">Remote monitoring</span>
@@ -257,10 +288,6 @@ export function InstallationSetupPage() {
                     Start {SENSOR_WIFI_SHORT}
                     <ArrowRightIcon className="install-cta-arrow" />
                   </Link>
-                  <p className="install-product-account-note">
-                    <UserCircleIcon className="install-account-note-icon" />
-                    Use the same sign-up flow as in step 1 of this guide before you arrive on site.
-                  </p>
                 </div>
               </div>
             </div>

@@ -9319,17 +9319,17 @@ a.code-official-product-cta {
 }
 
 .support-picker-image-area {
-  @apply w-full bg-gray-100 overflow-hidden flex-shrink-0;
-  height: 239px; /* ~50% taller than original 160px */
+  @apply w-full overflow-hidden flex-shrink-0 flex items-center justify-center bg-black;
+  height: 360px;
 }
 
 .support-picker-image {
-  @apply w-full h-full object-cover;
+  @apply w-full h-full object-contain p-3;
 }
 
 .support-picker-icon-area {
   @apply w-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 flex-shrink-0;
-  height: 239px; /* match support-picker-image-area */
+  height: 360px; /* match support-picker-image-area */
 }
 
 .support-picker-icon {
@@ -9549,10 +9549,148 @@ a.code-official-product-cta {
   @apply object-contain p-4;
 }
 
+.install-product-image-area-sensor {
+  position: relative;
+  isolation: isolate;
+  height: 520px;
+  /* Matches .mini-specs-compliance dark mesh plate */
+  background: radial-gradient(120% 100% at 50% 0%, #0b1220 0%, #050a14 65%, #020509 100%);
+  border-bottom: 1px solid rgb(148 163 184 / 0.18);
+}
+
+/* Standard: clip mesh to the plate. WiFi: leave visible so the badge can overlap the card top. */
+.install-product-image-area-sensor-standard {
+  overflow: hidden;
+}
+
+.install-product-image-area-sensor-wifi {
+  overflow: visible;
+  /* Card itself is overflow:visible for the badge — keep top corners rounded on the plate */
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+/* Dark mesh — scaled-down twin of .mini-specs-compliance-mesh */
+.install-product-sensor-mesh {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.install-product-sensor-mesh-blob {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  filter: blur(48px);
+  opacity: 0.7;
+  mix-blend-mode: screen;
+}
+
+.install-product-sensor-mesh-blob--a {
+  width: 18rem;
+  height: 18rem;
+  top: -22%;
+  left: -14%;
+  background: radial-gradient(circle at 30% 30%, rgba(14, 165, 233, 0.55), rgba(14, 165, 233, 0) 70%);
+  animation: mini-hero-v2-drift-a 22s ease-in-out infinite;
+}
+
+.install-product-sensor-mesh-blob--b {
+  width: 15rem;
+  height: 15rem;
+  top: 10%;
+  right: -16%;
+  background: radial-gradient(circle at 50% 50%, rgba(34, 211, 238, 0.45), rgba(34, 211, 238, 0) 70%);
+  animation: mini-hero-v2-drift-b 26s ease-in-out infinite;
+}
+
+.install-product-sensor-mesh-blob--c {
+  width: 13rem;
+  height: 13rem;
+  bottom: -20%;
+  left: 6%;
+  background: radial-gradient(circle at 50% 50%, rgba(232, 93, 31, 0.28), rgba(232, 93, 31, 0) 70%);
+  animation: mini-hero-v2-drift-c 30s ease-in-out infinite;
+}
+
+.install-product-sensor-mesh-blob--d {
+  width: 11rem;
+  height: 11rem;
+  bottom: -10%;
+  right: 10%;
+  background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.32), rgba(99, 102, 241, 0) 70%);
+  animation: mini-hero-v2-drift-d 34s ease-in-out infinite;
+}
+
+.install-product-sensor-mesh-grid {
+  position: absolute;
+  inset: -12% -8%;
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    rgb(0 0 0 / 1) 18%,
+    rgb(0 0 0 / 1) 82%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    rgb(0 0 0) 18%,
+    rgb(0 0 0) 82%,
+    transparent
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .install-product-sensor-mesh-blob--a,
+  .install-product-sensor-mesh-blob--b,
+  .install-product-sensor-mesh-blob--c,
+  .install-product-sensor-mesh-blob--d {
+    animation: none;
+  }
+}
+
+/* Shared image stage — same footprint for Standard and WiFi */
+.install-product-sensor-image-stage {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem 0.75rem;
+  box-sizing: border-box;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.install-product-sensor-image-stage .install-product-image {
+  @apply w-full h-full object-contain p-0;
+}
+
+.install-product-sensor-wifi-badge {
+  position: absolute;
+  top: -0.7rem;
+  left: 50%;
+  z-index: 5;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
 /* Individual product card */
 .install-product-card {
   @apply bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden
          hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col;
+}
+
+.install-product-card.install-product-card-wifi {
+  overflow: visible;
 }
 
 /* Image area — tall placeholder or real img (often a Link to the install guide) */
@@ -9561,6 +9699,11 @@ a.code-official-product-cta {
          transition-opacity hover:opacity-95
          focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500;
   height: 317px; /* ~32% taller than original 240px */
+}
+
+/* WiFi badge must break out above the plate; mesh clips itself instead */
+.install-product-image-area.install-product-image-area-sensor-wifi {
+  overflow: visible;
 }
 
 .install-product-image-placeholder {
@@ -9579,6 +9722,10 @@ a.code-official-product-cta {
 /* Real product image (used once photos are provided) */
 .install-product-image {
   @apply w-full h-full object-cover;
+}
+
+.install-product-image.install-product-image-contain {
+  @apply object-contain;
 }
 
 /* Card body — content below the image */
@@ -9658,16 +9805,6 @@ a.code-official-product-cta {
 .install-product-cta-secondary {
   @apply w-full text-center text-blue-600 font-medium text-sm py-2 px-6 rounded-xl
          border border-blue-200 hover:bg-blue-50 transition-colors duration-200 cursor-pointer;
-}
-
-/* Account note below sensor CTA */
-.install-product-account-note {
-  @apply flex items-center gap-1.5 text-xs text-amber-700 bg-amber-50
-         border border-amber-200 rounded-lg px-3 py-2;
-}
-
-.install-account-note-icon {
-  @apply h-4 w-4 flex-shrink-0 text-amber-500;
 }
 
 /* Additional Resources section */
@@ -9810,11 +9947,13 @@ a.code-official-product-cta {
 }
 
 .support-section-related-links {
-  @apply flex flex-wrap gap-4;
+  @apply flex flex-wrap gap-3;
 }
 
 .support-section-related-link {
-  @apply px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium;
+  @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm
+         border border-gray-200 bg-white text-gray-700 no-underline
+         hover:bg-gray-50 hover:border-gray-300 hover:text-gray-900 transition-colors;
 }
 
 /* Product Support Page */
@@ -9918,7 +10057,7 @@ a.code-official-product-cta {
 }
 
 .support-section-cta-box {
-  @apply bg-gray-50 rounded-lg p-6;
+  @apply bg-blue-50 border border-blue-100 rounded-lg p-6 mt-10;
 }
 
 .support-section-cta-text {
@@ -18612,9 +18751,13 @@ a.code-official-product-cta {
 }
 
 .sensor-setup-installation-step-image {
-  @apply w-full h-auto rounded-lg shadow-md;
+  height: auto;
+  width: 100%;
+  border-radius: 0.5rem;
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   max-height: 500px;
-  object-fit: contain;
 }
 
 .sensor-setup-installation-note {
@@ -18667,13 +18810,17 @@ a.code-official-product-cta {
 }
 
 .sensor-setup-wifi-step-image-wrapper {
-  @apply w-full max-w-md mx-auto md:mx-0;
+  @apply w-full;
 }
 
 .sensor-setup-wifi-step-image {
-  @apply w-full h-auto rounded-lg shadow-lg border-4 border-gray-200;
-  max-height: 600px;
-  object-fit: contain;
+  height: auto;
+  width: 100%;
+  border-radius: 0.5rem;
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  max-height: 500px;
 }
 
 .sensor-setup-wifi-note {
@@ -19485,50 +19632,89 @@ a.code-official-product-cta {
   @apply text-primary-600 font-semibold text-base;
 }
 
-/* Header */
-.sensor-setup-wizard-header {
+/* Shared setup wizard header (mini + sensor) */
+.setup-wizard-header {
   @apply bg-white border-b border-gray-200 sticky top-0 z-50;
 }
 
-.sensor-setup-wizard-header-content {
+.setup-wizard-header-content {
   @apply container mx-auto px-4 py-4 max-w-4xl;
 }
 
-.sensor-setup-wizard-header-back-link {
-  @apply mb-4;
+.setup-wizard-breadcrumb {
+  @apply flex flex-wrap items-center text-sm text-gray-600 mb-4;
 }
 
-.sensor-setup-wizard-header-back-link-content {
-  @apply flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors;
+.setup-wizard-breadcrumb-link {
+  @apply text-blue-600 hover:text-blue-700 transition-colors;
 }
 
-.sensor-setup-wizard-header-back-link-icon {
-  @apply h-4 w-4;
+.setup-wizard-breadcrumb-separator {
+  @apply mx-2 text-gray-400;
 }
 
-.sensor-setup-wizard-header-top {
-  @apply flex items-center justify-between mb-4;
+.setup-wizard-breadcrumb-current {
+  @apply text-gray-900 font-medium;
 }
 
-.sensor-setup-wizard-header-brand {
-  @apply flex items-center space-x-2 min-w-0 flex-1 mr-2;
+.setup-wizard-breadcrumb-tail {
+  @apply inline-flex items-center max-sm:hidden;
 }
 
-.sensor-setup-wizard-header-logo-link {
-  @apply flex items-center;
+.setup-wizard-header-top {
+  @apply grid gap-x-3 gap-y-1.5 sm:gap-x-4 sm:gap-y-1 mb-4 min-w-0;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    "logo . step"
+    "title title title"
+    "subtitle subtitle subtitle";
 }
 
-.sensor-setup-wizard-header-logo {
-  @apply h-8 w-auto;
+@media (min-width: 640px) {
+  .setup-wizard-header-top {
+    grid-template-areas:
+      "logo title step"
+      "logo subtitle .";
+  }
 }
 
-.sensor-setup-wizard-header-title {
-  @apply text-base sm:text-lg font-semibold text-gray-900 leading-snug;
+.setup-wizard-logo-slot {
+  grid-area: logo;
 }
 
-.sensor-setup-wizard-header-step-indicator {
-  @apply text-sm text-gray-600 flex-shrink-0;
+.setup-wizard-title-slot {
+  grid-area: title;
 }
+
+.setup-wizard-step-slot {
+  grid-area: step;
+}
+
+.setup-wizard-subtitle-slot {
+  grid-area: subtitle;
+}
+
+.setup-wizard-logo-link {
+  @apply flex shrink-0 items-center self-center sm:items-start sm:pt-1;
+}
+
+.setup-wizard-logo {
+  @apply h-7 w-auto sm:h-9;
+}
+
+.setup-wizard-primary-title {
+  @apply text-xl sm:text-3xl font-bold text-gray-900 leading-tight;
+}
+
+.setup-wizard-step-label {
+  @apply text-sm sm:text-base text-gray-600 leading-snug sm:mt-1;
+}
+
+.setup-wizard-step-indicator {
+  @apply text-xs sm:text-sm text-gray-600 flex-shrink-0 self-center sm:self-start sm:pt-1.5 whitespace-nowrap;
+}
+
+/* Header — shell classes pair with shared .setup-wizard-header* rules above */
 
 .sensor-setup-wizard-progress-bars-container {
   @apply flex gap-2 w-full;
@@ -21608,53 +21794,9 @@ a.code-official-product-cta {
    from sensor-setup-* for independent future styling.
    ============================================================ */
 
-/* Mini Setup Wizard Shell (header, content, nav, progress) ---- */
+/* Mini Setup Wizard Shell (content, nav, progress) ---- */
 .mini-setup-wizard-container {
   @apply min-h-screen bg-gray-50;
-}
-
-.mini-setup-wizard-header {
-  @apply bg-white border-b border-gray-200 sticky top-0 z-50;
-}
-
-.mini-setup-wizard-header-content {
-  @apply container mx-auto px-4 py-4 max-w-4xl;
-}
-
-.mini-setup-wizard-header-back-link {
-  @apply mb-4;
-}
-
-.mini-setup-wizard-header-back-link-content {
-  @apply flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors;
-}
-
-.mini-setup-wizard-header-back-link-icon {
-  @apply h-4 w-4;
-}
-
-.mini-setup-wizard-header-top {
-  @apply flex items-center justify-between mb-4;
-}
-
-.mini-setup-wizard-header-brand {
-  @apply flex items-center space-x-2;
-}
-
-.mini-setup-wizard-header-logo-link {
-  @apply flex items-center;
-}
-
-.mini-setup-wizard-header-logo {
-  @apply h-8 w-auto;
-}
-
-.mini-setup-wizard-header-title {
-  @apply text-lg font-semibold text-gray-900;
-}
-
-.mini-setup-wizard-header-step-indicator {
-  @apply text-sm text-gray-600;
 }
 
 .mini-setup-wizard-progress-bars-container {
@@ -21924,12 +22066,17 @@ a.code-official-product-cta {
 }
 
 .mini-setup-step-image-wrapper {
-  @apply mt-4 rounded-lg overflow-hidden bg-gray-100;
+  @apply mt-4 w-full;
 }
 
 .mini-setup-step-image {
-  @apply w-full h-auto object-cover;
-  max-height: 300px;
+  height: auto;
+  width: 100%;
+  border-radius: 0.5rem;
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  max-height: 500px;
 }
 
 /* Accordions (Step 2) --------------------------------------- */
@@ -22094,7 +22241,7 @@ a.code-official-product-cta {
 
 /* Cure Time Badge ------------------------------------------- */
 .mini-setup-cure-time-badge {
-  @apply inline-flex items-center gap-2 mt-2 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-full text-xs font-medium text-blue-800;
+  @apply inline-flex items-center gap-2 mt-2 mb-4 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-full text-xs font-medium text-blue-800;
 }
 
 .mini-setup-cure-time-badge-icon {

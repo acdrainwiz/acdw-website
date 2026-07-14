@@ -147,6 +147,8 @@ export function Step2MiniInstallation({
   const [internalPrepOpened, setInternalPrepOpened] = useState(false)
   const [internalCureHasBeenOpened, setInternalCureHasBeenOpened] = useState(false)
   const secondAccordionNotifiedRef = useRef(false)
+  const cureAccordionSectionRef = useRef<HTMLDivElement>(null)
+  const cureScrollOnFirstExpandDoneRef = useRef(false)
 
   /** Pulse: parent drives Standard Sensor; Mini uses linear prep → cure when uncontrolled. */
   const pulsePrepEffective =
@@ -167,6 +169,16 @@ export function Step2MiniInstallation({
     }, DELAY_OPEN_PREP_MS)
     return () => clearTimeout(t)
   }, [isSensor, isPrepCureControlled])
+
+  // First expand of Cure & Leak Test: scroll the drawer container to the top of the viewport so the header is visible.
+  useEffect(() => {
+    if (expandedSection !== 'cure' || cureScrollOnFirstExpandDoneRef.current) return
+    cureScrollOnFirstExpandDoneRef.current = true
+    const t = setTimeout(() => {
+      cureAccordionSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 150)
+    return () => clearTimeout(t)
+  }, [expandedSection])
 
   const toggleSection = (section: 'prep' | 'cure') => {
     if (isPrepCureControlled) {
@@ -303,6 +315,7 @@ export function Step2MiniInstallation({
 
       {/* Accordion 2: Cure & Leak Test */}
       <div
+        ref={cureAccordionSectionRef}
         className={`mini-setup-accordion-section ${expandedSection === 'cure' ? 'mini-setup-accordion-section-expanded' : 'mini-setup-accordion-section-collapsed'} ${pulseCureEffective ? 'mini-setup-accordion-section-pulsating' : ''}`}
       >
         <button
