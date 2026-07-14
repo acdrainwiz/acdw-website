@@ -28,6 +28,20 @@ function physicalInstallStepIndex(model: SensorSetupModelSlug | null): number {
   return 2
 }
 
+const STANDARD_STEP_LABELS: Record<number, string> = {
+  1: 'Prepare & Measure',
+  2: 'Cement & install the T manifold',
+  3: 'Set up and mount the sensor',
+}
+
+const WIFI_STEP_LABELS: Record<number, string> = {
+  1: 'Create Account',
+  2: 'Prepare & Measure',
+  3: 'Cement & install the T manifold',
+  4: 'Install sensor and connect Wi‑Fi',
+  5: 'Assign Sensor to Customer',
+}
+
 export function SensorSetupPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [currentStep, setCurrentStep] = useState(1)
@@ -229,6 +243,14 @@ export function SensorSetupPage() {
       ? `${SENSOR_STANDARD_SHORT} Setup`
       : `${SENSOR_WIFI_SHORT} Setup`
 
+  const breadcrumbGuideLabel =
+    urlModel === 'standard' ? 'Standard Sensor Switch Setup' : 'WiFi Sensor Switch Setup'
+
+  const currentStepLabel =
+    urlModel === 'standard'
+      ? STANDARD_STEP_LABELS[currentStep] ?? ''
+      : WIFI_STEP_LABELS[currentStep] ?? ''
+
   return (
     <SetupWizard
       totalSteps={totalSteps}
@@ -238,6 +260,8 @@ export function SensorSetupPage() {
       isContinueDisabled={isContinueDisabled}
       onContinueClick={handleContinueClick}
       headerTitle={wizardHeaderTitle}
+      breadcrumbGuideLabel={breadcrumbGuideLabel}
+      currentStepLabel={currentStepLabel}
     >
       {renderStep()}
     </SetupWizard>

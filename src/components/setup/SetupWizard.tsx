@@ -1,6 +1,7 @@
 import { type ReactNode, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ChevronLeftIcon, ChevronRightIcon, ArrowLeftIcon } from '@heroicons/react/24/outline'
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
+import { PRODUCT_NAMES } from '../../config/acdwKnowledge'
 
 interface SetupWizardProps {
   totalSteps: number
@@ -11,9 +12,15 @@ interface SetupWizardProps {
   backLabel?: string
   isContinueDisabled?: boolean
   onContinueClick?: () => boolean // Returns true if handled, false to proceed normally
-  /** 'sensor' | 'mini' — controls shell class prefix and header title */
+  /** 'sensor' | 'mini' — controls shell class prefix */
   variant?: 'sensor' | 'mini'
-  /** When variant is sensor, overrides the default "Sensor Setup" title (e.g. Standard vs WiFi). */
+  /** Final non-linked breadcrumb crumb (e.g. "Mini Installation"). */
+  breadcrumbGuideLabel: string
+  /** Subtitle under the H1 — current wizard step name. */
+  currentStepLabel: string
+  /** Primary H1 for mini variant; defaults to PRODUCT_NAMES.mini. */
+  productTitle?: string
+  /** Primary H1 for sensor variant (e.g. Standard vs WiFi setup title). */
   headerTitle?: string
 }
 
@@ -27,11 +34,17 @@ export function SetupWizard({
   isContinueDisabled = false,
   onContinueClick,
   variant = 'sensor',
-  headerTitle
+  breadcrumbGuideLabel,
+  currentStepLabel,
+  productTitle,
+  headerTitle,
 }: SetupWizardProps) {
   const prefix = variant === 'mini' ? 'mini-setup-wizard' : 'sensor-setup-wizard'
-  const title =
-    variant === 'mini' ? 'Mini Setup' : headerTitle?.trim() ? headerTitle.trim() : 'Sensor Setup'
+  const primaryTitle =
+    variant === 'mini'
+      ? productTitle?.trim() || PRODUCT_NAMES.mini
+      : headerTitle?.trim() || 'Sensor Setup'
+
   // Scroll to top when step changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -59,7 +72,7 @@ export function SetupWizard({
       // Handler took care of it, don't proceed to next step
       return
     }
-    
+
     // Normal behavior: proceed to next step
     if (currentStep < totalSteps) {
       onStepChange(currentStep + 1)
@@ -69,32 +82,41 @@ export function SetupWizard({
   return (
     <div className={`${prefix}-container`}>
       {/* Header */}
-      <div className={`${prefix}-header`}>
-        <div className={`${prefix}-header-content`}>
-          {/* Back to Support Link */}
-          <div className={`${prefix}-header-back-link`}>
-            <Link to="/support" className={`${prefix}-header-back-link-content`}>
-              <ArrowLeftIcon className={`${prefix}-header-back-link-icon`} />
-              <span>Back to Support</span>
+      <div className={`${prefix}-header setup-wizard-header`}>
+        <div className={`${prefix}-header-content setup-wizard-header-content`}>
+          <nav className="setup-wizard-breadcrumb" aria-label="Breadcrumb">
+            <Link to="/support" className="setup-wizard-breadcrumb-link">
+              Support Center
             </Link>
-          </div>
+            <span className="setup-wizard-breadcrumb-separator" aria-hidden="true">
+              /
+            </span>
+            <Link to="/support/installation-setup" className="setup-wizard-breadcrumb-link">
+              Installation &amp; Setup
+            </Link>
+            <span className="setup-wizard-breadcrumb-tail">
+              <span className="setup-wizard-breadcrumb-separator" aria-hidden="true">
+                /
+              </span>
+              <span className="setup-wizard-breadcrumb-current">{breadcrumbGuideLabel}</span>
+            </span>
+          </nav>
 
-          <div className={`${prefix}-header-top`}>
-            <div className={`${prefix}-header-brand`}>
-              <Link to="/" className={`${prefix}-header-logo-link`}>
-                <img 
-                  src="/images/ac-drain-wiz-logo.png" 
-                  alt="AC Drain Wiz" 
-                  className={`${prefix}-header-logo`}
-                />
-              </Link>
-              <h1 className={`${prefix}-header-title`}>{title}</h1>
-            </div>
-            <div className={`${prefix}-header-step-indicator`}>
+          <div className="setup-wizard-header-top">
+            <Link to="/" className="setup-wizard-logo-link setup-wizard-logo-slot">
+              <img
+                src="/images/ac-drain-wiz-logo.png"
+                alt="AC Drain Wiz"
+                className="setup-wizard-logo"
+              />
+            </Link>
+            <h1 className="setup-wizard-primary-title setup-wizard-title-slot">{primaryTitle}</h1>
+            <div className="setup-wizard-step-indicator setup-wizard-step-slot">
               Step {currentStep} of {totalSteps}
             </div>
+            <p className="setup-wizard-step-label setup-wizard-subtitle-slot">{currentStepLabel}</p>
           </div>
-          
+
           {/* Progress bars — count matches totalSteps (e.g. 2 for Standard sensor, 3 for WiFi) */}
           <div className={`${prefix}-progress-bars-container`}>
             {Array.from({ length: totalSteps }, (_, i) => i + 1).map((step) => (
@@ -112,10 +134,7 @@ export function SetupWizard({
 
       {/* Content with Fade Transition */}
       <div className={`${prefix}-content`}>
-        <div 
-          key={currentStep}
-          className={`${prefix}-content-inner`}
-        >
+        <div key={currentStep} className={`${prefix}-content-inner`}>
           {children}
         </div>
       </div>

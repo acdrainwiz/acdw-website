@@ -7,6 +7,12 @@ import { Step3MiniCompletion } from '../components/setup/steps/Step3MiniCompleti
 
 const TOTAL_STEPS = 3
 
+const MINI_STEP_LABELS: Record<number, string> = {
+  1: 'Prepare & Measure',
+  2: 'Cement & Install',
+  3: 'First Service & Completion',
+}
+
 export function MiniSetupPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [currentStep, setCurrentStep] = useState(1)
@@ -64,6 +70,8 @@ export function MiniSetupPage() {
       onStepChange={handleStepChange}
       continueLabel={currentStep === TOTAL_STEPS ? 'Finish' : 'Continue'}
       isContinueDisabled={currentStep === 2 && !step2SecondAccordionOpened}
+      breadcrumbGuideLabel="Mini Installation"
+      currentStepLabel={MINI_STEP_LABELS[currentStep] ?? ''}
     >
       {renderStep()}
     </SetupWizard>
