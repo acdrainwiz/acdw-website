@@ -1,7 +1,10 @@
-import { type ReactNode, useEffect } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import { PRODUCT_NAMES } from '../../config/acdwKnowledge'
+
+const MOBILE_COMPACT_MQ = '(max-width: 767px)'
+const COMPACT_SCROLL_THRESHOLD_PX = 20
 
 interface SetupWizardProps {
   totalSteps: number
@@ -45,9 +48,34 @@ export function SetupWizard({
       ? productTitle?.trim() || PRODUCT_NAMES.mini
       : headerTitle?.trim() || 'Sensor Setup'
 
-  // Scroll to top when step changes
+  const [isCompact, setIsCompact] = useState(false)
+
+  // Jump to top on step change (instant — avoids fighting html { scroll-behavior: smooth }
+  // and delayed compact while a long scroll-up animation holds the header expanded).
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    setIsCompact(false)
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [currentStep])
+
+  // Mobile-only: full header at page top, compact once scrolled away
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_COMPACT_MQ)
+
+    const updateCompact = () => {
+      if (!mq.matches) {
+        setIsCompact(false)
+        return
+      }
+      setIsCompact(window.scrollY > COMPACT_SCROLL_THRESHOLD_PX)
+    }
+
+    updateCompact()
+    window.addEventListener('scroll', updateCompact, { passive: true })
+    mq.addEventListener('change', updateCompact)
+    return () => {
+      window.removeEventListener('scroll', updateCompact)
+      mq.removeEventListener('change', updateCompact)
+    }
   }, [currentStep])
 
   // Get color for each progress bar based on step (works for 2- or 3-step flows)
@@ -82,7 +110,9 @@ export function SetupWizard({
   return (
     <div className={`${prefix}-container`}>
       {/* Header */}
-      <div className={`${prefix}-header setup-wizard-header`}>
+      <div
+        className={`${prefix}-header setup-wizard-header${isCompact ? ' setup-wizard-header--compact' : ''}`}
+      >
         <div className={`${prefix}-header-content setup-wizard-header-content`}>
           <nav className="setup-wizard-breadcrumb" aria-label="Breadcrumb">
             <Link to="/support" className="setup-wizard-breadcrumb-link">
@@ -118,11 +148,11 @@ export function SetupWizard({
           </div>
 
           {/* Progress bars — count matches totalSteps (e.g. 2 for Standard sensor, 3 for WiFi) */}
-          <div className={`${prefix}-progress-bars-container`}>
+          <div className={`${prefix}-progress-bars-container setup-wizard-progress-bars`}>
             {Array.from({ length: totalSteps }, (_, i) => i + 1).map((step) => (
               <div
                 key={step}
-                className={`${prefix}-progress-bar`}
+                className={`${prefix}-progress-bar setup-wizard-progress-bar`}
                 style={{
                   backgroundColor: getStepColor(step),
                 }}

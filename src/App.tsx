@@ -79,7 +79,7 @@ function AppContent() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       {!hideHeaderFooter && <Header />}
-      <main className={`flex-1 mb-16 md:mb-0 ${!hideHeaderFooter ? 'pt-16' : ''}`}>
+      <main className={`flex-1 ${!hideHeaderFooter ? 'mb-16 md:mb-0 pt-16' : ''}`}>
         <Suspense fallback={<RouteFallback />}>
           <Routes>
               <Route path="/" element={<HomePage />} />
