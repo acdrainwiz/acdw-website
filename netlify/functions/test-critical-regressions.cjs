@@ -82,6 +82,9 @@ const formMocks = {
     initBlobsStores: () => ({ initialized: true }),
     getUnsubscribeStore: () => ({ set: async () => {} }),
   },
+  './utils/csrf-validator': {
+    validateCSRFToken: async () => ({ valid: true }),
+  },
 }
 
 async function testPurchasingDisabledBlocksStripeCalls() {
@@ -222,11 +225,40 @@ async function testUnsubscribeDeliveryFailureReturns502() {
   })
 }
 
+async function testUnsubscribeMissingCsrfIsRejected() {
+  await withMocks({
+    ...formMocks,
+    './utils/csrf-validator': {
+      validateCSRFToken: async () => ({
+        valid: false,
+        reason: 'CSRF token required',
+        details: { message: 'Security token is required for form submission' },
+      }),
+    },
+    './utils/ghl-client': {
+      submitForm: async () => {
+        throw new Error('GHL should not be called without CSRF')
+      },
+    },
+  }, async () => {
+    const { handler } = require(path.join(functionsDir, 'validate-unsubscribe.js'))
+    const body = new URLSearchParams({
+      email: 'ada@example.com',
+      reason: 'not-relevant',
+    })
+
+    const response = await handler(event(body.toString(), '/.netlify/functions/validate-unsubscribe'), {})
+    assert.strictEqual(response.statusCode, 400)
+    assert.strictEqual(JSON.parse(response.body).error, 'CSRF token required')
+  })
+}
+
 async function run() {
   await testPurchasingDisabledBlocksStripeCalls()
   await testMiniUsesListPriceForProRoles()
   await testFormDeliveryFailureReturns502()
   await testUnsubscribeDeliveryFailureReturns502()
+  await testUnsubscribeMissingCsrfIsRejected()
   console.log('critical regression tests passed')
 }
 

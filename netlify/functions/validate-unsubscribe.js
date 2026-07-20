@@ -16,6 +16,7 @@ const { validateSubmissionBehavior } = require('./utils/behavioral-analysis')
 const { validateEmailDomain } = require('./utils/email-domain-validator')
 const { initBlobsStores, getUnsubscribeStore } = require('./utils/blobs-store')
 const { getSecurityHeaders } = require('./utils/cors-config')
+const { validateCSRFToken } = require('./utils/csrf-validator')
 const ghlClient = require('./utils/ghl-client')
 
 // Comma-separated origin allowlist for preview/branch deploys. Supports glob `*`.
