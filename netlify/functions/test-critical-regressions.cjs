@@ -208,7 +208,6 @@ async function run() {
   })
 
   const stripeRecorder = {}
-  const { handler: getPriceId } = loadFunction('get-price-id.js', paymentMocks(stripeRecorder))
   const miniResponse = await withEnv(
     {
       PURCHASING_ENABLED: 'true',
@@ -216,11 +215,14 @@ async function run() {
       STRIPE_PRICE_MINI_HOMEOWNER: 'price_mini_homeowner',
       STRIPE_PRICE_MINI_HVAC_T1: 'price_wrong_contractor',
     },
-    () => getPriceId({
-      httpMethod: 'POST',
-      headers: { 'user-agent': 'test' },
-      body: JSON.stringify({ product: 'mini', quantity: 600, role: 'hvac_pro' }),
-    }, {})
+    () => {
+      const { handler: getPriceId } = loadFunction('get-price-id.js', paymentMocks(stripeRecorder))
+      return getPriceId({
+        httpMethod: 'POST',
+        headers: { 'user-agent': 'test' },
+        body: JSON.stringify({ product: 'mini', quantity: 600, role: 'hvac_pro' }),
+      }, {})
+    }
   )
   assert.strictEqual(miniResponse.statusCode, 200)
   assert.strictEqual(stripeRecorder.priceId, 'price_mini_homeowner')
@@ -231,11 +233,14 @@ async function run() {
       PURCHASING_ENABLED: 'true',
       STRIPE_PRICE_SENSOR_HVAC_T3: 'price_sensor_hvac_t3',
     },
-    () => getPriceId({
-      httpMethod: 'POST',
-      headers: { 'user-agent': 'test' },
-      body: JSON.stringify({ product: 'sensor', quantity: 600, role: 'hvac_pro' }),
-    }, {})
+    () => {
+      const { handler: getPriceId } = loadFunction('get-price-id.js', paymentMocks())
+      return getPriceId({
+        httpMethod: 'POST',
+        headers: { 'user-agent': 'test' },
+        body: JSON.stringify({ product: 'sensor', quantity: 600, role: 'hvac_pro' }),
+      }, {})
+    }
   )
   assert.strictEqual(cappedSensorResponse.statusCode, 400)
   assert.strictEqual(JSON.parse(cappedSensorResponse.body).requiresContact, true)
