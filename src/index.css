@@ -19723,7 +19723,7 @@ a.code-official-product-cta {
   /* Color is applied inline via style prop based on current step */
 }
 
-/* Mobile: denser full header + scroll-compact chrome (mini + sensor) */
+/* Mobile: denser header + auto-hide on scroll down (mini + sensor) */
 @media (max-width: 767px) {
   .setup-wizard-header-content {
     @apply py-3;
@@ -19737,68 +19737,15 @@ a.code-official-product-cta {
     @apply mb-3;
   }
 
-  .setup-wizard-header--compact .setup-wizard-header-content {
-    @apply py-2;
-  }
-
-  .setup-wizard-header--compact .setup-wizard-breadcrumb {
-    display: none;
-  }
-
-  .setup-wizard-header--compact .setup-wizard-header-top {
-    grid-template-columns: auto 1fr auto;
-    grid-template-areas: "logo subtitle step";
-    align-items: center;
-    margin-bottom: 0.5rem;
-    gap: 0.5rem 0.75rem;
-  }
-
-  .setup-wizard-header--compact .setup-wizard-primary-title {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-  }
-
-  .setup-wizard-header--compact .setup-wizard-logo {
-    @apply h-6;
-  }
-
-  .setup-wizard-header--compact .setup-wizard-logo-link {
-    @apply self-center;
-  }
-
-  .setup-wizard-header--compact .setup-wizard-step-label {
-    @apply text-sm font-semibold text-gray-900 leading-snug truncate m-0;
-  }
-
-  .setup-wizard-header--compact .setup-wizard-step-indicator {
-    @apply text-xs text-gray-500 self-center pt-0;
-  }
-
-  .setup-wizard-header--compact .setup-wizard-progress-bar,
-  .setup-wizard-header--compact .mini-setup-wizard-progress-bar,
-  .setup-wizard-header--compact .sensor-setup-wizard-progress-bar {
-    height: 0.1875rem; /* 3px */
+  .setup-wizard-header--hidden {
+    transform: translateY(-100%);
+    pointer-events: none;
   }
 }
 
 @media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
-  .setup-wizard-header-content {
-    transition: padding 160ms ease;
-  }
-
-  .setup-wizard-header-top {
-    transition: margin 160ms ease, gap 160ms ease;
-  }
-
-  .setup-wizard-logo {
-    transition: height 160ms ease;
+  .setup-wizard-header {
+    transition: transform 280ms ease;
   }
 }
 
