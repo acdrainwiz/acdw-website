@@ -19714,6 +19714,41 @@ a.code-official-product-cta {
   @apply text-xs sm:text-sm text-gray-600 flex-shrink-0 self-center sm:self-start sm:pt-1.5 whitespace-nowrap;
 }
 
+.setup-wizard-progress-bars {
+  @apply flex gap-2 w-full;
+}
+
+.setup-wizard-progress-bar {
+  @apply h-2 rounded-full transition-all duration-300 flex-1;
+  /* Color is applied inline via style prop based on current step */
+}
+
+/* Mobile: denser header + auto-hide on scroll down (mini + sensor) */
+@media (max-width: 767px) {
+  .setup-wizard-header-content {
+    @apply py-3;
+  }
+
+  .setup-wizard-breadcrumb {
+    @apply mb-3;
+  }
+
+  .setup-wizard-header-top {
+    @apply mb-3;
+  }
+
+  .setup-wizard-header--hidden {
+    transform: translateY(-100%);
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .setup-wizard-header {
+    transition: transform 280ms ease;
+  }
+}
+
 /* Header — shell classes pair with shared .setup-wizard-header* rules above */
 
 .sensor-setup-wizard-progress-bars-container {
@@ -21849,6 +21884,26 @@ a.code-official-product-cta {
 
 .mini-setup-wizard-navigation-button-icon {
   @apply h-5 w-5;
+}
+
+/* Mobile: slim sticky Back/Continue bar (overrides py-4 / px-6 above) */
+@media (max-width: 767px) {
+  .sensor-setup-wizard-navigation-content,
+  .mini-setup-wizard-navigation-content {
+    padding-top: 0.5rem;
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
+  }
+
+  .sensor-setup-wizard-navigation-button,
+  .mini-setup-wizard-navigation-button {
+    @apply px-4 py-2;
+    min-height: 2.75rem; /* 44px tap target */
+  }
+
+  .sensor-setup-wizard-navigation-button-icon,
+  .mini-setup-wizard-navigation-button-icon {
+    @apply h-4 w-4;
+  }
 }
 
 /* Mini Setup Step Container & Title (steps 1–3) ------------- */

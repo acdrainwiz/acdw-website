@@ -1,7 +1,11 @@
-import { type ReactNode, useEffect } from 'react'
+import { type ReactNode, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import { PRODUCT_NAMES } from '../../config/acdwKnowledge'
+
+const MOBILE_HEADER_MQ = '(max-width: 767px)'
+const HEADER_ALWAYS_VISIBLE_TOP_PX = 20
+const SCROLL_DIRECTION_THRESHOLD_PX = 8
 
 interface SetupWizardProps {
   totalSteps: number
@@ -45,9 +49,58 @@ export function SetupWizard({
       ? productTitle?.trim() || PRODUCT_NAMES.mini
       : headerTitle?.trim() || 'Sensor Setup'
 
-  // Scroll to top when step changes
+  const [isHeaderHidden, setIsHeaderHidden] = useState(false)
+  const lastScrollYRef = useRef(0)
+
+  // Jump to top on step change (instant — avoids fighting html { scroll-behavior: smooth }
+  // and a delayed reveal while scroll-up animation runs).
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    setIsHeaderHidden(false)
+    lastScrollYRef.current = 0
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [currentStep])
+
+  // Mobile-only: slide header up on scroll down, slide back on scroll up
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_HEADER_MQ)
+
+    const onScroll = () => {
+      if (!mq.matches) {
+        setIsHeaderHidden(false)
+        lastScrollYRef.current = window.scrollY
+        return
+      }
+
+      const currentScrollY = window.scrollY
+      const scrollDelta = currentScrollY - lastScrollYRef.current
+
+      if (currentScrollY <= HEADER_ALWAYS_VISIBLE_TOP_PX) {
+        setIsHeaderHidden(false)
+      } else if (scrollDelta > SCROLL_DIRECTION_THRESHOLD_PX) {
+        setIsHeaderHidden(true)
+      } else if (scrollDelta < -SCROLL_DIRECTION_THRESHOLD_PX) {
+        setIsHeaderHidden(false)
+      }
+
+      lastScrollYRef.current = currentScrollY
+    }
+
+    const onMediaChange = () => {
+      if (!mq.matches) {
+        setIsHeaderHidden(false)
+      }
+      lastScrollYRef.current = window.scrollY
+      onScroll()
+    }
+
+    lastScrollYRef.current = window.scrollY
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    mq.addEventListener('change', onMediaChange)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      mq.removeEventListener('change', onMediaChange)
+    }
   }, [currentStep])
 
   // Get color for each progress bar based on step (works for 2- or 3-step flows)
@@ -82,7 +135,9 @@ export function SetupWizard({
   return (
     <div className={`${prefix}-container`}>
       {/* Header */}
-      <div className={`${prefix}-header setup-wizard-header`}>
+      <div
+        className={`${prefix}-header setup-wizard-header${isHeaderHidden ? ' setup-wizard-header--hidden' : ''}`}
+      >
         <div className={`${prefix}-header-content setup-wizard-header-content`}>
           <nav className="setup-wizard-breadcrumb" aria-label="Breadcrumb">
             <Link to="/support" className="setup-wizard-breadcrumb-link">
@@ -118,11 +173,11 @@ export function SetupWizard({
           </div>
 
           {/* Progress bars — count matches totalSteps (e.g. 2 for Standard sensor, 3 for WiFi) */}
-          <div className={`${prefix}-progress-bars-container`}>
+          <div className={`${prefix}-progress-bars-container setup-wizard-progress-bars`}>
             {Array.from({ length: totalSteps }, (_, i) => i + 1).map((step) => (
               <div
                 key={step}
-                className={`${prefix}-progress-bar`}
+                className={`${prefix}-progress-bar setup-wizard-progress-bar`}
                 style={{
                   backgroundColor: getStepColor(step),
                 }}
