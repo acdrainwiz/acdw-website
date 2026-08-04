@@ -60,3 +60,8 @@ Use this rule plus `src/config/acdwKnowledge.ts` as the source of truth for prod
 - Keep copy practical, contractor-friendly, and benefit-oriented.
 - Prefer exact product names and approved compatibility language from this rule and `acdwKnowledge.ts`.
 - For FAQs and support text, use the `faq` array and LED definitions in `acdwKnowledge.ts` so site and AI stay aligned.
+
+## UI buttons
+
+- Button roles, tokens, and contrast rules: `DESIGN.md` and internal preview `/style-guide`.
+- Compose canonical `.btn-*` classes (see `.cursor/rules/button-system.mdc`). Do not invent new CTA fill colors.

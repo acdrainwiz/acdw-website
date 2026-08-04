@@ -69,10 +69,10 @@ export function CompareTray() {
                 disabled={items.length < 2}
                 className={cn(
                   'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold shadow-sm transition',
-                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900',
+                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900',
                   items.length < 2
                     ? 'cursor-not-allowed bg-slate-700 text-slate-400'
-                    : 'bg-sky-500 text-white hover:bg-sky-400'
+                    : 'bg-primary-600 text-white hover:bg-primary-700'
                 )}
                 aria-label={
                   items.length < 2

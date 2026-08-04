@@ -480,13 +480,13 @@ export function TermsOfUsePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <button
                 onClick={() => navigate('/contact')}
-                className="btn-secondary w-full"
+                className="btn-muted w-full"
               >
                 Contact Us
               </button>
               <button
                 onClick={() => window.print()}
-                className="btn-secondary w-full"
+                className="btn-muted w-full"
               >
                 Print These Terms
               </button>

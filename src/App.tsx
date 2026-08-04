@@ -53,6 +53,7 @@ const RecommendedInstallationScenariosPage = lazy(() => import('./pages/Recommen
 const EmailSignaturePage = lazy(() => import('./pages/EmailSignaturePage').then(m => ({ default: m.EmailSignaturePage })))
 const TrashTheFloatPage = lazy(() => import('./pages/TrashTheFloatPage').then(m => ({ default: m.TrashTheFloatPage })))
 const ComplimentaryMiniRequestPage = lazy(() => import('./pages/ComplimentaryMiniRequestPage').then(m => ({ default: m.ComplimentaryMiniRequestPage })))
+const StyleGuidePage = lazy(() => import('./pages/StyleGuidePage').then(m => ({ default: m.StyleGuidePage })))
 const CartPage = lazy(() => import('./pages/CartPage').then(m => ({ default: m.CartPage })))
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage').then(m => ({ default: m.CheckoutPage })))
 const CheckoutSuccessPage = lazy(() => import('./pages/CheckoutSuccessPage').then(m => ({ default: m.CheckoutSuccessPage })))
@@ -127,6 +128,8 @@ function AppContent() {
                     <Route path="/trash-the-float" element={<TrashTheFloatPage />} />
                     <Route path="/complimentary-mini" element={<ComplimentaryMiniRequestPage />} />
                     <Route path="/complimentary-mini/confirmed" element={<ComplimentaryMiniRequestPage />} />
+                    {/* Internal style guide — not linked in site nav */}
+                    <Route path="/style-guide" element={<StyleGuidePage />} />
             </Routes>
         </Suspense>
           </main>

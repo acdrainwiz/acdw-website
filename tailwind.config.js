@@ -60,6 +60,9 @@ export default {
         acdw: {
           orange: '#FF4E00',
           orangeHover: '#E64500',
+          /* WCAG AA fills for solid orange CTAs + white text */
+          orangeButton: '#DF3601',
+          orangeButtonHover: '#C93001',
           yellow: '#FFC300',
           navy: '#001A35',
           lightBlue: '#00B8F5',
