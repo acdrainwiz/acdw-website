@@ -85,6 +85,9 @@
     --sidebar-ring: oklch(0.708 0 0);
     --acdw-orange: #ff4e00;
     --acdw-orange-soft: rgb(255 78 0 / 0.12);
+    /* WCAG AA solid orange CTAs (white text): 4.5:1 / hover 5.38:1 */
+    --acdw-orange-button: #df3601;
+    --acdw-orange-button-hover: #c93001;
     --acdw-yellow: #ffc300;
     --acdw-yellow-soft: rgb(255 195 0 / 0.16);
     --acdw-white: #e4ecf5;
@@ -129,20 +132,95 @@
 }
 
 @layer components {
+  /*
+   * ACDW button system (canonical)
+   * Roles: primary | secondary (outline) | muted | accent | accent-soft |
+   *        inverse | inverse-outline | ghost | destructive
+   * Sizes: sm | md | lg
+   * See DESIGN.md and /style-guide
+   */
   .btn {
-    @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+    @apply inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:pointer-events-none;
   }
 
+  .btn:disabled,
+  .btn[aria-disabled='true'] {
+    @apply cursor-not-allowed bg-gray-300 text-gray-600 opacity-100 shadow-none hover:bg-gray-300 active:bg-gray-300;
+  }
+
+  /* Primary — solid blue (site default CTA) */
   .btn-primary {
     @apply btn bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800;
   }
 
+  /* Secondary — blue outline (marketing / product secondary) */
   .btn-secondary {
+    @apply btn border border-primary-600 bg-transparent text-primary-600 hover:bg-primary-50 active:bg-primary-100;
+  }
+
+  /* Alias: legacy name for blue outline */
+  .btn-outline {
+    @apply btn-secondary;
+  }
+
+  /* Muted — slate fill (quiet form/secondary actions) */
+  .btn-muted {
     @apply btn bg-secondary-100 text-secondary-900 hover:bg-secondary-200 active:bg-secondary-300;
   }
 
-  .btn-outline {
-    @apply btn border border-primary-600 text-primary-600 hover:bg-primary-50 active:bg-primary-100;
+  /* Accent — WCAG AA brand orange (#DF3601) */
+  .btn-accent {
+    @apply btn text-white;
+    background-color: var(--acdw-orange-button);
+  }
+  .btn-accent:hover {
+    background-color: var(--acdw-orange-button-hover);
+  }
+  .btn-accent:active {
+    background-color: var(--acdw-orange-button-hover);
+  }
+  .btn-accent:focus-visible {
+    --tw-ring-color: var(--acdw-yellow);
+  }
+
+  /* Accent soft — translucent orange on dark surfaces only */
+  .btn-accent-soft {
+    @apply btn text-white;
+    border: 2px solid var(--acdw-orange);
+    background-color: var(--acdw-orange-soft);
+  }
+  .btn-accent-soft:hover {
+    background-color: rgb(255 78 0 / 0.24);
+    border-color: rgb(255 106 56 / 0.96);
+  }
+  .btn-accent-soft:focus-visible {
+    --tw-ring-color: var(--acdw-yellow);
+  }
+
+  /* Inverse — white fill on dark heroes/bands */
+  .btn-inverse {
+    @apply btn bg-white text-primary-700 hover:bg-primary-50 active:bg-primary-100;
+  }
+
+  /* Inverse outline — white border on dark surfaces */
+  .btn-inverse-outline {
+    @apply btn border-2 border-white bg-transparent text-white hover:bg-white/10 active:bg-white/20;
+  }
+
+  /* Ghost — text + underline tertiary */
+  .btn-ghost {
+    @apply btn border-0 bg-transparent px-0 text-acdw-navy underline decoration-acdw-navy/30 underline-offset-4 hover:text-acdw-orange hover:decoration-acdw-orange;
+  }
+  .btn-ghost-on-dark {
+    @apply btn border-0 bg-transparent px-0 text-white/90 underline decoration-white/40 underline-offset-4 hover:text-white hover:decoration-white;
+  }
+
+  /* Destructive — unsubscribe / sign-out */
+  .btn-destructive {
+    @apply btn bg-red-600 text-white hover:bg-red-700 active:bg-red-800;
+  }
+  .btn-destructive-outline {
+    @apply btn border border-red-600 bg-transparent text-red-600 hover:bg-red-50 active:bg-red-100;
   }
 
   .btn-lg {
@@ -764,59 +842,20 @@
   }
 
   .hero-primary-button {
-    @apply btn btn-lg bg-white text-primary-700 hover:bg-primary-50 flex items-center justify-center gap-2 px-6 py-4;
+    @apply btn-inverse btn-lg flex items-center justify-center gap-2 px-6 py-4;
     @apply w-full sm:w-auto min-w-[160px];
   }
 
-  /* Brand accent CTA — official orange on dark hero (paired with primary white pill) */
+  /* Brand accent CTA — soft orange on dark hero (composes .btn-accent-soft) */
   .hero-accent-cta {
-    @apply btn btn-lg inline-flex items-center justify-center px-6 py-4 font-medium;
+    @apply btn-accent-soft btn-lg px-6 py-4 font-medium;
     @apply w-full sm:w-auto min-w-[160px];
     align-self: center;
-    cursor: pointer;
-    color: #ffffff;
-    border: 2px solid var(--acdw-orange);
-    background-color: var(--acdw-orange-soft);
-    transition:
-      background-color 0.3s cubic-bezier(0.32, 0.72, 0.16, 1),
-      border-color 0.28s ease,
-      box-shadow 0.28s ease;
+    box-shadow: none;
   }
 
   .hero-accent-cta:hover {
-    background-color: rgb(255 78 0 / 0.24);
-    border-color: rgb(255 106 56 / 0.96);
     box-shadow: 0 0 0 1px rgb(255 195 0 / 0.22);
-  }
-
-  .hero-accent-cta:focus-visible {
-    outline: 2px solid var(--acdw-yellow);
-    outline-offset: 3px;
-  }
-
-  .hero-secondary-button {
-    @apply btn btn-lg border-2 border-white text-white hover:bg-white hover:text-primary-700;
-    @apply flex items-center justify-center px-6 py-4;
-    @apply disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-white;
-    @apply w-full sm:w-auto;
-    /* WCAG AA compliant: white text (#FFFFFF) on black background (#000000) = 21:1 contrast ratio */
-    color: #FFFFFF;
-  }
-
-  .hero-secondary-button-disabled {
-    @apply cursor-not-allowed;
-    /* Maintain WCAG AA compliance even when disabled - white text remains visible on black background */
-    opacity: 0.7;
-  }
-
-  .hero-secondary-button-text {
-    @apply text-sm sm:text-base font-semibold leading-tight;
-    @apply whitespace-nowrap;
-  }
-
-  .hero-secondary-button-badge {
-    @apply text-base font-semibold text-white uppercase tracking-wide;
-    @apply whitespace-nowrap;
   }
 
   .hero-button-icon {
@@ -890,18 +929,6 @@
 
   .hero-product-cta {
     @apply mt-auto;
-  }
-
-  .hero-product-button {
-    @apply w-full btn bg-white/20 text-white hover:bg-white/30 border border-white/30 flex items-center justify-center;
-  }
-
-  .hero-product-button-featured {
-    @apply bg-white text-blue-700 hover:bg-primary-50 border-white;
-  }
-
-  .hero-product-button-icon {
-    @apply ml-2 h-4 w-4;
   }
 
   /* Trust Section */
@@ -1618,7 +1645,11 @@
   }
 
   .product-showcase-card-cta-secondary {
-    @apply btn border-2 border-white text-white hover:bg-white hover:text-gray-900 px-6 py-3 w-full sm:w-auto justify-center;
+    @apply btn-inverse-outline px-6 py-3 w-full sm:w-auto justify-center;
+  }
+
+  .product-showcase-card-cta-secondary:hover {
+    @apply bg-white text-gray-900;
   }
 
   /* Customer Type Selector Classes */
@@ -1703,15 +1734,15 @@
   }
 
   .customer-type-cta-primary {
-    @apply btn w-full justify-center py-4 text-base font-semibold bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800;
+    @apply btn-primary w-full justify-center py-4 text-base font-semibold;
   }
 
   .customer-type-cta-outline {
-    @apply btn w-full justify-center py-4 text-base font-semibold border border-primary-600 text-primary-600 hover:bg-primary-50 active:bg-primary-100;
+    @apply btn-secondary w-full justify-center py-4 text-base font-semibold;
   }
 
   .customer-type-cta-secondary {
-    @apply btn w-full justify-center py-4 text-base font-semibold border border-indigo-600 text-indigo-600 hover:bg-indigo-50 active:bg-indigo-100;
+    @apply btn-secondary w-full justify-center py-4 text-base font-semibold;
   }
 
   /* Header Classes — fixed (not sticky) so the bar stays visible; sticky was unreliable with overflow-x on ancestors */
@@ -2000,10 +2031,6 @@
 
   .header-signin-link {
     @apply text-sm font-medium text-gray-700 hover:text-primary-600;
-  }
-
-  .header-signup-button {
-    @apply btn btn-primary btn-sm;
   }
 
   .header-mobile-menu-button {
@@ -2377,54 +2404,15 @@
       transform: scale(0.98);
     }
 
-    .header-mobile-auth-button-primary {
-      display: block;
-      width: 100%;
-      padding: 0.875rem 1.5rem;
-      font-size: 1rem;
-      font-weight: 600;
-      text-align: center;
-      text-decoration: none;
-      color: white;
-      background-color: #2563eb;
-      border: none;
-      border-radius: 0.5rem;
-      transition: all 0.2s;
-      min-height: 3rem;
-      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
-    }
-
-    .header-mobile-auth-button-primary:hover {
-      background-color: #1d4ed8;
-      box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
-    }
-
-    .header-mobile-auth-button-primary:active {
-      transform: scale(0.98);
-    }
-
     .header-mobile-auth-button-secondary {
+      @apply btn-muted w-full gap-2 text-base font-medium rounded-lg border border-secondary-300;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
-      width: 100%;
       padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-      font-weight: 500;
       text-align: center;
       text-decoration: none;
-      color: #111827;
-      background-color: white;
-      border: 1px solid #d1d5db;
-      border-radius: 0.5rem;
-      transition: all 0.2s;
       min-height: 3rem;
-    }
-
-    .header-mobile-auth-button-secondary:hover {
-      background-color: #f9fafb;
-      border-color: #9ca3af;
     }
 
     .header-mobile-auth-button-secondary:active {
@@ -2662,10 +2650,6 @@
     @apply mt-6 text-center;
   }
 
-  .signin-benefits-signup-button {
-    @apply w-full btn-outline py-3 px-6 font-semibold text-base;
-  }
-
   .signin-form {
     @apply mt-8 space-y-6;
   }
@@ -2687,7 +2671,7 @@
   }
 
   .signin-form-submit-button {
-    @apply relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply btn-primary relative w-full py-2 px-4 text-sm rounded-md;
   }
 
   .signin-form-loading {
@@ -2744,7 +2728,7 @@
   }
 
   .dashboard-signout-button {
-    @apply px-4 py-2 text-sm font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all transform hover:scale-[1.02];
+    @apply btn-destructive-outline px-4 py-2 text-sm font-semibold border-2 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 hover:text-gray-700 transition-all transform hover:scale-[1.02];
   }
 
   .dashboard-quick-actions-card {
@@ -2787,27 +2771,11 @@
   }
 
   .dashboard-action-button-primary {
-    @apply flex-1 flex items-center justify-center gap-2 px-6 py-4 text-base font-semibold text-white rounded-lg shadow-md transition-all transform hover:scale-[1.02] hover:shadow-lg;
-    background-color: #2563eb;
-  }
-  .dashboard-action-button-primary:hover {
-    background-color: #1d4ed8;
-  }
-  .dashboard-action-button-primary:active {
-    background-color: #1e40af;
+    @apply btn-primary flex-1 gap-2 px-6 py-4 text-base font-semibold rounded-lg shadow-md transition-all transform hover:scale-[1.02] hover:shadow-lg;
   }
 
   .dashboard-action-button-secondary {
-    @apply flex-1 flex items-center justify-center gap-2 px-6 py-4 text-base font-semibold bg-white border-2 rounded-lg transition-all transform hover:scale-[1.02] hover:shadow-md;
-    border-color: #2563eb;
-    color: #2563eb;
-  }
-  .dashboard-action-button-secondary:hover {
-    background-color: #eff6ff;
-    border-color: #1d4ed8;
-  }
-  .dashboard-action-button-secondary:active {
-    background-color: #dbeafe;
+    @apply btn-secondary flex-1 gap-2 px-6 py-4 text-base font-semibold border-2 rounded-lg transition-all transform hover:scale-[1.02] hover:shadow-md;
   }
 
   .dashboard-action-button-icon {
@@ -3213,14 +3181,6 @@
 
   .how-it-works-ctas {
     @apply flex flex-col sm:flex-row gap-4 justify-center items-center;
-  }
-
-  .how-it-works-cta-primary {
-    @apply btn-primary btn-lg px-8;
-  }
-
-  .how-it-works-cta-secondary {
-    @apply btn-outline btn-lg px-8;
   }
 
   /* Benefits Section Styles */
@@ -3696,6 +3656,14 @@
         @apply flex items-center justify-center;
     }
 
+    .social-proof-partner-logo {
+        @apply flex items-center justify-center p-6 sm:p-8 bg-gray-50 rounded-lg border-2 border-gray-200 hover:border-blue-300 transition-colors duration-300 w-full h-full min-h-[7.5rem];
+    }
+
+    .social-proof-partner-logo-img {
+        @apply w-full max-w-[14rem] h-auto object-contain;
+    }
+
     .social-proof-placeholder-logo {
         @apply flex flex-col items-center justify-center text-center p-8 bg-gray-50 rounded-lg border-2 border-gray-200 hover:border-blue-300 transition-colors duration-300 w-full h-full;
     }
@@ -3862,15 +3830,15 @@
   }
 
   .cta-band-btn-primary {
-    @apply bg-white text-blue-600 font-semibold px-8 py-3 rounded-lg hover:bg-blue-50 transition-colors duration-200 inline-flex items-center justify-center w-full sm:w-auto;
+    @apply btn-inverse font-semibold px-8 py-3 rounded-lg w-full sm:w-auto;
   }
 
   .cta-band-btn-secondary {
-    @apply bg-transparent border-2 border-white text-white font-semibold px-8 py-3 rounded-lg hover:bg-white/10 transition-colors duration-200 inline-flex items-center justify-center w-full sm:w-auto;
+    @apply btn-inverse-outline font-semibold px-8 py-3 rounded-lg w-full sm:w-auto;
   }
 
   .cta-band-contractor .cta-band-btn-secondary {
-    @apply border-gray-700 text-gray-700 hover:bg-gray-200;
+    @apply border-gray-700 text-gray-700 hover:bg-gray-200 hover:text-gray-700;
   }
 
   /* Heritage Section Styles */
@@ -4023,7 +3991,7 @@
   }
 
   .heritage-upgrade-cta {
-    @apply px-8 py-3 text-base font-bold bg-orange-600 text-white rounded-lg;
+    @apply btn-accent px-8 py-3 text-base font-bold rounded-lg;
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     align-self: flex-start;
@@ -4031,9 +3999,14 @@
   }
 
   .heritage-upgrade-cta:hover {
-    @apply bg-orange-700;
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .heritage-support-cta {
+    @apply btn-inverse-outline px-6 py-3 text-base font-semibold;
+    align-self: flex-start;
+    margin-top: auto;
   }
 
   /* Support Column Typography */
@@ -4051,22 +4024,6 @@
 
   .heritage-support-description strong {
     @apply text-orange-400 font-semibold;
-  }
-
-  .heritage-support-cta {
-    @apply px-6 py-3 text-base font-semibold;
-    background: transparent;
-    color: rgba(255, 255, 255, 0.9);
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    border-radius: 0.5rem;
-    transition: all 0.2s;
-    align-self: flex-start;
-    margin-top: auto;
-  }
-
-  .heritage-support-cta:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.8);
   }
 
   /* Upgrade Modal */
@@ -4312,8 +4269,8 @@
   }
 
   .upgrade-form-submit {
-    @apply px-8 py-3 text-base font-bold text-white bg-orange-600 rounded-lg;
-    @apply hover:bg-orange-700 transition-all;
+    @apply btn-accent px-8 py-3 text-base font-bold rounded-lg;
+    transition: all 0.2s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
@@ -4362,8 +4319,7 @@
   }
 
   .upgrade-form-success-close {
-    @apply px-8 py-3 text-base font-semibold text-white bg-orange-600 rounded-lg;
-    @apply hover:bg-orange-700 transition-all;
+    @apply btn-accent px-8 py-3 text-base font-semibold rounded-lg;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
@@ -5691,39 +5647,29 @@
   }
 
   .about-cta-primary {
+    @apply btn-inverse font-bold;
     display: inline-flex;
     align-items: center;
     padding: 0.875rem 2rem;
-    background: white;
-    color: #1e40af;
-    font-weight: 700;
     font-size: 0.9375rem;
     border-radius: 0.625rem;
     text-decoration: none;
     transition: background-color 0.15s, color 0.15s;
   }
 
-  .about-cta-primary:hover {
-    background: #f0f9ff;
-  }
-
   .about-cta-secondary {
+    @apply btn-inverse-outline font-semibold;
     display: inline-flex;
     align-items: center;
     padding: 0.875rem 2rem;
-    background: transparent;
-    color: white;
-    font-weight: 600;
     font-size: 0.9375rem;
     border-radius: 0.625rem;
     text-decoration: none;
-    border: 2px solid rgba(255, 255, 255, 0.42);
-    transition: border-color 0.15s, background-color 0.15s;
+    border-color: rgba(255, 255, 255, 0.42);
   }
 
   .about-cta-secondary:hover {
     border-color: white;
-    background: rgba(255, 255, 255, 0.08);
   }
 
 }
@@ -5789,11 +5735,15 @@
 }
 
 .homeowner-hero-cta-primary {
-  @apply btn btn-lg bg-white text-blue-700 hover:bg-blue-50 font-semibold px-8 w-full sm:w-auto justify-center;
+  @apply btn-inverse btn-lg font-semibold px-8 w-full sm:w-auto justify-center;
 }
 
 .homeowner-hero-cta-secondary {
-  @apply btn btn-lg border-2 border-white text-white hover:bg-white hover:text-blue-700 font-semibold px-8 w-full sm:w-auto justify-center;
+  @apply btn-inverse-outline btn-lg font-semibold px-8 w-full sm:w-auto justify-center;
+}
+
+.homeowner-hero-cta-secondary:hover {
+  @apply bg-white text-primary-700;
 }
 
 /* Feature Cards Section - Moved Below Hero */
@@ -5904,11 +5854,11 @@
 
 /* Card CTAs */
 .homeowner-feature-card-cta {
-  @apply mt-2 px-6 py-3 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-colors border border-white/30;
+  @apply btn-inverse-outline mt-2 px-6 py-3 font-semibold rounded-lg border-white/30;
 }
 
 .homeowner-feature-card-cta-primary {
-  @apply bg-orange-500 hover:bg-orange-600 border-orange-500;
+  @apply btn-accent border-transparent;
 }
 
 /* Trust Badges */
@@ -6052,7 +6002,7 @@
 }
 
 .homeowner-cta-watch-video {
-  @apply px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors;
+  @apply btn-primary px-8 py-4 font-semibold rounded-lg;
 }
 
 .homeowner-supporting-tools-container {
@@ -6218,7 +6168,7 @@
 }
 
 .homeowner-product-cta {
-  @apply w-full py-4 bg-orange-500 text-white font-bold text-lg rounded-lg hover:bg-orange-600 transition-colors mb-4;
+  @apply btn-accent w-full py-4 font-bold text-lg rounded-lg mb-4;
 }
 
 .homeowner-product-guarantee {
@@ -6342,7 +6292,7 @@
 }
 
 .homeowner-product-cta {
-  @apply w-full py-3 bg-primary-600 text-white font-semibold text-lg rounded-lg hover:bg-primary-700 transition-colors mb-6;
+  @apply btn-primary w-full py-3 font-semibold text-lg rounded-lg mb-6;
   margin-left: 0;
   margin-right: 0;
 }
@@ -6366,7 +6316,7 @@
 .hvac-product-cta,
 .property-manager-product-cta,
 .code-official-product-cta {
-  @apply py-3 bg-primary-600 text-white font-semibold text-lg rounded-lg hover:bg-primary-700 transition-colors;
+  @apply btn-primary py-3 font-semibold text-lg rounded-lg;
   margin-left: 1.5rem;
   margin-right: 1.5rem;
   margin-bottom: 1.5rem;
@@ -6381,7 +6331,7 @@ a.code-official-product-cta {
 
 .hvac-product-cta-outline,
 .property-manager-product-cta-outline {
-  @apply bg-white text-primary-600 border-2 border-primary-600 hover:bg-primary-50;
+  @apply btn-secondary border-2;
   margin-top: -0.5rem;
 }
 
@@ -6486,11 +6436,11 @@ a.code-official-product-cta {
 }
 
 .homeowner-final-cta-primary {
-  @apply px-8 py-4 bg-orange-500 text-white font-bold text-lg rounded-lg hover:bg-orange-600 transition-colors shadow-lg w-full sm:w-auto inline-flex items-center justify-center;
+  @apply btn-accent px-8 py-4 font-bold text-lg rounded-lg shadow-lg w-full sm:w-auto;
 }
 
 .homeowner-final-cta-secondary {
-  @apply px-8 py-4 bg-white/10 text-white font-semibold text-lg rounded-lg hover:bg-white/20 transition-colors border-2 border-white backdrop-blur-sm w-full sm:w-auto inline-flex items-center justify-center;
+  @apply btn-inverse-outline px-8 py-4 font-semibold text-lg rounded-lg backdrop-blur-sm w-full sm:w-auto;
 }
 
 .homeowner-final-trust-badges {
@@ -6637,7 +6587,7 @@ a.code-official-product-cta {
 }
 
 .promo-form-submit {
-  @apply w-full flex items-center justify-center gap-2 px-6 py-4 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 transition-colors text-base disabled:opacity-50 disabled:cursor-not-allowed;
+  @apply btn-accent w-full gap-2 px-6 py-4 font-semibold rounded-lg text-base;
 }
 
 .promo-form-submit-icon {
@@ -6738,14 +6688,6 @@ a.code-official-product-cta {
 
 .promo-success-actions {
   @apply flex flex-col sm:flex-row gap-4 justify-center;
-}
-
-.promo-success-cta {
-  @apply flex items-center justify-center gap-2 px-8 py-4 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 transition-colors;
-}
-
-.promo-success-cta-icon {
-  @apply h-5 w-5;
 }
 
 .promo-success-link {
@@ -7417,28 +7359,15 @@ a.code-official-product-cta {
 }
 
 .products-showcase-cta-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+  @apply btn-primary font-semibold;
   padding: 0.75rem 1.5rem;
   font-size: 0.9375rem;
-  font-weight: 600;
-  color: white;
-  background: #2563eb;
-  border: none;
   border-radius: 0.5rem;
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
   box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
   min-height: 44px;
 }
 
 .products-showcase-cta-button:hover {
-  background: #1d4ed8;
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.45);
   transform: translateY(-1px);
 }
@@ -7448,15 +7377,17 @@ a.code-official-product-cta {
   height: 1rem;
 }
 
+/* On black showcase: blue outline fails AA — use inverse outline (white) */
 .products-showcase-cta-button-secondary {
-  color: #2563eb;
-  background: white;
-  border: 2px solid #2563eb;
+  @apply btn-inverse-outline border-2 font-semibold;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9375rem;
+  border-radius: 0.5rem;
   box-shadow: none;
+  min-height: 44px;
 }
 
 .products-showcase-cta-button-secondary:hover {
-  background: #eff6ff;
   box-shadow: none;
 }
 
@@ -11348,11 +11279,15 @@ a.code-official-product-cta {
 }
 
 .property-manager-hero-cta-primary {
-  @apply btn btn-lg bg-white text-blue-700 hover:bg-blue-50 font-semibold px-8 w-full sm:w-auto justify-center;
+  @apply btn-inverse btn-lg font-semibold px-8 w-full sm:w-auto justify-center;
 }
 
 .property-manager-hero-cta-secondary {
-  @apply btn btn-lg border-2 border-white text-white hover:bg-white hover:text-blue-700 font-semibold px-8 w-full sm:w-auto justify-center;
+  @apply btn-inverse-outline btn-lg font-semibold px-8 w-full sm:w-auto justify-center;
+}
+
+.property-manager-hero-cta-secondary:hover {
+  @apply bg-white text-primary-700;
 }
 
 /* Problem Section */
@@ -11522,11 +11457,11 @@ a.code-official-product-cta {
 }
 
 .property-manager-solution-cta-primary {
-  @apply bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800;
+  @apply btn-primary;
 }
 
 .property-manager-solution-cta-secondary {
-  @apply bg-gray-700 text-white border border-gray-600 hover:bg-gray-600 active:bg-gray-500;
+  @apply btn-muted border border-secondary-300;
 }
 
 /* Benefits Section */
@@ -11642,11 +11577,15 @@ a.code-official-product-cta {
 }
 
 .property-manager-cta-button-primary {
-  @apply btn btn-lg bg-white text-blue-700 hover:bg-blue-50 font-semibold px-8 w-full sm:w-auto justify-center;
+  @apply btn-inverse btn-lg font-semibold px-8 w-full sm:w-auto justify-center;
 }
 
 .property-manager-cta-button-secondary {
-  @apply btn btn-lg border-2 border-white text-white hover:bg-white hover:text-blue-700 font-semibold px-8 w-full sm:w-auto justify-center;
+  @apply btn-inverse-outline btn-lg font-semibold px-8 w-full sm:w-auto justify-center;
+}
+
+.property-manager-cta-button-secondary:hover {
+  @apply bg-white text-primary-700;
 }
 
 /* ========================================
@@ -11973,7 +11912,7 @@ a.code-official-product-cta {
 }
 
 .unsubscribe-button-primary {
-  @apply bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800;
+  @apply btn-primary;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -11983,12 +11922,11 @@ a.code-official-product-cta {
 }
 
 .unsubscribe-button-secondary {
-  @apply bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300 border border-gray-300;
+  @apply btn-muted border border-secondary-300;
 }
 
 .unsubscribe-button-submit {
-  @apply w-full bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800 disabled:opacity-50 disabled:cursor-not-allowed;
-  @apply px-6 py-3 text-base font-semibold rounded-lg transition-all;
+  @apply btn-primary w-full px-6 py-3 text-base font-semibold rounded-lg;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -11998,7 +11936,7 @@ a.code-official-product-cta {
 }
 
 .unsubscribe-button-destructive {
-  @apply bg-red-600 text-white hover:bg-red-700 active:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed;
+  @apply btn-destructive;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -12251,11 +12189,9 @@ a.code-official-product-cta {
 }
 
 .hvac-pro-checkout-button {
-  @apply w-full px-6 py-4 bg-primary-600 text-white font-semibold rounded-lg;
-  @apply hover:bg-primary-700 active:bg-primary-800;
-  @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  @apply btn-primary w-full px-6 py-4 font-semibold rounded-lg;
   @apply transition-all duration-200 transform hover:scale-[1.02];
-  @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
+  @apply disabled:transform-none;
   @apply text-base;
 }
 
@@ -12748,7 +12684,7 @@ a.code-official-product-cta {
 }
 
 .signin-form-submit-button {
-  @apply w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-semibold text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-[1.02];
+  @apply btn-primary w-full py-3 px-4 rounded-lg shadow-sm text-base font-semibold transition-all transform hover:scale-[1.02];
 }
 
 .signin-form-resend-section {
@@ -13054,11 +12990,11 @@ a.code-official-product-cta {
 }
 
 .profile-page-button-primary {
-  @apply px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed;
+  @apply btn-primary px-6 py-3 font-semibold rounded-lg;
 }
 
 .profile-page-button-secondary {
-  @apply px-6 py-3 bg-white border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all;
+  @apply btn-muted border-2 border-secondary-300 px-6 py-3 font-semibold rounded-lg;
 }
 
 .profile-page-button-small {
@@ -13293,11 +13229,11 @@ a.code-official-product-cta {
 }
 
 .checkout-success-button-primary {
-  @apply bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800;
+  @apply btn-primary;
 }
 
 .checkout-success-button-secondary {
-  @apply bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300;
+  @apply btn-muted;
 }
 
 .checkout-success-button-icon {
@@ -13318,9 +13254,7 @@ a.code-official-product-cta {
 }
 
 .checkout-success-account-offer-button {
-  @apply w-full md:w-auto px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg;
-  @apply hover:bg-primary-700 transition-colors flex items-center justify-center gap-2;
-  @apply focus:outline-none focus:ring-2 focus:ring-primary-500;
+  @apply btn-primary w-full md:w-auto px-6 py-3 font-semibold rounded-lg gap-2;
 }
 
 .checkout-success-account-offer-note {
@@ -13874,14 +13808,11 @@ a.code-official-product-cta {
 }
 
 .mini-product-checkout-auth-button {
-  @apply flex-1 py-3 px-4 rounded-lg font-semibold;
-  @apply bg-primary-600 text-white hover:bg-primary-700;
-  @apply transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500;
+  @apply btn-primary flex-1 py-3 px-4 rounded-lg font-semibold;
 }
 
 .mini-product-checkout-auth-button-secondary {
-  @apply bg-white text-primary-600 border-2 border-primary-600;
-  @apply hover:bg-primary-50;
+  @apply btn-secondary border-2;
 }
 
 .mini-product-checkout-role-message {
@@ -13893,9 +13824,7 @@ a.code-official-product-cta {
 }
 
 .mini-product-checkout-role-button {
-  @apply w-full py-3 px-4 rounded-lg font-semibold;
-  @apply bg-primary-600 text-white hover:bg-primary-700;
-  @apply transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500;
+  @apply btn-primary w-full py-3 px-4 rounded-lg font-semibold;
 }
 
 .mini-product-buy-button {
@@ -16301,15 +16230,11 @@ a.code-official-product-cta {
 }
 
 .sensor-product-purchase-button-primary {
-  @apply inline-flex w-full items-center justify-center py-3 px-6 bg-primary-600 text-white font-semibold rounded-lg;
-  @apply hover:bg-primary-700 transition-colors;
-  @apply focus:outline-none focus:ring-2 focus:ring-primary-500;
+  @apply btn-primary w-full py-3 px-6 font-semibold rounded-lg;
 }
 
 .sensor-product-purchase-button-secondary {
-  @apply inline-flex w-full items-center justify-center py-3 px-6 bg-white border-2 border-primary-600 text-primary-600 font-semibold rounded-lg;
-  @apply hover:bg-primary-50 transition-colors;
-  @apply focus:outline-none focus:ring-2 focus:ring-primary-500;
+  @apply btn-secondary w-full border-2 py-3 px-6 font-semibold rounded-lg;
 }
 
 .sensor-product-trust-section-inline {
@@ -17398,9 +17323,7 @@ a.code-official-product-cta {
 }
 
 .sensor-product-install-guide-button {
-  @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-base;
-  @apply bg-primary-600 text-white shadow-md hover:bg-primary-700 hover:shadow-lg transition-all;
-  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2;
+  @apply btn-primary gap-2 px-6 py-3.5 rounded-xl font-semibold text-base shadow-md hover:shadow-lg;
 }
 
 .sensor-product-install-guide-button-icon {
@@ -17408,7 +17331,7 @@ a.code-official-product-cta {
 }
 
 .sensor-product-install-guide-button--secondary {
-  @apply bg-white text-primary-700 border-2 border-primary-200 shadow-sm hover:bg-primary-50 hover:border-primary-300 hover:shadow-md;
+  @apply btn-secondary border-2 border-primary-200 text-primary-700 shadow-sm hover:border-primary-300 hover:shadow-md;
 }
 
 .sensor-product-install-scenarios-note {
@@ -18093,15 +18016,15 @@ a.code-official-product-cta {
 }
 
 .checkout-cancel-button-primary {
-  @apply bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800;
+  @apply btn-primary;
 }
 
 .checkout-cancel-button-secondary {
-  @apply bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300;
+  @apply btn-muted;
 }
 
 .checkout-cancel-button-tertiary {
-  @apply bg-transparent text-gray-600 hover:text-gray-900 border border-gray-300 hover:border-gray-400;
+  @apply btn-secondary border-secondary-300 text-secondary-600 hover:text-secondary-900;
 }
 
 .checkout-cancel-button-icon {
@@ -18111,11 +18034,6 @@ a.code-official-product-cta {
 /* Legal Pages Styling */
 .legal-page-container {
   @apply min-h-screen bg-white;
-}
-
-.legal-page-back-button {
-  @apply inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors mb-4;
-  @apply text-sm font-medium;
 }
 
 .legal-section-title {
@@ -18987,11 +18905,11 @@ a.code-official-product-cta {
 }
 
 .sensor-setup-success-button-primary {
-  @apply bg-primary-600 text-white hover:bg-primary-700 flex items-center justify-center space-x-2;
+  @apply btn-primary flex items-center justify-center space-x-2;
 }
 
 .sensor-setup-success-button-secondary {
-  @apply bg-white border-2 border-primary-600 text-primary-600 hover:bg-primary-50;
+  @apply btn-secondary border-2;
 }
 
 .sensor-setup-success-button-icon {
@@ -19299,15 +19217,15 @@ a.code-official-product-cta {
 }
 
 .sensor-setup-assignment-button-primary {
-  @apply bg-primary-600 text-white hover:bg-primary-700;
+  @apply btn-primary;
 }
 
 .sensor-setup-assignment-button-secondary {
-  @apply bg-white border-2 border-primary-600 text-primary-600 hover:bg-primary-50;
+  @apply btn-secondary border-2;
 }
 
 .sensor-setup-assignment-button-tertiary {
-  @apply bg-gray-100 border border-gray-300 text-gray-700 hover:bg-gray-200 hover:border-gray-400;
+  @apply btn-muted border border-secondary-300;
 }
 
 /* Shared: troubleshooting CTAs after installation wizard completion */
@@ -19803,7 +19721,7 @@ a.code-official-product-cta {
 }
 
 .sensor-setup-wizard-navigation-button-continue.sensor-setup-wizard-navigation-button-enabled {
-  @apply bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800;
+  @apply btn-primary;
 }
 
 .sensor-setup-wizard-navigation-button-disabled {
@@ -19815,7 +19733,7 @@ a.code-official-product-cta {
 }
 
 .sensor-setup-wizard-navigation-button-continue.sensor-setup-wizard-navigation-button-disabled {
-  @apply bg-gray-300 text-gray-500 cursor-not-allowed;
+  @apply btn bg-gray-300 text-gray-600 cursor-not-allowed hover:bg-gray-300;
 }
 
 .sensor-setup-wizard-navigation-button-icon {
@@ -20451,15 +20369,15 @@ a.code-official-product-cta {
 
 /* CTA Buttons */
 .combo-product-cta-primary {
-  @apply inline-flex items-center justify-center text-center w-full sm:w-auto px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
+  @apply btn-inverse w-full sm:w-auto px-8 py-4 rounded-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
 }
 
 .combo-product-cta-secondary {
-  @apply inline-flex items-center justify-center text-center w-full sm:w-auto px-8 py-4 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-all border-2 border-white/20;
+  @apply btn-primary w-full sm:w-auto px-8 py-4 rounded-lg font-semibold border-2 border-white/20;
 }
 
 .combo-product-cta-tertiary {
-  @apply px-8 py-4 bg-transparent text-white rounded-lg font-semibold hover:bg-white/10 transition-all border-2 border-white/30;
+  @apply btn-inverse-outline px-8 py-4 rounded-lg font-semibold border-white/30;
 }
 
 /* Responsive Adjustments */
@@ -20705,9 +20623,7 @@ a.code-official-product-cta {
 
 /* Checkout Button */
 .cart-checkout-button {
-  @apply w-full bg-primary-600 text-white font-semibold py-3.5 rounded-lg;
-  @apply hover:bg-primary-700 transition-colors;
-  @apply mb-6;
+  @apply btn-primary w-full font-semibold py-3.5 rounded-lg mb-6;
 }
 
 /* Trust Indicators */
@@ -20869,7 +20785,7 @@ a.code-official-product-cta {
 
 /* Checkout Button Loading State */
 .cart-checkout-button:disabled {
-  @apply bg-primary-500 cursor-not-allowed;
+  @apply cursor-not-allowed;
 }
 
 .cart-checkout-loading {
@@ -21871,7 +21787,7 @@ a.code-official-product-cta {
 }
 
 .mini-setup-wizard-navigation-button-continue.mini-setup-wizard-navigation-button-enabled {
-  @apply bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800;
+  @apply btn-primary;
 }
 
 .mini-setup-wizard-navigation-button-back.mini-setup-wizard-navigation-button-disabled {
@@ -21879,7 +21795,7 @@ a.code-official-product-cta {
 }
 
 .mini-setup-wizard-navigation-button-continue.mini-setup-wizard-navigation-button-disabled {
-  @apply bg-gray-300 text-gray-500 cursor-not-allowed;
+  @apply btn bg-gray-300 text-gray-600 cursor-not-allowed hover:bg-gray-300;
 }
 
 .mini-setup-wizard-navigation-button-icon {
@@ -21982,15 +21898,15 @@ a.code-official-product-cta {
 }
 
 .mini-setup-assignment-button-primary {
-  @apply bg-primary-600 text-white hover:bg-primary-700;
+  @apply btn-primary;
 }
 
 .mini-setup-assignment-button-secondary {
-  @apply bg-white border-2 border-primary-600 text-primary-600 hover:bg-primary-50;
+  @apply btn-secondary border-2;
 }
 
 .mini-setup-assignment-button-tertiary {
-  @apply bg-gray-100 border border-gray-300 text-gray-700 hover:bg-gray-200 hover:border-gray-400;
+  @apply btn-muted border border-secondary-300;
 }
 
 /* Callouts -------------------------------------------------- */
@@ -23563,43 +23479,23 @@ a.code-official-product-cta {
    ========================================================================== */
 
 /* Primary CTA — orange outlined accent (matches .hero-accent-cta) */
+/* Campaign CTAs compose canonical button roles; layout padding stays in TSX */
 .campaign-cta-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  color: #fff;
-  border: 2px solid var(--acdw-orange);
-  background-color: var(--acdw-orange-soft);
-  transition: background-color 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+  @apply btn-accent-soft font-semibold;
 }
 .campaign-cta-primary:hover {
-  background-color: rgb(255 78 0 / 0.24);
-  border-color: rgb(255 106 56 / 0.96);
   box-shadow: 0 0 0 1px rgb(255 195 0 / 0.22);
-}
-.campaign-cta-primary:focus-visible {
-  outline: 2px solid var(--acdw-yellow);
-  outline-offset: 2px;
 }
 .campaign-cta-primary:disabled {
   opacity: 0.55;
   cursor: not-allowed;
 }
 
-/* Secondary CTA — transparent white outline (matches .cta-band-btn-secondary) */
 .campaign-cta-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  color: #fff;
-  background: transparent;
-  border: 2px solid rgba(255, 255, 255, 0.65);
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  @apply btn-inverse-outline font-semibold;
+  border-color: rgba(255, 255, 255, 0.65);
 }
 .campaign-cta-secondary:hover {
-  background-color: rgba(255, 255, 255, 0.08);
   border-color: #fff;
 }
 .campaign-cta-secondary:focus-visible {
@@ -23607,24 +23503,10 @@ a.code-official-product-cta {
   outline-offset: 2px;
 }
 
-/* Ghost CTA — underline on dark campaign surfaces (landing hero) */
 .campaign-cta-ghost {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem 0.5rem;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.92);
-  background: transparent;
-  border: none;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-color: rgba(255, 255, 255, 0.35);
-  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+  @apply btn-ghost-on-dark px-2 py-3 text-[0.9375rem] font-semibold;
 }
 .campaign-cta-ghost:hover {
-  color: #fff;
   text-decoration-color: var(--acdw-orange);
 }
 .campaign-cta-ghost:focus-visible {
@@ -25753,17 +25635,16 @@ a.code-official-product-cta {
   font-weight: 600;
 }
 
+/* Light surfaces: solid AA accent instead of soft-on-dark */
 .ttf-reentry-modal-panel .campaign-cta-primary {
-  color: #fff;
-  background-color: var(--acdw-orange);
-  border-color: var(--acdw-orange);
+  @apply btn-accent;
+  border-width: 2px;
+  border-color: var(--acdw-orange-button);
   box-shadow: 0 2px 8px rgba(255, 78, 0, 0.22);
 }
 
 .ttf-reentry-modal-panel .campaign-cta-primary:hover {
-  color: #fff;
-  background-color: #e64500;
-  border-color: #ff6a38;
+  border-color: var(--acdw-orange-button-hover);
   box-shadow: 0 4px 16px rgba(255, 78, 0, 0.32);
 }
 
@@ -26235,24 +26116,18 @@ a.code-official-product-cta {
 /* Solid primary on light surfaces — base .campaign-cta-primary is translucent + white (dark heroes) */
 .ttf-page .campaign-cta-primary,
 .ttf-modal-panel .campaign-cta-primary {
-  color: #fff;
-  background-color: var(--acdw-orange);
-  border-color: var(--acdw-orange);
+  @apply btn-accent;
+  border-width: 2px;
+  border-color: var(--acdw-orange-button);
   box-shadow: 0 2px 8px rgba(255, 78, 0, 0.22);
 }
 .ttf-page .campaign-cta-primary:hover,
 .ttf-modal-panel .campaign-cta-primary:hover {
-  color: #fff;
-  background-color: #e64500;
-  border-color: #ff6a38;
+  border-color: var(--acdw-orange-button-hover);
   box-shadow: 0 4px 16px rgba(255, 78, 0, 0.32);
 }
-.ttf-page .campaign-cta-primary:focus-visible,
-.ttf-modal-panel .campaign-cta-primary:focus-visible {
-  outline: 2px solid var(--acdw-yellow);
-  outline-offset: 2px;
-}
 .ttf-page .campaign-cta-ghost {
+  @apply btn-ghost;
   color: var(--ttf-page-ink);
   text-decoration-color: rgba(0, 26, 53, 0.28);
 }

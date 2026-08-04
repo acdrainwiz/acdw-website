@@ -969,13 +969,15 @@ export function Hero() {
           </div>
 
           <div className="social-proof-grid">
-            {/* Partner Placeholder */}
             <div className="social-proof-logo">
-              <div className="social-proof-placeholder-logo">
-                <svg className="social-proof-placeholder-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
-                <p className="social-proof-placeholder-text">Johnson Supply</p>
+              <div className="social-proof-partner-logo">
+                <img
+                  src="/images/partner-logos/johnstone-supply-logo.svg"
+                  alt="Johnstone Supply"
+                  className="social-proof-partner-logo-img"
+                  width={280}
+                  height={50}
+                />
               </div>
             </div>
 

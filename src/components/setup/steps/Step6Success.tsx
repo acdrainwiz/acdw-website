@@ -120,7 +120,7 @@ export function Step6Success({ deviceData }: Step6SuccessProps) {
       <div className="flex flex-col sm:flex-row gap-3">
         <button
           onClick={() => window.open(MONITORING.portalUrl, '_blank')}
-          className="flex-1 bg-primary-600 text-white py-3 px-4 rounded-md font-medium hover:bg-primary-700 transition-colors flex items-center justify-center space-x-2"
+          className="btn-primary flex-1 py-3 px-4 rounded-md font-medium flex items-center justify-center space-x-2"
         >
           <span>View Dashboard</span>
           <ArrowRightIcon className="h-5 w-5" />

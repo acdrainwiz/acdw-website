@@ -225,8 +225,8 @@ export function Step5DeviceRegistration({ onComplete }: Step5DeviceRegistrationP
           className={`
             w-full py-3 px-4 rounded-md font-medium transition-colors
             ${!isFormValid || isRegistering
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-primary-600 text-white hover:bg-primary-700'
+              ? 'btn bg-gray-300 text-gray-600 cursor-not-allowed'
+              : 'btn-primary'
             }
           `}
         >

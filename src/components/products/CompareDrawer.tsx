@@ -242,9 +242,9 @@ function CompareContent({
               className={cn(
                 'inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold transition',
                 meta.highlight
-                  ? 'bg-sky-600 text-white hover:bg-sky-500'
-                  : 'bg-slate-900 text-white hover:bg-slate-800',
-                'focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2'
+                  ? 'btn-primary'
+                  : 'bg-slate-900 text-white hover:bg-slate-800 focus-visible:ring-primary-500',
+                'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2'
               )}
             >
               {meta.cta}

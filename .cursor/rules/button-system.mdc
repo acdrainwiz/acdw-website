@@ -1,0 +1,35 @@
+---
+description: ACDW button style system — use canonical roles for all new/changed buttons
+globs:
+  - src/**/*.{tsx,ts,css}
+alwaysApply: false
+---
+
+# Button system
+
+Living preview: `/style-guide`. Spec: `DESIGN.md`.
+
+## Canonical classes (compose these)
+
+| Role | Class | Use |
+|------|-------|-----|
+| Primary | `.btn-primary` | Default CTA (shop, submit, continue) — `#2563EB` |
+| Secondary | `.btn-secondary` (alias `.btn-outline`) | Outline on light UI |
+| Muted | `.btn-muted` | Quiet form actions |
+| Accent | `.btn-accent` | Brand orange CTAs — `#DF3601` (AA) |
+| Accent soft | `.btn-accent-soft` | Soft orange **on dark only** |
+| Inverse | `.btn-inverse` | White fill on dark bands |
+| Inverse outline | `.btn-inverse-outline` | White border on dark |
+| Ghost | `.btn-ghost` / `.btn-ghost-on-dark` | Tertiary text CTAs |
+| Destructive | `.btn-destructive` | Unsubscribe / sign-out |
+
+Sizes: `.btn-sm` | `.btn-md` | `.btn-lg`
+
+## Rules
+
+1. **Do not invent new button fill colors** (no sky/indigo/Tailwind `orange-500`/`orange-600` for CTAs).
+2. Feature classes may keep layout names (`cta-band-btn-primary`) but **must `@apply` a canonical role** for colors.
+3. Never white text on `#FF4E00` — use `--acdw-orange-button` (`#DF3601`) via `.btn-accent`.
+4. Prefer one primary per view (blue **or** accent orange, not both competing).
+5. **Never `.btn-secondary` on dark/black backgrounds** — blue outline fails AA on black (4.06:1). Use `.btn-inverse-outline` or `.btn-inverse`.
+6. Before adding a new button style, check `/style-guide` and `DESIGN.md`.
