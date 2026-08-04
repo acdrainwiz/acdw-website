@@ -184,7 +184,7 @@ async function run() {
   const { handler: validateUnsubscribe } = loadFunction('validate-unsubscribe.js')
   const unsubscribeBody = new URLSearchParams({
     email: 'ada@example.com',
-    reason: 'no-longer-needed',
+    reason: 'not-relevant',
     'csrf-token': 'token',
   }).toString()
   const unsubscribeResponse = await validateUnsubscribe(postEvent(unsubscribeBody, { path: '/unsubscribe' }), {})
