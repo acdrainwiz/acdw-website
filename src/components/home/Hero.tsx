@@ -8,6 +8,11 @@ import { CustomerTypeSelector } from './CustomerTypeSelector'
 import { isValidEmail } from '../../utils/emailValidation'
 import { useRecaptcha } from '../../hooks/useRecaptcha'
 import { MINI_MANIFOLD_DIMENSIONS_LHD, SENSOR_STANDARD_SHORT, SENSOR_WIFI_SHORT, SUPPORT_CONTACT } from '../../config/acdwKnowledge'
+import {
+  TRUSTED_PARTNERS,
+  TRUSTED_PARTNERS_FOOTER,
+  TRUSTED_PARTNERS_TITLE,
+} from '../../config/trustedPartners'
 import { MiniDiscoveryCTA, MiniPriceText } from '../products/MiniDiscoveryCTA'
 import { MINI_HOME_CARD, MINI_HOME_INTRO } from '../../config/miniHomeCopy'
 import { MiniConfigShowcase } from './MiniConfigShowcase'
@@ -965,47 +970,33 @@ export function Hero() {
       <div ref={socialProofRef} className="social-proof-container">
         <div className="social-proof-content">
           <div className="social-proof-header">
-            <h2 className="social-proof-title">Trusted Partners & Press Coverage</h2>
+            <h2 className="social-proof-title">{TRUSTED_PARTNERS_TITLE}</h2>
           </div>
 
           <div className="social-proof-grid">
-            <div className="social-proof-logo">
-              <div className="social-proof-partner-logo">
-                <img
-                  src="/images/partner-logos/johnstone-supply-logo.svg"
-                  alt="Johnstone Supply"
-                  className="social-proof-partner-logo-img"
-                  width={280}
-                  height={50}
-                />
+            {TRUSTED_PARTNERS.map((partner) => (
+              <div key={partner.id} className="social-proof-logo">
+                {partner.logoSrc ? (
+                  <div className="social-proof-partner-logo">
+                    <img
+                      src={partner.logoSrc}
+                      alt={partner.name}
+                      className="social-proof-partner-logo-img"
+                      width={partner.logoWidth ?? 280}
+                      height={partner.logoHeight ?? 50}
+                    />
+                  </div>
+                ) : (
+                  <div className="social-proof-placeholder-logo">
+                    <p className="social-proof-placeholder-text">{partner.name}</p>
+                  </div>
+                )}
               </div>
-            </div>
-
-            {/* Partner Placeholder */}
-            <div className="social-proof-logo">
-              <div className="social-proof-placeholder-logo">
-                <svg className="social-proof-placeholder-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
-                <p className="social-proof-placeholder-text">Ferguson Enterprises</p>
-              </div>
-            </div>
-
-            {/* Partner Placeholder */}
-            <div className="social-proof-logo">
-              <div className="social-proof-placeholder-logo">
-                <svg className="social-proof-placeholder-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
-                <p className="social-proof-placeholder-text">M&A Supply Co.</p>
-              </div>
-            </div>
+            ))}
           </div>
 
           <div className="social-proof-footer">
-            <p className="social-proof-footer-text">
-              Featured in leading HVAC trade publications and recommended by inspectors nationwide.
-            </p>
+            <p className="social-proof-footer-text">{TRUSTED_PARTNERS_FOOTER}</p>
           </div>
         </div>
       </div>

@@ -26,19 +26,25 @@
  * unit, like an SVG exported from Illustrator, while still being real
  * HTML for accessibility / theming / copy edits.
  *
- * Wire routing (in viewBox 1280x640):
+ * Wire routing (in viewBox 1280x640) — function-first (jacket colors may vary):
  *   - All four wires exit the sensor base near (615..665, ~275).
  *   - Wire endpoints extend to the top edge of each terminal dot (y≈461.5
  *     in viewBox): card top y=440 + border/padding in cqi-mapped units.
- *   - Inner-target wires (Black, White) sit at the deeper horizontal
- *     level (y=415). Outer-target wires (Red, Yellow) sit at the
- *     shallower level (y=385). This avoids any wire crossings.
+ *   - Control card is LEFT; Power card is RIGHT.
+ *   - Outer-target wires (Safety Input, Common) sit at the shallower
+ *     horizontal level (y=385). Inner-target wires (Safety Common, Hot)
+ *     sit deeper (y=415) so same-side pairs do not tangle. Control and
+ *     power groups cross the center.
  *   - Wire endpoints land at x positions that match the terminal dots
- *     inside the cards (HOT=95, COMMON=245, SAFETY INPUT=1035,
- *     SAFETY COMMON=1185), so the wires visually plug into the dots.
+ *     inside the cards (SAFETY INPUT=95, SAFETY COMMON=245, HOT=1035,
+ *     COMMON=1185), so the wires visually plug into the dots.
+ *   - All strokes use one neutral black treatment; identity is terminal
+ *     function (labels near path ends + cards), not jacket color.
  *
  * Mobile (<md) keeps the previous flowed layout for legibility on phones;
- * the SVG wires would be too thin to read at phone widths.
+ * the SVG wires would be too thin to read at phone widths. Fan-out tags,
+ * wire-map row, and Control block appear with Control (left/first) then
+ * Power (right/second) to match desktop order.
  */
 
 import {
@@ -46,11 +52,26 @@ import {
   BoltIcon,
   ShieldCheckIcon,
 } from '@heroicons/react/24/outline'
+import { motion, useReducedMotion } from 'framer-motion'
 
 const STANDARD_SENSOR_WIRE_HARNESS_DIAGRAM_PDF =
   '/downloads/acdw-sensor-standard-wire-harness-diagram.pdf' as const
 
+/** Matches SensorProductPage below-hero scroll choreography. */
+const mhEase = [0.16, 1, 0.3, 1] as const
+const mhViewport = {
+  once: true,
+  amount: 0.2,
+  margin: '-96px 0px -140px 0px',
+} as const
+
 export function SensorWireHarnessDiagram() {
+  const reduceMotion = useReducedMotion()
+  const tr = (dur: number, delay = 0) =>
+    reduceMotion
+      ? ({ duration: 0.22 } as const)
+      : ({ duration: dur, delay, ease: mhEase } as const)
+
   return (
     <section
       id="wire-harness-diagram"
@@ -58,10 +79,42 @@ export function SensorWireHarnessDiagram() {
       aria-labelledby="sensor-wire-diagram-title"
     >
       <div className="sensor-wire-diagram-inner">
-        <TitleBlock />
-        <DesktopCanvas />
-        <MobileStack />
-        <SafetyBar />
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 44 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={mhViewport}
+          transition={tr(0.9)}
+        >
+          <TitleBlock />
+        </motion.div>
+
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={mhViewport}
+          transition={tr(0.78, 0.06)}
+        >
+          <DesktopCanvas />
+          <MobileStack />
+        </motion.div>
+
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={mhViewport}
+          transition={tr(0.78, 0.08)}
+        >
+          <ConnectorCloseUp />
+        </motion.div>
+
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={mhViewport}
+          transition={tr(0.68, 0.1)}
+        >
+          <SafetyBar />
+        </motion.div>
       </div>
     </section>
   )
@@ -80,6 +133,9 @@ function TitleBlock() {
         Know where power ends and the control circuit begins before you land
         terminals—faster installs, fewer wiring mix-ups, and a clean reference
         your crew can use on the truck or mid-job.
+      </p>
+      <p className="sensor-wire-diagram-color-note">
+        Wire jacket colors may vary. Follow the terminal functions shown.
       </p>
       <div className="sensor-wire-diagram-download-wrap">
         <a
@@ -139,46 +195,50 @@ function DesktopCanvas() {
         </p>
       </div>
 
-      {/* Right callouts (wire-color swatches) */}
+      {/* Right callouts (function pairs — jacket colors may vary) */}
       <div className="sensor-wire-diagram-canvas-callout sensor-wire-diagram-canvas-callout--tr1">
-        <span className="sensor-wire-diagram-canvas-swatch" aria-hidden="true">
-          <span className="sensor-wire-diagram-canvas-swatch-block sensor-wire-diagram-canvas-swatch-block--black" />
-          <span className="sensor-wire-diagram-canvas-swatch-block sensor-wire-diagram-canvas-swatch-block--red" />
+        <span
+          className="sensor-wire-diagram-canvas-pair-icon"
+          aria-hidden="true"
+        >
+          <span className="sensor-wire-diagram-canvas-pair-stub" />
+          <span className="sensor-wire-diagram-canvas-pair-stub" />
         </span>
         <p className="sensor-wire-diagram-canvas-callout-text">
-          <strong>Black and red</strong> wires are used for power.
+          <strong>Power pair</strong> → Hot and Common on the 24V AC source.
         </p>
       </div>
 
       <div className="sensor-wire-diagram-canvas-callout sensor-wire-diagram-canvas-callout--tr2">
-        <span className="sensor-wire-diagram-canvas-swatch" aria-hidden="true">
-          <span className="sensor-wire-diagram-canvas-swatch-block sensor-wire-diagram-canvas-swatch-block--white" />
-          <span className="sensor-wire-diagram-canvas-swatch-block sensor-wire-diagram-canvas-swatch-block--yellow" />
+        <span
+          className="sensor-wire-diagram-canvas-pair-icon"
+          aria-hidden="true"
+        >
+          <span className="sensor-wire-diagram-canvas-pair-stub" />
+          <span className="sensor-wire-diagram-canvas-pair-stub" />
         </span>
         <p className="sensor-wire-diagram-canvas-callout-text">
-          <strong>White and yellow</strong> wires are used for control.
+          <strong>Control pair</strong> → Safety Input and Safety Common.
         </p>
       </div>
 
-      {/* POWER instruction */}
+      {/* CONTROL instruction (left — above control card) */}
       <div className="sensor-wire-diagram-canvas-instruction sensor-wire-diagram-canvas-instruction--left">
-        <p className="sensor-wire-diagram-canvas-section-label sensor-wire-diagram-canvas-section-label--power">
-          Power (24V AC)
-        </p>
-        <p className="sensor-wire-diagram-canvas-instruction-text">
-          Connect the black and red wires to the 24-volt AC power source as
-          shown.
-        </p>
-      </div>
-
-      {/* CONTROL instruction */}
-      <div className="sensor-wire-diagram-canvas-instruction sensor-wire-diagram-canvas-instruction--right">
         <p className="sensor-wire-diagram-canvas-section-label sensor-wire-diagram-canvas-section-label--control">
           Control (24V AC)
         </p>
         <p className="sensor-wire-diagram-canvas-instruction-text">
-          Connect the white and yellow wires into the AC unit's control
-          circuit.
+          Connect the control pair to the AC unit safety circuit as shown.
+        </p>
+      </div>
+
+      {/* POWER instruction (right — above power card) */}
+      <div className="sensor-wire-diagram-canvas-instruction sensor-wire-diagram-canvas-instruction--right">
+        <p className="sensor-wire-diagram-canvas-section-label sensor-wire-diagram-canvas-section-label--power">
+          Power (24V AC)
+        </p>
+        <p className="sensor-wire-diagram-canvas-instruction-text">
+          Connect the power pair to the 24V AC source as shown.
         </p>
       </div>
 
@@ -187,7 +247,8 @@ function DesktopCanvas() {
           vertical ends at y≈461.5: card top is y=440 (68.75% of 640);
           border + padding + dot top (3.2cqi dot, 1.5cqi pad, 0.18cqi border,
           mapped with cqi∝width & uniform viewBox scale) meets the wire
-          stroke at the top of each terminal circle. */}
+          stroke at the top of each terminal circle. All strokes black;
+          function labels sit near path ends for clarity. */}
       <svg
         className="sensor-wire-diagram-canvas-wires"
         viewBox="0 0 1280 640"
@@ -195,42 +256,55 @@ function DesktopCanvas() {
         aria-hidden="true"
         focusable="false"
       >
-        {/* Red wire -> POWER HOT (left terminal of LEFT card, x=95).
-            Shallow horizontal at y=385 (every wire Y shifted by +60 in
-            step with the sensor and the cards, so the upper area could
-            grow room for the callouts without touching wire geometry). */}
+        {/* Safety Input — CONTROL (left terminal of LEFT card, x=95).
+            Shallow horizontal at y=385 (outer-target). */}
         <path
-          d="M 632 275 V 370 Q 632 385 617 385 H 110 Q 95 385 95 400 V 461.5"
-          className="sensor-wire-diagram-canvas-wire sensor-wire-diagram-canvas-wire--red"
+          d="M 648 275 V 370 Q 648 385 633 385 H 110 Q 95 385 95 400 V 461.5"
+          className="sensor-wire-diagram-canvas-wire"
           vectorEffect="non-scaling-stroke"
         />
-        {/* Black wire -> POWER COMMON (right terminal of LEFT card, x=245).
-            Deep horizontal at y=415 (shifted +60 in step with shallow). */}
+        {/* Safety Common — CONTROL (right terminal of LEFT card, x=245).
+            Deep horizontal at y=415 (inner-target). */}
         <path
-          d="M 615 275 V 400 Q 615 415 600 415 H 260 Q 245 415 245 430 V 461.5"
-          className="sensor-wire-diagram-canvas-wire sensor-wire-diagram-canvas-wire--black"
+          d="M 665 275 V 400 Q 665 415 650 415 H 260 Q 245 415 245 430 V 461.5"
+          className="sensor-wire-diagram-canvas-wire"
           vectorEffect="non-scaling-stroke"
         />
-        {/* White wire -> CONTROL SAFETY INPUT (left terminal of RIGHT card,
-            x=1035). Deep horizontal at y=415. */}
+        {/* Hot — POWER (left terminal of RIGHT card, x=1035).
+            Deep horizontal at y=415 (inner-target). */}
         <path
-          d="M 648 275 V 400 Q 648 415 663 415 H 1020 Q 1035 415 1035 430 V 461.5"
-          className="sensor-wire-diagram-canvas-wire sensor-wire-diagram-canvas-wire--white"
+          d="M 632 275 V 400 Q 632 415 647 415 H 1020 Q 1035 415 1035 430 V 461.5"
+          className="sensor-wire-diagram-canvas-wire"
           vectorEffect="non-scaling-stroke"
         />
-        {/* Yellow wire -> CONTROL SAFETY COMMON (right terminal of RIGHT
-            card, x=1185). Shallow horizontal at y=385. */}
+        {/* Common — POWER (right terminal of RIGHT card, x=1185).
+            Shallow horizontal at y=385 (outer-target). */}
         <path
-          d="M 665 275 V 370 Q 665 385 680 385 H 1170 Q 1185 385 1185 400 V 461.5"
-          className="sensor-wire-diagram-canvas-wire sensor-wire-diagram-canvas-wire--yellow"
+          d="M 615 275 V 370 Q 615 385 630 385 H 1170 Q 1185 385 1185 400 V 461.5"
+          className="sensor-wire-diagram-canvas-wire"
           vectorEffect="non-scaling-stroke"
         />
       </svg>
 
-      {/* Safety-only dot overlays: same z-layer as wires but painted after the
-          SVG so white/yellow strokes tuck behind these circles only. In-card
-          safety dots are opacity:0 (layout preserved). Power Hot/Common
-          unchanged — strokes stay on top of those dots. */}
+      {/* Per-lead function labels — sit above the horizontal wire runs so
+          four identical black strokes stay distinguishable. */}
+      <span className="sensor-wire-diagram-canvas-wire-label sensor-wire-diagram-canvas-wire-label--safety-in">
+        Safety Input
+      </span>
+      <span className="sensor-wire-diagram-canvas-wire-label sensor-wire-diagram-canvas-wire-label--safety-com">
+        Safety Common
+      </span>
+      <span className="sensor-wire-diagram-canvas-wire-label sensor-wire-diagram-canvas-wire-label--hot">
+        Hot
+      </span>
+      <span className="sensor-wire-diagram-canvas-wire-label sensor-wire-diagram-canvas-wire-label--common">
+        Common
+      </span>
+
+      {/* Safety-only dot overlays (left control card): same z-layer as wires
+          but painted after the SVG so strokes tuck behind these circles
+          only. In-card safety dots are opacity:0 (layout preserved).
+          Power Hot/Common (right card) unchanged — strokes stay on top. */}
       <div
         className="sensor-wire-diagram-canvas-safety-dot-overlays"
         aria-hidden="true"
@@ -247,49 +321,11 @@ function DesktopCanvas() {
         </span>
       </div>
 
-      {/* POWER terminal card (left). Terminals come FIRST in markup so
-          they sit at the top of the card visually, where the Red/Black
+      {/* CONTROL terminal card (left). Terminals come FIRST in markup so
+          they sit at the top of the card visually, where the control-pair
           wires land. Their centers are at 25%/75% of the card width,
-          which maps to viewBox x=95 (HOT) / x=245 (COMMON) — the exact
-          x's the wire paths terminate at. */}
-      <div className="sensor-wire-diagram-canvas-card sensor-wire-diagram-canvas-card--power">
-        <div className="sensor-wire-diagram-canvas-card-terminals">
-          <div className="sensor-wire-diagram-canvas-terminal">
-            <span
-              className="sensor-wire-diagram-canvas-terminal-dot sensor-wire-diagram-canvas-terminal-dot--hot"
-              aria-hidden="true"
-            >
-              +
-            </span>
-            <span className="sensor-wire-diagram-canvas-terminal-strong">
-              Hot
-            </span>
-            <span className="sensor-wire-diagram-canvas-terminal-sub">
-              24V AC
-            </span>
-          </div>
-          <div className="sensor-wire-diagram-canvas-terminal">
-            <span
-              className="sensor-wire-diagram-canvas-terminal-dot sensor-wire-diagram-canvas-terminal-dot--common"
-              aria-hidden="true"
-            >
-              −
-            </span>
-            <span className="sensor-wire-diagram-canvas-terminal-strong">
-              Common
-            </span>
-            <span className="sensor-wire-diagram-canvas-terminal-sub">
-              24V AC
-            </span>
-          </div>
-        </div>
-        <p className="sensor-wire-diagram-canvas-card-label">
-          24-Volt AC Power Source
-        </p>
-      </div>
-
-      {/* CONTROL terminal card (right). Centers at 25%/75% of card width
-          map to viewBox x=1035 (SAFETY INPUT) and x=1185 (SAFETY COMMON). */}
+          which maps to viewBox x=95 (SAFETY INPUT) / x=245 (SAFETY COMMON)
+          — the exact x's the wire paths terminate at. */}
       <div className="sensor-wire-diagram-canvas-card sensor-wire-diagram-canvas-card--control">
         <div className="sensor-wire-diagram-canvas-card-terminals">
           <div className="sensor-wire-diagram-canvas-terminal">
@@ -328,6 +364,44 @@ function DesktopCanvas() {
           Condensate Overflow Safety Circuit
         </p>
       </div>
+
+      {/* POWER terminal card (right). Centers at 25%/75% of card width
+          map to viewBox x=1035 (HOT) and x=1185 (COMMON). */}
+      <div className="sensor-wire-diagram-canvas-card sensor-wire-diagram-canvas-card--power">
+        <div className="sensor-wire-diagram-canvas-card-terminals">
+          <div className="sensor-wire-diagram-canvas-terminal">
+            <span
+              className="sensor-wire-diagram-canvas-terminal-dot sensor-wire-diagram-canvas-terminal-dot--hot"
+              aria-hidden="true"
+            >
+              +
+            </span>
+            <span className="sensor-wire-diagram-canvas-terminal-strong">
+              Hot
+            </span>
+            <span className="sensor-wire-diagram-canvas-terminal-sub">
+              24V AC
+            </span>
+          </div>
+          <div className="sensor-wire-diagram-canvas-terminal">
+            <span
+              className="sensor-wire-diagram-canvas-terminal-dot sensor-wire-diagram-canvas-terminal-dot--common"
+              aria-hidden="true"
+            >
+              −
+            </span>
+            <span className="sensor-wire-diagram-canvas-terminal-strong">
+              Common
+            </span>
+            <span className="sensor-wire-diagram-canvas-terminal-sub">
+              24V AC
+            </span>
+          </div>
+        </div>
+        <p className="sensor-wire-diagram-canvas-card-label">
+          24-Volt AC Power Source
+        </p>
+      </div>
     </div>
   )
 }
@@ -353,62 +427,64 @@ function MobileStack() {
             sliding out from under the back of the housing (needs transparent
             PNG at the wire-exit zone; same as desktop). */}
         <div className="sensor-wire-diagram-mobile-fanout" aria-hidden="true">
-        <svg
-          className="sensor-wire-diagram-mobile-fanout-svg"
-          viewBox="0 0 400 130"
-          preserveAspectRatio="none"
-          focusable="false"
-        >
-          <path
-            d="M 190 8 C 190 35 60 45 60 72"
-            className="sensor-wire-diagram-mobile-fanout-wire sensor-wire-diagram-mobile-fanout-wire--red"
-            vectorEffect="non-scaling-stroke"
-          />
-          <path
-            d="M 197 8 C 197 42 140 58 140 72"
-            className="sensor-wire-diagram-mobile-fanout-wire sensor-wire-diagram-mobile-fanout-wire--black"
-            vectorEffect="non-scaling-stroke"
-          />
-          <path
-            d="M 203 8 C 203 42 260 58 260 72"
-            className="sensor-wire-diagram-mobile-fanout-wire sensor-wire-diagram-mobile-fanout-wire--white"
-            vectorEffect="non-scaling-stroke"
-          />
-          <path
-            d="M 210 8 C 210 35 340 45 340 72"
-            className="sensor-wire-diagram-mobile-fanout-wire sensor-wire-diagram-mobile-fanout-wire--yellow"
-            vectorEffect="non-scaling-stroke"
-          />
-        </svg>
+          <svg
+            className="sensor-wire-diagram-mobile-fanout-svg"
+            viewBox="0 0 400 130"
+            preserveAspectRatio="none"
+            focusable="false"
+          >
+            {/* Control fans left; power fans right — same left/right order
+                as the desktop canvas cards. All strokes black. */}
+            <path
+              d="M 190 8 C 190 35 60 45 60 72"
+              className="sensor-wire-diagram-mobile-fanout-wire"
+              vectorEffect="non-scaling-stroke"
+            />
+            <path
+              d="M 197 8 C 197 42 140 58 140 72"
+              className="sensor-wire-diagram-mobile-fanout-wire"
+              vectorEffect="non-scaling-stroke"
+            />
+            <path
+              d="M 203 8 C 203 42 260 58 260 72"
+              className="sensor-wire-diagram-mobile-fanout-wire"
+              vectorEffect="non-scaling-stroke"
+            />
+            <path
+              d="M 210 8 C 210 35 340 45 340 72"
+              className="sensor-wire-diagram-mobile-fanout-wire"
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
 
-        <span className="sensor-wire-diagram-mobile-fanout-tag sensor-wire-diagram-mobile-fanout-tag--hot">
-          <span className="sensor-wire-diagram-mobile-fanout-tag-dot sensor-wire-diagram-mobile-fanout-tag-dot--red" />
-          <span className="sensor-wire-diagram-mobile-fanout-tag-text">
-            Hot
+          <span className="sensor-wire-diagram-mobile-fanout-tag sensor-wire-diagram-mobile-fanout-tag--safety-in">
+            <span className="sensor-wire-diagram-mobile-fanout-tag-dot" />
+            <span className="sensor-wire-diagram-mobile-fanout-tag-text">
+              Safety
+              <br />
+              Input
+            </span>
           </span>
-        </span>
-        <span className="sensor-wire-diagram-mobile-fanout-tag sensor-wire-diagram-mobile-fanout-tag--common">
-          <span className="sensor-wire-diagram-mobile-fanout-tag-dot sensor-wire-diagram-mobile-fanout-tag-dot--black" />
-          <span className="sensor-wire-diagram-mobile-fanout-tag-text">
-            Common
+          <span className="sensor-wire-diagram-mobile-fanout-tag sensor-wire-diagram-mobile-fanout-tag--safety-com">
+            <span className="sensor-wire-diagram-mobile-fanout-tag-dot" />
+            <span className="sensor-wire-diagram-mobile-fanout-tag-text">
+              Safety
+              <br />
+              Common
+            </span>
           </span>
-        </span>
-        <span className="sensor-wire-diagram-mobile-fanout-tag sensor-wire-diagram-mobile-fanout-tag--safety-in">
-          <span className="sensor-wire-diagram-mobile-fanout-tag-dot sensor-wire-diagram-mobile-fanout-tag-dot--white" />
-          <span className="sensor-wire-diagram-mobile-fanout-tag-text">
-            Safety
-            <br />
-            Input
+          <span className="sensor-wire-diagram-mobile-fanout-tag sensor-wire-diagram-mobile-fanout-tag--hot">
+            <span className="sensor-wire-diagram-mobile-fanout-tag-dot" />
+            <span className="sensor-wire-diagram-mobile-fanout-tag-text">
+              Hot
+            </span>
           </span>
-        </span>
-        <span className="sensor-wire-diagram-mobile-fanout-tag sensor-wire-diagram-mobile-fanout-tag--safety-com">
-          <span className="sensor-wire-diagram-mobile-fanout-tag-dot sensor-wire-diagram-mobile-fanout-tag-dot--yellow" />
-          <span className="sensor-wire-diagram-mobile-fanout-tag-text">
-            Safety
-            <br />
-            Common
+          <span className="sensor-wire-diagram-mobile-fanout-tag sensor-wire-diagram-mobile-fanout-tag--common">
+            <span className="sensor-wire-diagram-mobile-fanout-tag-dot" />
+            <span className="sensor-wire-diagram-mobile-fanout-tag-text">
+              Common
+            </span>
           </span>
-        </span>
         </div>
       </div>
 
@@ -437,31 +513,31 @@ function MobileStack() {
       >
         <li className="sensor-wire-diagram-wire-map-row">
           <span
-            className="sensor-wire-diagram-swatch sensor-wire-diagram-swatch--map"
+            className="sensor-wire-diagram-pair-icon sensor-wire-diagram-pair-icon--map"
             aria-hidden="true"
           >
-            <span className="sensor-wire-diagram-swatch-block sensor-wire-diagram-swatch-block--red" />
-            <span className="sensor-wire-diagram-swatch-block sensor-wire-diagram-swatch-block--black" />
+            <span className="sensor-wire-diagram-pair-stub" />
+            <span className="sensor-wire-diagram-pair-stub" />
           </span>
           <span>
-            <strong>Red + Black</strong> → 24V AC power source
+            <strong>Control pair</strong> → AC unit safety circuit
             <span className="sensor-wire-diagram-wire-map-targets">
-              (Red → Hot, Black → Common)
+              (Safety Input + Safety Common)
             </span>
           </span>
         </li>
         <li className="sensor-wire-diagram-wire-map-row">
           <span
-            className="sensor-wire-diagram-swatch sensor-wire-diagram-swatch--map"
+            className="sensor-wire-diagram-pair-icon sensor-wire-diagram-pair-icon--map"
             aria-hidden="true"
           >
-            <span className="sensor-wire-diagram-swatch-block sensor-wire-diagram-swatch-block--white" />
-            <span className="sensor-wire-diagram-swatch-block sensor-wire-diagram-swatch-block--yellow" />
+            <span className="sensor-wire-diagram-pair-stub" />
+            <span className="sensor-wire-diagram-pair-stub" />
           </span>
           <span>
-            <strong>White + Yellow</strong> → AC unit safety circuit
+            <strong>Power pair</strong> → 24V AC power source
             <span className="sensor-wire-diagram-wire-map-targets">
-              (White → Safety Input, Yellow → Safety Common)
+              (Hot + Common)
             </span>
           </span>
         </li>
@@ -469,58 +545,11 @@ function MobileStack() {
 
       <div className="sensor-wire-diagram-mobile-blocks">
         <div className="sensor-wire-diagram-mobile-block">
-          <p className="sensor-wire-diagram-section-label sensor-wire-diagram-section-label--power">
-            Power (24V AC)
-          </p>
-          <p className="sensor-wire-diagram-instruction-text">
-            Connect the black and red wires to the 24-volt AC power source as
-            shown.
-          </p>
-          <div className="sensor-wire-diagram-mobile-card sensor-wire-diagram-mobile-card--power">
-            <p className="sensor-wire-diagram-mobile-card-label">
-              24-Volt AC Power Source
-            </p>
-            {/* Mobile: stacked terminals with a colored "wire stub" on the
-                left of each row — the visual link from the wire-map list
-                above to the specific terminal that wire lands on. */}
-            <div className="sensor-wire-diagram-mobile-card-terminals">
-              <div className="sensor-wire-diagram-mobile-terminal">
-                <span
-                  className="sensor-wire-diagram-mobile-terminal-stub sensor-wire-diagram-mobile-terminal-stub--red"
-                  aria-hidden="true"
-                />
-                <span className="sensor-wire-diagram-canvas-terminal-dot sensor-wire-diagram-canvas-terminal-dot--hot">
-                  +
-                </span>
-                <div>
-                  <strong>Hot</strong>
-                  <span>24V AC</span>
-                </div>
-              </div>
-              <div className="sensor-wire-diagram-mobile-terminal">
-                <span
-                  className="sensor-wire-diagram-mobile-terminal-stub sensor-wire-diagram-mobile-terminal-stub--black"
-                  aria-hidden="true"
-                />
-                <span className="sensor-wire-diagram-canvas-terminal-dot sensor-wire-diagram-canvas-terminal-dot--common">
-                  −
-                </span>
-                <div>
-                  <strong>Common</strong>
-                  <span>24V AC</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="sensor-wire-diagram-mobile-block">
           <p className="sensor-wire-diagram-section-label sensor-wire-diagram-section-label--control">
             Control (24V AC)
           </p>
           <p className="sensor-wire-diagram-instruction-text">
-            Connect the white and yellow wires into the AC unit's control
-            circuit.
+            Connect the control pair to the AC unit safety circuit as shown.
           </p>
           <div className="sensor-wire-diagram-mobile-card sensor-wire-diagram-mobile-card--control">
             <p className="sensor-wire-diagram-mobile-card-label">
@@ -532,7 +561,7 @@ function MobileStack() {
             <div className="sensor-wire-diagram-mobile-card-terminals">
               <div className="sensor-wire-diagram-mobile-terminal">
                 <span
-                  className="sensor-wire-diagram-mobile-terminal-stub sensor-wire-diagram-mobile-terminal-stub--white"
+                  className="sensor-wire-diagram-mobile-terminal-stub"
                   aria-hidden="true"
                 />
                 <span className="sensor-wire-diagram-canvas-terminal-dot sensor-wire-diagram-canvas-terminal-dot--safety">
@@ -545,7 +574,7 @@ function MobileStack() {
               </div>
               <div className="sensor-wire-diagram-mobile-terminal">
                 <span
-                  className="sensor-wire-diagram-mobile-terminal-stub sensor-wire-diagram-mobile-terminal-stub--yellow"
+                  className="sensor-wire-diagram-mobile-terminal-stub"
                   aria-hidden="true"
                 />
                 <span className="sensor-wire-diagram-canvas-terminal-dot sensor-wire-diagram-canvas-terminal-dot--safety">
@@ -559,8 +588,244 @@ function MobileStack() {
             </div>
           </div>
         </div>
+
+        <div className="sensor-wire-diagram-mobile-block">
+          <p className="sensor-wire-diagram-section-label sensor-wire-diagram-section-label--power">
+            Power (24V AC)
+          </p>
+          <p className="sensor-wire-diagram-instruction-text">
+            Connect the power pair to the 24V AC source as shown.
+          </p>
+          <div className="sensor-wire-diagram-mobile-card sensor-wire-diagram-mobile-card--power">
+            <p className="sensor-wire-diagram-mobile-card-label">
+              24-Volt AC Power Source
+            </p>
+            {/* Mobile: stacked terminals with a neutral wire stub on the
+                left of each row — the visual link from the wire-map list
+                above to the specific terminal that wire lands on. */}
+            <div className="sensor-wire-diagram-mobile-card-terminals">
+              <div className="sensor-wire-diagram-mobile-terminal">
+                <span
+                  className="sensor-wire-diagram-mobile-terminal-stub"
+                  aria-hidden="true"
+                />
+                <span className="sensor-wire-diagram-canvas-terminal-dot sensor-wire-diagram-canvas-terminal-dot--hot">
+                  +
+                </span>
+                <div>
+                  <strong>Hot</strong>
+                  <span>24V AC</span>
+                </div>
+              </div>
+              <div className="sensor-wire-diagram-mobile-terminal">
+                <span
+                  className="sensor-wire-diagram-mobile-terminal-stub"
+                  aria-hidden="true"
+                />
+                <span className="sensor-wire-diagram-canvas-terminal-dot sensor-wire-diagram-canvas-terminal-dot--common">
+                  −
+                </span>
+                <div>
+                  <strong>Common</strong>
+                  <span>24V AC</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  )
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Harness connector close-up — red 4-position connector detail between
+   the system diagram and the safety bar. No PCB internals shown.
+   Pin map: 1 Safety Input, 2 Safety Common (bend left / control);
+            3 Hot, 4 Common (bend right / power).
+   ────────────────────────────────────────────────────────────────────── */
+function ConnectorCloseUp() {
+  return (
+    <aside
+      className="sensor-wire-connector"
+      aria-labelledby="sensor-wire-connector-title"
+    >
+      <div className="sensor-wire-connector-grid">
+        <div className="sensor-wire-connector-visual" aria-hidden="false">
+          {/*
+            Photo + wire overlay. viewBox 640x400 (preserveAspectRatio=none
+            so viewBox-% matches photo CSS %).
+            md+: photo top 28% (y=112), width 41.4%.
+            <md: photo top 42% (y=168) — taller wire band for readable labels.
+            Caption sits below the canvas in normal flow.
+          */}
+          <div className="sensor-wire-connector-canvas">
+            {/* Desktop / tablet wires */}
+            <svg
+              className="sensor-wire-connector-svg sensor-wire-connector-svg--desktop"
+              viewBox="0 0 640 400"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <defs>
+                <clipPath id="sensor-wire-connector-wire-clip-desktop">
+                  <rect x="0" y="0" width="640" height="112" />
+                </clipPath>
+              </defs>
+              <g clipPath="url(#sensor-wire-connector-wire-clip-desktop)">
+                <path
+                  d="M 246 112 V 78 Q 246 62 228 62 H 72"
+                  className="sensor-wire-connector-wire"
+                />
+                <path
+                  d="M 296 112 V 54 Q 296 38 278 38 H 72"
+                  className="sensor-wire-connector-wire"
+                />
+                <path
+                  d="M 344 112 V 54 Q 344 38 362 38 H 568"
+                  className="sensor-wire-connector-wire"
+                />
+                <path
+                  d="M 394 112 V 78 Q 394 62 412 62 H 568"
+                  className="sensor-wire-connector-wire"
+                />
+              </g>
+            </svg>
+
+            {/* Mobile wires — longer vertical runs, staggered for larger labels */}
+            <svg
+              className="sensor-wire-connector-svg sensor-wire-connector-svg--mobile"
+              viewBox="0 0 640 400"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <defs>
+                <clipPath id="sensor-wire-connector-wire-clip-mobile">
+                  <rect x="0" y="0" width="640" height="168" />
+                </clipPath>
+              </defs>
+              <g clipPath="url(#sensor-wire-connector-wire-clip-mobile)">
+                {/* 1 Safety Input — shallow horizontal at y=118 */}
+                <path
+                  d="M 246 168 V 130 Q 246 118 228 118 H 56"
+                  className="sensor-wire-connector-wire"
+                />
+                {/* 2 Safety Common — deep horizontal at y=72 */}
+                <path
+                  d="M 296 168 V 88 Q 296 72 278 72 H 56"
+                  className="sensor-wire-connector-wire"
+                />
+                {/* 3 Hot — deep horizontal at y=72 */}
+                <path
+                  d="M 344 168 V 88 Q 344 72 362 72 H 584"
+                  className="sensor-wire-connector-wire"
+                />
+                {/* 4 Common — shallow horizontal at y=118 */}
+                <path
+                  d="M 394 168 V 130 Q 394 118 412 118 H 584"
+                  className="sensor-wire-connector-wire"
+                />
+              </g>
+            </svg>
+
+            <img
+              src="/images/Harness-connector.png"
+              alt="Front view of the four-position harness connector with molded pin numbers 1 through 4"
+              className="sensor-wire-connector-photo"
+              width={1254}
+              height={1254}
+              loading="lazy"
+              decoding="async"
+            />
+
+            <span className="sensor-wire-connector-wire-label sensor-wire-connector-wire-label--safety-in">
+              1 · Safety Input
+            </span>
+            <span className="sensor-wire-connector-wire-label sensor-wire-connector-wire-label--safety-com">
+              2 · Safety Common
+            </span>
+            <span className="sensor-wire-connector-wire-label sensor-wire-connector-wire-label--hot">
+              3 · Hot
+            </span>
+            <span className="sensor-wire-connector-wire-label sensor-wire-connector-wire-label--common">
+              4 · Common
+            </span>
+          </div>
+          <p className="sensor-wire-connector-board-note">
+            Plug into the sensor&apos;s internal board
+          </p>
+        </div>
+
+        <div className="sensor-wire-connector-copy">
+          <h3
+            id="sensor-wire-connector-title"
+            className="sensor-wire-connector-title"
+          >
+            Harness connector close-up
+          </h3>
+          <p className="sensor-wire-connector-subtitle">
+            Factory-installed connector inside the sensor housing. The four
+            leads you wire in the field are the other end of this harness.
+          </p>
+
+          <ol
+            className="sensor-wire-connector-legend"
+            aria-label="Pin-to-terminal mapping"
+          >
+            <li className="sensor-wire-connector-legend-row">
+              <span className="sensor-wire-connector-legend-num" aria-hidden="true">
+                1
+              </span>
+              <span>
+                <strong>Safety Input</strong>
+                <span className="sensor-wire-connector-legend-dest">
+                  → AC unit safety circuit
+                </span>
+              </span>
+            </li>
+            <li className="sensor-wire-connector-legend-row">
+              <span className="sensor-wire-connector-legend-num" aria-hidden="true">
+                2
+              </span>
+              <span>
+                <strong>Safety Common</strong>
+                <span className="sensor-wire-connector-legend-dest">
+                  → AC unit safety circuit
+                </span>
+              </span>
+            </li>
+            <li className="sensor-wire-connector-legend-row">
+              <span className="sensor-wire-connector-legend-num" aria-hidden="true">
+                3
+              </span>
+              <span>
+                <strong>Hot</strong>
+                <span className="sensor-wire-connector-legend-dest">
+                  → 24V AC source
+                </span>
+              </span>
+            </li>
+            <li className="sensor-wire-connector-legend-row">
+              <span className="sensor-wire-connector-legend-num" aria-hidden="true">
+                4
+              </span>
+              <span>
+                <strong>Common</strong>
+                <span className="sensor-wire-connector-legend-dest">
+                  → 24V AC source
+                </span>
+              </span>
+            </li>
+          </ol>
+
+          <p className="sensor-wire-connector-color-note">
+            Wire jacket colors may vary. Follow the terminal functions shown.
+          </p>
+        </div>
+      </div>
+    </aside>
   )
 }
 
