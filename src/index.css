@@ -16675,9 +16675,13 @@ a.code-official-product-cta {
   @apply text-center;
 }
 
-/* Tighter gap before PDF link cluster; block below carries bottom margin */
+/* Tighter gap before color note / PDF link cluster */
 .sensor-wire-diagram-intro {
-  @apply mb-4;
+  @apply mb-3;
+}
+
+.sensor-wire-diagram-color-note {
+  @apply mx-auto mb-4 max-w-xl text-center text-sm font-medium text-gray-600;
 }
 
 .sensor-wire-diagram-download-wrap {
@@ -16735,10 +16739,12 @@ a.code-official-product-cta {
   gap: 0.8cqi;
 }
 
-.sensor-wire-diagram-canvas-callout--tl1 { left: 1.56%; top: 6.25%; }
-.sensor-wire-diagram-canvas-callout--tl2 { left: 1.56%; top: 21.56%; }
-.sensor-wire-diagram-canvas-callout--tr1 { left: 75.78%; top: 6.25%; }
-.sensor-wire-diagram-canvas-callout--tr2 { left: 75.78%; top: 21.56%; }
+/* Vertical stack (md canvas): callouts → instructions → wire labels →
+   horizontal runs → cards. Keep each band clear of the next. */
+.sensor-wire-diagram-canvas-callout--tl1 { left: 1.56%; top: 3.5%; }
+.sensor-wire-diagram-canvas-callout--tl2 { left: 1.56%; top: 14.5%; }
+.sensor-wire-diagram-canvas-callout--tr1 { left: 75.78%; top: 3.5%; }
+.sensor-wire-diagram-canvas-callout--tr2 { left: 75.78%; top: 14.5%; }
 
 .sensor-wire-diagram-canvas-chip {
   flex: none;
@@ -16770,30 +16776,30 @@ a.code-official-product-cta {
   color: theme('colors.gray.900');
 }
 
-.sensor-wire-diagram-canvas-swatch {
+/* Pair icon — two neutral stubs replacing color swatches (jacket colors
+   may vary; identity is terminal function). */
+.sensor-wire-diagram-canvas-pair-icon {
   flex: none;
   width: 3.5cqi;
   height: 3.5cqi;
   border-radius: 0.4cqi;
-  overflow: hidden;
   border: 1px solid theme('colors.gray.300');
+  background-color: theme('colors.gray.50');
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45cqi;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
-.sensor-wire-diagram-canvas-swatch-block {
-  flex: 1;
+.sensor-wire-diagram-canvas-pair-stub {
   display: block;
+  width: 2.2cqi;
+  height: 0.45cqi;
+  border-radius: 999px;
+  background-color: #111827;
 }
-
-.sensor-wire-diagram-canvas-swatch-block--black { background-color: #111827; }
-.sensor-wire-diagram-canvas-swatch-block--red   { background-color: #dc2626; }
-.sensor-wire-diagram-canvas-swatch-block--white {
-  background-color: #ffffff;
-  border-bottom: 1px solid theme('colors.gray.200');
-}
-.sensor-wire-diagram-canvas-swatch-block--yellow { background-color: #facc15; }
 
 /* Instruction blocks (POWER label + body / CONTROL label + body) */
 .sensor-wire-diagram-canvas-instruction {
@@ -16804,8 +16810,9 @@ a.code-official-product-cta {
   gap: 0.6cqi;
 }
 
-.sensor-wire-diagram-canvas-instruction--left  { left: 1.56%; top: 36.88%; }
-.sensor-wire-diagram-canvas-instruction--right { left: 75.78%; top: 36.88%; }
+/* Sits below callouts, above wire-label band (~54–59%) / runs (~60–65%). */
+.sensor-wire-diagram-canvas-instruction--left  { left: 1.56%; top: 34%; }
+.sensor-wire-diagram-canvas-instruction--right { left: 75.78%; top: 34%; }
 
 .sensor-wire-diagram-canvas-section-label {
   font-size: 1.3cqi;
@@ -16927,8 +16934,8 @@ a.code-official-product-cta {
 }
 
 /* Duplicate Safety Input / Safety Common dots, painted after the wire SVG
-   (same z-index: 1) so white + yellow strokes read as going behind only
-   these circles — power Hot/Common stay under the strokes. Coordinates:
+   (same z-index: 1) so black strokes read as going behind only these
+   circles — power Hot/Common stay under the strokes. Coordinates:
    viewBox terminal centers x=95 / x=245 (left control card), y≈482. */
 .sensor-wire-diagram-canvas-safety-dot-overlays {
   position: absolute;
@@ -16955,7 +16962,7 @@ a.code-official-product-cta {
 }
 
 /* Wire SVG — z-index 1; safety overlays also z-index 1 and follow in DOM
-   so only those circles sit above the white/yellow paths. */
+   so only those circles sit above the paths. All wires: one black stroke. */
 .sensor-wire-diagram-canvas-wires {
   position: absolute;
   inset: 0;
@@ -16967,19 +16974,52 @@ a.code-official-product-cta {
 
 .sensor-wire-diagram-canvas-wire {
   fill: none;
+  stroke: #111827;
   stroke-width: 4;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-.sensor-wire-diagram-canvas-wire--black { stroke: #111827; }
-.sensor-wire-diagram-canvas-wire--red   { stroke: #dc2626; }
-.sensor-wire-diagram-canvas-wire--white {
-  stroke: #f3f4f6;
-  stroke-width: 5;
-  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.35));
+/* Per-lead function labels — above horizontal runs so four black paths
+   stay distinguishable. Positions in viewBox-% coords. */
+.sensor-wire-diagram-canvas-wire-label {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -100%);
+  padding: 0.15cqi 0.45cqi;
+  border-radius: 0.25cqi;
+  background-color: rgb(255 255 255 / 0.92);
+  font-size: 0.95cqi;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: theme('colors.gray.800');
+  white-space: nowrap;
+  pointer-events: none;
+  line-height: 1.2;
 }
-.sensor-wire-diagram-canvas-wire--yellow { stroke: #facc15; }
+
+/* Anchored just above each horizontal run (outer y=385 / inner y=415).
+   transform: translate(-50%, -100%) lifts the label clear of the stroke. */
+.sensor-wire-diagram-canvas-wire-label--safety-in {
+  left: 28.9%;
+  top: 59.8%;
+}
+
+.sensor-wire-diagram-canvas-wire-label--safety-com {
+  left: 35.2%;
+  top: 64.5%;
+}
+
+.sensor-wire-diagram-canvas-wire-label--hot {
+  left: 64.8%;
+  top: 64.5%;
+}
+
+.sensor-wire-diagram-canvas-wire-label--common {
+  left: 71.1%;
+  top: 59.8%;
+}
 
 /* ── Mobile stack (<md) ──────────────────────────────────────────────
    Flowed HTML replacement for the canvas at phone widths. Reuses some
@@ -17028,7 +17068,7 @@ a.code-official-product-cta {
 }
 
 /* Mobile terminal rows are vertically stacked (one terminal per row) so
-   each row can carry a colored wire stub on the left — the harness wire
+   each row can carry a neutral wire stub on the left — the harness wire
    "ending" at that terminal. Replaces the previous side-by-side layout
    used while mobile had no visible wires. */
 .sensor-wire-diagram-mobile-card-terminals {
@@ -17047,25 +17087,16 @@ a.code-official-product-cta {
   @apply font-bold text-gray-900 text-[11px] tracking-[0.12em];
 }
 
-/* Wire stub — a short, thick, color-coded "wire ending" sitting on the
-   left of each terminal row. Visually links the swatch+text in the wire
-   map list above to the specific terminal it lands on. */
+/* Wire stub — short neutral "wire ending" on each terminal row. */
 .sensor-wire-diagram-mobile-terminal-stub {
   flex: none;
   display: block;
   width: 2.75rem;
   height: 0.3125rem;
   border-radius: 999px;
+  background-color: #111827;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
 }
-
-.sensor-wire-diagram-mobile-terminal-stub--red    { background-color: #dc2626; }
-.sensor-wire-diagram-mobile-terminal-stub--black  { background-color: #111827; }
-.sensor-wire-diagram-mobile-terminal-stub--white {
-  background-color: #ffffff;
-  border: 1px solid theme('colors.gray.300');
-}
-.sensor-wire-diagram-mobile-terminal-stub--yellow { background-color: #facc15; }
 
 /* ── Mobile harness fan-out ──────────────────────────────────────────
    Compact 4-wire SVG; z-below sensor. max-width 42rem matches sensor. */
@@ -17090,19 +17121,11 @@ a.code-official-product-cta {
 
 .sensor-wire-diagram-mobile-fanout-wire {
   fill: none;
+  stroke: #111827;
   stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-
-.sensor-wire-diagram-mobile-fanout-wire--red    { stroke: #dc2626; }
-.sensor-wire-diagram-mobile-fanout-wire--black  { stroke: #111827; }
-.sensor-wire-diagram-mobile-fanout-wire--white {
-  stroke: #f3f4f6;
-  stroke-width: 4;
-  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.35));
-}
-.sensor-wire-diagram-mobile-fanout-wire--yellow { stroke: #facc15; }
 
 /* Destination tags — small HTML chips overlaid on the SVG at the wire
    endpoints. HTML (not SVG text) so font-size stays consistent across
@@ -17126,17 +17149,9 @@ a.code-official-product-cta {
   width: 10px;
   height: 10px;
   border-radius: 999px;
+  background-color: #111827;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.25);
 }
-
-.sensor-wire-diagram-mobile-fanout-tag-dot--red    { background-color: #dc2626; }
-.sensor-wire-diagram-mobile-fanout-tag-dot--black  { background-color: #111827; }
-.sensor-wire-diagram-mobile-fanout-tag-dot--white {
-  background-color: #ffffff;
-  border: 1px solid theme('colors.gray.300');
-  box-shadow: none;
-}
-.sensor-wire-diagram-mobile-fanout-tag-dot--yellow { background-color: #facc15; }
 
 .sensor-wire-diagram-mobile-fanout-tag-text {
   font-size: 9px;
@@ -17184,33 +17199,26 @@ a.code-official-product-cta {
   @apply font-semibold text-gray-900;
 }
 
-.sensor-wire-diagram-swatch {
-  @apply flex-none w-10 h-10 rounded-md overflow-hidden border border-gray-300 flex flex-col shadow-sm;
+/* Mobile pair icon — two neutral stubs (replaces color swatches). */
+.sensor-wire-diagram-pair-icon {
+  @apply flex-none w-10 h-10 rounded-md border border-gray-300 bg-gray-50 flex flex-col items-center justify-center gap-1.5 shadow-sm;
 }
 
-.sensor-wire-diagram-swatch--map {
-  @apply w-8 h-8;
+.sensor-wire-diagram-pair-icon--map {
+  @apply w-8 h-8 gap-1;
 }
 
-.sensor-wire-diagram-swatch-block {
-  @apply flex-1 block;
-}
-
-.sensor-wire-diagram-swatch-block--black {
+.sensor-wire-diagram-pair-stub {
+  display: block;
+  width: 1.25rem;
+  height: 0.25rem;
+  border-radius: 999px;
   background-color: #111827;
 }
 
-.sensor-wire-diagram-swatch-block--red {
-  background-color: #dc2626;
-}
-
-.sensor-wire-diagram-swatch-block--white {
-  background-color: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.sensor-wire-diagram-swatch-block--yellow {
-  background-color: #facc15;
+.sensor-wire-diagram-pair-icon--map .sensor-wire-diagram-pair-stub {
+  width: 1rem;
+  height: 0.2rem;
 }
 
 .sensor-wire-diagram-section-label {
