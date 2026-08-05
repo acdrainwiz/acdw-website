@@ -3650,7 +3650,7 @@
   }
 
   .social-proof-grid {
-    @apply grid grid-cols-1 md:grid-cols-3 gap-12 mb-8;
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-10 mb-8 max-w-3xl mx-auto;
   }
     .social-proof-logo {
         @apply flex items-center justify-center;
@@ -3665,12 +3665,7 @@
     }
 
     .social-proof-placeholder-logo {
-        @apply flex flex-col items-center justify-center text-center p-8 bg-gray-50 rounded-lg border-2 border-gray-200 hover:border-blue-300 transition-colors duration-300 w-full h-full;
-    }
-
-    .social-proof-placeholder-icon {
-        display: none;
-        @apply w-16 h-16 mx-auto mb-3 text-gray-400;
+        @apply flex flex-col items-center justify-center text-center p-8 bg-gray-50 rounded-lg border-2 border-gray-200 hover:border-blue-300 transition-colors duration-300 w-full h-full min-h-[7.5rem];
     }
 
     .social-proof-placeholder-text {
@@ -3682,7 +3677,7 @@
   }
 
   .social-proof-footer-text {
-    @apply text-gray-600 italic;
+    @apply text-gray-600;
   }
 
   /* FAQ Section Styles */
@@ -17991,8 +17986,8 @@ a.code-official-product-cta {
     @apply grid-cols-1;
   }
 
-  .sensor-product-how-it-works-steps {
-    @apply grid-cols-1;
+  .sensor-product-how-it-works .product-how-it-works-steps {
+    grid-template-columns: 1fr;
   }
 }
 
