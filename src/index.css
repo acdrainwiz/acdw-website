@@ -17255,6 +17255,209 @@ a.code-official-product-cta {
   @apply block text-xs text-gray-500 mt-0.5;
 }
 
+/* ── Harness connector close-up (between main diagram + safety bar) ── */
+.sensor-wire-connector {
+  @apply mt-10 md:mt-14 rounded-xl border border-gray-200 bg-gray-50/80 px-5 py-6 pb-7 md:px-8 md:py-8 md:pb-9 overflow-hidden;
+}
+
+.sensor-wire-connector-grid {
+  @apply grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 items-start;
+}
+
+.sensor-wire-connector-visual {
+  @apply md:col-span-7 min-w-0 flex flex-col;
+}
+
+.sensor-wire-connector-copy {
+  @apply md:col-span-5 flex flex-col gap-3;
+}
+
+.sensor-wire-connector-title {
+  @apply text-lg md:text-xl font-bold text-gray-900 tracking-tight;
+}
+
+.sensor-wire-connector-subtitle {
+  @apply text-sm text-gray-600 leading-relaxed;
+}
+
+.sensor-wire-connector-legend {
+  @apply mt-1 rounded-lg bg-white border border-gray-200 p-3 sm:p-4 flex flex-col gap-2.5;
+  list-style: none;
+  counter-reset: none;
+}
+
+.sensor-wire-connector-legend-row {
+  @apply flex items-start gap-3 text-sm text-gray-800;
+}
+
+.sensor-wire-connector-legend-num {
+  @apply flex-none w-7 h-7 rounded-md bg-gray-900 text-white text-xs font-bold flex items-center justify-center;
+}
+
+.sensor-wire-connector-legend-row strong {
+  @apply font-semibold text-gray-900;
+}
+
+.sensor-wire-connector-legend-dest {
+  @apply block text-xs text-gray-500 mt-0.5;
+}
+
+.sensor-wire-connector-color-note {
+  @apply text-xs font-medium text-gray-600 mt-1;
+}
+
+/* Photo + wire overlay canvas — wires exit top of housing, fan L/R.
+   Caption lives below this canvas in normal flow (not absolutely overlaid). */
+.sensor-wire-connector-canvas {
+  @apply relative w-full mx-auto isolate overflow-hidden;
+  max-width: 720px;
+  /* Shorter canvas: photo no longer needs a caption band inside */
+  aspect-ratio: 640 / 400;
+  container-type: inline-size;
+  container-name: connector-canvas;
+}
+
+.sensor-wire-connector-photo {
+  position: absolute;
+  /* ~10% smaller than prior 46% width */
+  left: 29.3%;
+  top: 28%;
+  width: 41.4%;
+  height: auto;
+  z-index: 2;
+  display: block;
+  object-fit: contain;
+  /* Opaque plate so wire strokes behind never show through */
+  background-color: #f3f4f6;
+  border-radius: 0.35cqi;
+  pointer-events: none;
+  box-shadow: 0 0.4cqi 0.8cqi rgb(17 24 39 / 0.12);
+}
+
+.sensor-wire-connector-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* Behind photo — strokes meet the image top edge only */
+  z-index: 1;
+  pointer-events: none;
+}
+
+.sensor-wire-connector-svg--desktop {
+  @apply hidden md:block;
+}
+
+.sensor-wire-connector-svg--mobile {
+  @apply block md:hidden;
+}
+
+.sensor-wire-connector-wire {
+  fill: none;
+  stroke: #111827;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sensor-wire-connector-board-note {
+  @apply mt-3 text-center text-sm font-semibold text-gray-600 leading-snug;
+  max-width: 26rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sensor-wire-connector-wire-label {
+  position: absolute;
+  z-index: 3;
+  padding: 0.2cqi 0.55cqi;
+  border-radius: 0.3cqi;
+  background-color: rgb(255 255 255 / 0.94);
+  border: 1px solid rgb(17 24 39 / 0.08);
+  font-size: 1.55cqi;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: theme('colors.gray.800');
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Labels sit on the horizontal wire runs above the photo (md+) */
+.sensor-wire-connector-wire-label--safety-in {
+  left: 2%;
+  top: 15%;
+  transform: translateY(-50%);
+}
+
+.sensor-wire-connector-wire-label--safety-com {
+  left: 2%;
+  top: 9%;
+  transform: translateY(-50%);
+}
+
+.sensor-wire-connector-wire-label--hot {
+  right: 2%;
+  top: 9%;
+  transform: translateY(-50%);
+}
+
+.sensor-wire-connector-wire-label--common {
+  right: 2%;
+  top: 15%;
+  transform: translateY(-50%);
+}
+
+/* Mobile: readable label type + taller wire band (photo drops, wires lengthen) */
+@media (max-width: 767px) {
+  .sensor-wire-connector-canvas {
+    aspect-ratio: 640 / 460;
+  }
+
+  .sensor-wire-connector-photo {
+    left: 30%;
+    top: 42%;
+    width: 40%;
+  }
+
+  .sensor-wire-connector-wire {
+    stroke-width: 4;
+  }
+
+  .sensor-wire-connector-wire-label {
+    font-size: 0.75rem; /* 12px — fixed, not cqi */
+    line-height: 1.25;
+    letter-spacing: 0.03em;
+    padding: 0.28rem 0.45rem;
+    border-radius: 0.25rem;
+    max-width: 47%;
+    white-space: normal;
+    text-wrap: balance;
+  }
+
+  /* Align with mobile wire horizontals (y≈72 / y≈118 of 400 → ~18% / ~29.5%) */
+  .sensor-wire-connector-wire-label--safety-com {
+    left: 1%;
+    top: 18%;
+  }
+
+  .sensor-wire-connector-wire-label--safety-in {
+    left: 1%;
+    top: 29.5%;
+  }
+
+  .sensor-wire-connector-wire-label--hot {
+    right: 1%;
+    top: 18%;
+  }
+
+  .sensor-wire-connector-wire-label--common {
+    right: 1%;
+    top: 29.5%;
+  }
+}
+
 /* Bottom safety bar — light blue gradient (softer than solid primary-600 CTA),
    with AC DW blues in the wash + subtle top sheen. Dark type for contrast. */
 .sensor-wire-diagram-safety {

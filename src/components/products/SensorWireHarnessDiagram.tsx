@@ -52,11 +52,26 @@ import {
   BoltIcon,
   ShieldCheckIcon,
 } from '@heroicons/react/24/outline'
+import { motion, useReducedMotion } from 'framer-motion'
 
 const STANDARD_SENSOR_WIRE_HARNESS_DIAGRAM_PDF =
   '/downloads/acdw-sensor-standard-wire-harness-diagram.pdf' as const
 
+/** Matches SensorProductPage below-hero scroll choreography. */
+const mhEase = [0.16, 1, 0.3, 1] as const
+const mhViewport = {
+  once: true,
+  amount: 0.2,
+  margin: '-96px 0px -140px 0px',
+} as const
+
 export function SensorWireHarnessDiagram() {
+  const reduceMotion = useReducedMotion()
+  const tr = (dur: number, delay = 0) =>
+    reduceMotion
+      ? ({ duration: 0.22 } as const)
+      : ({ duration: dur, delay, ease: mhEase } as const)
+
   return (
     <section
       id="wire-harness-diagram"
@@ -64,10 +79,42 @@ export function SensorWireHarnessDiagram() {
       aria-labelledby="sensor-wire-diagram-title"
     >
       <div className="sensor-wire-diagram-inner">
-        <TitleBlock />
-        <DesktopCanvas />
-        <MobileStack />
-        <SafetyBar />
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 44 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={mhViewport}
+          transition={tr(0.9)}
+        >
+          <TitleBlock />
+        </motion.div>
+
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={mhViewport}
+          transition={tr(0.78, 0.06)}
+        >
+          <DesktopCanvas />
+          <MobileStack />
+        </motion.div>
+
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={mhViewport}
+          transition={tr(0.78, 0.08)}
+        >
+          <ConnectorCloseUp />
+        </motion.div>
+
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={mhViewport}
+          transition={tr(0.68, 0.1)}
+        >
+          <SafetyBar />
+        </motion.div>
       </div>
     </section>
   )
@@ -588,6 +635,197 @@ function MobileStack() {
         </div>
       </div>
     </div>
+  )
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Harness connector close-up — red 4-position connector detail between
+   the system diagram and the safety bar. No PCB internals shown.
+   Pin map: 1 Safety Input, 2 Safety Common (bend left / control);
+            3 Hot, 4 Common (bend right / power).
+   ────────────────────────────────────────────────────────────────────── */
+function ConnectorCloseUp() {
+  return (
+    <aside
+      className="sensor-wire-connector"
+      aria-labelledby="sensor-wire-connector-title"
+    >
+      <div className="sensor-wire-connector-grid">
+        <div className="sensor-wire-connector-visual" aria-hidden="false">
+          {/*
+            Photo + wire overlay. viewBox 640x400 (preserveAspectRatio=none
+            so viewBox-% matches photo CSS %).
+            md+: photo top 28% (y=112), width 41.4%.
+            <md: photo top 42% (y=168) — taller wire band for readable labels.
+            Caption sits below the canvas in normal flow.
+          */}
+          <div className="sensor-wire-connector-canvas">
+            {/* Desktop / tablet wires */}
+            <svg
+              className="sensor-wire-connector-svg sensor-wire-connector-svg--desktop"
+              viewBox="0 0 640 400"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <defs>
+                <clipPath id="sensor-wire-connector-wire-clip-desktop">
+                  <rect x="0" y="0" width="640" height="112" />
+                </clipPath>
+              </defs>
+              <g clipPath="url(#sensor-wire-connector-wire-clip-desktop)">
+                <path
+                  d="M 246 112 V 78 Q 246 62 228 62 H 72"
+                  className="sensor-wire-connector-wire"
+                />
+                <path
+                  d="M 296 112 V 54 Q 296 38 278 38 H 72"
+                  className="sensor-wire-connector-wire"
+                />
+                <path
+                  d="M 344 112 V 54 Q 344 38 362 38 H 568"
+                  className="sensor-wire-connector-wire"
+                />
+                <path
+                  d="M 394 112 V 78 Q 394 62 412 62 H 568"
+                  className="sensor-wire-connector-wire"
+                />
+              </g>
+            </svg>
+
+            {/* Mobile wires — longer vertical runs, staggered for larger labels */}
+            <svg
+              className="sensor-wire-connector-svg sensor-wire-connector-svg--mobile"
+              viewBox="0 0 640 400"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <defs>
+                <clipPath id="sensor-wire-connector-wire-clip-mobile">
+                  <rect x="0" y="0" width="640" height="168" />
+                </clipPath>
+              </defs>
+              <g clipPath="url(#sensor-wire-connector-wire-clip-mobile)">
+                {/* 1 Safety Input — shallow horizontal at y=118 */}
+                <path
+                  d="M 246 168 V 130 Q 246 118 228 118 H 56"
+                  className="sensor-wire-connector-wire"
+                />
+                {/* 2 Safety Common — deep horizontal at y=72 */}
+                <path
+                  d="M 296 168 V 88 Q 296 72 278 72 H 56"
+                  className="sensor-wire-connector-wire"
+                />
+                {/* 3 Hot — deep horizontal at y=72 */}
+                <path
+                  d="M 344 168 V 88 Q 344 72 362 72 H 584"
+                  className="sensor-wire-connector-wire"
+                />
+                {/* 4 Common — shallow horizontal at y=118 */}
+                <path
+                  d="M 394 168 V 130 Q 394 118 412 118 H 584"
+                  className="sensor-wire-connector-wire"
+                />
+              </g>
+            </svg>
+
+            <img
+              src="/images/Harness-connector.png"
+              alt="Front view of the four-position harness connector with molded pin numbers 1 through 4"
+              className="sensor-wire-connector-photo"
+              width={1254}
+              height={1254}
+              loading="lazy"
+              decoding="async"
+            />
+
+            <span className="sensor-wire-connector-wire-label sensor-wire-connector-wire-label--safety-in">
+              1 · Safety Input
+            </span>
+            <span className="sensor-wire-connector-wire-label sensor-wire-connector-wire-label--safety-com">
+              2 · Safety Common
+            </span>
+            <span className="sensor-wire-connector-wire-label sensor-wire-connector-wire-label--hot">
+              3 · Hot
+            </span>
+            <span className="sensor-wire-connector-wire-label sensor-wire-connector-wire-label--common">
+              4 · Common
+            </span>
+          </div>
+          <p className="sensor-wire-connector-board-note">
+            Plug into the sensor&apos;s internal board
+          </p>
+        </div>
+
+        <div className="sensor-wire-connector-copy">
+          <h3
+            id="sensor-wire-connector-title"
+            className="sensor-wire-connector-title"
+          >
+            Harness connector close-up
+          </h3>
+          <p className="sensor-wire-connector-subtitle">
+            Factory-installed connector inside the sensor housing. The four
+            leads you wire in the field are the other end of this harness.
+          </p>
+
+          <ol
+            className="sensor-wire-connector-legend"
+            aria-label="Pin-to-terminal mapping"
+          >
+            <li className="sensor-wire-connector-legend-row">
+              <span className="sensor-wire-connector-legend-num" aria-hidden="true">
+                1
+              </span>
+              <span>
+                <strong>Safety Input</strong>
+                <span className="sensor-wire-connector-legend-dest">
+                  → AC unit safety circuit
+                </span>
+              </span>
+            </li>
+            <li className="sensor-wire-connector-legend-row">
+              <span className="sensor-wire-connector-legend-num" aria-hidden="true">
+                2
+              </span>
+              <span>
+                <strong>Safety Common</strong>
+                <span className="sensor-wire-connector-legend-dest">
+                  → AC unit safety circuit
+                </span>
+              </span>
+            </li>
+            <li className="sensor-wire-connector-legend-row">
+              <span className="sensor-wire-connector-legend-num" aria-hidden="true">
+                3
+              </span>
+              <span>
+                <strong>Hot</strong>
+                <span className="sensor-wire-connector-legend-dest">
+                  → 24V AC source
+                </span>
+              </span>
+            </li>
+            <li className="sensor-wire-connector-legend-row">
+              <span className="sensor-wire-connector-legend-num" aria-hidden="true">
+                4
+              </span>
+              <span>
+                <strong>Common</strong>
+                <span className="sensor-wire-connector-legend-dest">
+                  → 24V AC source
+                </span>
+              </span>
+            </li>
+          </ol>
+
+          <p className="sensor-wire-connector-color-note">
+            Wire jacket colors may vary. Follow the terminal functions shown.
+          </p>
+        </div>
+      </div>
+    </aside>
   )
 }
 
