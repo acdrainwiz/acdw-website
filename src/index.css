@@ -16847,8 +16847,8 @@ a.code-official-product-cta {
   gap: 1cqi;
 }
 
-.sensor-wire-diagram-canvas-card--power   { left: 1.56%; border-color: var(--acdw-orange); }
-.sensor-wire-diagram-canvas-card--control { left: 75%;   border-color: theme('colors.red.500'); }
+.sensor-wire-diagram-canvas-card--control { left: 1.56%; border-color: theme('colors.red.500'); }
+.sensor-wire-diagram-canvas-card--power   { left: 75%;   border-color: var(--acdw-orange); }
 
 .sensor-wire-diagram-canvas-card-terminals {
   display: flex;
@@ -16934,7 +16934,7 @@ a.code-official-product-cta {
 /* Duplicate Safety Input / Safety Common dots, painted after the wire SVG
    (same z-index: 1) so white + yellow strokes read as going behind only
    these circles — power Hot/Common stay under the strokes. Coordinates:
-   viewBox terminal centers x=1035 / x=1185, y≈482 (see wire path landings). */
+   viewBox terminal centers x=95 / x=245 (left control card), y≈482. */
 .sensor-wire-diagram-canvas-safety-dot-overlays {
   position: absolute;
   inset: 0;
@@ -16950,12 +16950,12 @@ a.code-official-product-cta {
 }
 
 .sensor-wire-diagram-canvas-safety-dot-overlay--input {
-  --safety-dot-x: 80.859375%;
+  --safety-dot-x: 7.421875%;
   --safety-dot-y: 75.3125%;
 }
 
 .sensor-wire-diagram-canvas-safety-dot-overlay--common {
-  --safety-dot-x: 92.578125%;
+  --safety-dot-x: 19.140625%;
   --safety-dot-y: 75.3125%;
 }
 
@@ -17152,11 +17152,12 @@ a.code-official-product-cta {
   line-height: 1.15;
 }
 
-/* Wire endpoints in viewBox: y=72. Tag-y = 72 / 130 ≈ 55.4%. */
-.sensor-wire-diagram-mobile-fanout-tag--hot        { --tag-x: 15%; --tag-y: 55.4%; }
-.sensor-wire-diagram-mobile-fanout-tag--common     { --tag-x: 35%; --tag-y: 55.4%; }
-.sensor-wire-diagram-mobile-fanout-tag--safety-in  { --tag-x: 65%; --tag-y: 55.4%; }
-.sensor-wire-diagram-mobile-fanout-tag--safety-com { --tag-x: 85%; --tag-y: 55.4%; }
+/* Wire endpoints in viewBox: y=72. Tag-y = 72 / 130 ≈ 55.4%.
+   Control (Safety) left, Power (Hot/Common) right — matches desktop. */
+.sensor-wire-diagram-mobile-fanout-tag--safety-in  { --tag-x: 15%; --tag-y: 55.4%; }
+.sensor-wire-diagram-mobile-fanout-tag--safety-com { --tag-x: 35%; --tag-y: 55.4%; }
+.sensor-wire-diagram-mobile-fanout-tag--hot        { --tag-x: 65%; --tag-y: 55.4%; }
+.sensor-wire-diagram-mobile-fanout-tag--common     { --tag-x: 85%; --tag-y: 55.4%; }
 
 /* Mobile uses canvas terminal dots at a fixed pixel size (cqi falls back
    to 0 when no container is in scope, which would make them invisible). */
