@@ -45,9 +45,9 @@ export const MSRP_PRICES = {
 // HVAC Pro Pricing (per product, per tier)
 export const HVAC_PRO_PRICING: Record<ProductType, ProductPricing['hvac_pro']> = {
   mini: {
-    tier_1: 71.67,
-    tier_2: 65.00,
-    tier_3: 58.00,
+    tier_1: MSRP_PRICES.mini,
+    tier_2: MSRP_PRICES.mini,
+    tier_3: MSRP_PRICES.mini,
   },
   sensor: {
     tier_1: 50.17,
@@ -64,9 +64,9 @@ export const HVAC_PRO_PRICING: Record<ProductType, ProductPricing['hvac_pro']> =
 // Property Manager Pricing (10% lower than HVAC Pro)
 export const PROPERTY_MANAGER_PRICING: Record<ProductType, ProductPricing['property_manager']> = {
   mini: {
-    tier_1: 64.50,  // 10% off $71.67
-    tier_2: 58.50,  // 10% off $65.00
-    tier_3: 52.20,  // 10% off $58.00
+    tier_1: MSRP_PRICES.mini,
+    tier_2: MSRP_PRICES.mini,
+    tier_3: MSRP_PRICES.mini,
   },
   sensor: {
     tier_1: 45.15,  // 10% off $50.17
@@ -122,6 +122,10 @@ export function getDisplayPrice(
     return MSRP_PRICES[product]
   }
 
+  if (product === 'mini') {
+    return MSRP_PRICES.mini
+  }
+
   if (role === 'hvac_pro') {
     return HVAC_PRO_PRICING[product][tier]
   }
@@ -146,6 +150,16 @@ export function getProductPricingTable(
         tier: 'msrp',
         quantity: '1',
         price: MSRP_PRICES[product],
+      },
+    ]
+  }
+
+  if (product === 'mini') {
+    return [
+      {
+        tier: 'msrp',
+        quantity: 'Any',
+        price: MSRP_PRICES.mini,
       },
     ]
   }
