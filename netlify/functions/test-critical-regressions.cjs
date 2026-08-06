@@ -12,7 +12,7 @@ function clearFunctionCache() {
   }
 }
 
-function withEnv(updates, callback) {
+async function withEnv(updates, callback) {
   const previous = {}
   for (const key of Object.keys(updates)) {
     previous[key] = process.env[key]
@@ -24,7 +24,7 @@ function withEnv(updates, callback) {
   }
 
   try {
-    return callback()
+    return await callback()
   } finally {
     for (const key of Object.keys(updates)) {
       if (previous[key] === undefined) {
@@ -36,7 +36,7 @@ function withEnv(updates, callback) {
   }
 }
 
-function withMocks(mocks, callback) {
+async function withMocks(mocks, callback) {
   const originalLoad = Module._load
   Module._load = function patchedLoad(request, parent, isMain) {
     if (Object.prototype.hasOwnProperty.call(mocks, request)) {
@@ -47,7 +47,7 @@ function withMocks(mocks, callback) {
 
   try {
     clearFunctionCache()
-    return callback()
+    return await callback()
   } finally {
     Module._load = originalLoad
     clearFunctionCache()
