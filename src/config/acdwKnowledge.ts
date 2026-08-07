@@ -28,6 +28,16 @@ export const SUPPORT_CONTACT = {
   telHref: 'tel:+18337246949',
 } as const
 
+// ─── Business / mailing address (office) ─────────────────────────────────
+export const BUSINESS_ADDRESS = {
+  street: '1489 W. Palmetto Park Rd, Suite 500',
+  cityStateZip: 'Boca Raton, FL 33486',
+  /** Two-line form for address blocks (footer, legal, mail). */
+  lines: ['1489 W. Palmetto Park Rd, Suite 500', 'Boca Raton, FL 33486'] as const,
+  /** Single-line form for inline contexts. */
+  singleLine: '1489 W. Palmetto Park Rd, Suite 500, Boca Raton, FL 33486',
+} as const
+
 // ─── Monitoring portal (approved) ────────────────────────────────────────
 export const MONITORING = {
   applicationName: 'ACDW Sensor Monitoring Web Application',

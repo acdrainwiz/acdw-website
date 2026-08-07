@@ -30,6 +30,7 @@ Use this rule plus `src/config/acdwKnowledge.ts` as the source of truth for prod
 
 - **Phone**: Use `SUPPORT_CONTACT` from `src/config/acdwKnowledge.ts`: vanity **`phoneDisplay`** (e.g. **83-DRAINWIZ**), numeric **`phoneNumeric`** (e.g. **(833) 724-6949**), `tel:` use `SUPPORT_CONTACT.telHref`. Do not hardcode a different number.
 - **Email**: Use the value from `SUPPORT_CONTACT` (e.g. technical/support contact). General inquiries may use a different address only if defined in config.
+- **Business address**: Use `BUSINESS_ADDRESS` from `src/config/acdwKnowledge.ts` (`lines`, `singleLine`). Do not hardcode a different office/mailing address.
 - **Monitoring portal**: **Approved.** Use `MONITORING.portalUrl` (monitor.acdrainwiz.com/login) and `MONITORING.signUpUrl` (monitor.acdrainwiz.com/sign-up) from config for links and copy.
 
 ## Warranty and returns

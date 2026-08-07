@@ -16,7 +16,7 @@ import {
 } from '@heroicons/react/24/solid'
 import { validateEmail } from '../utils/emailValidation'
 import { useRecaptcha } from '../hooks/useRecaptcha'
-import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
+import { BUSINESS_ADDRESS, SUPPORT_CONTACT } from '../config/acdwKnowledge'
 import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 
 type ContactFormType = 'general' | 'support' | 'sales' | 'installer' | 'demo'
@@ -1912,7 +1912,7 @@ export function ContactPage() {
                     <p>
                       <strong>Office:</strong>{' '}
                       <address className="not-italic inline">
-                        240 W Palmetto Park Rd, Suite 110, Boca Raton, FL 33432
+                        {BUSINESS_ADDRESS.singleLine}
                       </address>
                     </p>
                     <p><strong>Hours:</strong> 9:00 AM to 5:00 PM Eastern Standard Time, Monday through Friday</p>
