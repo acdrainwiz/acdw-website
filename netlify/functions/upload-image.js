@@ -6,6 +6,7 @@ const GHL_BASE_URL = process.env.GHL_API_BASE_URL || 'https://services.leadconne
 const GHL_API_VERSION = process.env.GHL_API_VERSION || '2021-07-28'
 const GHL_PIT_TOKEN = process.env.GHL_PIT_TOKEN
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID
+const ACCEPTED_IMAGE_MIME_TYPES = new Set(['image/jpeg', 'image/png'])
 
 // Optional per-form folder routing — values are GHL Media folder IDs (parentId in /medias).
 // Add more env vars here as new forms get their own folder.
@@ -25,6 +26,23 @@ function extensionFromMime(mime) {
   const sub = mime.split('/')[1] || 'bin'
   if (sub === 'jpeg') return 'jpg'
   return sub.replace(/[^a-z0-9]/gi, '').slice(0, 8) || 'bin'
+}
+
+function hasExpectedImageSignature(buffer, mime) {
+  if (mime === 'image/jpeg') {
+    return buffer.length >= 3
+      && buffer[0] === 0xff
+      && buffer[1] === 0xd8
+      && buffer[2] === 0xff
+  }
+
+  if (mime === 'image/png') {
+    const pngSignature = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]
+    return buffer.length >= pngSignature.length
+      && pngSignature.every((byte, index) => buffer[index] === byte)
+  }
+
+  return false
 }
 
 exports.handler = async (event, context) => {
@@ -85,6 +103,14 @@ exports.handler = async (event, context) => {
     const mimeMatch = /^([a-z]+\/[a-z0-9.+-]+)/i.exec(meta)
     const mime = mimeMatch ? mimeMatch[1].toLowerCase() : 'image/jpeg'
 
+    if (!ACCEPTED_IMAGE_MIME_TYPES.has(mime)) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'Invalid image format. Please upload a JPEG or PNG image.' }),
+      }
+    }
+
     let imageBuffer
     try {
       imageBuffer = Buffer.from(base64Data, 'base64')
@@ -93,6 +119,14 @@ exports.handler = async (event, context) => {
         statusCode: 400,
         headers,
         body: JSON.stringify({ error: 'Invalid base64 image data' }),
+      }
+    }
+
+    if (!hasExpectedImageSignature(imageBuffer, mime)) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'Invalid image data. Please upload a valid JPEG or PNG image.' }),
       }
     }
 
