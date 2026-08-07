@@ -42,12 +42,17 @@ export const MSRP_PRICES = {
   bundle: 179.99,
 } as const
 
+// Defensive upper bound on quantity for online checkout.
+// There is no business cap for Mini list-price checkout; Sensor/Bundle
+// contractor tiers can still route above 500 units to contact sales.
+export const MAX_AUTOMATED_QUANTITY = 999999
+
 // HVAC Pro Pricing (per product, per tier)
 export const HVAC_PRO_PRICING: Record<ProductType, ProductPricing['hvac_pro']> = {
   mini: {
-    tier_1: 71.67,
-    tier_2: 65.00,
-    tier_3: 58.00,
+    tier_1: MSRP_PRICES.mini,
+    tier_2: MSRP_PRICES.mini,
+    tier_3: MSRP_PRICES.mini,
   },
   sensor: {
     tier_1: 50.17,
@@ -64,9 +69,9 @@ export const HVAC_PRO_PRICING: Record<ProductType, ProductPricing['hvac_pro']> =
 // Property Manager Pricing (10% lower than HVAC Pro)
 export const PROPERTY_MANAGER_PRICING: Record<ProductType, ProductPricing['property_manager']> = {
   mini: {
-    tier_1: 64.50,  // 10% off $71.67
-    tier_2: 58.50,  // 10% off $65.00
-    tier_3: 52.20,  // 10% off $58.00
+    tier_1: MSRP_PRICES.mini,
+    tier_2: MSRP_PRICES.mini,
+    tier_3: MSRP_PRICES.mini,
   },
   sensor: {
     tier_1: 45.15,  // 10% off $50.17
@@ -82,16 +87,11 @@ export const PROPERTY_MANAGER_PRICING: Record<ProductType, ProductPricing['prope
 
 // Quantity Tier Ranges
 export const TIER_RANGES: Record<PricingTier, PricingTierRange> = {
-  msrp: { min: 1, max: 1, label: 'MSRP' },
+  msrp: { min: 1, max: MAX_AUTOMATED_QUANTITY, label: 'MSRP' },
   tier_1: { min: 1, max: 20, label: 'Tier 1 (1-20 units)' },
   tier_2: { min: 21, max: 100, label: 'Tier 2 (21-100 units)' },
   tier_3: { min: 101, max: 500, label: 'Tier 3 (101-500 units)' },
 }
-
-// Defensive upper bound on quantity for online checkout.
-// There is no business cap — any amount can be purchased at list price. This is
-// only Stripe's per-line-item maximum (999,999), guarding against overflow/abuse.
-export const MAX_AUTOMATED_QUANTITY = 999999
 
 /**
  * Calculate pricing tier based on quantity
@@ -118,7 +118,7 @@ export function getDisplayPrice(
   role: UserRole,
   tier: PricingTier
 ): number {
-  if (role === 'homeowner' || tier === 'msrp') {
+  if (product === 'mini' || role === 'homeowner' || tier === 'msrp') {
     return MSRP_PRICES[product]
   }
 
@@ -140,11 +140,11 @@ export function getProductPricingTable(
   product: ProductType,
   role: UserRole
 ): Array<{ tier: PricingTier; quantity: string; price: number }> {
-  if (role === 'homeowner') {
+  if (product === 'mini' || role === 'homeowner') {
     return [
       {
         tier: 'msrp',
-        quantity: '1',
+        quantity: product === 'mini' ? '1+' : '1',
         price: MSRP_PRICES[product],
       },
     ]
