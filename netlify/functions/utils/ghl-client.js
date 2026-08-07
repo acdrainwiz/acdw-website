@@ -149,6 +149,20 @@ function buildCustomFieldsArray(pairs, sanitizedData, idLookup = getCustomFieldI
   return out
 }
 
+function findMissingPopulatedCustomFields(pairs, sanitizedData, idLookup = getCustomFieldId) {
+  const missing = []
+  for (const [ghlKey, formKey] of pairs) {
+    const id = idLookup(ghlKey)
+    if (id) continue
+    const type = getCustomFieldType(ghlKey)
+    const shaped = shapeCustomFieldValue(sanitizedData[formKey], type)
+    if (shaped === null) continue
+    if (Array.isArray(shaped) && shaped.length === 0) continue
+    missing.push({ ghlKey, formKey })
+  }
+  return missing
+}
+
 // =============================================================================
 // Opportunity custom field ID auto-lookup (cached per cold-start, 1h TTL)
 // =============================================================================
@@ -781,6 +795,11 @@ async function submitOpportunityForm(formType, sanitizedData, formConfig) {
     sanitizedData,
     oppIdLookup
   )
+  const missingOpportunityFields = findMissingPopulatedCustomFields(
+    formConfig.opportunityCustomFields || [],
+    sanitizedData,
+    oppIdLookup
+  )
   const opportunityPayload = {
     pipelineId,
     locationId: cfg.locationId,
@@ -794,15 +813,18 @@ async function submitOpportunityForm(formType, sanitizedData, formConfig) {
     opportunityPayload.customFields = opportunityCustomFields
   }
 
-  // Safety net: if we couldn't resolve any custom field IDs (e.g., GHL lookup
-  // failed or the fields don't exist yet), drop a Note on the Contact with all
-  // 22 form values so nothing is lost while you debug.
+  // Safety net: if any populated custom field ID could not be resolved (e.g.,
+  // GHL lookup failed or a field was renamed), drop a Note on the Contact with
+  // all form values so nothing is lost while you debug.
   const expectedFieldCount = (formConfig.opportunityCustomFields || []).length
-  if (expectedFieldCount > 0 && opportunityCustomFields.length === 0) {
+  if (expectedFieldCount > 0 && missingOpportunityFields.length > 0) {
     warnings.push({
-      stage: 'noOpportunityCustomFieldsResolved',
+      stage: opportunityCustomFields.length === 0
+        ? 'noOpportunityCustomFieldsResolved'
+        : 'partialOpportunityCustomFieldsResolved',
       message:
-        'No Opportunity custom field IDs resolved from GHL. Falling back to Contact Note. Verify the BOAF & COAA group exists on the Opportunity object.',
+        'Some populated Opportunity custom field IDs were not resolved from GHL. Falling back to Contact Note. Verify the Opportunity custom field group exists and field keys match.',
+      missingFields: missingOpportunityFields,
     })
     const noteBody = buildOpportunityFallbackNote(formType, formConfig, sanitizedData, opportunityName)
     try {
@@ -858,6 +880,7 @@ module.exports = {
   invalidatePipelineStageCache,
   renderOpportunityName,
   buildUpsertPayload,
+  findMissingPopulatedCustomFields,
   resolveConditionalTags,
   resolveValueTags,
   upsertContact,
