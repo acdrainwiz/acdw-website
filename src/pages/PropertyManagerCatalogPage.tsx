@@ -16,7 +16,8 @@ import {
   calculateTier, 
   getDisplayPrice,
   MSRP_PRICES,
-  PROPERTY_MANAGER_PRICING
+  PROPERTY_MANAGER_PRICING,
+  isListPriceProduct
 } from '../config/pricing'
 import type { ProductType, PricingTier } from '../config/pricing'
 
@@ -28,13 +29,17 @@ export function PropertyManagerCatalogPage() {
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
 
   const pricingTable = getProductPricingTable(selectedProduct, 'property_manager')
-  const currentTier = calculateTier(quantity) as PricingTier
+  const currentTier = (isListPriceProduct(selectedProduct) ? 'msrp' : calculateTier(quantity)) as PricingTier
   const currentPrice = getDisplayPrice(selectedProduct, 'property_manager', currentTier)
   const totalPrice = currentPrice * quantity
 
   // Calculate savings for each product (MSRP vs Tier 1 property manager pricing)
   const getProductSavings = (product: ProductType) => {
     const msrp = MSRP_PRICES[product]
+    if (isListPriceProduct(product)) {
+      return { msrp, pmPrice: msrp, savings: 0, savingsPercent: 0 }
+    }
+
     const pmPrice = PROPERTY_MANAGER_PRICING[product].tier_1
     const savings = msrp - pmPrice
     const savingsPercent = Math.round((savings / msrp) * 100)
@@ -77,6 +82,7 @@ export function PropertyManagerCatalogPage() {
             {products.map((product) => {
               const { msrp, pmPrice, savings, savingsPercent } = getProductSavings(product.id)
               const isActive = selectedProduct === product.id
+              const isListPrice = isListPriceProduct(product.id)
               
               return (
                 <div key={product.id} className="hvac-pro-product-button-wrapper">
@@ -91,12 +97,14 @@ export function PropertyManagerCatalogPage() {
                       <span className="hvac-pro-product-msrp-label">MSRP:</span>
                       <span className="hvac-pro-product-msrp-price">${msrp.toFixed(2)}</span>
                     </div>
-                    <div className="hvac-pro-product-savings">
-                      <span className="hvac-pro-product-savings-amount">Save ${savings.toFixed(2)}</span>
-                      <span className="hvac-pro-product-savings-percent">({savingsPercent}% off)</span>
-                    </div>
+                    {!isListPrice && (
+                      <div className="hvac-pro-product-savings">
+                        <span className="hvac-pro-product-savings-amount">Save ${savings.toFixed(2)}</span>
+                        <span className="hvac-pro-product-savings-percent">({savingsPercent}% off)</span>
+                      </div>
+                    )}
                     <div className="hvac-pro-product-contractor-price">
-                      <span className="hvac-pro-product-contractor-price-label">From:</span>
+                      <span className="hvac-pro-product-contractor-price-label">{isListPrice ? 'Price:' : 'From:'}</span>
                       <span className="hvac-pro-product-contractor-price-value">${pmPrice.toFixed(2)}</span>
                     </div>
                   </div>
