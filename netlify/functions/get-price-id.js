@@ -65,6 +65,12 @@ function calculateTier(quantity) {
  * Get Price ID key based on product, role, and tier
  */
 function getPriceIdKey(product, role, tier) {
+  // Mini is sold online at list price for every buyer role; professional tiering
+  // still applies to Sensor and Bundle products only.
+  if (product === 'mini') {
+    return 'mini_homeowner'
+  }
+
   if (role === 'homeowner') {
     return `${product}_homeowner`
   }
@@ -179,10 +185,9 @@ exports.handler = async (event, context) => {
     }
 
     // Quantity ceiling.
-    // Contractor / property-manager pricing tiers top out at 500 units; above that we
-    // route to sales for a custom volume quote. Homeowners buy at flat MSRP, so any
-    // quantity is allowed online (only Stripe's per-line-item max of 999,999 guards it).
-    if (userRole !== 'homeowner' && qty > 500) {
+    // Contractor / property-manager pricing tiers top out at 500 units for Sensor
+    // and Bundle; Mini is sold at flat list price in any online quantity.
+    if (product !== 'mini' && userRole !== 'homeowner' && qty > 500) {
       return {
         statusCode: 400,
         headers,
@@ -202,7 +207,7 @@ exports.handler = async (event, context) => {
 
     // Calculate tier
     let tier = 'msrp'
-    if (userRole !== 'homeowner') {
+    if (product !== 'mini' && userRole !== 'homeowner') {
       tier = calculateTier(qty)
       if (!tier) {
         return {
