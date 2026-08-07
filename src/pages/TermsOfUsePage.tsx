@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { EnvelopeIcon, PhoneIcon, MapPinIcon, ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline'
-import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
+import { BUSINESS_ADDRESS, SUPPORT_CONTACT } from '../config/acdwKnowledge'
 import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 
 export function TermsOfUsePage() {
@@ -465,8 +465,8 @@ export function TermsOfUsePage() {
                 <p className="flex items-start">
                   <MapPinIcon className="h-5 w-5 inline-block mr-2 mt-0.5 flex-shrink-0 text-primary-600" />
                   <address className="not-italic leading-snug">
-                    240 W Palmetto Park Rd, Suite 110<br />
-                    Boca Raton, FL 33432
+                    {BUSINESS_ADDRESS.lines[0]}<br />
+                    {BUSINESS_ADDRESS.lines[1]}
                   </address>
                 </p>
                 <p><PhoneIcon className="h-5 w-5 inline-block mr-2 text-primary-600" />Phone: <a href={SUPPORT_CONTACT.telHref} className="text-primary-600 hover:text-primary-700 underline">{SUPPORT_CONTACT.phoneDisplay}</a></p>

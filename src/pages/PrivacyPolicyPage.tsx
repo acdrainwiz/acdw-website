@@ -10,7 +10,7 @@ import {
   ChatBubbleLeftRightIcon,
   PrinterIcon,
 } from '@heroicons/react/24/outline'
-import { SUPPORT_CONTACT } from '../config/acdwKnowledge'
+import { BUSINESS_ADDRESS, SUPPORT_CONTACT } from '../config/acdwKnowledge'
 import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 
 export function PrivacyPolicyPage() {
@@ -416,8 +416,8 @@ export function PrivacyPolicyPage() {
                 <p><strong>Email:</strong> <a href="mailto:privacy@acdrainwiz.com" className="text-primary-600 hover:text-primary-700 underline">privacy@acdrainwiz.com</a></p>
                 <p><strong>Phone:</strong> <a href={SUPPORT_CONTACT.telHref} className="text-primary-600 hover:text-primary-700 underline">{SUPPORT_CONTACT.phoneDisplay}</a></p>
                 <p><strong>Mail:</strong> AC Drain Wiz Privacy Team<br />
-                240 W Palmetto Park Rd, Suite 110<br />
-                Boca Raton, FL 33432</p>
+                {BUSINESS_ADDRESS.lines[0]}<br />
+                {BUSINESS_ADDRESS.lines[1]}</p>
               </div>
             </div>
           </div>

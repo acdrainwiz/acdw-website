@@ -5,7 +5,7 @@
  * Official Rules content on the site (#official-rules on /trash-the-float).
  */
 
-import { SUPPORT_CONTACT } from './acdwKnowledge'
+import { BUSINESS_ADDRESS, SUPPORT_CONTACT } from './acdwKnowledge'
 
 /** In-page anchor + path for all Official Rules links */
 export const TRASH_THE_FLOAT_OFFICIAL_RULES_HREF = '/trash-the-float#official-rules'
@@ -30,7 +30,7 @@ export const TRASH_THE_FLOAT_OFFICIAL_RULES = {
 
   sponsor: {
     name: '50 50 Holdings, Inc. (d/b/a AC Drain Wiz)',
-    addressLines: ['240 W Palmetto Park Rd, Suite 110', 'Boca Raton, FL 33432'],
+    addressLines: [...BUSINESS_ADDRESS.lines],
     email: SUPPORT_CONTACT.supportEmail,
     phoneDisplay: SUPPORT_CONTACT.phoneDisplay,
     telHref: SUPPORT_CONTACT.telHref,
