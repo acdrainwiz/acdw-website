@@ -28,17 +28,28 @@ export function PropertyManagerCatalogPage() {
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
 
   const pricingTable = getProductPricingTable(selectedProduct, 'property_manager')
-  const currentTier = calculateTier(quantity) as PricingTier
+  const currentTier = (selectedProduct === 'mini' ? 'msrp' : calculateTier(quantity)) as PricingTier
   const currentPrice = getDisplayPrice(selectedProduct, 'property_manager', currentTier)
   const totalPrice = currentPrice * quantity
 
   // Calculate savings for each product (MSRP vs Tier 1 property manager pricing)
   const getProductSavings = (product: ProductType) => {
     const msrp = MSRP_PRICES[product]
+    if (product === 'mini') {
+      return { msrp, pmPrice: msrp, savings: 0, savingsPercent: 0 }
+    }
     const pmPrice = PROPERTY_MANAGER_PRICING[product].tier_1
     const savings = msrp - pmPrice
     const savingsPercent = Math.round((savings / msrp) * 100)
     return { msrp, pmPrice, savings, savingsPercent }
+  }
+
+  const handleProductSelect = (product: ProductType) => {
+    setSelectedProduct(product)
+    if (product !== 'mini' && quantity > 500) {
+      setQuantity(500)
+    }
+    setCheckoutError(null)
   }
 
   const products = [
@@ -81,7 +92,7 @@ export function PropertyManagerCatalogPage() {
               return (
                 <div key={product.id} className="hvac-pro-product-button-wrapper">
                   <button
-                    onClick={() => setSelectedProduct(product.id)}
+                    onClick={() => handleProductSelect(product.id)}
                     className={`hvac-pro-product-button ${isActive ? 'active' : ''}`}
                   >
                     <span className="hvac-pro-product-button-name">{product.name}</span>
@@ -120,7 +131,7 @@ export function PropertyManagerCatalogPage() {
                 <tbody>
                   {pricingTable.map((row) => (
                     <tr key={row.tier}>
-                      <td>{row.quantity} units</td>
+                      <td>{row.quantity}{row.quantity === 'Any quantity' ? '' : ' units'}</td>
                       <td>${row.price.toFixed(2)}</td>
                       <td>${(row.price * (row.tier === 'tier_1' ? 10 : row.tier === 'tier_2' ? 50 : 200)).toFixed(2)}</td>
                     </tr>
@@ -164,18 +175,19 @@ export function PropertyManagerCatalogPage() {
               <input
                 type="number"
                 min="1"
-                max="500"
+                max={selectedProduct === 'mini' ? 999999 : 500}
                 value={quantity}
                 onChange={(e) => {
                   const val = parseInt(e.target.value) || 1
-                  setQuantity(Math.max(1, Math.min(500, val)))
+                  const maxQuantity = selectedProduct === 'mini' ? 999999 : 500
+                  setQuantity(Math.max(1, Math.min(maxQuantity, val)))
                   setCheckoutError(null)
                 }}
                 className="hvac-pro-quantity-input"
               />
             </div>
             
-            {quantity > 500 && (
+            {selectedProduct !== 'mini' && quantity > 500 && (
               <p className="hvac-pro-contact-sales">
                 For quantities over 500, please contact sales.
               </p>
@@ -199,7 +211,7 @@ export function PropertyManagerCatalogPage() {
           </div>
 
           {/* Checkout */}
-          {quantity <= 500 && (
+          {(selectedProduct === 'mini' || quantity <= 500) && (
             <div className="hvac-pro-checkout-section">
               {checkoutError && (
                 <div className="hvac-pro-checkout-error">
