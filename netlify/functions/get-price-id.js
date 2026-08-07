@@ -155,8 +155,10 @@ exports.handler = async (event, context) => {
       }
     }
 
-    // Default to 'homeowner' role for guest checkout (only for Mini)
-    const userRole = role || 'homeowner'
+    // Mini is sold online at list price regardless of account type. Other
+    // products still use contractor/property-manager tiers.
+    const requestedRole = role || 'homeowner'
+    const userRole = product === 'mini' ? 'homeowner' : requestedRole
 
     // Validate role
     const validRoles = ['homeowner', 'hvac_pro', 'property_manager']
@@ -182,7 +184,7 @@ exports.handler = async (event, context) => {
     // Contractor / property-manager pricing tiers top out at 500 units; above that we
     // route to sales for a custom volume quote. Homeowners buy at flat MSRP, so any
     // quantity is allowed online (only Stripe's per-line-item max of 999,999 guards it).
-    if (userRole !== 'homeowner' && qty > 500) {
+    if (product !== 'mini' && userRole !== 'homeowner' && qty > 500) {
       return {
         statusCode: 400,
         headers,
@@ -202,7 +204,7 @@ exports.handler = async (event, context) => {
 
     // Calculate tier
     let tier = 'msrp'
-    if (userRole !== 'homeowner') {
+    if (product !== 'mini' && userRole !== 'homeowner') {
       tier = calculateTier(qty)
       if (!tier) {
         return {

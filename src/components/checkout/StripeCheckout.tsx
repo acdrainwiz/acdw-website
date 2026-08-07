@@ -32,9 +32,9 @@ export function StripeCheckout({ product, quantity, onError, buttonText, classNa
       return
     }
 
-    // Allow guest checkout - use 'homeowner' role for guests
-    // Note: Sensor and Bundle should never reach here as guests (they require auth)
-    const userRole = user?.role || 'homeowner'
+    // Mini checkout is always list price; Sensor/Bundle catalog purchases use the
+    // authenticated role for contractor pricing.
+    const userRole = product === 'mini' ? 'homeowner' : user?.role || 'homeowner'
 
     if (quantity < 1 || quantity > 999999) {
       onError?.('Invalid quantity')

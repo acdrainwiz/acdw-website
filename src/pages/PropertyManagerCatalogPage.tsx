@@ -31,6 +31,7 @@ export function PropertyManagerCatalogPage() {
   const currentTier = calculateTier(quantity) as PricingTier
   const currentPrice = getDisplayPrice(selectedProduct, 'property_manager', currentTier)
   const totalPrice = currentPrice * quantity
+  const currentTierLabel = selectedProduct === 'mini' ? 'MSRP' : currentTier.replace('_', ' ')
 
   // Calculate savings for each product (MSRP vs Tier 1 property manager pricing)
   const getProductSavings = (product: ProductType) => {
@@ -77,6 +78,7 @@ export function PropertyManagerCatalogPage() {
             {products.map((product) => {
               const { msrp, pmPrice, savings, savingsPercent } = getProductSavings(product.id)
               const isActive = selectedProduct === product.id
+              const isMini = product.id === 'mini'
               
               return (
                 <div key={product.id} className="hvac-pro-product-button-wrapper">
@@ -91,14 +93,22 @@ export function PropertyManagerCatalogPage() {
                       <span className="hvac-pro-product-msrp-label">MSRP:</span>
                       <span className="hvac-pro-product-msrp-price">${msrp.toFixed(2)}</span>
                     </div>
-                    <div className="hvac-pro-product-savings">
-                      <span className="hvac-pro-product-savings-amount">Save ${savings.toFixed(2)}</span>
-                      <span className="hvac-pro-product-savings-percent">({savingsPercent}% off)</span>
-                    </div>
-                    <div className="hvac-pro-product-contractor-price">
-                      <span className="hvac-pro-product-contractor-price-label">From:</span>
-                      <span className="hvac-pro-product-contractor-price-value">${pmPrice.toFixed(2)}</span>
-                    </div>
+                    {isMini ? (
+                      <div className="hvac-pro-product-contractor-price">
+                        <span className="hvac-pro-product-contractor-price-label">Online list price</span>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="hvac-pro-product-savings">
+                          <span className="hvac-pro-product-savings-amount">Save ${savings.toFixed(2)}</span>
+                          <span className="hvac-pro-product-savings-percent">({savingsPercent}% off)</span>
+                        </div>
+                        <div className="hvac-pro-product-contractor-price">
+                          <span className="hvac-pro-product-contractor-price-label">From:</span>
+                          <span className="hvac-pro-product-contractor-price-value">${pmPrice.toFixed(2)}</span>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               )
@@ -120,7 +130,7 @@ export function PropertyManagerCatalogPage() {
                 <tbody>
                   {pricingTable.map((row) => (
                     <tr key={row.tier}>
-                      <td>{row.quantity} units</td>
+                      <td>{row.quantity}{row.quantity === 'Any quantity' ? '' : ' units'}</td>
                       <td>${row.price.toFixed(2)}</td>
                       <td>${(row.price * (row.tier === 'tier_1' ? 10 : row.tier === 'tier_2' ? 50 : 200)).toFixed(2)}</td>
                     </tr>
@@ -185,7 +195,7 @@ export function PropertyManagerCatalogPage() {
           {/* Price Display */}
           <div className="hvac-pro-price-display">
             <div className="hvac-pro-price-row">
-              <span>Unit Price ({currentTier.replace('_', ' ')}):</span>
+              <span>Unit Price ({currentTierLabel}):</span>
               <span className="hvac-pro-price-value">${currentPrice.toFixed(2)}</span>
             </div>
             <div className="hvac-pro-price-row">
