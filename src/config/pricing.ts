@@ -93,6 +93,10 @@ export const TIER_RANGES: Record<PricingTier, PricingTierRange> = {
 // only Stripe's per-line-item maximum (999,999), guarding against overflow/abuse.
 export const MAX_AUTOMATED_QUANTITY = 999999
 
+export function isMiniListPriceProduct(product: ProductType): boolean {
+  return product === 'mini'
+}
+
 /**
  * Calculate pricing tier based on quantity
  * @param quantity - Number of units
@@ -118,6 +122,10 @@ export function getDisplayPrice(
   role: UserRole,
   tier: PricingTier
 ): number {
+  if (isMiniListPriceProduct(product)) {
+    return MSRP_PRICES[product]
+  }
+
   if (role === 'homeowner' || tier === 'msrp') {
     return MSRP_PRICES[product]
   }
@@ -140,11 +148,11 @@ export function getProductPricingTable(
   product: ProductType,
   role: UserRole
 ): Array<{ tier: PricingTier; quantity: string; price: number }> {
-  if (role === 'homeowner') {
+  if (role === 'homeowner' || isMiniListPriceProduct(product)) {
     return [
       {
         tier: 'msrp',
-        quantity: '1',
+        quantity: isMiniListPriceProduct(product) ? 'Any online quantity' : '1',
         price: MSRP_PRICES[product],
       },
     ]
