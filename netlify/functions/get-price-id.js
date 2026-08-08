@@ -65,6 +65,12 @@ function calculateTier(quantity) {
  * Get Price ID key based on product, role, and tier
  */
 function getPriceIdKey(product, role, tier) {
+  // Mini is sold online at list price for every customer type. Professional
+  // accounts still need sensor/bundle tiers, but Mini must not use legacy pro IDs.
+  if (product === 'mini') {
+    return 'mini_homeowner'
+  }
+
   if (role === 'homeowner') {
     return `${product}_homeowner`
   }
