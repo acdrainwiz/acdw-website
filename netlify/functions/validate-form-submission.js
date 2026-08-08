@@ -67,6 +67,33 @@ const FORM_NAME_TO_GHL_TYPE = {
 
 const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY
 
+const USER_RECOVERABLE_BEHAVIOR_FAILURES = new Set([
+  'Submission too fast',
+  'Form load time expired',
+])
+
+function behaviorFailureResponse(reason) {
+  if (reason === 'Form load time expired') {
+    return {
+      statusCode: 400,
+      body: {
+        success: false,
+        error: 'Session expired',
+        message: 'Your form session expired. Please refresh the page and submit again.',
+      },
+    }
+  }
+
+  return {
+    statusCode: 400,
+    body: {
+      success: false,
+      error: 'Please try again',
+      message: 'Please wait a moment and submit the form again.',
+    },
+  }
+}
+
 const verifyRecaptcha = async (token) => {
   if (!RECAPTCHA_SECRET_KEY) {
     console.warn('reCAPTCHA secret key not configured - skipping verification')
@@ -1077,7 +1104,16 @@ exports.handler = async (event, context) => {
             details: behaviorValidation.details,
             formName
           })
-          
+
+          if (USER_RECOVERABLE_BEHAVIOR_FAILURES.has(behaviorValidation.reason)) {
+            const response = behaviorFailureResponse(behaviorValidation.reason)
+            return {
+              statusCode: response.statusCode,
+              headers,
+              body: JSON.stringify(response.body),
+            }
+          }
+
           // Add to blacklist if suspicious
           await addToBlacklist(ip, behaviorValidation.reason, userAgent)
           
@@ -1182,6 +1218,15 @@ exports.handler = async (event, context) => {
       logFormSubmission(formType, email, ip, userAgent, false, [
         `ghl-submission-failed: ${ghlErr && ghlErr.message}`,
       ])
+      return {
+        statusCode: 502,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          error: 'Submission service unavailable',
+          message: 'We could not save your submission. Please try again in a moment.',
+        }),
+      }
     }
 
     return {
