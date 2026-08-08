@@ -149,6 +149,18 @@ function buildCustomFieldsArray(pairs, sanitizedData, idLookup = getCustomFieldI
   return out
 }
 
+function getMissingSubmittedCustomFieldKeys(pairs, sanitizedData, idLookup = getCustomFieldId) {
+  const missing = []
+  for (const [ghlKey, formKey] of pairs) {
+    const type = getCustomFieldType(ghlKey)
+    const shaped = shapeCustomFieldValue(sanitizedData[formKey], type)
+    if (shaped === null) continue
+    if (Array.isArray(shaped) && shaped.length === 0) continue
+    if (!idLookup(ghlKey)) missing.push(ghlKey)
+  }
+  return missing
+}
+
 // =============================================================================
 // Opportunity custom field ID auto-lookup (cached per cold-start, 1h TTL)
 // =============================================================================
@@ -794,15 +806,21 @@ async function submitOpportunityForm(formType, sanitizedData, formConfig) {
     opportunityPayload.customFields = opportunityCustomFields
   }
 
-  // Safety net: if we couldn't resolve any custom field IDs (e.g., GHL lookup
-  // failed or the fields don't exist yet), drop a Note on the Contact with all
-  // 22 form values so nothing is lost while you debug.
-  const expectedFieldCount = (formConfig.opportunityCustomFields || []).length
-  if (expectedFieldCount > 0 && opportunityCustomFields.length === 0) {
+  // Safety net: if any submitted Opportunity value cannot be mapped to a GHL
+  // field ID, drop a Note on the Contact with all values so partial field setup
+  // cannot silently discard high-value submission details.
+  const missingOpportunityFieldKeys = getMissingSubmittedCustomFieldKeys(
+    formConfig.opportunityCustomFields || [],
+    sanitizedData,
+    oppIdLookup
+  )
+  if (missingOpportunityFieldKeys.length > 0) {
     warnings.push({
-      stage: 'noOpportunityCustomFieldsResolved',
+      stage: opportunityCustomFields.length === 0
+        ? 'noOpportunityCustomFieldsResolved'
+        : 'partialOpportunityCustomFieldsResolved',
       message:
-        'No Opportunity custom field IDs resolved from GHL. Falling back to Contact Note. Verify the BOAF & COAA group exists on the Opportunity object.',
+        `Some submitted Opportunity values could not be mapped to GHL custom fields (${missingOpportunityFieldKeys.join(', ')}). Falling back to Contact Note so no submission details are lost.`,
     })
     const noteBody = buildOpportunityFallbackNote(formType, formConfig, sanitizedData, opportunityName)
     try {
