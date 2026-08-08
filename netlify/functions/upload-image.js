@@ -43,13 +43,13 @@ exports.handler = async (event, context) => {
   }
 
   const ip = getClientIP(event)
-  const rateLimitResult = await checkRateLimit(ip, 'form', context)
+  const rateLimitResult = await checkRateLimit(ip, 'upload', context)
   if (!rateLimitResult.allowed) {
     return {
       statusCode: 429,
       headers: { ...headers, ...getRateLimitHeaders(rateLimitResult) },
       body: JSON.stringify({
-        error: 'Too many form submissions. Please wait and try again.',
+        error: 'Too many image uploads. Please wait and try again.',
         retryAfter: rateLimitResult.retryAfter,
       }),
     }
