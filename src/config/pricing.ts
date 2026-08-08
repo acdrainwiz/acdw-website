@@ -118,7 +118,7 @@ export function getDisplayPrice(
   role: UserRole,
   tier: PricingTier
 ): number {
-  if (role === 'homeowner' || tier === 'msrp') {
+  if (product === 'mini' || role === 'homeowner' || tier === 'msrp') {
     return MSRP_PRICES[product]
   }
 
@@ -140,11 +140,11 @@ export function getProductPricingTable(
   product: ProductType,
   role: UserRole
 ): Array<{ tier: PricingTier; quantity: string; price: number }> {
-  if (role === 'homeowner') {
+  if (product === 'mini' || role === 'homeowner') {
     return [
       {
         tier: 'msrp',
-        quantity: '1',
+        quantity: product === 'mini' ? '1+' : '1',
         price: MSRP_PRICES[product],
       },
     ]
