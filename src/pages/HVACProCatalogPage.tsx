@@ -16,7 +16,8 @@ import {
   calculateTier, 
   getDisplayPrice,
   MSRP_PRICES,
-  HVAC_PRO_PRICING
+  HVAC_PRO_PRICING,
+  MAX_AUTOMATED_QUANTITY
 } from '../config/pricing'
 import type { ProductType, PricingTier } from '../config/pricing'
 
@@ -27,18 +28,29 @@ export function HVACProCatalogPage() {
   const [quantity, setQuantity] = useState(1)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
 
+  const isMiniSelected = selectedProduct === 'mini'
+  const maxQuantity = isMiniSelected ? MAX_AUTOMATED_QUANTITY : 500
   const pricingTable = getProductPricingTable(selectedProduct, 'hvac_pro')
-  const currentTier = calculateTier(quantity) as PricingTier
+  const currentTier = isMiniSelected ? 'msrp' : calculateTier(quantity) as PricingTier
   const currentPrice = getDisplayPrice(selectedProduct, 'hvac_pro', currentTier)
   const totalPrice = currentPrice * quantity
 
   // Calculate savings for each product (MSRP vs Tier 1 contractor pricing)
   const getProductSavings = (product: ProductType) => {
     const msrp = MSRP_PRICES[product]
+    if (product === 'mini') {
+      return { msrp, contractorPrice: msrp, savings: 0, savingsPercent: 0 }
+    }
     const contractorPrice = HVAC_PRO_PRICING[product].tier_1
     const savings = msrp - contractorPrice
     const savingsPercent = Math.round((savings / msrp) * 100)
     return { msrp, contractorPrice, savings, savingsPercent }
+  }
+
+  const handleProductSelect = (product: ProductType) => {
+    setSelectedProduct(product)
+    setQuantity((currentQuantity) => product === 'mini' ? currentQuantity : Math.min(currentQuantity, 500))
+    setCheckoutError(null)
   }
 
   const products = [
@@ -81,7 +93,7 @@ export function HVACProCatalogPage() {
               return (
                 <div key={product.id} className="hvac-pro-product-button-wrapper">
             <button
-                    onClick={() => setSelectedProduct(product.id)}
+                    onClick={() => handleProductSelect(product.id)}
                     className={`hvac-pro-product-button ${isActive ? 'active' : ''}`}
             >
                     <span className="hvac-pro-product-button-name">{product.name}</span>
@@ -91,10 +103,16 @@ export function HVACProCatalogPage() {
                       <span className="hvac-pro-product-msrp-label">MSRP:</span>
                       <span className="hvac-pro-product-msrp-price">${msrp.toFixed(2)}</span>
                     </div>
-                    <div className="hvac-pro-product-savings">
-                      <span className="hvac-pro-product-savings-amount">Save ${savings.toFixed(2)}</span>
-                      <span className="hvac-pro-product-savings-percent">({savingsPercent}% off)</span>
-                    </div>
+                    {savings > 0 ? (
+                      <div className="hvac-pro-product-savings">
+                        <span className="hvac-pro-product-savings-amount">Save ${savings.toFixed(2)}</span>
+                        <span className="hvac-pro-product-savings-percent">({savingsPercent}% off)</span>
+                      </div>
+                    ) : (
+                      <div className="hvac-pro-product-savings">
+                        <span className="hvac-pro-product-savings-amount">List price</span>
+                      </div>
+                    )}
                     <div className="hvac-pro-product-contractor-price">
                       <span className="hvac-pro-product-contractor-price-label">From:</span>
                       <span className="hvac-pro-product-contractor-price-value">${contractorPrice.toFixed(2)}</span>
@@ -164,18 +182,18 @@ export function HVACProCatalogPage() {
             <input
               type="number"
               min="1"
-              max="500"
+              max={maxQuantity}
               value={quantity}
               onChange={(e) => {
                 const val = parseInt(e.target.value) || 1
-                setQuantity(Math.max(1, Math.min(500, val)))
+                setQuantity(Math.max(1, Math.min(maxQuantity, val)))
                 setCheckoutError(null)
               }}
               className="hvac-pro-quantity-input"
             />
             </div>
             
-            {quantity > 500 && (
+            {!isMiniSelected && quantity > 500 && (
               <p className="hvac-pro-contact-sales">
                 For quantities over 500, please contact sales.
               </p>
@@ -199,7 +217,7 @@ export function HVACProCatalogPage() {
           </div>
 
           {/* Checkout */}
-          {quantity <= 500 && (
+          {quantity <= maxQuantity && (
             <div className="hvac-pro-checkout-section">
               {checkoutError && (
                 <div className="hvac-pro-checkout-error">
