@@ -35,6 +35,9 @@ export function HVACProCatalogPage() {
   // Calculate savings for each product (MSRP vs Tier 1 contractor pricing)
   const getProductSavings = (product: ProductType) => {
     const msrp = MSRP_PRICES[product]
+    if (product === 'mini') {
+      return { msrp, contractorPrice: msrp, savings: 0, savingsPercent: 0 }
+    }
     const contractorPrice = HVAC_PRO_PRICING[product].tier_1
     const savings = msrp - contractorPrice
     const savingsPercent = Math.round((savings / msrp) * 100)
