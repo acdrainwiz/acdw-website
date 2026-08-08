@@ -11,6 +11,7 @@
 const { checkRateLimit, getRateLimitHeaders, getClientIP } = require('./utils/rate-limiter')
 const { logAPIAccess, logRateLimit, EVENT_TYPES } = require('./utils/security-logger')
 const { calculateShipping, parseProducts } = require('./utils/shipping-calculator.cjs')
+const { isPurchasingEnabled, purchasingDisabledResponse } = require('./utils/purchasing-enabled.cjs')
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
@@ -33,6 +34,10 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({ error: 'Method not allowed' }),
     }
+  }
+
+  if (!isPurchasingEnabled()) {
+    return purchasingDisabledResponse(headers)
   }
 
   try {
