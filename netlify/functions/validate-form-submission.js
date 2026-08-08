@@ -1077,7 +1077,22 @@ exports.handler = async (event, context) => {
             details: behaviorValidation.details,
             formName
           })
-          
+
+          if (formType === 'trash-the-float-story' || formName === 'trash-the-float-story') {
+            const isRateLimited = String(behaviorValidation.reason || '').toLowerCase().includes('too many')
+            return {
+              statusCode: isRateLimited ? 429 : 400,
+              headers,
+              body: JSON.stringify({
+                success: false,
+                error: isRateLimited ? 'Too many requests' : 'Submission rejected',
+                message: isRateLimited
+                  ? 'Too many submissions. Please wait and try again.'
+                  : 'Please refresh the page and try submitting your story again.',
+              }),
+            }
+          }
+
           // Add to blacklist if suspicious
           await addToBlacklist(ip, behaviorValidation.reason, userAgent)
           
@@ -1182,6 +1197,15 @@ exports.handler = async (event, context) => {
       logFormSubmission(formType, email, ip, userAgent, false, [
         `ghl-submission-failed: ${ghlErr && ghlErr.message}`,
       ])
+      return {
+        statusCode: 502,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          error: 'Submission service unavailable',
+          message: 'We could not save your submission. Please try again.',
+        }),
+      }
     }
 
     return {

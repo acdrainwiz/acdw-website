@@ -226,10 +226,17 @@ const sanitizeFormData = (data, formType = 'general') => {
       case 'fullname':
       case 'citystate':
       case 'instagramhandle':
-      case 'mediaurl':
       case 'rulesconsent':
         sanitized[key] = sanitizeString(String(value), {
           maxLength: 500,
+          allowNewlines: false,
+          allowHTML: false,
+          trim: true,
+        })
+        break
+      case 'mediaurl':
+        sanitized[key] = sanitizeString(String(value), {
+          maxLength: 4096,
           allowNewlines: false,
           allowHTML: false,
           trim: true,
