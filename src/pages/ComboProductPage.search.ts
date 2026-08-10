@@ -8,7 +8,7 @@ export const PAGE_SEARCH_META: PageSearchMeta = {
   kind: 'product-info',
   title: PRODUCT_NAMES.bundle,
   body:
-    'Mini and Sensor bundle. Combined drain line maintenance access and overflow protection. Product overview.',
-  tags: ['bundle', 'combo', 'mini', 'sensor', 'product'],
+    'Mini + Sensor bundle for contractors: permanent drain-line access, overflow protection, Standard or WiFi Sensor options, and bayonet service workflow. Product overview.',
+  tags: ['bundle', 'combo', 'mini', 'sensor', 'product', 'wifi', 'contractor'],
   href: '/products/combo',
 }
