@@ -123,6 +123,20 @@ function event(body = {}, extra = {}) {
   }
 }
 
+function jsonEvent(body = {}, extra = {}) {
+  return {
+    httpMethod: 'POST',
+    headers: {
+      origin: 'https://www.acdrainwiz.com',
+      'user-agent': 'Mozilla/5.0',
+      'content-type': 'application/json',
+      ...extra.headers,
+    },
+    path: extra.path || '/.netlify/functions/get-price-id',
+    body: JSON.stringify(body),
+  }
+}
+
 async function testPurchasingApisDefaultClosed() {
   delete process.env.PURCHASING_ENABLED
   delete process.env.VITE_PURCHASING_ENABLED
@@ -161,7 +175,7 @@ async function testMiniContractorUsesHomeownerPriceAtHighQuantity() {
     }),
   }), async () => {
     const { handler } = require(path.join(functionDir, 'get-price-id.js'))
-    const response = await handler(event({ product: 'mini', quantity: '600', role: 'hvac_pro' }), {})
+    const response = await handler(jsonEvent({ product: 'mini', quantity: '600', role: 'hvac_pro' }), {})
     const body = JSON.parse(response.body)
 
     assert.strictEqual(response.statusCode, 200)
