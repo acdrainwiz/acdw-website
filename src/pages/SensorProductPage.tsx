@@ -1100,7 +1100,7 @@ export function SensorProductPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="product-faq sensor-product-faq">
+      <section id="product-faq" className="product-faq sensor-product-faq">
         <div className="product-faq-content">
           <motion.header
             className="mini-section-header"
