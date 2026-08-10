@@ -12,7 +12,7 @@ import { MiniHeroV2MeshBackground } from '../components/layout/MiniHeroV2MeshBac
 import { MiniFlowWaveBackdrop } from '../components/products/MiniFlowWaveBackdrop'
 import { HeroTitleRotator } from '../components/products/HeroTitleRotator'
 import { ComboHeroCtaPanel } from '../components/products/ComboHeroCtaPanel'
-import { ComboWorkflowShowcase } from '../components/products/ComboWorkflowShowcase'
+import { ComboServiceRhythmSwap } from '../components/products/ComboServiceRhythmSwap'
 import { usePageHeroIntro } from '../hooks/usePageHeroIntro'
 import { useAuth } from '../contexts/AuthContext'
 import { buildProductSupportHubHref } from '../utils/supportFaqSearch'
@@ -423,12 +423,7 @@ export function ComboProductPage() {
             viewport={mhViewport}
             transition={tr(0.9, 0.06)}
           >
-            <ComboWorkflowShowcase
-              heroImage={{
-                src: COMBO_HERO_IMAGE,
-                alt: `${PRODUCT_NAMES.mini} and ${PRODUCT_NAMES.sensor} bundle`,
-              }}
-            />
+            <ComboServiceRhythmSwap />
           </motion.div>
         </div>
       </section>
