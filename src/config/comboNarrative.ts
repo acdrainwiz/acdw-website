@@ -31,7 +31,7 @@ export const COMBO_NARRATIVE_ZONES = {
   workflow: {
     eyebrow: 'How they work together',
     title: 'One port for service and protection',
-    dek: 'Install the Mini for permanent flush, air, and vacuum access. Mount a Sensor on the same bayonet when you are not servicing—or start Sensor-only with its included Transparent T-Manifold and add the Mini valve later.',
+    dek: 'Remove the Sensor, run a full flush-and-air clean-out through the Mini bayonet, then reinstall the Sensor—same port, no cutting PVC.',
   },
   audience: {
     eyebrow: 'Who it’s for',
@@ -268,6 +268,92 @@ export const COMBO_FAQS = [
       'Alerts remain in your dashboard until addressed. Prioritize by severity and schedule visits accordingly. Many alerts indicate developing drainage issues—not always an immediate emergency.',
   },
 ] as const
+
+/** Interactive service-rhythm swap — combo workflow section. */
+export type ComboServiceRhythmMode = 'protect' | 'service'
+
+export type ComboServiceRhythmBeat = {
+  id: string
+  stepLabel: string
+  title: string
+  benefit: string
+  mode: ComboServiceRhythmMode
+  image: {
+    src: string
+    alt: string
+  }
+}
+
+export const COMBO_SERVICE_RHYTHM = {
+  autoAdvanceMs: 6_000,
+  autoResumeMs: 10_000,
+  modeLabels: {
+    protect: 'Protect mode',
+    service: 'Service mode',
+  } as const satisfies Record<ComboServiceRhythmMode, string>,
+  beats: [
+    {
+      id: 'remove-sensor',
+      stepLabel: 'Step 1',
+      title: 'Remove the Sensor',
+      benefit: `Sensor monitors the line between visits—automatic AC shutoff at ~80% water while it is installed.`,
+      mode: 'protect',
+      image: {
+        src: '/images/acdw-sensor-standard-on-manifold-darkbg.png',
+        alt: `${PRODUCT_NAMES.sensor} mounted on the Transparent T-Manifold with green LED indicating normal monitoring`,
+      },
+    },
+    {
+      id: 'service-valve',
+      stepLabel: 'Step 2',
+      title: 'Install the bi-directional valve',
+      benefit: `Snap the valve onto the bayonet port—permanent access for flush, compressed air, or vacuum with no cut-and-reattach.`,
+      mode: 'service',
+      image: {
+        src: '/images/acdw-mini-hero-bi-directional.png',
+        alt: `${PRODUCT_NAMES.mini} bi-directional valve on the bayonet port, held for field service`,
+      },
+    },
+    {
+      id: 'flush-hose',
+      stepLabel: 'Step 3',
+      title: 'Flush with the water hose adapter',
+      benefit: `Connect a garden hose and push water through the line to clear slime and buildup—without opening PVC.`,
+      mode: 'service',
+      image: {
+        src: '/images/acdw-mini-hero-background.png',
+        alt: `${PRODUCT_NAMES.mini} with water hose adapter on a condensate drain line, held by a gloved hand`,
+      },
+    },
+    {
+      id: 'clear-air',
+      stepLabel: 'Step 4',
+      title: 'Break clogs with compressed air',
+      benefit: `Swap to the Schrader air adapter when water alone will not clear a stubborn blockage—35% faster clean-outs.`,
+      mode: 'service',
+      image: {
+        src: '/images/acdw-mini-hero-schrader.png',
+        alt: `${PRODUCT_NAMES.mini} with Schrader air adapter on the bayonet port`,
+      },
+    },
+    {
+      id: 'reinstall-sensor',
+      stepLabel: 'Step 5',
+      title: 'Reinstall the Sensor',
+      benefit: `Mount the Sensor back on the bayonet when the line is ready—overflow protection and monitoring resume on the same port.`,
+      mode: 'protect',
+      image: {
+        src: '/images/acdw-sensor-standard-on-manifold-darkbg.png',
+        alt: `${PRODUCT_NAMES.sensor} reinstalled on the Transparent T-Manifold after service`,
+      },
+    },
+  ] as const satisfies readonly ComboServiceRhythmBeat[],
+  wifiFootnote: {
+    prefix: `With the ${SENSOR_WIFI_SHORT}, contractor alerts between ~50–79% water on ${WIFI_REQUIREMENT} Wi‑Fi (5 GHz not supported).`,
+    fleetLinkLabel: 'Explore fleet & dashboard tools',
+    fleetSectionId: 'combo-fleet-heading',
+  },
+} as const
 
 export const COMBO_TRUST_INDICATORS = [
   'IMC code compliant',
