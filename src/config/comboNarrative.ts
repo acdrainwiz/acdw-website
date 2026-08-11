@@ -31,7 +31,7 @@ export const COMBO_NARRATIVE_ZONES = {
   workflow: {
     eyebrow: 'How they work together',
     title: 'One port for service and protection',
-    dek: 'Remove the Sensor, run a full flush-and-air clean-out through the Mini bayonet, then reinstall the Sensor—same port, no cutting PVC.',
+    dek: 'Remove the Sensor, run a full flush, air, and vacuum clean-out through the Mini bayonet, then reinstall the Sensor—same port, no cutting PVC.',
   },
   audience: {
     eyebrow: 'Who it’s for',
@@ -337,8 +337,19 @@ export const COMBO_SERVICE_RHYTHM = {
       },
     },
     {
-      id: 'reinstall-sensor',
+      id: 'vacuum-line',
       stepLabel: 'Step 5',
+      title: 'Vacuum with the reversed valve',
+      benefit: `Flip the bi-directional valve and pull remaining sludge with a shop vac—complete clean-out on the same bayonet, no cutting PVC.`,
+      mode: 'service',
+      image: {
+        src: '/images/acdw-mini-hero-bi-directional-rev.png',
+        alt: `${PRODUCT_NAMES.mini} bi-directional valve reversed for vacuum service on the bayonet port`,
+      },
+    },
+    {
+      id: 'reinstall-sensor',
+      stepLabel: 'Step 6',
       title: 'Reinstall the Sensor',
       benefit: `Mount the Sensor back on the bayonet when the line is ready—overflow protection and monitoring resume on the same port.`,
       mode: 'protect',
