@@ -159,7 +159,16 @@ export function ComboServiceRhythmSwap({ className }: ComboServiceRhythmSwapProp
       <div className="combo-service-rhythm-swap-layout">
         <div className="combo-service-rhythm-swap-stage-wrap">
           <div className="combo-service-rhythm-swap-stage" aria-live="polite">
-            <span className="combo-service-rhythm-swap-mode-chip">{modeLabel}</span>
+            <span
+              className={cn(
+                'combo-service-rhythm-swap-mode-chip',
+                activeMode === 'service'
+                  ? 'combo-service-rhythm-swap-mode-chip--service'
+                  : 'combo-service-rhythm-swap-mode-chip--protect'
+              )}
+            >
+              {modeLabel}
+            </span>
             <div className="combo-service-rhythm-swap-images">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.img
