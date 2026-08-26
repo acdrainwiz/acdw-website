@@ -16,6 +16,7 @@ const { validateSubmissionBehavior } = require('./utils/behavioral-analysis')
 const { validateEmailDomain } = require('./utils/email-domain-validator')
 const { initBlobsStores, getUnsubscribeStore } = require('./utils/blobs-store')
 const { getSecurityHeaders } = require('./utils/cors-config')
+const { validateCSRFToken } = require('./utils/csrf-validator')
 const ghlClient = require('./utils/ghl-client')
 
 // Comma-separated origin allowlist for preview/branch deploys. Supports glob `*`.
@@ -99,6 +100,7 @@ exports.handler = async (event, context) => {
     
     const formData = new URLSearchParams(event.body)
     const email = formData.get('email') || ''
+    const trimmedEmail = email.trim()
     const reason = formData.get('reason') || ''
     const feedback = formData.get('feedback') || ''
     const botField = formData.get('bot-field') || ''
@@ -397,8 +399,6 @@ exports.handler = async (event, context) => {
 
     // 2. Validate email format (strict regex)
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-    const trimmedEmail = email.trim()
-    
     if (!trimmedEmail) {
       errors.push('Email is required')
     } else if (!emailRegex.test(trimmedEmail)) {
@@ -602,6 +602,15 @@ exports.handler = async (event, context) => {
         responseBody: ghlErr && ghlErr.responseBody,
         email: trimmedEmail.substring(0, 3) + '***',
       })
+      return {
+        statusCode: 502,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          error: 'CRM submission failed',
+          message: 'We could not process your unsubscribe request. Please try again.',
+        }),
+      }
     }
     
     // Success - return with rate limit headers
