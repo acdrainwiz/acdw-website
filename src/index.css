@@ -605,21 +605,6 @@
     }
   }
 
-  /* iPad Pro portrait (1024x1366) - specific adjustment */
-  @media screen and (width: 1024px) and (height: 1366px) {
-    .hero-main-container {
-      min-height: 1366px;
-    }
-
-    .hero-background-image {
-      background-position-x: -200px !important;
-    }
-
-    .hero-cta-buttons {
-      margin-top: 700px !important;
-    }
-  }
-
   /* Tablet portrait mode - adjust hero background position and size */
   @media screen and (min-width: 768px) and (max-width: 1366px) and (orientation: portrait) {
     .hero-background-image {
@@ -643,6 +628,25 @@
       overflow: hidden;
       background: #000;
       min-height: 110vh;
+    }
+  }
+
+  /* iPad Pro portrait (1024x1366) - must come after general tablet portrait rules */
+  @media screen and (width: 1024px) and (height: 1366px) {
+    .hero-main-container {
+      min-height: 1272px;
+    }
+
+    .hero-background-image {
+      background-position-x: -200px !important;
+    }
+
+    .hero-content-wrapper {
+      padding-bottom: 2.5rem;
+    }
+
+    .trust-section-container {
+      margin-top: -4rem;
     }
   }
 
@@ -1427,6 +1431,26 @@
     }
   }
 
+  /* iPad Pro portrait (1024x1366) — hug the config photo; 62vh stage is too tall here */
+  @media screen and (width: 1024px) and (height: 1366px) {
+    .mini-config-showcase-controls {
+      margin-top: 1rem;
+    }
+
+    .mini-config-showcase-media,
+    .mini-config-showcase-stage {
+      min-height: 37.5rem;
+    }
+
+    .mini-config-showcase-slide-media {
+      transform: translateY(-1.25rem);
+    }
+
+    .mini-config-showcase-img {
+      max-height: 32rem;
+    }
+  }
+
   @media (max-width: 767px) {
     .product-showcase-card-mini.product-showcase-card-full-width .product-showcase-card-background {
       min-height: 0;
@@ -1662,98 +1686,7 @@
     @apply bg-white text-gray-900;
   }
 
-  /* Customer Type Selector Classes */
-  .customer-selector-main-container {
-    @apply section bg-white;
-  }
-
-  .customer-selector-content-wrapper {
-    @apply container;
-  }
-
-  .customer-selector-header {
-    @apply text-center mb-16;
-  }
-
-  .customer-selector-title {
-    @apply heading-2 mb-6;
-  }
-
-  .customer-selector-description {
-    @apply text-large max-w-3xl mx-auto;
-  }
-
-  .customer-selector-cards-grid {
-    @apply grid grid-cols-1 gap-8 md:grid-cols-2;
-  }
-
-  .customer-type-card {
-    @apply card cursor-pointer transition-all duration-200 hover:shadow-lg hover:border-primary-300 flex flex-col;
-  }
-
-  .customer-type-card-header {
-    @apply flex items-center mb-4;
-  }
-
-  .customer-type-icon-wrapper {
-    @apply p-3 rounded-lg;
-  }
-
-  .customer-type-icon-homeowner {
-    @apply bg-blue-100 text-blue-600;
-  }
-
-  .customer-type-icon-hvac {
-    @apply bg-green-100 text-green-600;
-  }
-
-  .customer-type-icon-property-manager {
-    @apply bg-orange-100 text-orange-600;
-  }
-
-  .customer-type-icon-city {
-    @apply bg-purple-100 text-purple-600;
-  }
-
-  .customer-type-icon {
-    @apply h-6 w-6;
-  }
-
-  .customer-type-title {
-    @apply heading-3 ml-4;
-  }
-
-  .customer-type-description {
-    @apply text-gray-600 mb-6;
-  }
-
-  .customer-type-features-list {
-    @apply space-y-2 mb-6;
-  }
-
-  .customer-type-feature-item {
-    @apply flex items-center text-sm text-gray-600;
-  }
-
-  .customer-type-feature-checkmark {
-    @apply h-4 w-4 text-green-500 mr-2 flex-shrink-0;
-  }
-
-  .customer-type-cta-button {
-    @apply w-full mt-auto;
-  }
-
-  .customer-type-cta-primary {
-    @apply btn-primary w-full justify-center py-4 text-base font-semibold;
-  }
-
-  .customer-type-cta-outline {
-    @apply btn-secondary w-full justify-center py-4 text-base font-semibold;
-  }
-
-  .customer-type-cta-secondary {
-    @apply btn-secondary w-full justify-center py-4 text-base font-semibold;
-  }
+  /* Audience who-band lives outside @layer so it can share .mini-section-eyebrow */
 
   /* Header Classes — fixed (not sticky) so the bar stays visible; sticky was unreliable with overflow-x on ancestors */
   .header-main-container {
@@ -15575,6 +15508,35 @@ a.code-official-product-cta {
   }
 }
 
+/* iPad Pro portrait (1024x1366) — stack like Mini, image + hotspots first */
+@media screen and (width: 1024px) and (height: 1366px) {
+  .mini-hotspot-band--home-full .mini-hotspot-band-story-layout {
+    grid-template-columns: 1fr;
+    gap: clamp(1.75rem, 4vw, 2.5rem);
+    align-items: start;
+  }
+
+  .mini-hotspot-band--home-full .mini-hotspot-band-stage {
+    order: -1;
+  }
+
+  .mini-hotspot-band--home-full .mini-hotspot-band-stage--home-bare {
+    justify-content: flex-start;
+  }
+
+  .mini-hotspot-band--home-full .mini-hotspot-band-img {
+    max-height: none;
+  }
+
+  .mini-hotspot-band--home-full .mini-hotspot-band-story-item:first-child {
+    border-radius: 0.65rem 0.65rem 0 0;
+  }
+
+  .mini-hotspot-band--home-full .mini-hotspot-band-story-item:last-child {
+    border-radius: 0 0 0.65rem 0.65rem;
+  }
+}
+
 /* ==========================================================================
    MINI SPECS VISUAL — Phase 2 blueprint-style specs band
    ========================================================================== */
@@ -21699,6 +21661,11 @@ a.code-official-product-cta {
 
 .mini-product-how-it-works .mini-product-how-it-works-step.mini-how-step-slot {
   @apply relative flex flex-col items-center text-center h-full;
+}
+
+/* Numbered Mini-style cards: keep the badge above the icon even if pulse-grid is omitted. */
+.mini-product-how-it-works .mini-how-step-slot.mini-how-step-card:has(.mini-how-step-num-anchor) {
+  padding-top: 2.5rem;
 }
 
 /* Active step: radial wash (::before) + outer glow (::after) live on `.mini-how-step-card`
@@ -29096,3 +29063,470 @@ a.code-official-product-cta {
 .ttf-page-rules-link:hover {
   color: var(--acdw-orange);
 }
+
+/* ==========================================================================
+   Audience who-band (homepage + /customer-selection)
+   Asymmetric: large homeowner lane, HVAC + PM stacked, code as a quiet link.
+   ========================================================================== */
+
+.audience-who {
+  @apply py-24 md:py-32 px-4 sm:px-6 lg:px-8 bg-white;
+  scroll-margin-top: 5.5rem;
+  transition: background-color 0.7s ease-in-out;
+  will-change: background-color;
+}
+
+.audience-who.section-active {
+  @apply bg-black;
+}
+
+.audience-who-inner {
+  @apply max-w-7xl mx-auto;
+}
+
+.audience-who-header,
+.audience-select-header {
+  @apply text-center mb-12;
+}
+
+.audience-select-header {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 md:pt-24 mb-0;
+}
+
+.audience-page-select {
+  background: #fff;
+  color: #111827;
+}
+
+.audience-page-select .audience-who {
+  @apply pt-4 md:pt-6;
+}
+
+.audience-who-title {
+  @apply text-4xl font-bold text-gray-900 mb-4;
+  transition: color 0.7s ease-in-out;
+}
+
+.audience-who-dek {
+  @apply text-xl text-gray-600 max-w-2xl mx-auto;
+  transition: color 0.7s ease-in-out;
+}
+
+.audience-who .mini-section-eyebrow {
+  transition: color 0.7s ease-in-out;
+}
+
+.audience-who.section-active .audience-who-title {
+  @apply text-white;
+}
+
+.audience-who.section-active .audience-who-dek {
+  @apply text-gray-300;
+}
+
+.audience-who.section-active .mini-section-eyebrow {
+  color: rgba(125, 211, 252, 0.92);
+}
+
+.audience-who-grid {
+  display: grid;
+  gap: 0.85rem;
+  transition: gap 0.7s ease-in-out;
+}
+
+.audience-who-tile {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+  isolation: isolate;
+  min-height: 20rem;
+  border-radius: 1.75rem;
+  text-decoration: none;
+  color: #f8fafc;
+  background: #0b1220;
+}
+
+.audience-who-tile-full {
+  min-height: 22rem;
+}
+
+@media (min-width: 768px) {
+  .audience-who-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .audience-who-tile-full {
+    grid-column: 1 / -1;
+    min-height: 23.5rem;
+  }
+
+  .audience-who-tile-half {
+    min-height: 23.5rem;
+  }
+}
+
+.audience-who.section-active .audience-who-grid {
+  gap: 32px;
+}
+
+.audience-who-tile:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 4px;
+}
+
+.audience-who-tile-image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.02);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.audience-who-tile:hover .audience-who-tile-image,
+.audience-who-tile:focus-visible .audience-who-tile-image {
+  transform: scale(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audience-who-tile-image,
+  .audience-who-tile:hover .audience-who-tile-image {
+    transition: none;
+    transform: none;
+  }
+}
+
+.audience-who-tile-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgb(0 10 22 / 0.82) 0%,
+    rgb(0 10 22 / 0.38) 42%,
+    rgb(0 10 22 / 0.08) 72%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.audience-who-tile-copy {
+  position: relative;
+  z-index: 2;
+  width: min(40rem, calc(100% - 2rem));
+  padding: 1.75rem 1.25rem 2rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.audience-who-tile-line {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: rgb(248 250 252 / 0.88);
+  text-wrap: balance;
+}
+
+.audience-who-tile-title {
+  margin: 0 0 1.1rem;
+  font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  color: #f8fafc;
+  text-wrap: balance;
+}
+
+.audience-who-tile-half .audience-who-tile-title {
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+}
+
+.audience-who-tile-cta {
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .audience-who-tile,
+  .audience-who-tile-full,
+  .audience-who-tile-half {
+    min-height: 18.5rem;
+  }
+
+  .audience-who-tile-title {
+    font-size: 1.65rem;
+  }
+}
+
+/* ==========================================================================
+   Audience landing pages
+   ========================================================================== */
+
+.audience-page {
+  background: #f8f6f1;
+  color: #0f172a;
+}
+
+.audience-page.audience-page-select {
+  background: #fff;
+  color: #111827;
+}
+
+.audience-page.audience-page-home,
+.audience-page.audience-page-trade,
+.audience-page.audience-page-portfolio,
+.audience-page.audience-page-spec {
+  background: #fff;
+  color: #111827;
+}
+
+.homeowner-path-steps.mini-product-how-it-works-steps,
+.audience-path-steps.mini-product-how-it-works-steps {
+  @apply md:grid-cols-2 max-w-4xl mb-0;
+}
+
+.audience-quote-single.mini-product-testimonials-grid {
+  max-width: 36rem;
+  margin-left: auto;
+  margin-right: auto;
+  grid-template-columns: 1fr;
+}
+
+.mini-product-testimonial-avatar--photo {
+  padding: 0;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.mini-product-testimonial-avatar--photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.homeowner-path-kicker {
+  margin: 0 0 0.85rem;
+}
+
+.audience-kicker {
+  margin: 0 0 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #c93001;
+}
+
+.homeowner-path-cta {
+  margin-top: auto;
+  padding-top: 1.15rem;
+  width: 100%;
+}
+
+.homeowner-path-steps .product-installation-video-guide-link,
+.audience-path-steps .product-installation-video-guide-link {
+  margin-top: 0;
+}
+
+.homeowner-close-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.homeowner-after-band.mini-product-how-it-works {
+  background: linear-gradient(180deg, #f8fafc 0%, #f4f6fa 100%);
+}
+
+.audience-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: min(88vh, 46rem);
+  display: flex;
+  align-items: center;
+  padding: clamp(5.5rem, 10vw, 7.5rem) 0 3.5rem;
+}
+
+.audience-hero-home,
+.audience-hero-trade,
+.audience-hero-portfolio,
+.audience-hero-spec {
+  background: #050a14;
+  color: #f8fafc;
+}
+
+.audience-hero-inner {
+  /* Same column as Mini/Sensor heroes and .product-how-it-works-content. */
+  position: relative;
+  z-index: 1;
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  width: 100%;
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .audience-hero-inner {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 3rem;
+  }
+
+  .audience-hero-trade .audience-hero-inner {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  }
+}
+
+/* iPad Pro portrait (1024x1366) — stack homeowner + code heroes like Mini */
+@media screen and (width: 1024px) and (height: 1366px) {
+  .audience-hero-home .audience-hero-inner,
+  .audience-hero-spec .audience-hero-inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.audience-hero-title {
+  margin: 0.45rem 0 1rem;
+  font-size: clamp(2rem, 4.2vw, 3.15rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.audience-hero-dek {
+  margin: 0 0 1.5rem;
+  max-width: 38rem;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: rgb(248 250 252 / 0.84);
+}
+
+.audience-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.audience-hero-stage {
+  display: flex;
+  justify-content: center;
+}
+
+.audience-hero-image {
+  width: min(100%, 34rem);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 28px 48px rgb(0 0 0 / 0.35));
+}
+
+/* HVAC combo shot — ~72% larger than the shared audience product size. */
+.audience-hero-trade .audience-hero-image {
+  transform: scale(1.725);
+  transform-origin: center center;
+}
+
+/* Property Sensor shot — ~30% larger than the shared audience product size. */
+.audience-hero-portfolio .audience-hero-image {
+  transform: scale(1.3);
+  transform-origin: center center;
+}
+
+@media (max-width: 899px) {
+  .audience-hero-trade .audience-hero-stage {
+    /* Room for the 1.725× scale so pedestals are not clipped by the hero. */
+    padding-block: 5.25rem;
+  }
+
+  .audience-hero-portfolio .audience-hero-stage {
+    padding-block: 2.5rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .audience-hero-trade .audience-hero-image {
+    /* Grow toward the right so the larger shot does not cover the headline. */
+    transform-origin: 0% 50%;
+  }
+
+  .audience-hero-trade .audience-hero-stage {
+    justify-content: flex-start;
+  }
+
+  .audience-hero-portfolio .audience-hero-image {
+    transform-origin: 0% 50%;
+  }
+
+  .audience-hero-portfolio .audience-hero-stage {
+    justify-content: flex-start;
+  }
+}
+
+/* iPad Pro portrait (1024x1366) — stack HVAC hero like Mini */
+@media screen and (width: 1024px) and (height: 1366px) {
+  .audience-hero-trade .audience-hero-inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .audience-hero-trade .audience-hero-copy {
+    position: relative;
+    z-index: 1;
+  }
+
+  .audience-hero-trade .audience-hero-image {
+    transform-origin: center center;
+    pointer-events: none;
+  }
+
+  .audience-hero-trade .audience-hero-stage {
+    justify-content: center;
+    padding-block: 5.25rem;
+  }
+}
+
+/* iPad Pro portrait (1024x1366) — stack property hero like Mini */
+@media screen and (width: 1024px) and (height: 1366px) {
+  .audience-hero-portfolio .audience-hero-inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .audience-hero-portfolio .audience-hero-copy {
+    position: relative;
+    z-index: 1;
+  }
+
+  .audience-hero-portfolio .audience-hero-image {
+    transform-origin: center center;
+    pointer-events: none;
+  }
+
+  .audience-hero-portfolio .audience-hero-stage {
+    justify-content: center;
+    padding-block: 2.5rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .audience-hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .audience-hero-actions .btn-lg {
+    width: 100%;
+    justify-content: center;
+  }
+}
+

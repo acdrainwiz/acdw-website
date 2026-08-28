@@ -1,13 +1,11 @@
-// Search metadata for HomeownerHomePage, decoupled from the page module.
-// Consumed by the central site search registry.
-import type { PageSearchMeta } from '../config/siteSearchTypes';
+import type { PageSearchMeta } from '../config/siteSearchTypes'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
   id: 'page-homeowner',
   kind: 'site',
-  title: 'Homeowners — DIY AC drain protection',
+  title: 'Homeowners — DIY or hire a pro',
   body:
-    'Homeowner experience: DIY AC drain protection made simple. Installs in five minutes or less, professional-grade quality, made in USA. Clear inspection window, visual monitoring, condensate drain line, optional overflow protection and WiFi sensor alerts. Installation video, product details for AC Drain Wiz Mini, water damage prevention, attic and ceiling leak concerns.',
-  tags: ['homeowner', 'DIY', 'mini', 'drain', 'install', 'water damage'],
+    'Homeowner path for AC Drain Wiz Mini: install it yourself in about five minutes on 3/4 inch PVC, or find an installer. Permanent service port. Shop Mini. Mini does not shut the AC off.',
+  tags: ['homeowner', 'DIY', 'mini', 'installer', 'drain'],
   href: '/homeowner',
-};
+}

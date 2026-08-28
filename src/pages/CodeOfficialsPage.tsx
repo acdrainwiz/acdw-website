@@ -1,290 +1,402 @@
-import { useNavigate } from 'react-router-dom';
-import { 
-  ShieldCheckIcon,
-  DocumentCheckIcon,
+import { useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import {
+  ArrowRightIcon,
+  BellAlertIcon,
+  BookOpenIcon,
+  BuildingOffice2Icon,
+  CheckBadgeIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ClockIcon,
   EyeIcon,
-  ClipboardDocumentCheckIcon,
-  HomeModernIcon,
-  CheckCircleIcon,
-  PhoneIcon,
-  ExclamationTriangleIcon,
-  CurrencyDollarIcon
-} from '@heroicons/react/24/outline';
-import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop';
-import { SUPPORT_CONTACT } from '../config/acdwKnowledge';
+  ShieldCheckIcon,
+  SignalIcon,
+  WrenchScrewdriverIcon,
+} from '@heroicons/react/24/outline'
+import { AudienceContrastSection } from '../components/audience/AudienceContrastSection'
+import { AudiencePageHero } from '../components/audience/AudiencePageHero'
+import { useAudienceLandingMotion, useMiniHowStepPulse } from '../components/audience/audienceLandingMotion'
+import { MiniFlowWaveBackdrop } from '../components/products/MiniFlowWaveBackdrop'
+import { AUDIENCE_CODE } from '../config/audienceCopy'
+
+const CITY_ICONS = [BuildingOffice2Icon, WrenchScrewdriverIcon, BellAlertIcon] as const
+const STATUS_ICONS = [EyeIcon, SignalIcon] as const
+const SPECIFY_ICONS = [CheckBadgeIcon, ShieldCheckIcon] as const
 
 export function CodeOfficialsPage() {
-  const navigate = useNavigate();
+  const copy = AUDIENCE_CODE
+  const inspectRef = useRef<HTMLElement>(null)
+  const cityRef = useRef<HTMLElement>(null)
+  const specifyRef = useRef<HTMLElement>(null)
+  const closeRef = useRef<HTMLElement>(null)
+  const [openFaq, setOpenFaq] = useState<number | null>(0)
+  const {
+    reduceMotion,
+    tr,
+    stepContainer,
+    stepBadgeVariants,
+    stepIconVariants,
+    stepChild,
+    mhViewport,
+  } = useAudienceLandingMotion()
+  const inspectPulse = useMiniHowStepPulse(2)
+  const cityPulse = useMiniHowStepPulse(3)
+  const statusPulse = useMiniHowStepPulse(2)
+  const specifyPulse = useMiniHowStepPulse(2)
 
   return (
-    <div className="homeowner-page">
-      {/* Hero Section */}
-      <div className="homeowner-hero-container">
-        <PageHeroMeshBackdrop />
-        <div className="homeowner-hero-content">
-          <div className="homeowner-hero-header">
-            <h1 className="homeowner-hero-headline">
-              Compliant. Safe. <span className="homeowner-hero-highlight">Standardized.</span>
-            </h1>
-            
-            <p className="homeowner-hero-subheadline">
-              A professional drain line solution that meets IMC requirements and simplifies inspection verification.
-            </p>
+    <div className="mini-product-page audience-page audience-page-spec">
+      <AudiencePageHero
+        tone="spec"
+        eyebrow={copy.hero.eyebrow}
+        title={copy.hero.title}
+        dek={copy.hero.dek}
+        imageSrc={copy.hero.imageSrc}
+        imageAlt={copy.hero.imageAlt}
+        primary={
+          <Link to={copy.finalCta.complianceHref} className="btn-inverse btn-lg">
+            View compliance documentation
+          </Link>
+        }
+        secondary={
+          <Link to={copy.finalCta.municipalHref} className="btn-inverse-outline btn-lg">
+            {copy.finalCta.municipalCta}
+          </Link>
+        }
+      />
 
-            <div className="homeowner-hero-badge-row">
-              <span className="homeowner-hero-badge">IMC 307.2.x Compliant</span>
-              <span className="homeowner-hero-badge">Easy to Inspect</span>
-            </div>
+      <AudienceContrastSection headingId="code-contrast-heading" copy={copy.contrast} />
 
-            <div className="homeowner-hero-ctas">
-              <button 
-                onClick={() => navigate('/compliance')}
-                className="homeowner-hero-cta-primary"
-              >
-                View Compliance Documentation
-              </button>
-              <a 
-                href={SUPPORT_CONTACT.telHref}
-                className="homeowner-hero-cta-secondary"
-              >
-                Call {SUPPORT_CONTACT.phoneDisplay}
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Problem Section */}
-      <div className="homeowner-problem-section">
-        <div className="homeowner-problem-background">
-          {/* Background intentionally removed */}
-        </div>
-        
-        <div className="homeowner-problem-overlay"></div>
-        
-        <div className="homeowner-problem-content">
-          <h2 className="homeowner-problem-headline">The Drain Line Compliance Challenge</h2>
-          <p className="homeowner-problem-subheadline">
-            IMC 307.2.3 requires ready access to condensate drain systems for maintenance and cleaning. 
-            Many installations fail to meet this standard, creating inspection issues and public health concerns.
-          </p>
-          
-          <div className="homeowner-problem-stats">
-            <div className="homeowner-stat">
-              <div className="homeowner-stat-icon-wrapper">
-                <DocumentCheckIcon className="homeowner-stat-icon" />
-              </div>
-              <div className="homeowner-stat-number">IMC 307.2.3</div>
-              <div className="homeowner-stat-label">Code requirement</div>
-            </div>
-            <div className="homeowner-stat">
-              <div className="homeowner-stat-icon-wrapper">
-                <ExclamationTriangleIcon className="homeowner-stat-icon" />
-              </div>
-              <div className="homeowner-stat-number">40%</div>
-              <div className="homeowner-stat-label">Non-compliant installs</div>
-            </div>
-            <div className="homeowner-stat">
-              <div className="homeowner-stat-icon-wrapper">
-                <CurrencyDollarIcon className="homeowner-stat-icon" />
-              </div>
-              <div className="homeowner-stat-number">$8K+</div>
-              <div className="homeowner-stat-label">Avg water damage</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Benefits Section */}
-      <div className="homeowner-benefits-container">
-        <h2 className="homeowner-benefits-title">Why AC Drain Wiz Meets the Standard</h2>
-        <div className="homeowner-benefits-grid">
-          <div className="homeowner-benefit-card">
-            <div className="homeowner-benefit-icon-wrapper" style={{ background: '#ffedd5' }}>
-              <DocumentCheckIcon className="homeowner-benefit-icon" style={{ color: '#ea580c' }} />
-            </div>
-            <h3 className="homeowner-benefit-title">Code Compliant</h3>
-            <p className="homeowner-benefit-description">
-              Designed to meet IMC 307.2.3 requirements for ready access to condensate drain systems. Clear documentation available for approval processes.
-            </p>
-          </div>
-
-          <div className="homeowner-benefit-card">
-            <div className="homeowner-benefit-icon-wrapper" style={{ background: '#dbeafe' }}>
-              <EyeIcon className="homeowner-benefit-icon" style={{ color: '#1e40af' }} />
-            </div>
-            <h3 className="homeowner-benefit-title">Easy to Inspect</h3>
-            <p className="homeowner-benefit-description">
-              Visual verification is straightforward. Clear access port, professional installation, and obvious functionality simplify inspection approval. Also allows verification that drain line cleaning was successful and visible identification of blockages or buildup.
-            </p>
-          </div>
-
-          <div className="homeowner-benefit-card">
-            <div className="homeowner-benefit-icon-wrapper" style={{ background: '#dcfce7' }}>
-              <ShieldCheckIcon className="homeowner-benefit-icon" style={{ color: '#16a34a' }} />
-            </div>
-            <h3 className="homeowner-benefit-title">Protects Public Health</h3>
-            <p className="homeowner-benefit-description">
-              Prevents standing water and mold growth. Reduces water damage claims and insurance issues. Supports public health and safety objectives.
-            </p>
-          </div>
-
-          <div className="homeowner-benefit-card">
-            <div className="homeowner-benefit-icon-wrapper" style={{ background: '#fef3c7' }}>
-              <HomeModernIcon className="homeowner-benefit-icon" style={{ color: '#d97706' }} />
-            </div>
-            <h3 className="homeowner-benefit-title">Standardizes Solutions</h3>
-            <p className="homeowner-benefit-description">
-              Professional-grade product that contractors trust. Establishes a consistent, reliable standard across your jurisdiction.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Code Compliance Section */}
-      <div className="homeowner-products-container" style={{ background: '#f8fafc' }}>
-        <div className="homeowner-products-content">
-          <h2 className="homeowner-products-title">IMC Code Compliance</h2>
-          <p className="homeowner-products-subtitle">
-            AC Drain Wiz meets International Mechanical Code requirements
-          </p>
-
-          <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-            <div className="homeowner-benefit-card" style={{ textAlign: 'left', padding: '2.5rem' }}>
-              <h3 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '1.5rem', color: '#1e293b' }}>
-                <ClipboardDocumentCheckIcon style={{ width: '32px', height: '32px', display: 'inline', marginRight: '12px', color: '#ea580c' }} />
-                IMC Section 307.2.3
-              </h3>
-              <p style={{ fontSize: '1.125rem', lineHeight: '1.75', color: '#475569', marginBottom: '1.5rem' }}>
-                "Condensate drain systems shall be provided with <strong>ready access for maintenance and cleaning</strong>."
-              </p>
-              
-              <div style={{ background: '#f1f5f9', padding: '1.5rem', borderRadius: '8px', marginBottom: '1.5rem' }}>
-                <h4 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '1rem', color: '#1e293b' }}>
-                  How AC Drain Wiz Complies:
-                </h4>
-                <ul style={{ listStyle: 'none', padding: 0 }}>
-                  <li style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
-                    <CheckCircleIcon style={{ width: '24px', height: '24px', color: '#16a34a', marginRight: '12px', flexShrink: 0, marginTop: '2px' }} />
-                    <span style={{ color: '#475569' }}>Provides permanent, ready access point for drain line maintenance</span>
-                  </li>
-                  <li style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
-                    <CheckCircleIcon style={{ width: '24px', height: '24px', color: '#16a34a', marginRight: '12px', flexShrink: 0, marginTop: '2px' }} />
-                    <span style={{ color: '#475569' }}>Allows cleaning without system disassembly</span>
-                  </li>
-                  <li style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
-                    <CheckCircleIcon style={{ width: '24px', height: '24px', color: '#16a34a', marginRight: '12px', flexShrink: 0, marginTop: '2px' }} />
-                    <span style={{ color: '#475569' }}>Professional-grade construction meets mechanical code standards</span>
-                  </li>
-                  <li style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
-                    <CheckCircleIcon style={{ width: '24px', height: '24px', color: '#16a34a', marginRight: '12px', flexShrink: 0, marginTop: '2px' }} />
-                    <span style={{ color: '#475569' }}>Clear visual identification during inspections</span>
-                  </li>
-                  <li style={{ display: 'flex', alignItems: 'flex-start' }}>
-                    <CheckCircleIcon style={{ width: '24px', height: '24px', color: '#16a34a', marginRight: '12px', flexShrink: 0, marginTop: '2px' }} />
-                    <span style={{ color: '#475569' }}>Enables verification of successful cleaning and visible condition of the drain line</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
-                <button 
-                  onClick={() => navigate('/compliance')}
-                  style={{
-                    flex: 1,
-                    padding: '0.75rem 1.5rem',
-                    background: '#ea580c',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '8px',
-                    fontSize: '1rem',
-                    fontWeight: '600',
-                    cursor: 'pointer'
-                  }}
-                >
-                  View Full Compliance Details
-                </button>
-                <button 
-                  onClick={() => navigate('/contact?type=sales')}
-                  style={{
-                    flex: 1,
-                    padding: '0.75rem 1.5rem',
-                    background: 'white',
-                    color: '#ea580c',
-                    border: '2px solid #ea580c',
-                    borderRadius: '8px',
-                    fontSize: '1rem',
-                    fontWeight: '600',
-                    cursor: 'pointer'
-                  }}
-                >
-                  Request Spec Sheets
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* FAQ Section */}
-      <div className="homeowner-faq-container">
-        <h2 className="homeowner-faq-title">Code Official FAQs</h2>
-        <div className="homeowner-faq-list">
-          <div className="homeowner-faq-item">
-            <h3 className="homeowner-faq-question">What documentation is available for approval?</h3>
-            <p className="homeowner-faq-answer">
-              We provide complete technical specifications, installation instructions, and IMC compliance documentation. Contact us at {SUPPORT_CONTACT.phoneDisplay} for approval packets.
-            </p>
-          </div>
-
-          <div className="homeowner-faq-item">
-            <h3 className="homeowner-faq-question">How does this meet IMC 307.2.3?</h3>
-            <p className="homeowner-faq-answer">
-              AC Drain Wiz provides permanent, ready access for condensate drain maintenance and cleaning without requiring system disassembly—exactly what the code requires.
-            </p>
-          </div>
-
-          <div className="homeowner-faq-item">
-            <h3 className="homeowner-faq-question">Is this approved in other jurisdictions?</h3>
-            <p className="homeowner-faq-answer">
-              Yes, AC Drain Wiz is approved and in use across numerous municipalities nationwide. We can provide reference letters from other jurisdictions upon request.
-            </p>
-          </div>
-
-          <div className="homeowner-faq-item">
-            <h3 className="homeowner-faq-question">Can we specify this for new construction?</h3>
-            <p className="homeowner-faq-answer">
-              Absolutely. Many jurisdictions recommend or require AC Drain Wiz for new construction and major renovations. We support municipal specification programs and contractor education.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Final CTA */}
-      <div className="homeowner-final-cta-container" style={{ background: 'linear-gradient(135deg, #ea580c 0%, #fb923c 100%)' }}>
-        <div className="homeowner-final-cta-content">
-          <h2 className="homeowner-final-cta-title">Ready to Learn More?</h2>
-          <p className="homeowner-final-cta-subtitle">
-            Get compliance documentation and technical specifications for your jurisdiction.
-          </p>
-          <div className="homeowner-final-cta-buttons">
-            <button 
-              onClick={() => navigate('/compliance')}
-              className="homeowner-hero-cta-primary"
+      <section
+        ref={inspectRef}
+        className="product-how-it-works mini-product-how-it-works"
+        aria-labelledby="code-inspect-heading"
+      >
+        <MiniFlowWaveBackdrop sectionRef={inspectRef} />
+        <div className="product-how-it-works-content">
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 52 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(1.02)}
+          >
+            <p className="mini-section-eyebrow">{copy.inspect.eyebrow}</p>
+            <h2
+              id="code-inspect-heading"
+              className="product-section-title mini-section-title-promote"
             >
-              View Compliance Page
-            </button>
-            <a 
-              href={SUPPORT_CONTACT.telHref}
-              className="homeowner-hero-cta-secondary"
-            >
-              <PhoneIcon style={{ width: '20px', height: '20px', marginRight: '8px' }} />
-              {SUPPORT_CONTACT.phoneDisplay}
-            </a>
+              {copy.inspect.title}
+            </h2>
+            <p className="mini-section-dek">{copy.inspect.dek}</p>
+          </motion.header>
+
+          <div className="mini-product-how-it-works-steps mini-how-steps-pulse-grid audience-path-steps">
+            {([copy.inspect.inspector, copy.inspect.contractor] as const).map((item, index) => {
+              const LeadIcon = index === 0 ? EyeIcon : WrenchScrewdriverIcon
+              return (
+                <motion.div
+                  key={item.kicker}
+                  className="mini-product-how-it-works-step mini-how-step-slot mini-how-step-card"
+                  data-mini-how-step-pulse={inspectPulse(index)}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={mhViewport}
+                  variants={stepContainer}
+                >
+                  <p className="audience-kicker homeowner-path-kicker">{item.kicker}</p>
+                  <motion.div className="mini-how-step-icon-holder" variants={stepIconVariants}>
+                    <LeadIcon className="product-how-it-works-step-icon mini-how-step-icon-svg" />
+                  </motion.div>
+                  <motion.h3 className="product-how-it-works-step-title" variants={stepChild}>
+                    {item.title}
+                  </motion.h3>
+                  <motion.p className="product-how-it-works-step-description" variants={stepChild}>
+                    {item.body}
+                  </motion.p>
+                </motion.div>
+              )
+            })}
           </div>
         </div>
-      </div>
+      </section>
+
+      <section
+        ref={cityRef}
+        className="product-how-it-works mini-product-how-it-works homeowner-after-band"
+        aria-labelledby="code-city-heading"
+      >
+        <MiniFlowWaveBackdrop sectionRef={cityRef} />
+        <div className="product-how-it-works-content">
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 52 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(1.02)}
+          >
+            <p className="mini-section-eyebrow">{copy.city.eyebrow}</p>
+            <h2
+              id="code-city-heading"
+              className="product-section-title mini-section-title-promote"
+            >
+              {copy.city.title}
+            </h2>
+            <p className="mini-section-dek">{copy.city.dek}</p>
+          </motion.header>
+
+          <div className="mini-product-how-it-works-steps mini-how-steps-pulse-grid">
+            {copy.city.cards.map((card, index) => {
+              const Icon = CITY_ICONS[index] ?? BuildingOffice2Icon
+              return (
+                <motion.div
+                  key={card.title}
+                  className="mini-product-how-it-works-step mini-how-step-slot mini-how-step-card"
+                  data-mini-how-step-pulse={cityPulse(index)}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={mhViewport}
+                  variants={stepContainer}
+                >
+                  <div className="mini-how-step-num-anchor">
+                    <motion.div className="mini-how-step-num-disk" variants={stepBadgeVariants}>
+                      {card.number}
+                    </motion.div>
+                  </div>
+                  <motion.div className="mini-how-step-icon-holder" variants={stepIconVariants}>
+                    <Icon className="product-how-it-works-step-icon mini-how-step-icon-svg" />
+                  </motion.div>
+                  <motion.h3 className="product-how-it-works-step-title" variants={stepChild}>
+                    {card.title}
+                  </motion.h3>
+                  <motion.p className="product-how-it-works-step-description" variants={stepChild}>
+                    {card.description}
+                  </motion.p>
+                </motion.div>
+              )
+            })}
+          </div>
+
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 52 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(1.02)}
+          >
+            <p className="mini-section-eyebrow">{copy.city.status.eyebrow}</p>
+            <h2
+              id="code-city-status-heading"
+              className="product-section-title mini-section-title-promote"
+            >
+              {copy.city.status.title}
+            </h2>
+            <p className="mini-section-dek">{copy.city.status.dek}</p>
+          </motion.header>
+
+          <div className="mini-product-how-it-works-steps mini-how-steps-pulse-grid audience-path-steps">
+            {([copy.city.status.walkthrough, copy.city.status.campus] as const).map((item, index) => {
+              const LeadIcon = STATUS_ICONS[index] ?? EyeIcon
+              return (
+                <motion.div
+                  key={item.kicker}
+                  className="mini-product-how-it-works-step mini-how-step-slot mini-how-step-card"
+                  data-mini-how-step-pulse={statusPulse(index)}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={mhViewport}
+                  variants={stepContainer}
+                >
+                  <p className="audience-kicker homeowner-path-kicker">{item.kicker}</p>
+                  <motion.div className="mini-how-step-icon-holder" variants={stepIconVariants}>
+                    <LeadIcon className="product-how-it-works-step-icon mini-how-step-icon-svg" />
+                  </motion.div>
+                  <motion.h3 className="product-how-it-works-step-title" variants={stepChild}>
+                    {item.title}
+                  </motion.h3>
+                  <motion.p className="product-how-it-works-step-description" variants={stepChild}>
+                    {item.body}
+                  </motion.p>
+                </motion.div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section
+        ref={specifyRef}
+        className="product-how-it-works mini-product-how-it-works"
+        aria-labelledby="code-specify-heading"
+      >
+        <MiniFlowWaveBackdrop sectionRef={specifyRef} />
+        <div className="product-how-it-works-content">
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 52 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(1.02)}
+          >
+            <p className="mini-section-eyebrow">{copy.specify.eyebrow}</p>
+            <h2
+              id="code-specify-heading"
+              className="product-section-title mini-section-title-promote"
+            >
+              {copy.specify.title}
+            </h2>
+            <p className="mini-section-dek">{copy.specify.dek}</p>
+          </motion.header>
+
+          <div className="mini-product-how-it-works-steps mini-how-steps-pulse-grid audience-path-steps">
+            {copy.specify.items.map((item, index) => {
+              const Icon = SPECIFY_ICONS[index] ?? ClockIcon
+              return (
+                <motion.div
+                  key={item.title}
+                  className="mini-product-how-it-works-step mini-how-step-slot mini-how-step-card"
+                  data-mini-how-step-pulse={specifyPulse(index)}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={mhViewport}
+                  variants={stepContainer}
+                >
+                  <div className="mini-how-step-num-anchor">
+                    <motion.div className="mini-how-step-num-disk" variants={stepBadgeVariants}>
+                      {item.number}
+                    </motion.div>
+                  </div>
+                  <motion.div className="mini-how-step-icon-holder" variants={stepIconVariants}>
+                    <Icon className="product-how-it-works-step-icon mini-how-step-icon-svg" />
+                  </motion.div>
+                  <motion.h3 className="product-how-it-works-step-title" variants={stepChild}>
+                    {item.title}
+                  </motion.h3>
+                  <motion.p className="product-how-it-works-step-description" variants={stepChild}>
+                    {item.description}
+                  </motion.p>
+                </motion.div>
+              )
+            })}
+          </div>
+
+          <motion.div
+            className="product-installation-video product-installation-video--guide-only"
+            initial={reduceMotion ? false : { opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(0.92, 0.12)}
+          >
+            <div className="product-installation-video-guide product-installation-video-guide--standalone">
+              <p className="product-installation-video-guide-eyebrow">Citation notes</p>
+              <p className="product-installation-video-guide-label">{copy.specify.disclaimer}</p>
+              <Link to={copy.specify.complianceHref} className="product-installation-video-guide-link">
+                <BookOpenIcon
+                  className="product-installation-video-guide-link-lead-icon"
+                  aria-hidden
+                />
+                <span>{copy.specify.complianceCta}</span>
+                <ArrowRightIcon
+                  className="product-installation-video-guide-link-trail-icon"
+                  aria-hidden
+                />
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="product-faq mini-product-faq" aria-labelledby="code-faq-heading">
+        <div className="product-faq-content">
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 48 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(1)}
+          >
+            <p className="mini-section-eyebrow">Need-to-know</p>
+            <h2 id="code-faq-heading" className="product-section-title mini-section-title-promote">
+              {copy.faqTitle}
+            </h2>
+          </motion.header>
+          <div className="product-faq-list">
+            {copy.faqs.map((faq, index) => (
+              <motion.div
+                key={faq.question}
+                className="product-faq-item"
+                initial={reduceMotion ? false : { opacity: 0, y: 26 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={mhViewport}
+                transition={tr(0.72, Math.min(index, 8) * 0.09)}
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                  className="product-faq-question"
+                  aria-expanded={openFaq === index}
+                >
+                  <span>{faq.question}</span>
+                  {openFaq === index ? (
+                    <ChevronUpIcon className="product-faq-icon" />
+                  ) : (
+                    <ChevronDownIcon className="product-faq-icon" />
+                  )}
+                </button>
+                {openFaq === index && (
+                  <div className="product-faq-answer">
+                    <p>{faq.answer}</p>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+          <p className="product-faq-subtitle">
+            Full citation notes stay on the{' '}
+            <Link to="/compliance" className="product-faq-contact-link">
+              compliance page
+            </Link>
+            .
+          </p>
+        </div>
+      </section>
+
+      <section
+        ref={closeRef}
+        className="mini-purchase-cta-band"
+        aria-labelledby="code-close-heading"
+      >
+        <MiniFlowWaveBackdrop sectionRef={closeRef} />
+        <div className="mini-purchase-cta-inner">
+          <motion.div
+            className="mini-purchase-cta-reveal"
+            initial={reduceMotion ? false : { opacity: 0, scale: 0.94, y: 32 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(1.05)}
+          >
+            <p className="mini-purchase-cta-kicker">{copy.finalCta.kicker}</p>
+            <div className="mini-purchase-cta-card">
+              <div className="mini-product-purchase-card-content mini-buy-card">
+                <h2 id="code-close-heading" className="sensor-product-purchase-title">
+                  {copy.finalCta.title}
+                </h2>
+                <p className="sensor-product-purchase-message">{copy.finalCta.dek}</p>
+                <div className="mini-buy-actions homeowner-close-actions">
+                  <Link to={copy.finalCta.complianceHref} className="btn-primary btn-lg">
+                    {copy.finalCta.complianceCta}
+                  </Link>
+                  <Link to={copy.finalCta.municipalHref} className="btn-secondary btn-lg">
+                    {copy.finalCta.municipalCta}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
     </div>
-  );
+  )
 }
-

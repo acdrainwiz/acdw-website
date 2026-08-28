@@ -1,13 +1,11 @@
-// Search metadata for HVACProsPage, decoupled from the page module.
-// Consumed by the central site search registry.
-import type { PageSearchMeta } from '../config/siteSearchTypes';
+import type { PageSearchMeta } from '../config/siteSearchTypes'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
   id: 'page-hvac-pros',
   kind: 'site',
-  title: 'HVAC professionals — drain line revenue and callbacks',
+  title: 'HVAC professionals — fewer drain callbacks',
   body:
-    'HVAC contractor page: turn drain calls into revenue. Eliminate callbacks, increase efficiency, recurring revenue with AC Drain Wiz. Drain line callback problem, lost time per callback, bulk contractor pricing, five-minute installation, complete Mini and Sensor system, condensate line service, upsell opportunities.',
-  tags: ['HVAC', 'contractor', 'technician', 'callback', 'revenue', 'drain line'],
+    'Contractor path: permanent Mini access on 3/4" PVC plus Sensor Switch overflow protection on the same bayonet. Sensors include their own T-manifold. 35% faster clean-outs. Mini on the truck, Mini plus Sensor when the customer wants shutdown and WiFi alerts. Email and SMS to the contractor account. Contractor account monitoring by site. WiFi service alerts between 50% and 79% before shutdown at 80%. Volume pricing through sales. Standard Sensor Switch stays local. 2.4 GHz Wi-Fi for the WiFi Sensor Switch.',
+  tags: ['HVAC', 'contractor', 'callback', 'mini', 'sensor'],
   href: '/hvac-pros',
-};
+}

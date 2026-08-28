@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
 import { useNavigate, Link } from 'react-router-dom'
 import { IMaskInput } from 'react-imask'
 import { ArrowRightIcon, ChevronDownIcon, ChevronUpIcon, GiftIcon, CheckIcon, StarIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
@@ -19,12 +20,16 @@ import { MiniConfigShowcase } from './MiniConfigShowcase'
 import { MiniAnatomyBand } from '../products/MiniAnatomyBand'
 import { useCalibrateHotspotsFlag } from '../../hooks/useCalibrateHotspotsFlag'
 import { HotspotCalibrateDevBanner } from '../products/HotspotCalibrateDevBanner'
+import { usePageHeroIntro } from '../../hooks/usePageHeroIntro'
+import { useHomePageMotion } from './homePageMotion'
 
 export function Hero() {
   const navigate = useNavigate()
   const { user, isAuthenticated } = useAuth()
   const { getRecaptchaToken } = useRecaptcha()
   const calibrateHotspots = useCalibrateHotspotsFlag()
+  const { introStagger, fadeUp } = usePageHeroIntro()
+  const hm = useHomePageMotion()
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false)
@@ -107,7 +112,6 @@ export function Hero() {
   // Refs for sections that should change background on scroll
   const howItWorksRef = useRef<HTMLDivElement>(null)
   const productShowcaseRef = useRef<HTMLDivElement>(null)
-  const benefitsRef = useRef<HTMLDivElement>(null)
   const comparisonRef = useRef<HTMLDivElement>(null)
   const proofStackRef = useRef<HTMLDivElement>(null)
   const techSpecsRef = useRef<HTMLDivElement>(null)
@@ -116,6 +120,7 @@ export function Hero() {
   const faqRef = useRef<HTMLDivElement>(null)
   const ctaBandsRef = useRef<HTMLDivElement>(null)
   const heritageRef = useRef<HTMLDivElement>(null)
+  const audienceWhoRef = useRef<HTMLElement>(null)
 
   // Intersection Observer for scroll-based background changes
   // Similar to Google Home's approach: sections change background when prominently in viewport
@@ -143,7 +148,6 @@ export function Hero() {
     const sections = [
       howItWorksRef.current,
       productShowcaseRef.current,
-      benefitsRef.current,
       comparisonRef.current,
       proofStackRef.current,
       techSpecsRef.current,
@@ -151,8 +155,9 @@ export function Hero() {
       socialProofRef.current,
       faqRef.current,
       ctaBandsRef.current,
-      heritageRef.current
-    ].filter(Boolean) as HTMLDivElement[]
+      heritageRef.current,
+      audienceWhoRef.current,
+    ].filter(Boolean) as HTMLElement[]
 
     sections.forEach((section) => observer.observe(section))
 
@@ -244,17 +249,22 @@ export function Hero() {
         
         <div className="hero-content-wrapper">
           {/* Hero Header */}
-          <div className="hero-header-section">
-            <h1 className="hero-main-heading">
+          <motion.div
+            className="hero-header-section"
+            variants={introStagger}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.h1 className="hero-main-heading" variants={fadeUp}>
               Stop Drain Line Clogs Before They Become{' '}
               <span className="hero-brand-highlight">Expensive Water Damage</span>
-            </h1>
+            </motion.h1>
 
-            <h2 className="hero-subtitle">
+            <motion.h2 className="hero-subtitle" variants={fadeUp}>
               STAY COOL WHEN <br className="hero-subtitle-mobile-break" /><em>THE <strong className="hero-subtitle-heat-accent">HEAT</strong> IS ON!</em>
-            </h2>
+            </motion.h2>
             
-            <div className="hero-cta-buttons">
+            <motion.div className="hero-cta-buttons" variants={fadeUp}>
               <button
                 type="button"
                 onClick={() => navigate('/products/combo')}
@@ -271,46 +281,46 @@ export function Hero() {
               >
                 Explore Mini
               </button>
-            </div>
+            </motion.div>
             
-            <p className="hero-description-text">
+            <motion.p className="hero-description-text" variants={fadeUp}>
               The complete AC drain line protection system—proactive cleaning and smart water-level monitoring in one.
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
         </div>
       </div>
 
       {/* Trust Section */}
       <div className="trust-section-container">
         <div className="trust-section-content">
-          <div className="trust-badge">
+          <motion.div className="trust-badge" {...hm.splitLeft}>
             <img 
               src="/images/100-seal-595x554.png" 
               alt="100% Customer Satisfaction Guaranteed" 
               className="trust-badge-image"
             />
-          </div>
+          </motion.div>
           
-          <div className="trust-main-text">
+          <motion.div className="trust-main-text" {...hm.header}>
             <h2 className="trust-title">Trusted By Homeowners & AC Contractors Nationwide</h2>
-          </div>
+          </motion.div>
           
-          <div className="trust-badge">
+          <motion.div className="trust-badge" {...hm.splitRight}>
             <img 
               src="/images/Made-in-USA-logo-transparent.png" 
               alt="Made in USA" 
               className="trust-badge-image"
             />
-          </div>
+          </motion.div>
         </div>
       </div>
 
       {/* Mini Product Intro Header */}
       <div className="product-showcase-container product-showcase-container-mini">
-        <div className="product-showcase-header">
+        <motion.div className="product-showcase-header" {...hm.header}>
           <h2 className="product-showcase-title">{MINI_HOME_INTRO.title}</h2>
           <p className="product-showcase-subtitle">{MINI_HOME_INTRO.subtitle}</p>
-        </div>
+        </motion.div>
       </div>
 
       {/* ACDW Mini Card - Full Width (second product spot) */}
@@ -319,7 +329,7 @@ export function Hero() {
           <MiniConfigShowcase calibrateHotspots={calibrateHotspots} />
         </div>
         
-        <div className="product-showcase-card-content">
+        <motion.div className="product-showcase-card-content" {...hm.cardUnit}>
           <div className="product-showcase-card-header">
             <h3 className="product-showcase-card-title">ACDW Mini</h3>
             <span className="product-showcase-card-status">Drain Line Protection</span>
@@ -356,7 +366,7 @@ export function Hero() {
               </>
             )}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Mini full-stack anatomy — interactive hotspot band below the marquee card */}
@@ -364,12 +374,12 @@ export function Hero() {
 
       {/* Sensor Product Intro Header */}
       <div ref={productShowcaseRef} className="product-showcase-container product-showcase-container-sensor">
-        <div className="product-showcase-header">
+        <motion.div className="product-showcase-header" {...hm.header}>
           <h2 className="product-showcase-title">Add Smart Monitoring to Your AC Drain Line</h2>
           <p className="product-showcase-subtitle">
             When drain lines back up, the damage can be immediate and expensive. Pair the ACDW Mini with the ACDW Sensor Switch to add automatic AC shutdown and 24/7 water-level monitoring—a code-compliant float switch replacement that protects your customers' properties before a clog becomes a crisis.
           </p>
-        </div>
+        </motion.div>
       </div>
 
       {/* Sensor Card - Full Width, Professional Only (third product spot) */}
@@ -378,7 +388,7 @@ export function Hero() {
           {/* Sensor product image background */}
         </div>
         
-        <div className="product-showcase-card-content">
+        <motion.div className="product-showcase-card-content" {...hm.cardUnit}>
           <div className="product-showcase-card-header">
             <h3 className="product-showcase-card-title">ACDW Sensor</h3>
             <span className="product-showcase-card-status available">Professional Only</span>
@@ -417,19 +427,23 @@ export function Hero() {
               </>
             )}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* How It Works Section */}
       <div ref={howItWorksRef} className="how-it-works-container">
         <div className="how-it-works-content">
-          <div className="how-it-works-header">
+          <motion.div className="how-it-works-header" {...hm.header}>
             <h2 className="how-it-works-title">Install Once, Clean Anytime</h2>
             <p className="how-it-works-subtitle">Three simple steps to worry-free AC maintenance</p>
-          </div>
+          </motion.div>
           
-          <div className="how-it-works-steps">
-            <div className="how-it-works-step">
+          <motion.div
+            className="how-it-works-steps"
+            variants={hm.gridContainer}
+            {...hm.gridInView}
+          >
+            <motion.div className="how-it-works-step" variants={hm.gridItem}>
               <div className="how-it-works-step-icon">
                 <svg className="how-it-works-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -440,9 +454,9 @@ export function Hero() {
               <p className="how-it-works-step-description">
                 Cut your existing drain line, solvent-weld AC Drain Wiz in place (5 minutes or less). Works with 3/4" PVC drain lines.
               </p>
-            </div>
+            </motion.div>
             
-            <div className="how-it-works-step">
+            <motion.div className="how-it-works-step" variants={hm.gridItem}>
               <div className="how-it-works-step-icon">
                 <svg className="how-it-works-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -452,9 +466,9 @@ export function Hero() {
               <p className="how-it-works-step-description">
                 When it's time for maintenance, snap in your preferred attachment: air, water, or vacuum. When using air, check for a P-trap in the system and refill it with water after the flush to reestablish the water seal. Bayonet mount ensures perfect seal every time.
               </p>
-            </div>
+            </motion.div>
             
-            <div className="how-it-works-step">
+            <motion.div className="how-it-works-step" variants={hm.gridItem}>
               <div className="how-it-works-step-icon">
                 <svg className="how-it-works-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -464,75 +478,26 @@ export function Hero() {
               <p className="how-it-works-step-description">
                 Add AC Drain Wiz Sensor for 24/7 monitoring and automated alerts. Get SMS/email alerts before overflow happens.
               </p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
           
           {/* how-it-works-ctas hidden until final content is ready */}
         </div>
       </div>
 
-      {/* Customer Type Selector */}
-      <CustomerTypeSelector />
-
-          {/* Why Choose AC Drain Wiz Section */}
-      <div ref={benefitsRef} className="benefits-section-container">
-        <div className="benefits-section-content">
-          <h2 className="benefits-section-title">Why Choose AC Drain Wiz</h2>
-          
-          <div className="benefits-grid">
-            <div className="benefit-card">
-              <div className="benefit-icon">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="benefit-title">IMC Code Compliant</h3>
-              <p className="benefit-description">Professional-grade solution meeting International Mechanical Code standards for reliable, safe operation.</p>
-            </div>
-
-            <div className="benefit-card">
-              <div className="benefit-icon">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="benefit-title">5-Minute Installation</h3>
-              <p className="benefit-description">Get up and running fast with our simple installation process that takes 5 minutes or less to complete.</p>
-            </div>
-
-            <div className="benefit-card">
-              <div className="benefit-icon">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <h3 className="benefit-title">Prevent Water Damage</h3>
-              <p className="benefit-description">Protect your home from costly water damage by keeping your AC drain lines clean and clog-free year-round.</p>
-            </div>
-
-            <div className="benefit-card">
-              <div className="benefit-icon">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </div>
-              <h3 className="benefit-title">Made in USA</h3>
-              <p className="benefit-description">Quality you can trust with products manufactured right here in the United States using premium materials.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <CustomerTypeSelector ref={audienceWhoRef} />
 
       {/* Product Comparison Section */}
       <div ref={comparisonRef} className="product-comparison-container">
         <div className="product-comparison-content">
-          <div className="product-comparison-header">
-            <h2 className="product-comparison-title">Find Your Perfect AC Drain Solution</h2>
-            <p className="product-comparison-subtitle">Compare features, prices, and use cases</p>
-          </div>
+          <motion.div className="product-comparison-header" {...hm.header}>
+            <h2 className="product-comparison-title">Still choosing a product?</h2>
+            <p className="product-comparison-subtitle">
+              Compare Mini, Sensor, and Combo if you did not pick a path above.
+            </p>
+          </motion.div>
 
-          {/* Desktop Table */}
+          <motion.div {...hm.unit}>
           <div className="product-comparison-table-wrapper hidden md:block">
             <table className="product-comparison-table">
               <thead>
@@ -749,18 +714,19 @@ export function Hero() {
               </Link>
             </div>
           </div>
+          </motion.div>
         </div>
       </div>
 
       {/* Proof Stack Section - Testimonials */}
       <div ref={proofStackRef} className="proof-stack-container">
         <div className="proof-stack-content">
-          <div className="proof-stack-header">
+          <motion.div className="proof-stack-header" {...hm.header}>
             <h2 className="proof-stack-title">Trusted by the Pros, Designed for Everyone</h2>
-          </div>
+          </motion.div>
 
           {/* Testimonials Carousel */}
-          <div className="proof-stack-testimonials">
+          <motion.div className="proof-stack-testimonials" {...hm.unit}>
             <h3 className="proof-stack-testimonials-title">What Our Customers Say</h3>
             
             {/* Testimonial Carousel */}
@@ -835,60 +801,64 @@ export function Hero() {
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
       {/* Tech Specs / Compatibility Strip */}
       <div ref={techSpecsRef} className="tech-specs-container">
         <div className="tech-specs-content">
-          <div className="tech-specs-header">
+          <motion.div className="tech-specs-header" {...hm.header}>
             <h2 className="tech-specs-title">Compatibility & Technical Specifications</h2>
-          </div>
+          </motion.div>
           
-          <div className="tech-specs-grid">
-            <div className="tech-spec-item">
+          <motion.div
+            className="tech-specs-grid"
+            variants={hm.gridContainer}
+            {...hm.gridInView}
+          >
+            <motion.div className="tech-spec-item" variants={hm.gridItem}>
               <svg className="tech-spec-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span className="tech-spec-text">Fits standard 3/4" PVC drain lines</span>
-            </div>
+            </motion.div>
             
-            <div className="tech-spec-item">
+            <motion.div className="tech-spec-item" variants={hm.gridItem}>
               <svg className="tech-spec-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span className="tech-spec-text">Works with residential and commercial systems</span>
-            </div>
+            </motion.div>
             
-            <div className="tech-spec-item">
+            <motion.div className="tech-spec-item" variants={hm.gridItem}>
               <svg className="tech-spec-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span className="tech-spec-text">Compatible with transfer pumps</span>
-            </div>
+            </motion.div>
             
-            <div className="tech-spec-item">
+            <motion.div className="tech-spec-item" variants={hm.gridItem}>
               <svg className="tech-spec-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span className="tech-spec-text">Typical residential HVAC condensate environments</span>
-            </div>
+            </motion.div>
             
-            <div className="tech-spec-item">
+            <motion.div className="tech-spec-item" variants={hm.gridItem}>
               <svg className="tech-spec-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span className="tech-spec-text">Pressure rated to 100 PSI</span>
-            </div>
+            </motion.div>
             
-            <div className="tech-spec-item">
+            <motion.div className="tech-spec-item" variants={hm.gridItem}>
               <svg className="tech-spec-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span className="tech-spec-text">No electrical connection required</span>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
           
           <div className="tech-specs-footer">
             <p className="tech-specs-footer-text">
@@ -904,13 +874,17 @@ export function Hero() {
       {/* Risk-Reversal Section */}
       <div ref={riskReversalRef} className="risk-reversal-container">
         <div className="risk-reversal-content">
-          <div className="risk-reversal-header">
+          <motion.div className="risk-reversal-header" {...hm.header}>
             <h2 className="risk-reversal-title">We Stand Behind Every Product</h2>
-          </div>
+          </motion.div>
 
-          <div className="risk-reversal-grid">
+          <motion.div
+            className="risk-reversal-grid"
+            variants={hm.gridContainer}
+            {...hm.gridInView}
+          >
             {/* Warranty Card */}
-            <div className="risk-reversal-card">
+            <motion.div className="risk-reversal-card" variants={hm.gridItem}>
               <div className="risk-reversal-card-icon">
                 <svg className="risk-reversal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -923,10 +897,10 @@ export function Hero() {
               <button onClick={() => navigate('/support#warranty-returns')} className="risk-reversal-card-link">
                 See full warranty terms →
               </button>
-            </div>
+            </motion.div>
 
             {/* Support Card */}
-            <div className="risk-reversal-card">
+            <motion.div className="risk-reversal-card" variants={hm.gridItem}>
               <div className="risk-reversal-card-icon">
                 <svg className="risk-reversal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -939,10 +913,10 @@ export function Hero() {
               <button onClick={() => navigate('/support#contact')} className="risk-reversal-card-link">
                 View support hours →
               </button>
-            </div>
+            </motion.div>
 
             {/* Returns Card */}
-            <div className="risk-reversal-card">
+            <motion.div className="risk-reversal-card" variants={hm.gridItem}>
               <div className="risk-reversal-card-icon">
                 <svg className="risk-reversal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -955,8 +929,8 @@ export function Hero() {
               <button onClick={() => navigate('/support#warranty-returns')} className="risk-reversal-card-link">
                 View warranty & returns info →
               </button>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           <div className="risk-reversal-footer">
             <p className="risk-reversal-footer-text">
@@ -969,13 +943,17 @@ export function Hero() {
       {/* Social Proof Section - Trusted Partners */}
       <div ref={socialProofRef} className="social-proof-container">
         <div className="social-proof-content">
-          <div className="social-proof-header">
+          <motion.div className="social-proof-header" {...hm.header}>
             <h2 className="social-proof-title">{TRUSTED_PARTNERS_TITLE}</h2>
-          </div>
+          </motion.div>
 
-          <div className="social-proof-grid">
+          <motion.div
+            className="social-proof-grid"
+            variants={hm.partnerGridContainer}
+            {...hm.gridInView}
+          >
             {TRUSTED_PARTNERS.map((partner) => (
-              <div key={partner.id} className="social-proof-logo">
+              <motion.div key={partner.id} className="social-proof-logo" variants={hm.partnerGridItem}>
                 {partner.logoSrc ? (
                   <div className="social-proof-partner-logo">
                     <img
@@ -991,9 +969,9 @@ export function Hero() {
                     <p className="social-proof-placeholder-text">{partner.name}</p>
                   </div>
                 )}
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           <div className="social-proof-footer">
             <p className="social-proof-footer-text">{TRUSTED_PARTNERS_FOOTER}</p>
@@ -1004,14 +982,14 @@ export function Hero() {
       {/* FAQ Section */}
       <div ref={faqRef} className="faq-container">
         <div className="faq-content">
-          <div className="faq-header">
+          <motion.div className="faq-header" {...hm.header}>
             <h2 className="faq-title">Frequently Asked Questions</h2>
             <p className="faq-subtitle">Get answers to the most common questions about AC Drain Wiz</p>
-          </div>
+          </motion.div>
 
           <div className="faq-list">
             {faqs.map((faq, index) => (
-              <div key={index} className="faq-item">
+              <motion.div key={index} className="faq-item" {...hm.faqItem(index)}>
                 <button
                   onClick={() => toggleFaq(index)}
                   className="faq-question"
@@ -1028,7 +1006,7 @@ export function Hero() {
                     {typeof faq.answer === 'string' ? <p>{faq.answer}</p> : faq.answer}
                   </div>
                 )}
-              </div>
+              </motion.div>
             ))}
           </div>
 
@@ -1046,7 +1024,7 @@ export function Hero() {
       {/* Secondary CTA Bands */}
       <div ref={ctaBandsRef} className="cta-bands-container">
         {/* Talk to Sales CTA - For Pros */}
-        <div className="cta-band-sales">
+        <motion.div className="cta-band-sales" {...hm.purchaseBand}>
           <div className="cta-band-content">
             <div className="cta-band-text">
               <h3 className="cta-band-title">Looking for Bulk Pricing or Professional Support?</h3>
@@ -1065,10 +1043,10 @@ export function Hero() {
               </a>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Find a Contractor CTA - For Homeowners */}
-        <div className="cta-band-contractor">
+        <motion.div className="cta-band-contractor" {...hm.purchaseBandFollow}>
           <div className="cta-band-content">
             <div className="cta-band-text">
               <h3 className="cta-band-title">Prefer Professional Installation?</h3>
@@ -1085,7 +1063,7 @@ export function Hero() {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Heritage Section - Core 1.0 Historical Reference */}
@@ -1094,18 +1072,18 @@ export function Hero() {
         <div className="heritage-hero-section">
           <div className="heritage-hero-content">
             {/* Top Section - Header */}
-            <div className="heritage-hero-top">
+            <motion.div className="heritage-hero-top" {...hm.header}>
               <h2 className="heritage-hero-title">Where It Started</h2>
               <p className="heritage-hero-subtitle">Our foundation that led to the Mini</p>
-            </div>
+            </motion.div>
             
             {/* Bottom Section - Product Info */}
-            <div className="heritage-hero-bottom">
+            <motion.div className="heritage-hero-bottom" {...hm.unit}>
               <h3 className="heritage-hero-product-title">AC Drain Wiz Core 1.0</h3>
               <p className="heritage-hero-description">
                 The proven foundation solution that started it all. Our Core 1.0 system pioneered the AC drain line maintenance category, establishing the clear PVC design and maintenance access principles that evolved into our flagship Mini. While Core 1.0 is now deprecated in favor of the more compact and versatile Mini, it remains a testament to our commitment to innovation and reliability.
               </p>
-            </div>
+            </motion.div>
           </div>
         </div>
 
@@ -1113,7 +1091,7 @@ export function Hero() {
         <div className="heritage-bottom-section">
           <div className="heritage-bottom-container">
             {/* Left Column - Upgrade Offer */}
-            <div className="heritage-upgrade-column">
+            <motion.div className="heritage-upgrade-column" {...hm.heritageLeft}>
               <h3 className="heritage-upgrade-title">Free Upgrade to AC Drain Wiz Mini</h3>
               <p className="heritage-upgrade-subtitle">Exclusive loyalty offer for Core 1.0 customers</p>
               <div className="heritage-upgrade-badge">
@@ -1129,10 +1107,10 @@ export function Hero() {
               >
                 Claim Your Free Upgrade
               </button>
-            </div>
+            </motion.div>
 
             {/* Right Column - Support Information */}
-            <div className="heritage-support-column">
+            <motion.div className="heritage-support-column" {...hm.heritageRight}>
               <h3 className="heritage-support-title">Core 1.0 Support</h3>
               <p className="heritage-support-subtitle">Full support continues for your Core 1.0 system</p>
               <div className="heritage-support-badge">
@@ -1148,7 +1126,7 @@ export function Hero() {
               >
                 Contact Support for Core 1.0
               </button>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
