@@ -11,7 +11,8 @@ type CustomerTypeSelectorProps = {
   showHeader?: boolean
 }
 
-type AudienceTile = (typeof AUDIENCE_SELECTOR)['homeowner']
+type AudienceTile =
+  (typeof AUDIENCE_SELECTOR)['homeowner' | 'hvac' | 'property' | 'code']
 
 const MotionLink = motion.create(Link)
 
