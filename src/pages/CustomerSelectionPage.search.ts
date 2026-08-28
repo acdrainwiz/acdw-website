@@ -1,13 +1,11 @@
-// Search metadata for CustomerSelectionPage.
-// Decoupled from the page module so the page no longer exports search data.
 import type { PageSearchMeta } from '../config/siteSearchTypes'
 
 export const PAGE_SEARCH_META: PageSearchMeta = {
   id: 'page-customer-selection',
   kind: 'site',
-  title: 'Choose your experience',
+  title: 'Who AC Drain Wiz is for',
   body:
-    'Choose your experience: personalized paths for homeowners, HVAC professionals, property managers, and city or code officials. Customer type selector and tailored AC Drain Wiz content.',
+    'Paths for homeowners, HVAC professionals, property managers, and code officials. Identity routing after the product story: DIY Mini, contractor callbacks, portfolio monitoring, AHJ inspectable access.',
   tags: ['homeowner', 'HVAC', 'property manager', 'code official', 'path'],
   href: '/customer-selection',
 }

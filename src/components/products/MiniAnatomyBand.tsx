@@ -26,7 +26,7 @@ export function MiniAnatomyBand({
   const hotspotsId = getMiniAnatomyHotspotsId(context)
   const beats = getMiniAnatomyBeats(context)
   const bridge = getMiniAnatomyBridge(context)
-  const animateOnScroll = context === 'product'
+  const animateOnScroll = context === 'product' || context === 'home'
   const { reduceMotion, tr, viewport, ease } = useMiniPageScrollMotion()
 
   const storyListVariants: Variants =

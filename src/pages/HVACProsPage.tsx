@@ -1,290 +1,389 @@
-import { useNavigate, Link } from 'react-router-dom';
-import { 
-  CurrencyDollarIcon,
+import { useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import {
+  ArrowRightIcon,
+  ArrowTopRightOnSquareIcon,
+  BellAlertIcon,
+  BookOpenIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
   ClockIcon,
-  UserGroupIcon,
-  ShieldCheckIcon,
-  CheckCircleIcon,
-  PhoneIcon,
-  ExclamationTriangleIcon
-} from '@heroicons/react/24/outline';
-import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop';
-import { SUPPORT_CONTACT } from '../config/acdwKnowledge';
-import { MiniDiscoveryCTA } from '../components/products/MiniDiscoveryCTA';
+  ComputerDesktopIcon,
+  CubeIcon,
+  WrenchScrewdriverIcon,
+} from '@heroicons/react/24/outline'
+import { AudienceContrastSection } from '../components/audience/AudienceContrastSection'
+import { AudiencePageHero } from '../components/audience/AudiencePageHero'
+import { useAudienceLandingMotion, useMiniHowStepPulse } from '../components/audience/audienceLandingMotion'
+import { MiniFlowWaveBackdrop } from '../components/products/MiniFlowWaveBackdrop'
+import { AUDIENCE_HVAC } from '../config/audienceCopy'
+import { buildProductSupportHubHref } from '../utils/supportFaqSearch'
+
+const STOCK_ICONS = [WrenchScrewdriverIcon, CubeIcon] as const
+const DASH_ICONS = [BellAlertIcon, ComputerDesktopIcon, ClockIcon] as const
 
 export function HVACProsPage() {
-  const navigate = useNavigate();
+  const copy = AUDIENCE_HVAC
+  const stockRef = useRef<HTMLElement>(null)
+  const dashRef = useRef<HTMLElement>(null)
+  const closeRef = useRef<HTMLElement>(null)
+  const [openFaq, setOpenFaq] = useState<number | null>(0)
+  const {
+    reduceMotion,
+    tr,
+    stepContainer,
+    stepBadgeVariants,
+    stepIconVariants,
+    stepChild,
+    mhViewport,
+  } = useAudienceLandingMotion()
+  const stockPulse = useMiniHowStepPulse(2)
+  const dashPulse = useMiniHowStepPulse(3)
 
   return (
-    <div className="homeowner-page">
-      {/* Hero Section */}
-      <div className="homeowner-hero-container">
-        <PageHeroMeshBackdrop />
-        <div className="homeowner-hero-content">
-          <div className="homeowner-hero-header">
-            <h1 className="homeowner-hero-headline">
-              Turn Drain Calls Into <span className="homeowner-hero-highlight">Revenue</span>
-            </h1>
-            
-            <p className="homeowner-hero-subheadline">
-              Eliminate callbacks, increase efficiency, and create recurring revenue with AC Drain Wiz professional solutions.
-            </p>
+    <div className="mini-product-page audience-page audience-page-trade">
+      <AudiencePageHero
+        tone="trade"
+        eyebrow={copy.hero.eyebrow}
+        title={copy.hero.title}
+        dek={copy.hero.dek}
+        imageSrc={copy.hero.imageSrc}
+        imageAlt={copy.hero.imageAlt}
+        primary={
+          <Link to={copy.finalCta.salesHref} className="btn-inverse btn-lg">
+            Contact sales for contractor pricing
+          </Link>
+        }
+        secondary={
+          <Link to="/products/combo" className="btn-inverse-outline btn-lg">
+            View complete system
+          </Link>
+        }
+      />
 
-            <div className="homeowner-hero-badge-row">
-              <span className="homeowner-hero-badge">5-Minute Installation</span>
-              <span className="homeowner-hero-badge">Bulk Contractor Pricing</span>
+      <AudienceContrastSection headingId="hvac-contrast-heading" copy={copy.contrast} />
+
+      <section
+        ref={stockRef}
+        className="product-how-it-works mini-product-how-it-works"
+        aria-labelledby="hvac-stock-heading"
+      >
+        <MiniFlowWaveBackdrop sectionRef={stockRef} />
+        <div className="product-how-it-works-content">
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 52 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(1.02)}
+          >
+            <p className="mini-section-eyebrow">{copy.offer.eyebrow}</p>
+            <h2 id="hvac-stock-heading" className="product-section-title mini-section-title-promote">
+              {copy.offer.title}
+            </h2>
+            <p className="mini-section-dek">{copy.offer.dek}</p>
+          </motion.header>
+
+          <div className="mini-product-how-it-works-steps mini-how-steps-pulse-grid audience-path-steps">
+            {([copy.offer.mini, copy.offer.combo] as const).map((item, index) => {
+              const LeadIcon = STOCK_ICONS[index] ?? WrenchScrewdriverIcon
+              return (
+                <motion.div
+                  key={item.kicker}
+                  className="mini-product-how-it-works-step mini-how-step-slot mini-how-step-card"
+                  data-mini-how-step-pulse={stockPulse(index)}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={mhViewport}
+                  variants={stepContainer}
+                >
+                  <p className="audience-kicker homeowner-path-kicker">{item.kicker}</p>
+                  <motion.h3 className="product-how-it-works-step-title" variants={stepChild}>
+                    {item.title}
+                  </motion.h3>
+                  <motion.p className="product-how-it-works-step-description" variants={stepChild}>
+                    {item.body}
+                  </motion.p>
+                  <motion.div className="homeowner-path-cta" variants={stepChild}>
+                    <Link to={item.href} className="product-installation-video-guide-link">
+                      <LeadIcon
+                        className="product-installation-video-guide-link-lead-icon"
+                        aria-hidden
+                      />
+                      <span>{item.cta}</span>
+                      <ArrowRightIcon
+                        className="product-installation-video-guide-link-trail-icon"
+                        aria-hidden
+                      />
+                    </Link>
+                  </motion.div>
+                </motion.div>
+              )
+            })}
+          </div>
+
+          <motion.div
+            className="product-installation-video product-installation-video--guide-only"
+            initial={reduceMotion ? false : { opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(0.92, 0.12)}
+          >
+            <div className="product-installation-video-guide product-installation-video-guide--standalone">
+              <p className="product-installation-video-guide-eyebrow">Keep going</p>
+              <p className="product-installation-video-guide-label">
+                Horizontal 3/4&quot; PVC, transfer pumps, and other layouts live on the scenarios page.
+              </p>
+              <Link to={copy.offer.scenariosHref} className="product-installation-video-guide-link">
+                <BookOpenIcon
+                  className="product-installation-video-guide-link-lead-icon"
+                  aria-hidden
+                />
+                <span>{copy.offer.scenariosCta}</span>
+                <ArrowRightIcon
+                  className="product-installation-video-guide-link-trail-icon"
+                  aria-hidden
+                />
+              </Link>
             </div>
+          </motion.div>
+        </div>
+      </section>
 
-            <div className="homeowner-hero-ctas">
-              <button 
-                onClick={() => navigate('/products/combo')}
-                className="homeowner-hero-cta-primary"
+      <section
+        ref={dashRef}
+        className="product-how-it-works mini-product-how-it-works homeowner-after-band"
+        aria-labelledby="hvac-dash-heading"
+      >
+        <MiniFlowWaveBackdrop sectionRef={dashRef} />
+        <div className="product-how-it-works-content">
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 52 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(1.02)}
+          >
+            <p className="mini-section-eyebrow">{copy.dashboard.eyebrow}</p>
+            <h2 id="hvac-dash-heading" className="product-section-title mini-section-title-promote">
+              {copy.dashboard.title}
+            </h2>
+            <p className="mini-section-dek">{copy.dashboard.dek}</p>
+          </motion.header>
+
+          <div className="mini-product-how-it-works-steps mini-how-steps-pulse-grid">
+            {copy.dashboard.steps.map((step, index) => {
+              const Icon = DASH_ICONS[index] ?? ClockIcon
+              return (
+                <motion.div
+                  key={step.title}
+                  className="mini-product-how-it-works-step mini-how-step-slot mini-how-step-card"
+                  data-mini-how-step-pulse={dashPulse(index)}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={mhViewport}
+                  variants={stepContainer}
+                >
+                  <div className="mini-how-step-num-anchor">
+                    <motion.div className="mini-how-step-num-disk" variants={stepBadgeVariants}>
+                      {step.number}
+                    </motion.div>
+                  </div>
+                  <motion.div className="mini-how-step-icon-holder" variants={stepIconVariants}>
+                    <Icon className="product-how-it-works-step-icon mini-how-step-icon-svg" />
+                  </motion.div>
+                  <motion.h3 className="product-how-it-works-step-title" variants={stepChild}>
+                    {step.title}
+                  </motion.h3>
+                  <motion.p className="product-how-it-works-step-description" variants={stepChild}>
+                    {step.description}
+                  </motion.p>
+                </motion.div>
+              )
+            })}
+          </div>
+
+          <motion.div
+            className="product-installation-video product-installation-video--guide-only"
+            initial={reduceMotion ? false : { opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(0.92, 0.12)}
+          >
+            <div className="product-installation-video-guide product-installation-video-guide--standalone">
+              <p className="product-installation-video-guide-eyebrow">Keep going</p>
+              <p className="product-installation-video-guide-label">
+                Contractor login is on the monitoring portal. Model differences live on the Sensor page.
+              </p>
+              <Link
+                to={copy.dashboard.sensorHref}
+                className="product-installation-video-guide-link"
               >
-                View Complete System
-              </button>
-              <a 
-                href={SUPPORT_CONTACT.telHref}
-                className="homeowner-hero-cta-secondary"
+                <BookOpenIcon
+                  className="product-installation-video-guide-link-lead-icon"
+                  aria-hidden
+                />
+                <span>{copy.dashboard.sensorCta}</span>
+                <ArrowRightIcon
+                  className="product-installation-video-guide-link-trail-icon"
+                  aria-hidden
+                />
+              </Link>
+              <a
+                href={copy.dashboard.portalUrl}
+                className="product-installation-video-guide-link product-installation-video-guide-link--secondary"
+                rel="noopener noreferrer"
               >
-                Call {SUPPORT_CONTACT.phoneDisplay}
+                <ArrowTopRightOnSquareIcon
+                  className="product-installation-video-guide-link-lead-icon"
+                  aria-hidden
+                />
+                <span>{copy.dashboard.portalCta}</span>
+                <ArrowRightIcon
+                  className="product-installation-video-guide-link-trail-icon"
+                  aria-hidden
+                />
               </a>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </section>
 
-      {/* Problem Section */}
-      <div className="homeowner-problem-section">
-        <div className="homeowner-problem-background">
-          {/* Background intentionally removed */}
-        </div>
-        
-        <div className="homeowner-problem-overlay"></div>
-        
-        <div className="homeowner-problem-content">
-          <h2 className="homeowner-problem-headline">The Drain Line Callback Problem</h2>
-          <p className="homeowner-problem-subheadline">
-            Every HVAC pro knows the frustration: you clear a clogged drain line, complete the service call, 
-            and within weeks the customer calls back with the same issue. Lost time, unhappy customers, and revenue drain.
-          </p>
-          
-          <div className="homeowner-problem-stats">
-            <div className="homeowner-stat">
-              <div className="homeowner-stat-icon-wrapper">
-                <ExclamationTriangleIcon className="homeowner-stat-icon" />
-              </div>
-              <div className="homeowner-stat-number">$150-300</div>
-              <div className="homeowner-stat-label">Lost per callback</div>
-            </div>
-            <div className="homeowner-stat">
-              <div className="homeowner-stat-icon-wrapper">
-                <ClockIcon className="homeowner-stat-icon" />
-              </div>
-              <div className="homeowner-stat-number">2-4 hrs</div>
-              <div className="homeowner-stat-label">Wasted time</div>
-            </div>
-            <div className="homeowner-stat">
-              <div className="homeowner-stat-icon-wrapper">
-                <UserGroupIcon className="homeowner-stat-icon" />
-              </div>
-              <div className="homeowner-stat-number">60%</div>
-              <div className="homeowner-stat-label">Customer churn rate</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <section className="mini-product-testimonials" aria-labelledby="hvac-quotes-heading">
+        <div className="mini-product-testimonials-content">
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 48 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(1)}
+          >
+            <p className="mini-section-eyebrow">{copy.joey.eyebrow}</p>
+            <h2 id="hvac-quotes-heading" className="product-section-title mini-section-title-promote">
+              {copy.joey.title}
+            </h2>
+          </motion.header>
 
-      {/* Benefits Section */}
-      <div className="homeowner-benefits-container">
-        <h2 className="homeowner-benefits-title">How AC Drain Wiz Transforms Your Business</h2>
-        <div className="homeowner-benefits-grid">
-          <div className="homeowner-benefit-card">
-            <div className="homeowner-benefit-icon-wrapper" style={{ background: '#dbeafe' }}>
-              <ClockIcon className="homeowner-benefit-icon" style={{ color: '#1e40af' }} />
-            </div>
-            <h3 className="homeowner-benefit-title">Eliminate Callbacks</h3>
-            <p className="homeowner-benefit-description">
-              Mini installs in 5 minutes during any service call. Give customers permanent access to their drain line—no more repeat visits for the same clog. Clear view into the line lets you verify every clean-out and show the customer the result.
-            </p>
-          </div>
-
-          <div className="homeowner-benefit-card">
-            <div className="homeowner-benefit-icon-wrapper" style={{ background: '#dcfce7' }}>
-              <CurrencyDollarIcon className="homeowner-benefit-icon" style={{ color: '#16a34a' }} />
-            </div>
-            <h3 className="homeowner-benefit-title">Create Recurring Revenue</h3>
-            <p className="homeowner-benefit-description">
-              Upsell sensor monitoring subscriptions. Track multiple customer systems from one dashboard and generate consistent monthly income.
-            </p>
-          </div>
-
-          <div className="homeowner-benefit-card">
-            <div className="homeowner-benefit-icon-wrapper" style={{ background: '#fef3c7' }}>
-              <UserGroupIcon className="homeowner-benefit-icon" style={{ color: '#d97706' }} />
-            </div>
-            <h3 className="homeowner-benefit-title">Build Customer Loyalty</h3>
-            <p className="homeowner-benefit-description">
-              Position yourself as a technology leader. Customers see you as innovative and proactive—leading to referrals and long-term relationships.
-            </p>
-          </div>
-
-          <div className="homeowner-benefit-card">
-            <div className="homeowner-benefit-icon-wrapper" style={{ background: '#e0e7ff' }}>
-              <ShieldCheckIcon className="homeowner-benefit-icon" style={{ color: '#4f46e5' }} />
-            </div>
-            <h3 className="homeowner-benefit-title">Code Compliant</h3>
-            <p className="homeowner-benefit-description">
-              Meets IMC 307.2.x requirements. Professional-grade solution that inspectors approve and customers trust.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Products Section */}
-      <div className="homeowner-products-container" style={{ background: '#f8fafc' }}>
-        <div className="homeowner-products-content">
-          <h2 className="homeowner-products-title">Professional Solutions</h2>
-          <p className="homeowner-products-subtitle">
-            Choose the right solution for your customers
-          </p>
-
-          <div className="homeowner-products-grid hvac-products-grid">
-            {/* AC Drain Wiz Mini */}
-            <div className="hvac-product-card">
-              <Link
-                to="/products/mini"
-                className="homeowner-product-image-wrapper cursor-pointer transition-opacity hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-                aria-label="Learn more — AC Drain Wiz Mini"
-              >
-                <img 
-                  src="/images/acdw-mini-hero2-background.png" 
-                  alt=""
-                  className="homeowner-product-image"
-                />
-              </Link>
-              <h3 className="homeowner-product-name">AC Drain Wiz Mini</h3>
-              <p className="homeowner-product-price">Bulk pricing available</p>
-              <ul className="homeowner-product-features">
-                <li><CheckCircleIcon className="homeowner-product-feature-icon" /> 5-minute installation</li>
-                <li><CheckCircleIcon className="homeowner-product-feature-icon" /> One-time customer solution</li>
-                <li><CheckCircleIcon className="homeowner-product-feature-icon" /> Professional-grade quality</li>
-                <li><CheckCircleIcon className="homeowner-product-feature-icon" /> IMC code compliant</li>
-              </ul>
-              <button 
-                onClick={() => navigate('/products/mini')}
-                className="hvac-product-cta"
-              >
-                Learn More
-              </button>
-              <MiniDiscoveryCTA
-                className="hvac-product-cta hvac-product-cta-outline"
-                label="Shop at MSRP online"
-                showPrice={false}
-              />
-            </div>
-
-            {/* Mini + Sensor Combo */}
-            <div className="hvac-product-card hvac-product-card-featured">
-              <div className="homeowner-product-badge">Most Popular</div>
-              <Link
-                to="/products/combo"
-                className="homeowner-product-image-wrapper cursor-pointer transition-opacity hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-                aria-label="View complete system — Mini + Sensor Combo"
-              >
-                <img 
-                  src="/images/hvac-combo-mini-sensor-product-hero.png" 
-                  alt=""
-                  className="homeowner-product-image"
-                />
-              </Link>
-              <h3 className="homeowner-product-name">Mini + Sensor Combo</h3>
-              <p className="homeowner-product-price">Contact for fleet pricing</p>
-              <ul className="homeowner-product-features">
-                <li><CheckCircleIcon className="homeowner-product-feature-icon" /> Complete protection system</li>
-                <li><CheckCircleIcon className="homeowner-product-feature-icon" /> 24/7 remote monitoring</li>
-                <li><CheckCircleIcon className="homeowner-product-feature-icon" /> Recurring revenue opportunity</li>
-                <li><CheckCircleIcon className="homeowner-product-feature-icon" /> Fleet management dashboard</li>
-              </ul>
-              <button 
-                onClick={() => navigate('/products/combo')}
-                className="hvac-product-cta"
-              >
-                View Complete System
-              </button>
-              <Link
-                to="/support/installation-scenarios"
-                className="hvac-product-cta hvac-product-cta-outline"
-                aria-label="Match the setup to the job — see recommended installation scenarios"
-              >
-                See installation scenarios
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* FAQ Section */}
-      <div className="homeowner-faq-container">
-        <h2 className="homeowner-faq-title">Contractor FAQs</h2>
-        <div className="homeowner-faq-list">
-          <div className="homeowner-faq-item">
-            <h3 className="homeowner-faq-question">What's the bulk pricing for contractors?</h3>
-            <p className="homeowner-faq-answer">
-              We offer tiered pricing based on volume. Contact our sales team at {SUPPORT_CONTACT.phoneDisplay} for custom quotes and contractor program details.
-            </p>
-          </div>
-
-          <div className="homeowner-faq-item">
-            <h3 className="homeowner-faq-question">How long does installation take?</h3>
-            <p className="homeowner-faq-answer">
-              The Mini installs in 5 minutes during any service call. The Sensor adds another 10-15 minutes for complete system installation.{' '}
-              <Link to="/support/installation-scenarios" className="homeowner-faq-inline-link">
-                See recommended Good, Better, and Best configurations for dual drain-line units.
-              </Link>
-            </p>
-          </div>
-
-          <div className="homeowner-faq-item">
-            <h3 className="homeowner-faq-question">Can I manage multiple customer systems?</h3>
-            <p className="homeowner-faq-answer">
-              Yes! Our contractor dashboard lets you monitor all your customer sensors in one place. Track system health, receive alerts, and manage service schedules remotely.
-            </p>
-          </div>
-
-          <div className="homeowner-faq-item">
-            <h3 className="homeowner-faq-question">Is this code compliant?</h3>
-            <p className="homeowner-faq-answer">
-              Absolutely. AC Drain Wiz products meet IMC 307.2.x requirements and are approved for use in municipalities nationwide. We provide compliance documentation for inspections.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Final CTA */}
-      <div className="homeowner-final-cta-container" style={{ background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)' }}>
-        <div className="homeowner-final-cta-content">
-          <h2 className="homeowner-final-cta-title">Ready to Transform Your Service Business?</h2>
-          <p className="homeowner-final-cta-subtitle">
-            Join thousands of HVAC pros who've eliminated callbacks and created recurring revenue streams.
-          </p>
-          <div className="homeowner-final-cta-buttons">
-            <button 
-              onClick={() => navigate('/contact?type=sales')}
-              className="homeowner-hero-cta-primary"
+          <div className="mini-product-testimonials-grid audience-quote-single">
+            <motion.div
+              className="mini-product-testimonial-card mini-product-testimonial-card--editorial"
+              initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={mhViewport}
+              transition={tr(1.02)}
             >
-              Contact Sales
-            </button>
-            <a 
-              href={SUPPORT_CONTACT.telHref}
-              className="homeowner-hero-cta-secondary"
-            >
-              <PhoneIcon style={{ width: '20px', height: '20px', marginRight: '8px' }} />
-              {SUPPORT_CONTACT.phoneDisplay}
-            </a>
+              <span className="mini-product-testimonial-quote-mark" aria-hidden>
+                “
+              </span>
+              <p className="mini-product-testimonial-text">{copy.joey.text}</p>
+              <div className="mini-product-testimonial-author">
+                <span className="mini-product-testimonial-avatar mini-product-testimonial-avatar--photo" aria-hidden>
+                  <img src={copy.joey.image} alt="" width={44} height={44} />
+                </span>
+                <span className="mini-product-testimonial-author-meta">
+                  <span className="mini-product-testimonial-name">{copy.joey.name}</span>
+                  <span className="mini-product-testimonial-role">{copy.joey.role}</span>
+                </span>
+              </div>
+            </motion.div>
           </div>
         </div>
-      </div>
+      </section>
+
+      <section className="product-faq mini-product-faq" aria-labelledby="hvac-faq-heading">
+        <div className="product-faq-content">
+          <motion.header
+            className="mini-section-header"
+            initial={reduceMotion ? false : { opacity: 0, y: 48 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(1)}
+          >
+            <p className="mini-section-eyebrow">Need-to-know</p>
+            <h2 id="hvac-faq-heading" className="product-section-title mini-section-title-promote">
+              {copy.faqTitle}
+            </h2>
+          </motion.header>
+          <div className="product-faq-list">
+            {copy.faqs.map((faq, index) => (
+              <motion.div
+                key={faq.question}
+                className="product-faq-item"
+                initial={reduceMotion ? false : { opacity: 0, y: 26 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={mhViewport}
+                transition={tr(0.72, Math.min(index, 8) * 0.09)}
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                  className="product-faq-question"
+                  aria-expanded={openFaq === index}
+                >
+                  <span>{faq.question}</span>
+                  {openFaq === index ? (
+                    <ChevronUpIcon className="product-faq-icon" />
+                  ) : (
+                    <ChevronDownIcon className="product-faq-icon" />
+                  )}
+                </button>
+                {openFaq === index && (
+                  <div className="product-faq-answer">
+                    <p>{faq.answer}</p>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+          <p className="product-faq-subtitle">
+            IMC notes for 307.2.5, 307.2.2, and 307.2.1.1 are on the{' '}
+            <Link to="/compliance" className="product-faq-contact-link">
+              compliance page
+            </Link>
+            . More product questions:{' '}
+            <Link to={buildProductSupportHubHref('mini')} className="product-faq-contact-link">
+              Product Support FAQs
+            </Link>
+            .
+          </p>
+        </div>
+      </section>
+
+      <section
+        ref={closeRef}
+        className="mini-purchase-cta-band"
+        aria-labelledby="hvac-close-heading"
+      >
+        <MiniFlowWaveBackdrop sectionRef={closeRef} />
+        <div className="mini-purchase-cta-inner">
+          <motion.div
+            className="mini-purchase-cta-reveal"
+            initial={reduceMotion ? false : { opacity: 0, scale: 0.94, y: 32 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            viewport={mhViewport}
+            transition={tr(1.05)}
+          >
+            <p className="mini-purchase-cta-kicker">{copy.finalCta.kicker}</p>
+            <div className="mini-purchase-cta-card">
+              <div className="mini-product-purchase-card-content mini-buy-card">
+                <h2 id="hvac-close-heading" className="sensor-product-purchase-title">
+                  {copy.finalCta.title}
+                </h2>
+                <p className="sensor-product-purchase-message">{copy.finalCta.dek}</p>
+                <div className="mini-buy-actions homeowner-close-actions">
+                  <Link to={copy.finalCta.salesHref} className="btn-primary btn-lg">
+                    {copy.finalCta.salesCta}
+                  </Link>
+                  <a href={copy.finalCta.callHref} className="btn-secondary btn-lg">
+                    {copy.finalCta.callCta}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
     </div>
-  );
+  )
 }
-
