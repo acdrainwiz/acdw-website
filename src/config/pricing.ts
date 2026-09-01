@@ -140,7 +140,7 @@ export function getProductPricingTable(
   product: ProductType,
   role: UserRole
 ): Array<{ tier: PricingTier; quantity: string; price: number }> {
-  if (role === 'homeowner') {
+  if (role === 'homeowner' || product === 'mini') {
     return [
       {
         tier: 'msrp',
