@@ -14,6 +14,7 @@ const { validateRequestFingerprint } = require('./utils/request-fingerprint')
 const { validateIP, addToBlacklist } = require('./utils/ip-reputation')
 const { validateSubmissionBehavior } = require('./utils/behavioral-analysis')
 const { validateEmailDomain } = require('./utils/email-domain-validator')
+const { validateCSRFToken } = require('./utils/csrf-validator')
 const { initBlobsStores, getUnsubscribeStore } = require('./utils/blobs-store')
 const { getSecurityHeaders } = require('./utils/cors-config')
 const ghlClient = require('./utils/ghl-client')
@@ -602,6 +603,15 @@ exports.handler = async (event, context) => {
         responseBody: ghlErr && ghlErr.responseBody,
         email: trimmedEmail.substring(0, 3) + '***',
       })
+      return {
+        statusCode: 502,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          error: 'Unsubscribe delivery failed',
+          message: 'We could not complete your unsubscribe request. Please try again.',
+        }),
+      }
     }
     
     // Success - return with rate limit headers
