@@ -602,6 +602,15 @@ exports.handler = async (event, context) => {
         responseBody: ghlErr && ghlErr.responseBody,
         email: trimmedEmail.substring(0, 3) + '***',
       })
+      return {
+        statusCode: 502,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          error: 'Unsubscribe delivery failed',
+          message: 'We could not process your unsubscribe request. Please try again.',
+        }),
+      }
     }
     
     // Success - return with rate limit headers
