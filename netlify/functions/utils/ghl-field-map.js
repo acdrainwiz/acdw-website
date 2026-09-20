@@ -290,7 +290,7 @@ const formConfigs = {
     customFields: [
       ['unsubscribe_reason', 'reason'],
     ],
-    sourceTags: [],
+    sourceTags: ['opted-out:all'],
     sourceAttribution: 'acdrainwiz.com: unsubscribe',
     setEmailDnd: true,
     writeMessageAsNote: true,

@@ -35,6 +35,9 @@ export function PropertyManagerCatalogPage() {
   // Calculate savings for each product (MSRP vs Tier 1 property manager pricing)
   const getProductSavings = (product: ProductType) => {
     const msrp = MSRP_PRICES[product]
+    if (product === 'mini') {
+      return { msrp, pmPrice: msrp, savings: 0, savingsPercent: 0 }
+    }
     const pmPrice = PROPERTY_MANAGER_PRICING[product].tier_1
     const savings = msrp - pmPrice
     const savingsPercent = Math.round((savings / msrp) * 100)
