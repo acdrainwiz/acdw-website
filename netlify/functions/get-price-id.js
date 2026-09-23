@@ -10,6 +10,7 @@
 // Import utilities
 const { checkRateLimit, getRateLimitHeaders, getClientIP } = require('./utils/rate-limiter')
 const { logAPIAccess, logRateLimit, EVENT_TYPES } = require('./utils/security-logger')
+const { ensurePurchasingEnabled } = require('./utils/purchasing-enabled.cjs')
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
@@ -95,6 +96,9 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ error: 'Method not allowed' }),
     }
   }
+
+  const purchasingGate = ensurePurchasingEnabled(headers)
+  if (purchasingGate) return purchasingGate
 
   try {
     // Get client IP
@@ -182,7 +186,7 @@ exports.handler = async (event, context) => {
     // Contractor / property-manager pricing tiers top out at 500 units; above that we
     // route to sales for a custom volume quote. Homeowners buy at flat MSRP, so any
     // quantity is allowed online (only Stripe's per-line-item max of 999,999 guards it).
-    if (userRole !== 'homeowner' && qty > 500) {
+    if (product !== 'mini' && userRole !== 'homeowner' && qty > 500) {
       return {
         statusCode: 400,
         headers,
@@ -202,7 +206,8 @@ exports.handler = async (event, context) => {
 
     // Calculate tier
     let tier = 'msrp'
-    if (userRole !== 'homeowner') {
+    const pricingRole = product === 'mini' ? 'homeowner' : userRole
+    if (pricingRole !== 'homeowner') {
       tier = calculateTier(qty)
       if (!tier) {
         return {
@@ -217,7 +222,7 @@ exports.handler = async (event, context) => {
     }
 
     // Get Price ID
-    const priceIdKey = getPriceIdKey(product, userRole, tier)
+    const priceIdKey = getPriceIdKey(product, pricingRole, tier)
     const priceId = PRICE_IDS[priceIdKey]
 
     if (!priceId) {
@@ -252,7 +257,7 @@ exports.handler = async (event, context) => {
           priceId,
           product,
           quantity: qty,
-          role: userRole,
+          role: pricingRole,
           tier,
           unitPrice: price.unit_amount / 100, // Convert from cents
           currency: price.currency,

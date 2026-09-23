@@ -16,6 +16,7 @@ const { validateSubmissionBehavior } = require('./utils/behavioral-analysis')
 const { validateEmailDomain } = require('./utils/email-domain-validator')
 const { initBlobsStores, getUnsubscribeStore } = require('./utils/blobs-store')
 const { getSecurityHeaders } = require('./utils/cors-config')
+const { validateCSRFToken } = require('./utils/csrf-validator')
 const ghlClient = require('./utils/ghl-client')
 
 // Comma-separated origin allowlist for preview/branch deploys. Supports glob `*`.
@@ -602,6 +603,17 @@ exports.handler = async (event, context) => {
         responseBody: ghlErr && ghlErr.responseBody,
         email: trimmedEmail.substring(0, 3) + '***',
       })
+      return {
+        statusCode: 502,
+        headers: {
+          ...headers,
+          ...getRateLimitHeaders(rateLimitResult)
+        },
+        body: JSON.stringify({
+          error: 'Unsubscribe delivery failed',
+          message: 'We could not complete your unsubscribe request. Please try again.',
+        }),
+      }
     }
     
     // Success - return with rate limit headers
