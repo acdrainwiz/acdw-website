@@ -105,6 +105,23 @@ export function calculateTier(quantity: number): PricingTier | 'contact_sales' {
   return 'contact_sales'
 }
 
+export function getProductPricingTableForRole(
+  product: ProductType,
+  role: UserRole
+): Array<{ tier: PricingTier; quantity: string; price: number }> {
+  if (product === 'mini') {
+    return [
+      {
+        tier: 'msrp',
+        quantity: '1+',
+        price: MSRP_PRICES.mini,
+      },
+    ]
+  }
+
+  return getProductPricingTable(product, role)
+}
+
 /**
  * Get price for a product based on role and tier
  * NOTE: This is for display only. Actual prices come from Stripe Price IDs.
@@ -118,6 +135,10 @@ export function getDisplayPrice(
   role: UserRole,
   tier: PricingTier
 ): number {
+  if (product === 'mini') {
+    return MSRP_PRICES.mini
+  }
+
   if (role === 'homeowner' || tier === 'msrp') {
     return MSRP_PRICES[product]
   }
