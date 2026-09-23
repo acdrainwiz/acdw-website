@@ -11,6 +11,7 @@
 const { checkRateLimit, getRateLimitHeaders, getClientIP } = require('./utils/rate-limiter')
 const { logAPIAccess, logRateLimit, EVENT_TYPES } = require('./utils/security-logger')
 const { calculateShipping, parseProducts } = require('./utils/shipping-calculator.cjs')
+const { isPurchasingEnabled, purchasingDisabledResponse } = require('./utils/purchasing-enabled.cjs')
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
@@ -58,6 +59,10 @@ exports.handler = async (event, context) => {
     
     // Log API access
     logAPIAccess('/.netlify/functions/create-payment-intent', 'POST', ip, event.headers['user-agent'] || 'unknown', true)
+
+    if (!isPurchasingEnabled()) {
+      return purchasingDisabledResponse(headers)
+    }
     
     // Parse request body
     const { priceId, quantity, product, userEmail, userId, shippingAddress } = JSON.parse(event.body)
