@@ -10,6 +10,7 @@
 // Import utilities
 const { checkRateLimit, getRateLimitHeaders, getClientIP } = require('./utils/rate-limiter')
 const { logAPIAccess, logRateLimit, EVENT_TYPES } = require('./utils/security-logger')
+const { isPurchasingEnabled, purchasingDisabledResponse } = require('./utils/purchasing-enabled.cjs')
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
@@ -65,7 +66,7 @@ function calculateTier(quantity) {
  * Get Price ID key based on product, role, and tier
  */
 function getPriceIdKey(product, role, tier) {
-  if (role === 'homeowner') {
+  if (role === 'homeowner' || product === 'mini') {
     return `${product}_homeowner`
   }
   
@@ -94,6 +95,10 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({ error: 'Method not allowed' }),
     }
+  }
+
+  if (!isPurchasingEnabled()) {
+    return purchasingDisabledResponse(headers)
   }
 
   try {
@@ -179,10 +184,9 @@ exports.handler = async (event, context) => {
     }
 
     // Quantity ceiling.
-    // Contractor / property-manager pricing tiers top out at 500 units; above that we
-    // route to sales for a custom volume quote. Homeowners buy at flat MSRP, so any
-    // quantity is allowed online (only Stripe's per-line-item max of 999,999 guards it).
-    if (userRole !== 'homeowner' && qty > 500) {
+    // Contractor / property-manager pricing tiers top out at 500 units for Sensor
+    // and Bundle. Mini is sold online at flat list price, regardless of account role.
+    if (userRole !== 'homeowner' && product !== 'mini' && qty > 500) {
       return {
         statusCode: 400,
         headers,
@@ -202,7 +206,7 @@ exports.handler = async (event, context) => {
 
     // Calculate tier
     let tier = 'msrp'
-    if (userRole !== 'homeowner') {
+    if (userRole !== 'homeowner' && product !== 'mini') {
       tier = calculateTier(qty)
       if (!tier) {
         return {
