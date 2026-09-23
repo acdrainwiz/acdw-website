@@ -1182,6 +1182,15 @@ exports.handler = async (event, context) => {
       logFormSubmission(formType, email, ip, userAgent, false, [
         `ghl-submission-failed: ${ghlErr && ghlErr.message}`,
       ])
+      return {
+        statusCode: 502,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          error: 'Form delivery failed',
+          message: 'We could not deliver your request. Please try again or contact support.',
+        }),
+      }
     }
 
     return {
