@@ -3,7 +3,7 @@
  *
  * Routed through `/.netlify/functions/validate-form-submission` like Contact,
  * Municipal Quick Intake, and Core Upgrade forms. Backend team: see
- * `netlify/functions/utils/ghl-field-map.js` → `trash-the-float-story`.
+ * `netlify/functions/utils/salesforce-field-map.js` → `trash-the-float-story`.
  */
 
 export const TRASH_THE_FLOAT_FORM_NAME = 'trash-the-float-story' as const

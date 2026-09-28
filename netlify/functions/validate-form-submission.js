@@ -17,7 +17,8 @@ const { validateIP, addToBlacklist } = require('./utils/ip-reputation')
 const { validateSubmissionBehavior } = require('./utils/behavioral-analysis')
 const { validateEmailDomain } = require('./utils/email-domain-validator')
 const { initBlobsStores } = require('./utils/blobs-store')
-const ghlClient = require('./utils/ghl-client')
+const { submitForm } = require('./utils/salesforce-forms')
+const { isContentDocumentId } = require('./utils/salesforce-media')
 const crypto = require('crypto')
 
 function accessTokenMatches(submitted, expected) {
@@ -48,8 +49,8 @@ function originAllowedByExtra(origin) {
   return false
 }
 
-// form-name values from the frontend → ghl-field-map.js config keys
-const FORM_NAME_TO_GHL_TYPE = {
+// form-name values from the frontend → salesforce-field-map.js config keys
+const FORM_NAME_TO_CRM_TYPE = {
   'contact-general': 'contact-general',
   'contact-support': 'contact-support',
   'contact-sales': 'contact-sales',
@@ -58,8 +59,8 @@ const FORM_NAME_TO_GHL_TYPE = {
   'core-upgrade': 'core-upgrade',
   'unsubscribe': 'unsubscribe',
   'ep-x7k9m2': 'email-preferences',
-  // 'municipal-intake' retired — form disabled; its GHL_MUNI_PIPELINE_* env vars now power complimentary-mini-request.
-  'municipal-quick-intake': 'municipal-quick-intake',
+  // 'municipal-intake' and 'municipal-quick-intake' retired — no frontend submits them and
+  // neither has a Salesforce mapping.
   'trash-the-float-story': 'trash-the-float-story',
   'complimentary-mini-request': 'complimentary-mini-request',
 }
@@ -111,7 +112,13 @@ const validateEmail = (email) => {
   if (!emailRegex.test(trimmedEmail)) {
     return { valid: false, error: 'Invalid email format' }
   }
-  
+
+  // Salesforce's standard Email field holds 80 characters; a longer address would make the
+  // whole record write fail.
+  if (trimmedEmail.length > 80) {
+    return { valid: false, error: 'Email must be 80 characters or fewer' }
+  }
+
   return { valid: true, email: trimmedEmail }
 }
 
@@ -208,7 +215,7 @@ const validateFormFields = (formType, formData) => {
         const upgradeState = formData.get('state')?.trim() || ''
         const upgradeZip = formData.get('zip')?.trim() || ''
         const upgradeConsent = formData.get('consent')
-        const upgradePhotoUrl = formData.get('photoUrl')?.trim() || '' // Now expecting URL instead of file
+        const upgradePhotoUrl = formData.get('photoUrl')?.trim() || '' // Salesforce ContentDocumentId from upload-image
         
         if (!upgradeFirstName) errors.push('First name is required')
         if (!upgradeLastName) errors.push('Last name is required')
@@ -233,8 +240,8 @@ const validateFormFields = (formType, formData) => {
         }
         if (!upgradePhotoUrl) {
           errors.push('Photo is required. Please upload a photo of your installed Core 1.0.')
-        } else if (!upgradePhotoUrl.startsWith('data:image/') && !upgradePhotoUrl.startsWith('https://res.cloudinary.com/')) {
-          // Validate that photoUrl is either a data URL or a Cloudinary URL
+        } else if (!isContentDocumentId(upgradePhotoUrl)) {
+          // upload-image returns the Salesforce ContentDocumentId of the stored photo
           errors.push('Invalid photo format. Please upload a valid image file.')
         }
         break
@@ -512,7 +519,8 @@ const validateFormFields = (formType, formData) => {
         }
         if (!ttfMediaUrl) {
           errors.push('A photo is required. Please attach a photo of the float or the damage before submitting.')
-        } else if (!/^https?:\/\//i.test(ttfMediaUrl)) {
+        } else if (!isContentDocumentId(ttfMediaUrl)) {
+          // upload-image returns the Salesforce ContentDocumentId of the stored photo
           errors.push('Invalid photo. Please re-upload your photo and try again.')
         }
         if (ttfConsent !== 'yes') {
@@ -624,8 +632,7 @@ exports.handler = async (event, context) => {
       'promo-signup',
       'core-upgrade',
       'hero-email',
-      // 'municipal-intake' retired — submissions are rejected as an unknown form name.
-      'municipal-quick-intake',
+      // 'municipal-intake' / 'municipal-quick-intake' retired — rejected as unknown form names.
       'trash-the-float-story',
       'complimentary-mini-request',
     ]
@@ -1125,11 +1132,10 @@ exports.handler = async (event, context) => {
       }
     }
 
-    // Route to GoHighLevel — contact upsert + tag writes. GHL workflows handle
-    // confirmation emails and staff notifications downstream.
-    const ghlFormType = FORM_NAME_TO_GHL_TYPE[formName] || null
-    if (!ghlFormType) {
-      console.error('❌ No GHL form-type mapping for formName:', formName)
+    // Route to Salesforce — Lead, or Contact + Case/Opportunity, per salesforce-field-map.js.
+    const crmFormType = FORM_NAME_TO_CRM_TYPE[formName] || null
+    if (!crmFormType) {
+      console.error('❌ No Salesforce form-type mapping for formName:', formName)
       logFormSubmission(formType, email, ip, userAgent, false, ['unmapped form name'])
       return {
         statusCode: 400,
@@ -1139,13 +1145,13 @@ exports.handler = async (event, context) => {
     }
 
     // A2P 10DLC: SMS consent must be optional. For every form that can collect SMS
-    // consent, normalize to explicit yes/no so GHL records a clear opt-out, and stamp
+    // consent, normalize to explicit yes/no so the CRM records a clear opt-out, and stamp
     // audit-trail metadata (timestamp, source URL, IP) when the user opted in.
     const SMS_CAPABLE_FORMS = new Set([
       'contact-general', 'contact-support', 'contact-sales', 'contact-installer', 'contact-demo',
-      'core-upgrade', 'municipal-intake', 'complimentary-mini-request',
+      'core-upgrade', 'complimentary-mini-request',
     ])
-    if (SMS_CAPABLE_FORMS.has(ghlFormType)) {
+    if (SMS_CAPABLE_FORMS.has(crmFormType)) {
       sanitizedData.smsTransactional = sanitizedData.smsTransactional === 'yes' ? 'yes' : 'no'
       sanitizedData.smsMarketing = sanitizedData.smsMarketing === 'yes' ? 'yes' : 'no'
       if (sanitizedData.smsTransactional === 'yes' || sanitizedData.smsMarketing === 'yes') {
@@ -1155,32 +1161,35 @@ exports.handler = async (event, context) => {
       }
     }
 
+    // On a Salesforce outage, log loudly and still return 200 — same policy as under GHL.
+    // sanitizedData is logged so a lost submission can be re-entered by hand.
     try {
-      const result = await ghlClient.submitForm(ghlFormType, sanitizedData)
+      const result = await submitForm(crmFormType, sanitizedData)
       logFormSubmission(formType, email, ip, userAgent, true)
-      console.log('✅ GHL submission succeeded', {
-        formType: ghlFormType,
+      console.log('✅ Salesforce submission succeeded', {
+        formType: crmFormType,
         contactId: result.contactId,
+        caseId: result.caseId,
+        opportunityId: result.opportunityId,
         isNew: result.isNew,
-        traceId: result.traceId,
         warnings: result.warnings.length || 0,
       })
       if (result.warnings.length > 0) {
-        console.warn('⚠️ GHL submission warnings:', result.warnings)
+        console.warn('⚠️ Salesforce submission warnings:', result.warnings)
       }
-    } catch (ghlErr) {
-      console.error('❌ GHL submission failed:', {
-        formType: ghlFormType,
-        errorName: ghlErr && ghlErr.name,
-        message: ghlErr && ghlErr.message,
-        status: ghlErr && ghlErr.status,
-        traceId: ghlErr && ghlErr.traceId,
-        responseBody: ghlErr && ghlErr.responseBody,
+    } catch (sfErr) {
+      console.error('❌ Salesforce submission failed:', {
+        formType: crmFormType,
+        errorName: sfErr && sfErr.name,
+        message: sfErr && sfErr.message,
+        status: sfErr && sfErr.status,
+        errorCode: sfErr && sfErr.errorCode,
+        responseBody: sfErr && sfErr.responseBody,
         email: email ? email.substring(0, 3) + '***' : 'none',
         sanitizedData,
       })
       logFormSubmission(formType, email, ip, userAgent, false, [
-        `ghl-submission-failed: ${ghlErr && ghlErr.message}`,
+        `salesforce-submission-failed: ${sfErr && sfErr.message}`,
       ])
     }
 

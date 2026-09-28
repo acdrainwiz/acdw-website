@@ -16,7 +16,7 @@ const { validateSubmissionBehavior } = require('./utils/behavioral-analysis')
 const { validateEmailDomain } = require('./utils/email-domain-validator')
 const { initBlobsStores, getUnsubscribeStore } = require('./utils/blobs-store')
 const { getSecurityHeaders } = require('./utils/cors-config')
-const ghlClient = require('./utils/ghl-client')
+const { submitForm } = require('./utils/salesforce-forms')
 
 // Comma-separated origin allowlist for preview/branch deploys. Supports glob `*`.
 const EXTRA_ORIGIN_ENTRIES = (process.env.EXTRA_ALLOWED_ORIGINS || '')
@@ -580,26 +580,24 @@ exports.handler = async (event, context) => {
       // Don't fail the unsubscribe if Blobs fails - continue processing
     }
     
-    // Route unsubscribe to GoHighLevel: sets DND on email channel + adds opted-out:all tag.
-    // GHL workflow triggered by opted-out:all sends the final confirmation and halts campaigns.
+    // Route unsubscribe to Salesforce: sets HasOptedOutOfEmail on the matching Contact or Lead
+    // and records the reason. Creates nothing if the address isn't in the CRM.
     try {
-      const ghlResult = await ghlClient.submitForm('unsubscribe', sanitizedData)
-      console.log('✅ Unsubscribe routed to GHL:', {
-        contactId: ghlResult.contactId,
-        isNew: ghlResult.isNew,
-        traceId: ghlResult.traceId,
-        warnings: ghlResult.warnings.length || 0,
+      const sfResult = await submitForm('unsubscribe', sanitizedData)
+      console.log('✅ Unsubscribe routed to Salesforce:', {
+        recordId: sfResult.contactId || '(no match)',
+        warnings: sfResult.warnings.length || 0,
       })
-      if (ghlResult.warnings.length > 0) {
-        console.warn('⚠️ Unsubscribe GHL warnings:', ghlResult.warnings)
+      if (sfResult.warnings.length > 0) {
+        console.warn('⚠️ Unsubscribe Salesforce warnings:', sfResult.warnings)
       }
-    } catch (ghlErr) {
-      console.error('❌ Unsubscribe GHL submission failed:', {
-        errorName: ghlErr && ghlErr.name,
-        message: ghlErr && ghlErr.message,
-        status: ghlErr && ghlErr.status,
-        traceId: ghlErr && ghlErr.traceId,
-        responseBody: ghlErr && ghlErr.responseBody,
+    } catch (sfErr) {
+      console.error('❌ Unsubscribe Salesforce submission failed:', {
+        errorName: sfErr && sfErr.name,
+        message: sfErr && sfErr.message,
+        status: sfErr && sfErr.status,
+        errorCode: sfErr && sfErr.errorCode,
+        responseBody: sfErr && sfErr.responseBody,
         email: trimmedEmail.substring(0, 3) + '***',
       })
     }
