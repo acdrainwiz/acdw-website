@@ -12,8 +12,11 @@
  *   sourceAttribution: written to Website_Source__c — the same strings GHL recorded, so
  *     reporting stays continuous across the cutover
  *   sourceTags / conditionalTags / valueTags: collapse into the Website_Tags__c multi-select
- *   descriptionField / descriptionSourceKey / descriptionAppendFields: the long-text field
- *     the form's message lands in (GHL used a separate Notes API call)
+ *   descriptionSourceKey / descriptionAppendFields: the form's message — the form key it is
+ *     read from (default 'message') and extra answers appended beneath it. It goes on the
+ *     submission's Task, and on the Case or Opportunity the submission opens — never on the
+ *     Lead or Contact, where the next submission would replace it.
+ *   descriptionField (update-by-email only): the long-text field feedback is appended to
  *   combineIntoStreet: form keys concatenated into MailingStreet
  *   stageName: Opportunity.StageName — advance-only on a deduped resubmission
  *   attachFileFromKeys: sanitized-data keys holding a ContentDocumentId from
@@ -231,7 +234,6 @@ const formConfigs = {
     sourceTags: ['follow-up'],
     valueTags: [{ formKey: 'customerType', map: CUSTOMER_TYPE_TAGS }],
     sourceAttribution: 'acdrainwiz.com: contact-general',
-    descriptionField: 'Description',
   },
 
   // The only form that becomes a Case. priority and issueType map onto the native
@@ -254,7 +256,6 @@ const formConfigs = {
     ],
     valueTags: [{ formKey: 'customerType', map: CUSTOMER_TYPE_TAGS }],
     sourceAttribution: 'acdrainwiz.com: contact-support',
-    descriptionField: 'Description',
     // Contact has no Company field — that lives on Account, which these submissions don't
     // create. Appending it to the Case description keeps what the customer typed.
     descriptionAppendFields: [
@@ -276,7 +277,6 @@ const formConfigs = {
     sourceTags: ['warm lead'],
     valueTags: [{ formKey: 'customerType', map: CUSTOMER_TYPE_TAGS }],
     sourceAttribution: 'acdrainwiz.com: contact-sales',
-    descriptionField: 'Description',
   },
 
   'contact-installer': {
@@ -290,7 +290,6 @@ const formConfigs = {
     ],
     sourceTags: ['contractor'],
     sourceAttribution: 'acdrainwiz.com: contact-installer',
-    descriptionField: 'Description',
   },
 
   'contact-demo': {
@@ -311,7 +310,6 @@ const formConfigs = {
     sourceTags: ['demo requested'],
     valueTags: [{ formKey: 'customerType', map: CUSTOMER_TYPE_TAGS }],
     sourceAttribution: 'acdrainwiz.com: contact-demo',
-    descriptionField: 'Description',
     descriptionAppendFields: [
       { label: 'Demo Focus', formKey: 'demoFocus' },
     ],
@@ -357,7 +355,6 @@ const formConfigs = {
     opportunityNameTemplate: '{firstName} {lastName} — Complimentary Mini',
     sourceTags: ['event-attendee', 'complimentary-mini', 'warm lead'],
     sourceAttribution: 'acdrainwiz.com: complimentary-mini-request',
-    descriptionField: 'Description',
     descriptionAppendFields: [
       { label: 'Event', formKey: 'eventName' },
       // This site's form collects an organization; Contact has no Company field, so keep it
@@ -437,11 +434,94 @@ function resolveLeadCompany(data) {
   return name || 'Unknown'
 }
 
+// Every custom field these configs expect, grouped by the object it must exist on — the build
+// checklist for the org. Kept here because LEAD_TO_CONTACT_FIELD is derived from it.
+const FIELD_MANIFEST = {
+  Lead: [
+    EXTERNAL_ID_FIELD,
+    TAGS_FIELD,
+    SOURCE_FIELD,
+    'Referral_Source__c',
+    'Customer_Type__c',
+    'Role__c',
+    'Annual_Volume__c',
+    'Interest__c',
+    'Install_Location__c',
+    'Product_To_Install__c',
+    'Preferred_Contact__c',
+    'Demo_Type__c',
+    'Preferred_Date__c',
+    'Preferred_Time__c',
+    'Number_Of_Attendees__c',
+    'Products_Of_Interest__c',
+    'Portfolio_Size__c',
+    // Mirrored from Contact: unsubscribe and email-preferences update whichever object matches
+    // the address, and most forms create Leads.
+    'Unsubscribe_Reason__c',
+    'Email_Pref_Product_Updates__c',
+    'Email_Pref_Promotions__c',
+    'Email_Pref_Newsletter__c',
+    'Email_Pref_Order_Updates__c',
+    'Email_Pref_Support__c',
+    'SMS_Transactional_Consent__c',
+    'SMS_Marketing_Consent__c',
+    'SMS_Consent_Timestamp__c',
+    'SMS_Consent_Source_URL__c',
+    'SMS_Consent_IP__c',
+  ],
+  Contact: [
+    EXTERNAL_ID_FIELD,
+    TAGS_FIELD,
+    SOURCE_FIELD,
+    'Customer_Type__c',
+    'Contact_Type__c',
+    'Unsubscribe_Reason__c',
+    'Email_Pref_Product_Updates__c',
+    'Email_Pref_Promotions__c',
+    'Email_Pref_Newsletter__c',
+    'Email_Pref_Order_Updates__c',
+    'Email_Pref_Support__c',
+    'SMS_Transactional_Consent__c',
+    'SMS_Marketing_Consent__c',
+    'SMS_Consent_Timestamp__c',
+    'SMS_Consent_Source_URL__c',
+    'SMS_Consent_IP__c',
+  ],
+  Case: [
+    SOURCE_FIELD,
+    'Product__c',
+  ],
+  Opportunity: [
+    SOURCE_FIELD,
+    'Upgrade_Photo_Id__c',
+    'Event_Name__c',
+    'TTF_Audience__c',
+    'TTF_Story_Body__c',
+    'TTF_Damage_Impact__c',
+    'TTF_Media_Id__c',
+    'TTF_City_State__c',
+    'TTF_Instagram_Handle__c',
+  ],
+}
+
+// A converted Lead is read-only, so a Lead form submitted by someone already converted lands on
+// the Contact they became. These are the Lead fields a Contact can hold, under the Contact's
+// names. Company and the Lead-only custom fields have nowhere to go; the submission's Task
+// keeps those answers.
+const LEAD_TO_CONTACT_FIELD = {
+  ...Object.fromEntries(Object.keys(CONTACT).map((key) => [LEAD[key][0], CONTACT[key][0]])),
+  ...Object.fromEntries(
+    FIELD_MANIFEST.Contact.filter((field) => FIELD_MANIFEST.Lead.includes(field)).map((field) => [field, field])
+  ),
+}
+
 module.exports = {
   EXTERNAL_ID_FIELD,
   TAGS_FIELD,
   SOURCE_FIELD,
   STAGE_ORDER,
+  FIELD_MANIFEST,
+  LEAD_TO_CONTACT_FIELD,
   stageIsAdvance,
   fieldTypes,
   fieldMaxLengths,

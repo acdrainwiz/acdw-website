@@ -8,6 +8,15 @@
  * The governing rule, carried over from the GoHighLevel client: the person's record lands
  * first, and every write after it is best-effort. A Case or Opportunity failure becomes a
  * warning, never a failed submission — the visitor's details are already saved.
+ *
+ * People submit more than once, so the person's record and the submission are kept apart. The
+ * Lead or Contact is found by email and updated in place: latest answers, tags added to the
+ * set, and the form that first brought them in left alone. What they said goes on a completed
+ * Task logged against them — one per submission — so a second submission can't erase the
+ * first. On a Lead form that Task is the only copy of the message, so it is the one write after
+ * the person's record that is not best-effort: if it fails, the submission fails (and the
+ * handler logs the full sanitized data), and a retry is safe because everything before it was
+ * an update in place.
  */
 
 const {
@@ -26,6 +35,7 @@ const {
   resolveLeadCompany,
   stageIsAdvance,
   EXTERNAL_ID_FIELD,
+  LEAD_TO_CONTACT_FIELD,
   SOURCE_FIELD,
   TAGS_FIELD,
 } = require('./salesforce-field-map')
@@ -37,6 +47,10 @@ const OPPORTUNITY_CLOSE_DATE_DAYS = 90
 // Opportunity.Name holds 120 characters. The templates put the visitor's name after a prefix,
 // so a long name would otherwise make the create fail.
 const OPPORTUNITY_NAME_MAX = 120
+
+// Task.Description holds 32,000 characters. The longest form, a story with every answer
+// listed, stays far below it; the cap is for the pathological case.
+const TASK_DESCRIPTION_MAX = 32000
 
 // A Contact created with no Account is a private record — visible only to its owner, which is
 // the integration user. Attaching every form Contact to one shared Account makes submitters
@@ -87,7 +101,7 @@ function asString(value) {
 
 // Salesforce takes typed JSON, so values are shaped rather than stringified. Returns undefined
 // for anything that shouldn't be sent at all — an absent value must not overwrite a stored one.
-// maxLength truncates text rather than letting Salesforce reject the whole record.
+// maxLength (this port only) truncates text rather than letting Salesforce reject the record.
 function shapeValue(raw, type, maxLength) {
   if (raw === undefined || raw === null || raw === '') return undefined
 
@@ -146,8 +160,8 @@ function buildTags(config, data) {
   return tags.size ? [...tags].join(';') : undefined
 }
 
-// In GoHighLevel the message was a separate Notes API call. Here it is a field on the record,
-// so it costs no extra request.
+// The form's message plus any appended answers. Goes on the submission's Task and on the Case
+// or Opportunity it opens.
 function buildDescription(config, data) {
   const sourceKey = config.descriptionSourceKey || 'message'
   const parts = []
@@ -184,49 +198,115 @@ function toCasePriority(raw) {
   return value.charAt(0).toUpperCase() + value.slice(1)
 }
 
-// Applies the shared decorations a NEW record carries: the upsert key, the tag multi-select, the
-// message, and which form it came from. Never use it on an update — see submitUpdateByEmail.
-function decorate(fields, config, data) {
-  const email = normalizedEmail(data)
-  if (email) fields[EXTERNAL_ID_FIELD] = email
+// The Lead or Contact a submission belongs to, matched on the normalized email.
+async function findByEmail(sobject, select, email, options) {
+  const rows = await query(
+    `SELECT ${select} FROM ${sobject} WHERE ${EXTERNAL_ID_FIELD} = ${soqlString(email)} LIMIT 1`,
+    options
+  )
+  return rows[0] || null
+}
 
-  const tags = buildTags(config, data)
-  if (tags) fields[TAGS_FIELD] = tags
-
-  fields[SOURCE_FIELD] = config.sourceAttribution
-
-  if (config.descriptionField) {
-    const description = buildDescription(config, data)
-    if (description) fields[config.descriptionField] = description
+// A new record is stamped with the form that brought the person in. A known one (`match`) keeps
+// that — the source stays the first touch — and gains this form's tags on top of the ones it
+// already carries: Website_Tags__c is a multi-select, and writing one replaces every value.
+function applyTagsAndSource(fields, config, data, match) {
+  const incoming = buildTags(config, data)
+  if (!match) {
+    if (incoming) fields[TAGS_FIELD] = incoming
+    fields[SOURCE_FIELD] = config.sourceAttribution
+    return
   }
+  if (!incoming) return
+  const tags = new Set(asString(match.Website_Tags__c).split(';').filter(Boolean))
+  for (const tag of incoming.split(';')) tags.add(tag)
+  fields[TAGS_FIELD] = [...tags].join(';')
+}
 
-  return fields
+function toContactFields(leadFields) {
+  const out = {}
+  for (const [field, value] of Object.entries(leadFields)) {
+    const contactField = LEAD_TO_CONTACT_FIELD[field]
+    if (contactField) out[contactField] = value
+  }
+  return out
+}
+
+// 'SMS_Consent_IP__c' → 'SMS Consent IP', 'MailingPostalCode' → 'Mailing Postal Code'.
+function fieldLabel(apiName) {
+  return apiName.replace(/__c$/, '').replace(/_/g, ' ').replace(/([a-z])([A-Z])/g, '$1 $2')
+}
+
+// Logs the submission as a completed Task on the person: the message, then every answer the
+// form wrote, labelled by field. The person's record only ever holds the latest answers; the
+// Task keeps each submission as it was sent, including the SMS consent proof that came with it.
+// whatId ties the Task to the Case or Opportunity the submission opened — Salesforce allows that
+// only when whoId is a Contact, which it always is on those forms.
+async function logSubmission(whoId, whatId, config, data, answers, options) {
+  const answerLines = Object.entries(answers).map(([field, value]) => `${fieldLabel(field)}: ${String(value)}`)
+  const description = [buildDescription(config, data), answerLines.join('\n')].filter(Boolean).join('\n\n')
+
+  const task = {
+    WhoId: whoId,
+    Subject: config.sourceAttribution,
+    Status: 'Completed',
+    ActivityDate: new Date().toISOString().slice(0, 10),
+    Description: description.slice(0, TASK_DESCRIPTION_MAX),
+  }
+  if (whatId) task.WhatId = whatId
+
+  return createRecord('Task', task, options)
 }
 
 // --- Per-target flows ---------------------------------------------------------------------
 
 async function submitLead(config, data, options) {
-  const fields = decorate(buildFields(config.fields, data), config, data)
-
-  // Company is required on Lead but optional (or absent) on several of these forms.
-  fields.Company = shapeValue(resolveLeadCompany(data), 'text', getFieldMaxLength('Company'))
-  fields.LeadSource = 'Web'
-
   const email = normalizedEmail(data)
-  const result = await upsertRecord('Lead', EXTERNAL_ID_FIELD, email, fields, options)
+  const fields = buildFields(config.fields, data)
+  const answers = { ...fields }
 
-  return {
-    contactId: result.id || '',
-    caseId: null,
-    opportunityId: null,
-    // created is false when the upsert matched an existing record and updated it in place.
-    isNew: result.created || false,
-    warnings: [],
+  const match = await findByEmail(
+    'Lead',
+    `Id, ${TAGS_FIELD}, IsConverted, ConvertedContactId, ConvertedContact.${TAGS_FIELD}`,
+    email,
+    options
+  )
+
+  let personId
+  let isNew = false
+
+  if (match && match.IsConverted && match.ConvertedContactId) {
+    // Salesforce makes a converted Lead read-only, so writing to it fails. The person lives on
+    // as the Contact it became, and that is where the submission goes.
+    personId = match.ConvertedContactId
+    const contactFields = toContactFields(fields)
+    applyTagsAndSource(contactFields, config, data, match.ConvertedContact || {})
+    await updateRecord('Contact', personId, contactFields, options)
+  } else if (match) {
+    personId = match.Id
+    applyTagsAndSource(fields, config, data, match)
+    await updateRecord('Lead', personId, fields, options)
+  } else {
+    applyTagsAndSource(fields, config, data, null)
+    // Company is required on Lead but optional (or absent) on several of these forms. Only a
+    // new Lead gets the fallback: on a known one it would overwrite a company typed earlier.
+    fields.Company = shapeValue(resolveLeadCompany(data), 'text', getFieldMaxLength('Company'))
+    fields.LeadSource = 'Web'
+    // An upsert rather than a create: if a concurrent submission created this Lead since the
+    // lookup, the write lands on that record instead of failing on the unique email.
+    const result = await upsertRecord('Lead', EXTERNAL_ID_FIELD, email, fields, options)
+    personId = result.id || ''
+    isNew = result.created || false
   }
+
+  await logSubmission(personId, null, config, data, answers, options)
+
+  return { contactId: personId, caseId: null, opportunityId: null, isNew, warnings: [] }
 }
 
 async function upsertContact(contactFields, config, data, combineIntoStreet, options) {
-  const fields = decorate(buildFields(contactFields, data), config, data)
+  const email = normalizedEmail(data)
+  const fields = buildFields(contactFields, data)
   const warnings = []
 
   if (combineIntoStreet) {
@@ -236,35 +316,48 @@ async function upsertContact(contactFields, config, data, combineIntoStreet, opt
       .join(' ')
     if (street) fields.MailingStreet = shapeValue(street, 'text', getFieldMaxLength('MailingStreet'))
   }
+  const answers = { ...fields }
+
+  const match = await findByEmail('Contact', `Id, AccountId, ${TAGS_FIELD}`, email, options)
+  applyTagsAndSource(fields, config, data, match)
 
   // Resolved before the write so the Contact is shared from the moment it exists. A lookup
-  // failure must not cost the submission — the Contact saves either way.
-  try {
-    const accountId = await resolveDefaultAccountId(options)
-    if (accountId) {
-      fields.AccountId = accountId
-    } else {
-      warnings.push({
-        stage: 'default-account',
-        message: `No Account named '${defaultAccountName()}' — this Contact is a private record until one exists`,
-      })
+  // failure must not cost the submission — the Contact saves either way. A Contact someone has
+  // already filed under a real Account stays there.
+  if (!(match && match.AccountId)) {
+    try {
+      const accountId = await resolveDefaultAccountId(options)
+      if (accountId) {
+        fields.AccountId = accountId
+      } else {
+        warnings.push({
+          stage: 'default-account',
+          message: `No Account named '${defaultAccountName()}' — this Contact is a private record until one exists`,
+        })
+      }
+    } catch (error) {
+      warnings.push(toWarning('default-account', error))
     }
-  } catch (error) {
-    warnings.push(toWarning('default-account', error))
   }
 
-  const email = normalizedEmail(data)
+  if (match) {
+    await updateRecord('Contact', match.Id, fields, options)
+    return { id: match.Id, isNew: false, warnings, answers }
+  }
+
+  // Upsert for the same reason as a new Lead: a concurrent submission may have just created it.
   const result = await upsertRecord('Contact', EXTERNAL_ID_FIELD, email, fields, options)
-  return { id: result.id || '', isNew: result.created || false, warnings }
+  return { id: result.id || '', isNew: result.created || false, warnings, answers }
 }
 
 async function submitCase(config, data, options) {
   const contact = await upsertContact(config.contactFields, config, data, undefined, options)
   const warnings = [...contact.warnings]
   let caseId = null
+  const caseAnswers = buildFields(config.caseFields, data)
 
   try {
-    const caseFields = buildFields(config.caseFields, data)
+    const caseFields = { ...caseAnswers }
     const priority = toCasePriority(data.priority)
     if (priority) caseFields.Priority = priority
 
@@ -280,6 +373,13 @@ async function submitCase(config, data, options) {
   } catch (error) {
     // The Contact is saved; a Case failure must not fail the submission.
     warnings.push(toWarning('case', error))
+  }
+
+  // Best-effort here, unlike on a Lead form: the Case carries the message too.
+  try {
+    await logSubmission(contact.id, caseId, config, data, { ...contact.answers, ...caseAnswers }, options)
+  } catch (error) {
+    warnings.push(toWarning('task', error))
   }
 
   return { contactId: contact.id, caseId, opportunityId: null, isNew: contact.isNew, warnings }
@@ -308,6 +408,7 @@ async function submitOpportunity(config, data, options) {
   )
   const warnings = [...contact.warnings]
   let opportunityId = null
+  const opportunityAnswers = buildFields(config.opportunityFields, data)
 
   try {
     const existing = config.dedupeOpportunityByContact
@@ -322,7 +423,7 @@ async function submitOpportunity(config, data, options) {
         await updateRecord('Opportunity', existing.id, { StageName: config.stageName }, options)
       }
     } else {
-      const oppFields = buildFields(config.opportunityFields, data)
+      const oppFields = { ...opportunityAnswers }
       oppFields.Name = renderTemplate(config.opportunityNameTemplate, data).slice(0, OPPORTUNITY_NAME_MAX)
       oppFields.StageName = config.stageName
       oppFields.CloseDate = closeDate()
@@ -360,6 +461,21 @@ async function submitOpportunity(config, data, options) {
     warnings.push(toWarning('opportunity', error))
   }
 
+  // Best-effort, as on the Case forms. When the submission only advanced an existing
+  // Opportunity, this Task is where its answers are kept.
+  try {
+    await logSubmission(
+      contact.id,
+      opportunityId,
+      config,
+      data,
+      { ...contact.answers, ...opportunityAnswers },
+      options
+    )
+  } catch (error) {
+    warnings.push(toWarning('task', error))
+  }
+
   return { contactId: contact.id, caseId: null, opportunityId, isNew: contact.isNew, warnings }
 }
 
@@ -367,11 +483,8 @@ async function submitOpportunity(config, data, options) {
 // unsubscribe and email-preferences flows, where a record the visitor never had should not be
 // conjured into existence.
 //
-// Deliberately does NOT use decorate(). That step is for creating a record: it stamps
-// Website_Source__c and writes Description outright. On an update both are destructive — the
-// Lead would claim it came from the unsubscribe form, and the customer's original enquiry
-// would be overwritten by their opt-out feedback. So attribution and tags are left alone, and
-// any feedback is appended beneath what is already there.
+// Attribution and tags are left alone — an opt-out is not where the person came from — and any
+// feedback is appended beneath the existing description rather than replacing it.
 async function submitUpdateByEmail(config, data, options) {
   const email = normalizedEmail(data)
   const warnings = []
@@ -380,13 +493,23 @@ async function submitUpdateByEmail(config, data, options) {
   // Contact first: a known customer is the more likely match, and the more important one to
   // honour an opt-out on.
   for (const sobject of ['Contact', 'Lead']) {
-    const rows = await query(
-      `SELECT Id, Description FROM ${sobject} WHERE ${EXTERNAL_ID_FIELD} = ${soqlString(email)} LIMIT 1`,
-      options
-    )
-    const match = rows[0]
+    const select =
+      sobject === 'Lead'
+        ? 'Id, Description, IsConverted, ConvertedContactId, ConvertedContact.Description'
+        : 'Id, Description'
+    const match = await findByEmail(sobject, select, email, options)
     if (!match || !match.Id) continue
-    const id = match.Id
+
+    // A converted Lead is read-only, and an opt-out written to it would fail. The person is now
+    // the Contact it became, so that is the record that has to carry the opt-out.
+    const convertedTo = match.IsConverted ? match.ConvertedContactId : null
+    const target = convertedTo
+      ? {
+          sobject: 'Contact',
+          id: convertedTo,
+          description: match.ConvertedContact && match.ConvertedContact.Description,
+        }
+      : { sobject, id: match.Id, description: match.Description }
 
     const fields = buildFields(config.fields, data)
     if (config.setEmailOptOut) fields.HasOptedOutOfEmail = true
@@ -394,18 +517,18 @@ async function submitUpdateByEmail(config, data, options) {
     if (config.descriptionField) {
       const addition = buildDescription(config, data)
       if (addition) {
-        const existing = asString(match.Description).trim()
+        const existing = asString(target.description).trim()
         const entry = `${config.sourceAttribution}: ${addition}`
         fields[config.descriptionField] = existing ? `${existing}\n\n${entry}` : entry
       }
     }
 
     try {
-      await updateRecord(sobject, id, fields, options)
-      updatedId = id
+      await updateRecord(target.sobject, target.id, fields, options)
+      updatedId = target.id
       break
     } catch (error) {
-      warnings.push(toWarning(`update-${sobject.toLowerCase()}`, error))
+      warnings.push(toWarning(`update-${target.sobject.toLowerCase()}`, error))
     }
   }
 

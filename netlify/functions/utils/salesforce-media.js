@@ -53,7 +53,8 @@ async function uploadImage(dataUrl, formType, options) {
 
   const header = dataUrl.slice(0, commaIndex)
   const mimeMatch = header.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64$/)
-  const mimeType = mimeMatch && mimeMatch[1]
+  // The Hero core-upgrade modal accepts the non-standard 'image/jpg' client-side (this port only).
+  const mimeType = mimeMatch && (mimeMatch[1] === 'image/jpg' ? 'image/jpeg' : mimeMatch[1])
   if (!mimeType) throw new MediaUploadError('Invalid image format')
   if (!ALLOWED_TYPES.includes(mimeType)) {
     throw new MediaUploadError('Unsupported image type. Please upload a JPEG, PNG, WebP, or GIF.')
