@@ -164,20 +164,6 @@ function validateFormLoadTime(formLoadTime) {
     }
   }
   
-  // Also check if form was loaded too long ago (possible replay attack)
-  const maxAge = 15 * 60 * 1000 // 15 minutes
-  if (timeSinceLoad > maxAge) {
-    return {
-      suspicious: true,
-      reason: 'Form load time expired',
-      details: {
-        timeSinceLoad,
-        maxAge,
-        message: 'Form was loaded too long ago'
-      }
-    }
-  }
-  
   return {
     suspicious: false,
     timeSinceLoad
