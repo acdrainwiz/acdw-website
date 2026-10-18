@@ -8,6 +8,7 @@
     "dev:netlify": "netlify dev",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "test": "node netlify/functions/__tests__/validate-form-submission.test.cjs",
     "preview": "vite preview"
   },
   "dependencies": {
