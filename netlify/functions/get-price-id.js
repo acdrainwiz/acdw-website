@@ -178,11 +178,15 @@ exports.handler = async (event, context) => {
       }
     }
 
+    // Mini direct online sales always ship at list price. Contractor tiers still
+    // apply to Sensor and Bundle, but must never select legacy Mini tier Price IDs.
+    const pricingRole = product === 'mini' ? 'homeowner' : userRole
+
     // Quantity ceiling.
     // Contractor / property-manager pricing tiers top out at 500 units; above that we
     // route to sales for a custom volume quote. Homeowners buy at flat MSRP, so any
     // quantity is allowed online (only Stripe's per-line-item max of 999,999 guards it).
-    if (userRole !== 'homeowner' && qty > 500) {
+    if (pricingRole !== 'homeowner' && qty > 500) {
       return {
         statusCode: 400,
         headers,
@@ -202,7 +206,7 @@ exports.handler = async (event, context) => {
 
     // Calculate tier
     let tier = 'msrp'
-    if (userRole !== 'homeowner') {
+    if (pricingRole !== 'homeowner') {
       tier = calculateTier(qty)
       if (!tier) {
         return {
@@ -217,7 +221,7 @@ exports.handler = async (event, context) => {
     }
 
     // Get Price ID
-    const priceIdKey = getPriceIdKey(product, userRole, tier)
+    const priceIdKey = getPriceIdKey(product, pricingRole, tier)
     const priceId = PRICE_IDS[priceIdKey]
 
     if (!priceId) {
@@ -252,7 +256,7 @@ exports.handler = async (event, context) => {
           priceId,
           product,
           quantity: qty,
-          role: userRole,
+          role: pricingRole,
           tier,
           unitPrice: price.unit_amount / 100, // Convert from cents
           currency: price.currency,
