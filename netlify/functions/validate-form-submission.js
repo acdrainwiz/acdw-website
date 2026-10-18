@@ -1191,6 +1191,15 @@ exports.handler = async (event, context) => {
       logFormSubmission(formType, email, ip, userAgent, false, [
         `salesforce-submission-failed: ${sfErr && sfErr.message}`,
       ])
+      return {
+        statusCode: 502,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          error: 'Submission service unavailable',
+          message: 'We could not submit your form right now. Please try again.',
+        }),
+      }
     }
 
     return {
