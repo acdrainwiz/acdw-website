@@ -65,6 +65,10 @@ function calculateTier(quantity) {
  * Get Price ID key based on product, role, and tier
  */
 function getPriceIdKey(product, role, tier) {
+  if (product === 'mini') {
+    return 'mini_homeowner'
+  }
+
   if (role === 'homeowner') {
     return `${product}_homeowner`
   }
@@ -180,9 +184,10 @@ exports.handler = async (event, context) => {
 
     // Quantity ceiling.
     // Contractor / property-manager pricing tiers top out at 500 units; above that we
-    // route to sales for a custom volume quote. Homeowners buy at flat MSRP, so any
-    // quantity is allowed online (only Stripe's per-line-item max of 999,999 guards it).
-    if (userRole !== 'homeowner' && qty > 500) {
+    // route to sales for a custom volume quote. Mini is sold online at flat MSRP for
+    // every role, so any Mini quantity is allowed online up to Stripe's line-item max.
+    const usesListPrice = userRole === 'homeowner' || product === 'mini'
+    if (!usesListPrice && qty > 500) {
       return {
         statusCode: 400,
         headers,
@@ -202,7 +207,7 @@ exports.handler = async (event, context) => {
 
     // Calculate tier
     let tier = 'msrp'
-    if (userRole !== 'homeowner') {
+    if (!usesListPrice) {
       tier = calculateTier(qty)
       if (!tier) {
         return {
