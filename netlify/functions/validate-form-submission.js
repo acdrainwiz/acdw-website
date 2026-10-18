@@ -404,7 +404,11 @@ const validateFormFields = (formType, formData) => {
       }
 
       case 'complimentary-mini-request': {
-        const expectedAccessToken = process.env.VITE_COMPLIMENTARY_MINI_ACCESS_TOKEN || ''
+        const expectedAccessToken = (
+          process.env.COMPLIMENTARY_MINI_ACCESS_TOKEN
+          || process.env.VITE_COMPLIMENTARY_MINI_ACCESS_TOKEN
+          || ''
+        )
         const miniAccess = formData.get('access')?.trim() || ''
 
         if (!expectedAccessToken) {
@@ -1191,6 +1195,15 @@ exports.handler = async (event, context) => {
       logFormSubmission(formType, email, ip, userAgent, false, [
         `salesforce-submission-failed: ${sfErr && sfErr.message}`,
       ])
+      return {
+        statusCode: 502,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          error: 'Submission service unavailable',
+          message: 'We could not save your submission. Please try again.',
+        }),
+      }
     }
 
     return {
