@@ -431,11 +431,14 @@ export function MiniProductPage() {
             </motion.div>
 
             <motion.div className="mini-hero-v2-buy" variants={fadeUp}>
-              <div className="mini-hero-v2-buy-price">
-                <span className="mini-hero-v2-buy-amount">${unitPrice.toFixed(2)}</span>
-                <span className="mini-hero-v2-buy-ship">Ships in 1–2 days · Easy returns</span>
-              </div>
+              {PURCHASING_ENABLED && (
+                <div className="mini-hero-v2-buy-price">
+                  <span className="mini-hero-v2-buy-amount">${unitPrice.toFixed(2)}</span>
+                  <span className="mini-hero-v2-buy-ship">Ships in 1–2 days · Easy returns</span>
+                </div>
+              )}
               <div className="mini-hero-v2-buy-actions">
+                {PURCHASING_ENABLED && (
                 <div className="mini-hero-v2-qty" role="group" aria-label="Quantity">
                   <button
                     type="button"
@@ -465,6 +468,7 @@ export function MiniProductPage() {
                     +
                   </button>
                 </div>
+                )}
                 <StripeCheckout
                   product="mini"
                   quantity={quantity}
@@ -950,10 +954,13 @@ export function MiniProductPage() {
                 </h2>
 
                 <p className="sensor-product-purchase-message">
-                  Buy one or stock up — order any quantity online at list price, with secure
-                  checkout, shipping, and tracking. Ships in 1–2 days.
+                  {PURCHASING_ENABLED
+                    ? 'Buy one or stock up — order any quantity online at list price, with secure checkout, shipping, and tracking. Ships in 1–2 days.'
+                    : 'Online ordering is coming soon. Contractors, distributors, and property managers can contact our sales team today.'}
                 </p>
 
+                {PURCHASING_ENABLED && (
+                <>
                 <div className="mini-buy-price-row">
                   <span className="mini-buy-price-amount">${unitPrice.toFixed(2)}</span>
                   <span className="mini-buy-price-unit">/ unit</span>
@@ -1012,6 +1019,8 @@ export function MiniProductPage() {
                   <span className="mini-buy-subtotal-amount">${(unitPrice * quantity).toFixed(2)}</span>
                 </div>
                 <p className="mini-buy-subtotal-note">Shipping &amp; tax calculated at checkout.</p>
+                </>
+                )}
 
                 {checkoutError && (
                   <p className="mini-buy-error" role="alert">{checkoutError}</p>

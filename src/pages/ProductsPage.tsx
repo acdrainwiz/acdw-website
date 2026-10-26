@@ -35,6 +35,7 @@ import { ProductsLineupComparison } from '../components/products/ProductsLineupC
 import { MiniDiscoveryCTA } from '../components/products/MiniDiscoveryCTA'
 import { useProductPrice } from '../hooks/useProductPrice'
 import { formatUsdPrice } from '../config/pricing'
+import { PURCHASING_ENABLED } from '../config/features'
 import { PageHeroMeshBackdrop } from '../components/layout/PageHeroMeshBackdrop'
 import { useCalibrateHotspotsFlag } from '../hooks/useCalibrateHotspotsFlag'
 
@@ -248,7 +249,7 @@ export function ProductsPage() {
       installationTime: '5 minutes or less',
       size: MINI_MANIFOLD_DIMENSIONS_LHD,
       pricing: {
-        msrp: `${formatUsdPrice(miniPrice)} MSRP`,
+        msrp: PURCHASING_ENABLED ? `${formatUsdPrice(miniPrice)} MSRP` : 'Coming Soon',
         contractor: 'Volume pricing available',
         'property-manager': 'Contact for pricing'
       },
@@ -703,7 +704,9 @@ export function ProductsPage() {
             <motion.p className="unified-products-hero-subtitle" variants={fadeUpLineup}>
               Professional-grade solutions that prevent costly water damage and streamline HVAC service
               operations—from maintenance access to overflow protection and optional Wi‑Fi monitoring.
-              The AC Drain Wiz Mini is available online at list price ({formatUsdPrice(miniPrice)} MSRP).
+              {PURCHASING_ENABLED && (
+                <> The AC Drain Wiz Mini is available online at list price ({formatUsdPrice(miniPrice)} MSRP).</>
+              )}
             </motion.p>
           </motion.div>
         </div>
